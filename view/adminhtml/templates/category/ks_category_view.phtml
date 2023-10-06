@@ -1,0 +1,739 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var $block \Ksolves\MultivendorMarketplace\Block\Adminhtml\CategoryRequests\KsCategoryTreeView
+ */
+?>
+<!-- get admin seller checked categories ids -->
+<input class="ks_checked_ids" type="hidden" id="ks_checked_ids" name="ks_checked_ids" value="<?= implode(',',$block->getCategoryIds()) ?>" />
+<!--  get root id -->
+<input class="ks_store_root_id" type="hidden" id="ks_store_root_id" name="ks_store_root_id" value="<?= (int)$block->getRoot()->getId() ?>" data-form-part="ks_marketplace_seller_form"/>
+<!-- Category Requests toggle -->
+<div class="fieldset-wrapper-title">
+    <div class="float-left">
+        <strong class="title">
+            <span><?= $block->escapeHtml(__('Product Categories')) ?></span>
+            <!-- ko if: collapsible --><!-- /ko -->
+        </strong>
+    </div>
+    <div class="ks-product-category-catalog">
+        <label class="ks-req-toggle-button ks-mb-1">
+            <span class="ks-category-req-label"><?= $block->escapeHtml(__('Category Request Allowed')) ?></span>
+            <div class="ks-request-allowed">
+                <input type="checkbox" id="ks_is_requests_allowed" <?php if ($block->getKsCategoryRequestAllowedStatus()==1) { echo "checked";} ?> name="ks_is_requests_allowed" data-form-part="ks_marketplace_seller_form">
+                <span class="ks-request-slider round"></span>
+            </div>
+            <span class="d-block mr-3 ks-store-view-style">[global]</span> 
+        </label>
+        <label class="ks-req-toggle-button mr-3 ks-auto-approval-button">
+            <span class="ks-category-req-label"><?= $block->escapeHtml(__('Auto Approval')) ?></span>
+            <div class="ks-request-allowed">
+                <input type="checkbox" <?php if ($block->getKsIsAutoApproved()==1) { echo "checked"; } ?> name="ks_is_auto_approved" data-form-part="ks_marketplace_seller_form">
+                <span class="ks-request-slider round"></span>
+            </div>
+            <span class="d-block mr-3 ks-store-view-style">[global]</span>
+        </label>
+    </div>
+</div>
+<div class="ks-category-content">
+    <div class="ks-category-tree-scroll ks-category-tree">
+        <div class="ks-tree-actions">
+                <?php if ($block->getRoot()):?>
+                    <a id="ks-colapseAll" href="#"><?= $block->escapeHtml(__('Collapse All')) ?></a>
+                    <span class="separator">|</span>
+                    <a id="ks-expandAll" href="#"><?= $block->escapeHtml(__('Expand All')) ?></a>
+                <?php endif; ?>
+        </div>
+        <?php $divId = $block->escapeHtml('tree-div_' . time()) ?>
+        <div id="<?= /* @noEscape */ $divId ?>" class="tree"></div>
+    </div>    
+    <div class="ks-category-container ks-category-tree-scroll">
+    </div>
+</div>    
+<div class="ks-hidden">
+    <!-- get admin seller categories ids -->
+    <input class="ks_ids" type="hidden" id="ks_ids" name="ks_ids" value="<?= $block->getKsSellerCategoriesIds() ?>" />
+    <!--  get seller id -->
+    <input class="ks_seller_id" type="hidden" id="ks_seller_id" name="ks_seller_id" value="<?= $block->getKsSellerId() ?>" data-form-part="ks_marketplace_seller_form" />
+    <!--  get store id -->
+    <input class="ks_store_id" type="hidden" id="ks_store_id" name="ks_store_id" value="<?= $block->getKsStoreId() ?>" data-form-part="ks_marketplace_seller_form" />
+    <!--  get root ids -->
+    <input class="ks_root_id" type="hidden" id="ks_root_id" name="ks_root_id" value="<?= $block->getKsRootIds() ?>"/>
+</div>
+<script id="ie-deferred-loader" defer="defer" src="//:"></script>
+<?php /*echo $block->getLoadTreeUrl(); exit;*/ ?>
+
+<script type="text/javascript">
+    require([
+    'jquery',
+    'prototype',
+    'extjs/ext-tree-checkbox',
+    'mage/adminhtml/form'
+], function (jQuery) {
+    'use strict';
+    
+    jQuery(document).ready(function() {
+
+        var tree,
+          options = {
+          dataUrl: "<?= $block->escapeUrl($block->getLoadTreeUrl()) ?>",
+          divId: "<?= /* @noEscape */ $divId ?>",
+          rootVisible: false,
+          useAjax: "<?= $block->escapeHtml($block->getUseAjax()) ?>",
+          currentNodeId: "<?= (int)$block->getCategoryId() ?>",
+          jsFormObject: "<?= /* @noEscape */ $block->getJsFormObject() ?>",
+          name: "<?= $block->escapeHtml($block->getRoot()->getName()) ?>",
+          checked: "<?= $block->escapeHtml($block->getRoot()->getChecked()) ?>",
+          allowDrop: false,
+          rootId: "<?= (int)$block->getRoot()->getId() ?>",
+          expanded: true,
+          categoryId: "<?= (int)$block->getCategoryId() ?>",
+          treeJson: <?= $block->getTreeJson() ?>
+          },
+          data = {},
+          parameters = {},
+          root = {},
+          key = '';
+
+        var arr =[];
+        //collapse all tree
+        jQuery("#ks-colapseAll").click(function(){
+            event.preventDefault();
+            tree.collapseTree();
+        });
+        //expand all tree
+        jQuery("#ks-expandAll").click(function(){
+            event.preventDefault();
+            tree.expandTree();
+        });    
+
+        /**
+         * Fix ext compatibility with prototype 1.6
+         */
+        Ext.lib.Event.getTarget = function (e) {
+            var ee = e.browserEvent || e;
+
+            return ee.target ? Event.element(ee) : null;
+        };
+
+        // /**
+        //  * @param {Object} el
+        //  * @param {Object} nodeConfig
+        //  */
+        Ext.tree.TreePanel.Enhanced = function (el, nodeConfig) {
+            Ext.tree.TreePanel.Enhanced.superclass.constructor.call(this, el, nodeConfig);
+        };
+
+        Ext.extend(Ext.tree.TreePanel.Enhanced, Ext.tree.TreePanel, {
+            /**
+             * @param {Object} treeConfig
+             * @param {Boolean} firstLoad
+             */
+
+            loadTree: function (treeConfig, firstLoad) {
+                parameters = treeConfig.parameters,
+                    data = treeConfig.data,
+                    root = new Ext.tree.TreeNode(parameters);
+
+
+                if (typeof parameters.rootVisible !== 'undefined') {
+                    this.rootVisible = parameters.rootVisible * 1;
+                }
+
+                this.nodeHash = {};
+                this.setRootNode(root);
+
+                if (firstLoad) {
+                    this.addListener('click', this.categoryClick.createDelegate(this));
+                    this.addListener('expand', this.ksCategory.createDelegate(this));
+                }
+
+                this.loader.buildCategoryTree(root, data);
+                this.el.dom.innerHTML = '';
+                //get string value
+                var string = jQuery('.ks_ids').val();
+                //get array of category
+                var array = string.split(",").map(Number);
+                //disabled node
+                for(var i in this.nodeHash){
+                  if(i != options.rootId && !array.includes(parseInt(this.nodeHash[i].id))){
+                    //category display
+                    this.nodeHash[i].disabled = true;
+                  }
+                } 
+                // render the tree
+                this.render();
+                //remove root ids of store based on current website
+                this.removeRootId(this.root);
+                //pass root category
+                this.category(this.root,array);
+                //get param 
+                var ksParamCatId = "<?= (int)$block->getKsAdminCurrentCategoryId() ?>";
+                //initialize count
+                var count = 0;
+                //check param
+                if(ksParamCatId != 0 && array.includes(parseInt(ksParamCatId))){
+                  //check length
+                  if(Object.keys(this.nodeHash).length>1){
+                    for(var i in this.nodeHash){
+                      if(i!=options.rootId){
+                        //category display
+                        if (this.nodeHash[i].id === ksParamCatId){
+                          count = 1;
+                          this.categoryClick(this.nodeHash[i]);  
+                          break;
+                        }
+                      }
+                    } 
+                  }
+                }
+                if(count === 0){
+                  //check length
+                  if(Object.keys(this.nodeHash).length>1){
+                    for(var i in this.nodeHash){
+                      if(i!=options.rootId){
+                        //category display
+                        if (this.nodeHash[i].disabled === false){
+                          this.categoryClick(this.nodeHash[i]);  
+                          break;
+                        }
+                      }
+                    } 
+                  }
+                }   
+            },
+
+            /**
+             * @param {Object} node
+             */
+            removeRootId: function(node)
+            {
+              //get string value
+              var ksString = jQuery('.ks_root_id').val();
+              //get array of rootIds
+              var ksRootIds = ksString.split(",").map(Number);
+              //get store id
+              var ksStoreId = jQuery('.ks_store_id').val();
+              //check status
+              if(ksStoreId == 0){
+                for(var i = node.childNodes.length-1;i>=0;i--){
+                  if(!ksRootIds.includes(parseInt(node.childNodes[i].id)) && node.childNodes[i].parentNode){
+                    //remove node
+                    node.childNodes[i].parentNode.removeChild(node.childNodes[i]);
+                  }
+                }
+              }
+            },
+
+            /**
+             * @param {Object} node
+             * @param {array} array
+             */
+            category: function(node,array)
+            { 
+              //check node children length
+              if(node.childNodes.length > 0){
+                for(var i = node.childNodes.length-1;i>=0;i--){
+                  this.category(node.childNodes[i],array);
+                }
+                //check length
+                if(node.childNodes.length==0 && node.id && node.parentNode) {
+                  //method array includes
+                  if(!array.includes(parseInt(node.id))){
+                          //remove node
+                          node.parentNode.removeChild(node);
+                  }
+                }
+              } else {
+                if(!array.includes(parseInt(node.id)) && node.parentNode){
+                  //remove node
+                  node.parentNode.removeChild(node);
+                }
+              }
+            },
+
+            //collapse tree
+            collapseTree: function () {
+              this.collapseAll();
+            },
+
+            //expand tree
+            expandTree: function () {
+              this.expandAll();
+            },
+
+            /**
+             * hide requested category
+             * @param {object} node
+             */
+            ksCategory: function(node)
+            {
+              //get string value
+              var string = jQuery('.ks_ids').val();
+              //get array of category
+              var array = string.split(",").map(Number);
+              //check type of checkbox
+              if(typeof node.ui.checkbox !== "undefined"){
+
+                  if(node.text.includes("Requested") || !array.includes(parseInt(node.id))){
+                      node.ui.checkbox.hide();
+                  }
+              }
+            },
+
+            /**
+             * @param {Object} node
+             */
+            categoryClick: function (node) {
+              //check node is disabled or not
+              if(node.disabled == true){
+                return false;
+              } 
+              //remove class
+              jQuery('div.x-tree-node-el').removeClass('x-tree-selected');
+              //add class
+              node.ui.addClass('x-tree-selected');
+              //get seller id
+              var ksSellerId = jQuery('.ks_seller_id').val();
+              //get store id
+              var ksStoreId = jQuery('.ks_store_id').val();
+              //get category details
+              var ksCategoryurl = "<?= $this->getUrl('multivendor/categoryrequests/categorydetails');?>";
+              //get string value
+              var string = jQuery('.ks_ids').val();
+              //get array of category
+              var array = string.split(",").map(Number);
+              //calling ajax
+              jQuery.ajax({
+                url: ksCategoryurl,
+                type: 'POST',
+                data:{ks_category_id:node.id,ks_seller_id:ksSellerId,ks_store_id:ksStoreId},
+                success: function(response){
+                  //empty html
+                  jQuery('.ks-category-container').empty();
+                  //intialize variable
+                  var ksHtml=``;
+                  //append html
+                  jQuery('.ks-category-container').html(`<input class="ks_category_id" type="hidden" value="${node.id}" id="ks_category_id" name="ks_category_id" data-form-part="ks_marketplace_seller_form" />`)
+                  jQuery('.ks-category-container').append(`<div class="ks-tab-content"></div>`);
+                  //check checkbox
+                  if(node.getUI().checkbox.checked){
+                      ksHtml=`<div class="d-flex ks-tab-feild"><div class="w-52 text-right mb-4"><span class="ks-action ks-primary text-decoration-none mr-0 ks-mb-0"><?= $block->escapeHtml(__('Action')) ?></span><span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></div> <div class="w-42"><a class="ks-action ks-primary ks-reload" href="<?= $block->getUrl('multivendor/categoryrequests/unassign', ['ks_seller_id' => $block->getKsSellerId(),'ks_store_id' => $block->getKsStoreId()]) . '?ks_category_id=${node.id}'; ?> ">Unassign</a></div></div>`;
+                  }else {
+                      if(node.text.includes("Requested")){
+                        ksHtml=`<div class="d-flex ks-tab-feild"><div class="w-52 text-right mb-4"><span class="ks-action ks-primary text-decoration-none mr-0 ks-mb-0"><?= $block->escapeHtml(__('Action')) ?></span><span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></div> <div class="w-42"><a class="ks-action ks-primary ks-reload" href="<?= $block->getUrl('multivendor/categoryrequests/approve', ['ks_seller_id' => $block->getKsSellerId(),'ks_store_id' => $block->getKsStoreId()]) . '?ks_category_id=${node.id}'; ?> ">Approve</a>|
+                        <a href="#" class="ks-action ks-primary" id="ks-category-reject">Reject</a></div></div>
+                             `;
+                      } else {
+                        if(array.includes(parseInt(node.id))) {
+                          ksHtml=`<div class="d-flex ks-tab-feild"><div class="w-52 text-right mb-4"><span class="ks-action ks-primary text-decoration-none mr-0 ks-mb-0"><?= $block->escapeHtml(__('Action')) ?></span><span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></div> <div class="w-42"><a class="ks-action ks-primary ks-reload" href="<?= $block->getUrl('multivendor/categoryrequests/assign', ['ks_seller_id' => $block->getKsSellerId(),'ks_store_id' => $block->getKsStoreId()]) . '?ks_category_id=${node.id}'; ?> ">Assign</a></div></div>`;
+                        }
+                      }
+                  }
+                  jQuery('.ks-tab-content').append(ksHtml);
+                  //append request status
+                  if(response.ks_request_status != ''){
+                    jQuery('.ks-tab-content').append(`<div class="d-flex ks-tab-feild"><div class="w-52 text-right"><span class="font-weight-600"><?= $block->escapeHtml(__('Approval Status')) ?></span><span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></div><div class="w-42">` + response.ks_request_status + `</div><div>`);
+                  }
+                  //initialize variable
+                  var ksHtml1=``;
+                  //check checkbox
+                  if(node.getUI().checkbox.checked) {
+                     //check category status
+                     if(response.ks_category_status == 0){
+                        ksHtml1=`<div class="d-flex ks-tab-feild mb-4">
+                                    <label class="w-52 text-right"><span class="font-weight-600"><?= $block->escapeHtml(__('Enable')) ?></span> <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></label>
+                                    <div class="w-42">
+                                        <label class="ks-category-enabled">
+                                            <input type="checkbox" name="ks-category-enabled" data-form-part="ks_marketplace_seller_form">
+                                            <span class="ks-category-slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>`;
+                      } else {
+                        ksHtml1=`<div class="d-flex ks-tab-feild mb-4">
+                                    <label class="w-52 text-right"><span class="font-weight-600"><?= $block->escapeHtml(__('Enable')) ?></span> <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></label>
+                                    <div class="w-42">
+                                        <label class="ks-category-enabled">
+                                            <input type="checkbox" name="ks-category-enabled" data-form-part="ks_marketplace_seller_form" checked>
+                                            <span class="ks-category-slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>`;
+                      }
+                  } else {
+                        ksHtml1=`<div class="d-flex ks-tab-feild mb-4">
+                                    <label class="w-52 text-right"><span class="font-weight-600"><?= $block->escapeHtml(__('Enable')) ?></span> <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></label>
+                                    <div class="w-42"> 
+                                        <label class="ks-category-enabled">
+                                            <input type="checkbox" disabled="true">
+                                            <span class="ks-category-slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>`;
+                  }           
+                  jQuery('.ks-tab-content').append(ksHtml1);
+                  //intialize variable
+                  var ksHtml2 = `
+                  <div class="d-flex mt-3 mb-4 ks-tab-feild align-center"> <div class="w-52 text-right"><span class="font-weight-600"><?= $block->escapeHtml(__('Category Name')) ?></span>  <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span></div> <div class="w-42"><div class="ks-border-style ks-category-scroll">${response.ks_category_name} </div></div></div>
+                  <table class="ks-category-details">
+                  </table>
+                  <br>
+                  <div class="d-flex mb-4 ks-tab-feild"><div class="w-52 text-right"><span class="font-weight-600"><?= $block->escapeHtml(__('Product Count')) ?></span><span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></div>  <div class="w-42"><div class="ks-border-count-style ks-category-scroll"><span>${response.ks_seller_product_count}</span></div></div></div>
+                  <div class="d-flex mb-4 mt-4 ks-tab-feild"><div class="w-52 text-right"><span class="font-weight-600 font-14"><?= $block->escapeHtml(__('Global Product Count')) ?></span> <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></div> <div class="w-42"><div class="ks-border-count-style ks-category-scroll">${response.ks_category_product_count}</div></div></div>
+                   `;
+                  //append ksHtml2 variable
+                  jQuery('.ks-tab-content').append(ksHtml2);
+                  var ksHtml3=``;
+                  //check category image
+                  if(response.ks_category_image){
+                    ksHtml3=`<tr class="ks-details">
+                     <td>
+                        <div class="d-flex ks-tab-feild mb-4">
+                            <label class="ks-display-block w-52 text-right">
+                                <span class="font-weight-600"><?= $block->escapeHtml(__('Image')) ?></span>  
+                                <span class="ks-display-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span>
+                            </label>
+                            <div class="w-42">
+                                <div class="ks-details-img">
+                                    <img src="<?= $block->getKsBaseUrl(); ?>${response.ks_category_image}">
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                     </tr>`;
+                  } else {
+                    ksHtml3=`<tr class="ks-details">
+                                <td>
+                                    <div class="d-flex ks-tab-feild mb-4">
+                                        <label class="ks-display-block w-52 text-right">
+                                            <span class="font-weight-600"><?= $block->escapeHtml(__('Image')) ?></span>  
+                                            <span class="ks-display-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span>
+                                        </label>
+                                        <div class="w-42"><div class="ks-details-img"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/camera-icon.svg') ?>"/></div></div>
+                                    </div>
+                                </td>
+                            </tr>`;
+                  } 
+                  //append ksHtml3 variable
+                  jQuery('.ks-category-details').append(ksHtml3);
+                  var ksHtml4=``;
+                  //check category description
+                  if(response.ks_category_description)
+                  {
+                     ksHtml4=`<tr class="ks-details">
+                     <td>
+                        <div class="d-flex ks-tab-feild">
+                            <label class="ks-display-block w-52 text-right">
+                                <span class="font-weight-600"><?= $block->escapeHtml(__('Description')) ?></span>  
+                                <span class="ks-display-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span>
+                            </label>
+                            <div class="w-42"><div class="ks-details-desc">${response.ks_category_description}</div></div>
+                        </div>
+                    </td>
+                    </tr>
+                     `;
+                  }
+                  else{
+                     ksHtml4=`<tr class="ks-details">
+                     <td>
+                        <div class="d-flex ks-tab-feild">
+                            <label class="ks-display-block w-52 text-right">
+                                <span class="font-weight-600"><?= $block->escapeHtml(__('Description')) ?></span>  
+                                <span class="ks-display-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span>
+                            </label>
+                            <div class="w-42"><div class="ks-details-desc"><?= $block->escapeHtml(__('Category Description')) ?></div></div>
+                        </div>
+                    </td>
+                    </tr>
+                     `;
+                  } 
+                  //append ksHtml4 variable
+                  jQuery('.ks-category-details').append(ksHtml4);
+                  var ksHtml5=`
+                  <div class="ks-view-only-display-s">
+                    <div class="mt-5" role="tab" id="ks-display-setting">
+                        <a role="button" class="ks-tab-heading" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-one-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab"><?= $block->escapeHtml(__('Display Settings')) ?></a>
+                    </div>
+                    <div id="ks-collapse-one-tab" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="ks-display-setting">
+                        <div class="ks-tab-content">
+                            <div class="ks-tab-feild mb-4">
+                                <label class="w-52 mt-2 text-right"><span class="display-view-only"><?= $block->escapeHtml(__('Display Mode')) ?></span> <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span></label>
+                                <div class="w-42">    
+                                    <select disabled="true" class="font-14 ks-border-default">
+                                    <?php foreach ($block->getKsDisplayMode() as $ksMode): ?>
+                                        <option ${ response.ks_display_mode == "<?= $ksMode['value']; ?>" ? 'selected=selected' : "" } value="<?= $ksMode['value']; ?>"><?= $ksMode['label']->getText(); ?></option>
+                                    <?php endforeach; ?>
+                                    </select>
+                                </div>    
+                            </div>
+                            <div class="ks-tab-feild mb-4">
+                                <label class="w-52 mt-2 text-right"><span class="display-view-only"><?= $block->escapeHtml(__('Anchor')) ?></span> <span class="d-block ks-global-view-style"><?= $block->escapeHtml(__('[global]')) ?></span></label>
+                                <label class="ks-request-allowed mr-auto ml-5">
+                                    <input type="checkbox" ${ response.ks_is_anchor == "1" ? 'checked' : "" } disabled="true">
+                                    <span class="ks-request-slider round"></span>
+                                </label>
+                            </div>
+                            <div class="ks-tab-feild mb-4">
+                                <label class="w-52 mt-2 text-right"><span class="display-view-only"><?= $block->escapeHtml(__('Available Product Listing Sort By')) ?></span> <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span></label>
+                                <div class="w-42">    
+                                    <select disabled="true" class="font-14 ks-border-default" multiple>
+                                    <?php foreach ($block->getKsSortBy() as $ksSort): ?>
+                                        <option ${response.ks_available_sort_by.indexOf("<?= $ksSort['value']; ?>") != -1 || response.ks_available_sort_by.length == 0 ? 'selected=selected' : "" } value="<?= $ksSort['value']; ?>"><?= $ksSort['label']->getText(); ?></option>
+                                    <?php endforeach; ?>
+                                    </select>
+                                </div>    
+                            </div>
+                            <div class="ks-tab-feild mb-4">
+                                <label class="w-52 mt-2 text-right"><span class="display-view-only"><?= $block->escapeHtml(__('Default Product Listing Sort By')) ?></span> <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span></label>
+                                <div class="w-42">    
+                                    <select disabled="true" class="font-14 ks-border-default">
+                                    <?php foreach ($block->getKsSortBy() as $ksSort): ?>  
+                                        <option ${ response.ks_default_sort_by == "<?= $ksSort['value']; ?>" ? 'selected=selected' : "" } value="<?= $ksSort['value']; ?>"><?= $ksSort['label']->getText(); ?></option>
+                                    <?php endforeach; ?>
+                                    </select>
+                                </div>    
+                            </div>
+                            <div class="ks-tab-feild">
+                                <label class="w-52 mt-2 text-right"><span class="display-view-only"><?= $block->escapeHtml(__('Layered Navigation Price Step')) ?></span> <span class="d-block ks-store-view-style"><?= $block->escapeHtml(__('[store view]')) ?></span></label>
+                                <label class="w-42"><input type="text" value="${response.ks_currency_symbol}${response.ks_filter_price_range == null ? "" : response.ks_filter_price_range }" disabled="true" class="font-14 ks-border-default"></label>
+                            </div>
+                        </div>
+                    </div>        
+                  </div>
+                  <div class="ks-view-only-product-category">
+
+                    <div class="mb-5 mt-4" role="tab" id="ks-product-category">
+                        <a role="button" class="ks-tab-heading" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-second-tab" aria-expanded="true" aria-controls="ks-collapse-second-tab"><?= $block->escapeHtml(__('Products in Category')) ?></a>
+                    </div>
+                    <div id="ks-collapse-second-tab" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="ks-product-category">
+                        <div class="mt-4 mb-4 ks-product-category-content">
+                        </div>
+                    </div>
+                  </div>`;
+                  jQuery('.ks-category-container').append(ksHtml5);
+                  //get product category details
+                  var ksProductCategoryurl = "<?php echo $this->getUrl('multivendor/categoryrequests/categoryproductdetails');?>";
+                  //calling ajax
+                  jQuery.ajax({
+                    url: ksProductCategoryurl,
+                    type: 'POST',
+                    data:{ks_category_id:node.id,ks_seller_id:ksSellerId,ks_store_id:ksStoreId},
+                    success: function(response){
+                      jQuery('.ks-product-category-content').empty();
+                      jQuery('.ks-product-category-content').append(response);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                      console.log("fail");
+                    }
+                  });
+               },
+               error: function (xhr, ajaxOptions, thrownError) {
+                  console.log("fail");
+               }
+              });
+            }
+          });
+
+        jQuery(function () { 
+            var categoryLoader = new Ext.tree.TreeLoader();
+
+            /**
+             * @param {Object} response
+             * @param {Object} parent
+             * @param {Function} callback
+             */
+            categoryLoader.processResponse = function (response, parent, callback) {
+                config = JSON.parse(response.responseText);
+
+                this.buildCategoryTree(parent, config);
+
+                if (typeof callback === 'function') {
+                    callback(this, parent);
+                }
+            };
+
+            /**
+             * @param {Object} nodeConfig
+             * @returns {Object}
+             */
+            categoryLoader.createNode = function (nodeConfig) {
+                var node;
+
+                nodeConfig.uiProvider = Ext.tree.CheckboxNodeUI;
+
+                if (nodeConfig.children && !nodeConfig.children.length) {
+                    delete nodeConfig.children;
+                    node = new Ext.tree.AsyncTreeNode(nodeConfig);
+                } else {
+                    node = new Ext.tree.TreeNode(nodeConfig);
+                }
+
+                return node;
+            };
+
+            /**
+             * @param {Object} parent
+             * @param {Object} nodeConfig
+             * @param {Integer} i
+             */
+            categoryLoader.processCategoryTree = function (parent, nodeConfig, i) {
+                var node,
+                    _node = {};
+
+                nodeConfig[i].uiProvider = Ext.tree.CheckboxNodeUI;
+                
+                _node = Object.clone(nodeConfig[i]);
+
+                if (_node.children && !_node.children.length) {
+                    delete _node.children;
+                    node = new Ext.tree.AsyncTreeNode(_node);
+                } else {
+                    node = new Ext.tree.TreeNode(nodeConfig[i]);
+                }
+
+                parent.appendChild(node);
+
+                node.loader = node.getOwnerTree().loader;
+
+                if (_node.children) {
+                    categoryLoader.buildCategoryTree(node, _node.children);
+                }
+            };
+
+            /**
+             * @param {Object} parent
+             * @param {Object} nodeConfig
+             * @returns {void}
+             */
+            categoryLoader.buildCategoryTree = function (parent, nodeConfig) {
+                var i = 0;
+
+                if (!nodeConfig) {
+                    return null;
+                }
+
+                if (parent && nodeConfig && nodeConfig.length) {
+                    for (i; i < nodeConfig.length; i++) {
+                        categoryLoader.processCategoryTree(parent, nodeConfig, i);
+                    }
+                }
+            };
+
+            /**
+             *
+             * @param {Object} hash
+             * @param {Object} node
+             * @returns {Object}
+             */
+            categoryLoader.buildHashChildren = function (hash, node) {
+                var i = 0,
+                    len;
+
+                if (node.childNodes.length > 0 || node.loaded === false && node.loading === false) {
+                    hash.children = [];
+
+                    for (i, len = node.childNodes.length; i < len; i++) {
+                        hash.children = hash.children ? hash.children : [];
+                        hash.children.push(this.buildHash(node.childNodes[i]));
+                    }
+                }
+
+                return hash;
+            };
+
+            /**
+             * @param {Object} node
+             * @returns {Object}
+             */
+            categoryLoader.buildHash = function (node) {
+                var hash = {};
+
+                hash = this.toArray(node.attributes);
+
+                return categoryLoader.buildHashChildren(hash, node);
+            };
+
+            /**
+             * @param {Object} attributes
+             * @returns {Object}
+             */
+            categoryLoader.toArray = function (attributes) {
+                data = {};
+
+                for (key in attributes) {
+
+                    if (attributes[key]) {
+                        data[key] = attributes[key];
+                    }
+                }
+
+                return data;
+            };
+
+            categoryLoader.on('beforeload', function (treeLoader, node) {
+                treeLoader.baseParams.id = node.attributes.id;
+                treeLoader.baseParams.selected = options.jsFormObject.updateElement.value;
+            });
+
+            categoryLoader.on('load', function () {
+                varienWindowOnload();
+            });
+
+            tree = new Ext.tree.TreePanel.Enhanced(options.divId, {
+                animate: false,
+                loader: categoryLoader,
+                enableDD: false,
+                containerScroll: true,
+                selModel: new Ext.tree.CheckNodeMultiSelectionModel(),
+                rootVisible: options.rootVisible,
+                useAjax: options.useAjax,
+                currentNodeId: options.currentNodeId,
+                addNodeTo: false,
+                rootUIProvider: Ext.tree.CheckboxNodeUI
+            });
+
+            tree.on('check', function (node) {
+                  
+                arr = [];
+                arr.push(this.getChecked());
+
+                var ksCatIds = arr;
+
+                jQuery('.ks-hidden').append(` <input class="ks_categories_ids" type="hidden" id="ks_categories_ids" value="${ksCatIds}" name="ks_categories_ids" data-form-part="ks_marketplace_seller_form" />`);
+
+                varienElementMethods.setHasChanges(node.getUI().checkbox);
+            }, tree);
+
+
+            // set the root node
+            //jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+            parameters = {
+                text: options.name,
+                draggable: false,
+                checked: options.checked,
+                uiProvider: Ext.tree.CheckboxNodeUI,
+                allowDrop: options.allowDrop,
+                id: options.rootId,
+                expanded: options.expanded,
+                category_id: options.categoryId
+            };
+            //jscs:enable requireCamelCaseOrUpperCaseIdentifiers
+
+            tree.loadTree({
+                parameters: parameters, data: options.treeJson
+            }, true);
+
+        }); 
+    });
+});
+</script>

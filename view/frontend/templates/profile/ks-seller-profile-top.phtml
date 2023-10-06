@@ -1,0 +1,220 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * Seller Profile Top template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$ksHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksFavouriteSellerHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsFavouriteSellerHelper');
+$ksReportBlock = $this->getKsReportBlock();
+$ksStoreId = $block->getKsStoreId();
+$ksCustomerId = $block->getKsSellerId();
+$ksLoggedinCustomer = $ksFavouriteSellerHelper->getKsCustomerId();
+$ksFavouriteSellerCollection = $ksFavouriteSellerHelper->getKsFavouriteSellerRemove($ksLoggedinCustomer, $ksCustomerId);
+$ksStoreCollection      = $ksHelper->getKsSellerStoreCollection($ksCustomerId, $ksStoreId)->getFirstItem();
+$ksTwitterUrl           = $ksStoreCollection->getKsTwitterId();
+$ksFacebookUrl          = $ksStoreCollection->getKsFacebookId();
+$ksInstagramUrl         = $ksStoreCollection->getKsInstagramId();
+$ksGooglePlusUrl        = $ksStoreCollection->getKsGoogleplusId();
+$ksVimeoUrl             = $ksStoreCollection->getKsVimeoId();
+$ksPinterestUrl         = $ksStoreCollection->getKsPinterestId();
+$ksYoutubeUrl           = $ksStoreCollection->getKsYoutubeId();
+$ksBannerLogoUrl        = $ksStoreCollection->getKsStoreLogo();
+$reasons=$ksReportBlock->getKsReasons();
+$ksSellerConfigData     = $block->getKsSellerConfigData();
+$ksIsPageEnabled = 1;
+if(!$ksSellerConfigData->getKsShowBanner() && !$ksSellerConfigData->getKsShowRecentlyProducts() && !$ksSellerConfigData->getKsShowBestProducts() && !$ksSellerConfigData->getKsShowDiscountProducts()){
+    $ksIsPageEnabled = 0;
+}
+$ksSellerId = $block->getKsSellerId();
+$ksStoreUrl = $ksReportBlock->getKsSellerProfileUrl($ksSellerId);
+if ($ksStoreUrl) {
+    $ksActionUrl= $block->getUrl($ksStoreUrl);
+} else {
+    $ksActionUrl = $block->getUrl('multivendor/sellerprofile/sellerprofile', ['seller_id' => $ksSellerId]);
+}
+?>
+<div class="ks_container">
+    <div class="ks_row">
+        <div class="ks_col-lg-2 ks_col-md-2 ks_col-sm-4 ks_col-4">
+            <div class="ks_logo">
+                <a href="">
+                    <?php if ($ksBannerLogoUrl): ?>
+                        <img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksBannerLogoUrl ?>" alt="" class="ks_img-fluid"/> 
+                        <?php else: ?>
+                            <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-store-logo.png') ?>" alt="" class="ks_img-fluid"/>
+                        <?php endif; ?>    
+                    </a>
+                </div>
+            </div>
+            <div class="ks_col-xl-5 ks_col-lg-6 ks_col-md-12 ks_col-sm-12  ks_col-12 ks_order_change">
+                <div class="ks_navs">
+                    <ul class="ks_tabs">
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_homepage') && $ksIsPageEnabled): ?>
+                            <li class="tab-link" id="kstab-1" data-tab="tab-1"><?= $block->escapeHtml(__('Home')) ?></li>
+                        <?php endif; ?>
+                        <li class="tab-link" id="kstab-2" data-tab="tab-2"><?= $block->escapeHtml(__('Products')) ?></li>
+                        <li class="tab-link" id="kstab-3" data-tab="tab-3"><?= $block->escapeHtml(__('Profile')) ?></li>
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_show_contact_us_details') || $ksHelper->getKsSellerConfigData('ks_show_contact_us_form')): ?>
+                            <li class="tab-link" id="kstab-4" data-tab="tab-4"><?= $block->escapeHtml(__('Contact Us')) ?></li>
+                        <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+        <div class="ks_col-xl-5 ks_col-lg-4 ks_col-md-6  ks_col-sm-10  ks_col-11 ks-flag-model">
+                <div class="ks_social_links ks-social-icon-group ks-profile-social-icon-group">
+                    <ul>
+                        <?php $count1=0;
+                        $count2=0; ?>
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_social_media')): ?>
+                            <?php if ($ksTwitterUrl): $count1=1; ?>
+                                <li><a href="<?= $ksTwitterUrl ?>" target="_blank" > <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/twiter-icon.svg') ?>" class="ks-profile-social-icon" title="Twitter"/></a></li>
+                            <?php endif; ?>
+                            <?php if ($ksFacebookUrl): $count1=1; ?>
+                            <li><a href="<?= $ksFacebookUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/fb-icon.svg') ?>" class="ks-profile-social-icon" title="Facebook"/></a></li>
+                            <?php endif; ?>
+                            <?php if ($ksInstagramUrl): $count1=1; ?>
+                            <li><a href="<?= $ksInstagramUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/insta-icon.svg') ?>" class="ks-profile-social-icon" title="Instagram"/></a></li>
+                            <?php endif; ?>
+                            <?php if ($ksGooglePlusUrl): $count1=1; ?>
+                            <li><a href="<?= $ksGooglePlusUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/google-plus-icon.svg') ?>" class="ks-profile-social-icon" title="Google Plus"/></a></li>
+                            <?php endif; ?>
+                            <?php if ($ksVimeoUrl): $count1=1; ?>
+                            <li><a href="<?= $ksVimeoUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/vector-icon.svg') ?>" class="ks-profile-social-icon" title="Vimeo"/></a></li>
+                            <?php endif; ?>
+                            <?php if ($ksYoutubeUrl): $count1=1; ?>
+                            <li><a href="<?= $ksYoutubeUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/youtube-icon.svg') ?>" class="ks-profile-social-icon" title="Youtube"/></a></li>
+                            <?php endif; ?>
+                            <?php if ($ksPinterestUrl): $count1=1; ?>
+                            <li><a href="<?= $ksPinterestUrl ?>" target="_blank"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/pinterest-icon.svg') ?>" class="ks-profile-social-icon" title="Pinterest"/></a></li>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <?php if ($ksFavouriteSellerHelper->isKsEnabled() && $ksLoggedinCustomer && $ksLoggedinCustomer != $ksCustomerId): $count2=1; ?>
+                            <li>
+                                <?php if ($ksFavouriteSellerHelper->isKsSellerAdded($ksLoggedinCustomer, $ksCustomerId)): ?>
+                                    <a href="<?= $block->getUrl("multivendor/favouriteseller/save", ['sellerid' => $ksCustomerId, 'customerid' => $ksLoggedinCustomer, '_secure' => $this->getRequest()->isSecure()])?>" class="ks-favourite action">
+                                        <span class="ks-profile-blank-heart" title="Favourite Seller"></span>
+                                    </a>
+                                <?php else: ?>
+                                    <?php foreach ($ksFavouriteSellerCollection as $ksSellerId): ?>
+                                        <a href="<?= $block->getKsDeleteAction().'id/'.$ksSellerId->getId();?>" class="ks-favourite action">
+                                            <span class="ks-favourite-fill-heart" title="Favourite Seller"></span>
+                                        </a>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($ksReportBlock->isEnabled() && $ksReportBlock->getKsCanReportSeller()):?>
+                            <li class ="ks-report-seller"><a class="modal-toggle ks-flags ks_flags" title="Report Seller"></a></li>
+                        <?php endif;?>
+                </ul>
+            </div>
+            <?php if ($ksReportBlock->isEnabled() && $ksReportBlock->getKsCanReportSeller()):?>
+                <div class="ks_popup" id="ks-report-form-popup" style="display: none;">
+                    <div class="wrapper">
+                        <div class="modal">
+                            <div class="modal-overlay modal-toggle"></div>
+                            <div class="modal-wrapper modal-transition">
+                                <div class="modal-header">
+                                    <button class="modal-close modal-toggle ks-flag-model-close ks-report-seller"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/close-btn.svg') ?>" class="" /><!--?= $block->escapeHtml(__('Close')) ?--></button>
+                                    <h3><?= $block->escapeHtml(__($ksReportBlock->getKsHeadingText())) ?></h3>
+                                    <h4><?= $block->escapeHtml(__('Your Reason')) ?></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="modal-content">
+                                        <form data-mage-init='{"validation":{}}' method="post" action="<?= $block->getBaseUrl()."multivendor/reportseller/kssendreport";?>" id="ks-report-seller-form">
+                                            <fieldset class="fieldset">
+                                                <div class="ks_row">
+                                                    <?php if (!$ksReportBlock->getKsCurrentCustomerId()):?>
+                                                        <div class="ks_col-12">
+                                                            <div class="floating-label-group ks_form-group">
+                                                                <label for="ks-report-seller-customer-name" class="floating-label ks-required-star"><?= $block->escapeHtml(__('Name')) ?></label>
+                                                                <input type="text" name="ks-report-seller-customer-name" class="ks_form-control" data-validate="{required:true}" placeholder="<?= /* @noEscape */ __("Please enter your name");?>">
+                                                            </div>
+                                                        </div>
+                                                         <div class="ks_col-12">
+                                                            <div class="floating-label-group ks_form-group">
+                                                               <label for="ks-report-seller-customer-email" class="floating-label ks-required-star"><?= $block->escapeHtml(__('Email')) ?></label>
+                                                                <input type="text" name="ks-report-seller-customer-email" class="ks_form-control" data-validate="{required:true,'validate-email':true}" placeholder="<?= /* @noEscape */ __("Please enter your email");?>">
+                                                            </div>
+                                                        </div>
+                                                    <?php endif;?>
+                                                    <?php if ($ksReportBlock->getKsIsReasonEnabled()):?>
+                                                        <div class="ks_col-12">
+                                                            <div class="floating-label-group ks_form-group">
+                                                                <label for="ks-report-seller-reason" class="floating-label <?= $ksReportBlock->getKsIsReasonEnabled()==2 || $ksReportBlock->getKsIsSubReasonEnabled() == 2 ? 'ks-required-star"':''; ?>"><?= /* @noEscape */ $ksReportBlock->getKsReasonText();?></label>
+                                                                <select name="ks-report-seller-reason" id="ks-report-seller-reason" form="ks-report-seller-form" <?= $ksReportBlock->getKsIsReasonEnabled()==2 || $ksReportBlock->getKsIsSubReasonEnabled() == 2 ? 'data-validate="{required:true}"':''; ?> class="ks_form-control" >
+                                                                    <option value=""><?= /* @noEscape */ $ksReportBlock->getKsReasonPlaceholder();?></option>
+                                                                    <?php foreach ($reasons as $reason):?>
+                                                                        <option value="<?= /* @noEscape */ $reason['ks_reason'];?>"><?= /* @noEscape */ $reason['ks_reason'];?></option>
+                                                                    <?php endforeach;?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <?php if ($ksReportBlock->getKsIsSubReasonEnabled()):?>
+                                                            <div class="ks_col-12">
+                                                                <div class="floating-label-group ks_form-group">
+                                                                    <label for="ks-report-seller-sub-reason" class="floating-label <?= $ksReportBlock->getKsIsSubReasonEnabled()==2 ? 'ks-required-star"':''; ?>"><?= /* @noEscape */ $ksReportBlock->getKsSubReasonText();?></label>
+                                                                    <select name="ks-report-seller-sub-reason" id="ks-report-seller-sub-reason" form="ks-report-seller-form" class="ks_form-control" <?= $ksReportBlock->getKsIsSubReasonEnabled()==2 ? 'data-validate="{required:true}"':''; ?> >
+                                                                        <option value=""><?= /* @noEscape */ $ksReportBlock->getKsSubReasonPlaceholder();?></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        <?php endif;?>
+                                                    <?php endif;?>
+                                                    <?php if ($ksReportBlock->getKsIsCommentsEnabled()):?>
+                                                        <div class="ks_col-12">
+                                                            <div class="floating-label-group ks_form-group">
+                                                                <label for="ks-report-seller-comment" class="floating-label <?= $ksReportBlock->getKsIsCommentsEnabled()==2 ? 'ks-required-star"':''; ?>"><?= /* @noEscape */ $ksReportBlock->getKsCommentsText();?></label>
+                                                                <textarea name="ks-report-seller-comment" class="ks_form-control" <?= $ksReportBlock->getKsIsCommentsEnabled()==2 ? 'data-validate="{required:true}"':''; ?> form="ks-report-seller-form" placeholder="<?= /* @noEscape */ $ksReportBlock->getKsCommentsPlaceholder();?>"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif;?>
+                                                    <div class="ks_col-4">
+                                                        <input type="submit" class="ks_btn" value="Submit">
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="ks-report-seller-name" value="<?= $ksReportBlock->getKsCurrentSellerName();?>">
+                                                <input type="hidden" name="ks-report-seller-id" value="<?= $ksReportBlock->getKsCurrentSellerId();?>">
+                                                <input type="hidden" name="ks-seller-url" value="<?= $ksActionUrl; ?>">
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                        $ksAdditionalData = [
+                            'ksCustomerId'    => $ksReportBlock->getKsCurrentCustomerId(),
+                            'ksAllowGuests'   => $ksReportBlock->getKsIsGuestAllowed(),
+                            'ksReportHeading' => $ksReportBlock->getKsHeadingText()
+                        ];
+                        $ksSerializedFormData = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($ksAdditionalData);
+                        ?>
+                    <script type="text/x-magento-init">
+                        {
+                            "*": {
+                                "ksReportSeller": <?=  /* @noEscape */ $ksSerializedFormData; ?>
+                            }
+                        }
+                    </script>
+                </div>    
+            <?php endif;?>
+        </div>
+    </div>
+</div>

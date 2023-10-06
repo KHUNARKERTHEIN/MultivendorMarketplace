@@ -1,0 +1,57 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Product Attribute Request  @-->
+<!--@vars {
+"var ks-product-attribute-name":"Attribute name",
+"var ks-attribute-code":"Attribute Code",
+"var ks-required" : "Required",
+"var ks-system" :"System",
+"var ks-visible" : "Visible",
+"var ks-scope" : "Scope",
+"var ks-searchable" : "Searchable",
+"var ks-use-layer-navigation" : "Use in Layered Navigation",
+"var ks-comparable" : "Comparable"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+	<tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_admin_name," ks_admin_name=$ksAdminName}}</p>
+        </td>
+    </tr>
+
+    <tr class="email-summary">
+        <td>
+            {{trans "%ks_seller_name has created/updated a product attribute, and requesting for your approval for the same." ks_seller_name=$ksSellerName}}
+        </td>   	
+    </tr>
+    <tr class="email-information">
+        <td>
+            <br>
+            <p>{{trans "Here is the summary of the same:"}}</p>
+            <ul>
+                <li><strong>{{trans "Attribute Code:"}}</strong> {{var ks-attribute-code}}</li>
+                <li><strong>{{trans "Default label:"}}</strong> {{var ks-product-attribute-name}}</em></li>
+                <li><strong>{{trans "Required:"}}</strong> {{var ks-required}}</em></li>
+                <li><strong>{{trans "System:"}}</strong> {{var ks-system}}</em></li>
+                <li><strong>{{trans "Visible:"}}</strong> {{var ks-visible}}</em></li>
+                <li><strong>{{trans "Scope:"}}</strong> {{var ks-scope}}</em></li>
+                <li><strong>{{trans "Searchable:"}}</strong> {{var ks-searchable}}</em></li>
+                <li><strong>{{trans "Use in Layered Navigation:"}}</strong> {{var ks-use-layer-navigation}}</em></li>
+                <li><strong>{{trans "Comparable:"}}</strong> {{var ks-comparable}}</em></li>
+            </ul>
+        </td>
+    </tr>
+    <p>{{trans "Thank You"}}</p>
+</table>
+{{template config_path="design/email/footer_template"}}

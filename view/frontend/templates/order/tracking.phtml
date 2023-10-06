@@ -1,0 +1,149 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+<?php
+/**
+ * @var $block Magento\Shipping\Block\Adminhtml\Order\Tracking
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+
+<?php $scriptString = <<<script
+require(['prototype'], function(){
+    //<![CDATA[
+    var trackingControl;
+    trackingControl = {
+        index : 0,
+        add : function () {
+            this.index++;
+            var data = {index:this.index};
+            Element.insert($('track_row_container'), {
+                bottom: this.template({
+                    data: data
+                })
+            });
+            $('trackingC' + this.index).disabled = false;
+            $('trackingT' + this.index).disabled = false;
+            $('trackingN' + this.index).disabled = false;
+            this.bindCurrierOnchange();
+        },
+        deleteRow : function(event) {
+            var row = Event.findElement(event, 'tr');
+            if (row) {
+                row.parentNode.removeChild(row)
+            }
+        },
+        bindCurrierOnchange : function() {
+            var elems = $('tracking_numbers_table').select('.select');
+            elems.each(function (elem) {
+                if (!elem.onchangeBound) {
+                    elem.onchangeBound = true;
+                    elem.valueInput = $(elem.parentNode.parentNode).select('.number-title')[0];
+                    elem.observe('change', this.currierOnchange);
+                }
+            }.bind(this));
+        },
+        currierOnchange : function(event) {
+            var elem = Event.element(event);
+            var option = elem.options[elem.selectedIndex];
+            if (option.value && option.value != 'custom') {
+                elem.valueInput.value = option.text;
+            }
+            else {
+                elem.valueInput.value = '';
+            }
+        }
+    };
+    window.trackingControl = trackingControl;
+    //]]>
+});
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+
+<script id="track_row_template" type="text/x-magento-template">
+    <tr>
+        <input name="tracking[<%- data.index %>][carrier_code]"
+                id="trackingC<%- data.index %>"
+                class="select admin__control-select carrier ks-control-feild ks-height-32 "
+                disabled="disabled" type="hidden" value="custom" data-validate="{required:true}"/>
+        <td class="col-title">
+            <input class="input-text admin__control-text number-title ks-control-feild "
+                   type="text"
+                   name="tracking[<%- data.index %>][title]"
+                   id="trackingT<%- data.index %>"
+                   value=""
+                   disabled="disabled" />
+        </td>
+        <td class="col-number">
+            <input class="input-text admin__control-text required-entry ks-control-feild "
+                   type="text"
+                   name="tracking[<%- data.index %>][number]"
+                   id="trackingN<%- data.index %>"
+                   value=""
+                   disabled="disabled" data-validate="{required:true}"/>
+        </td>
+        <td class="col-delete ks-col-delete">
+            <button
+                type="button"
+                class="action-default action-delete"
+                onclick="trackingControl.deleteRow(event);return false">
+                <span><?= $block->escapeHtml(__('Delete')) ?></span>
+            </button>
+        </td>
+    </tr>
+</script>
+
+<div class="admin__control-table-wrapper ks-advance-table mt-4">
+    <table class="data-table admin__control-table ks-tiers_table table" id="tracking_numbers_table">
+        <thead>
+        <tr class="headings">
+            <!-- Carrier -->
+            <th class="col-title"><?= $block->escapeHtml(__('Title')) ?></th>
+            <th class="col-number"><?= $block->escapeHtml(__('Number')) ?></th>
+            <th class="col-delete ks-col-delete"><?= $block->escapeHtml(__('Action')) ?></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td colspan="4" class="col-actions-add ks-col-actions-add">
+                <button type="button" class="primary" onclick="trackingControl.add()">
+                    <span>Add Tracking Number</span>
+                </button>
+            </td>
+        </tr>
+        </tfoot>
+        <tbody id="track_row_container">
+        </tbody>
+    </table>
+</div>
+
+<?php $scriptString = <<<script
+require([
+    'mage/template',
+    'prototype'
+], function (mageTemplate) {
+    //<![CDATA[
+    trackingControl.template = mageTemplate('#track_row_template');
+    //]]>
+});
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+
+<script type="text/x-magento-init">
+        {
+            "*": {
+            "Ksolves_MultivendorMarketplace/js/sales/shipment/shipmentComment": ""
+    }
+}
+</script>

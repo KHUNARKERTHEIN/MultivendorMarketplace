@@ -1,0 +1,338 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<?php
+/**
+ * @var $block \Ksolves\MultivendorMarketplace\Block\Adminhtml\PriceComparison\Tabs\KsDownloadableSamples
+ */
+
+$ksProduct = $block->getKsSellerProduct();
+$ksJsonData = json_decode($block->getKsConfigJson());
+?>
+
+<fieldset class="admin__fieldset downloadable-form fieldset-wrapper admin__fieldset-section" data-ui-id="downloadable-samples">
+    <div class="fieldset-wrapper-title"><strong class="admin__legend title"><span><?= $block->escapeHtml(__('Samples')) ?></span></strong></div>
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+
+            <div class="admin__field">
+                <div class="admin__field-label"><label for="downloadable_samples_title"><span <?= $block->escapeHtml(!$block->ksIsSingleStoreMode() ? ' data-config-scope="' . __('[STORE VIEW]') . '"' : '') ?>><?= $block->escapeHtml(__('Title')) ?></span></label></div>
+                <div class="admin__field-control">
+                    <input type="text" class="admin__control-text" id="downloadable_samples_title" name="product[samples_title]" value="<?= $block->escapeHtml($block->getKsSamplesTitle()) ?>" <?= /* @noEscape */ ($ksProduct->getStoreId() && $block->getKsUsedDefault()) ? 'disabled="disabled"' : '' ?> data-form-part="ks_marketplace_pricecomparsion_product_edit_form" >
+                    <?php if ($ksProduct->getStoreId()): ?>
+                        <div class="admin__field admin__field-option">
+                            <input id="sample_title_default" class="admin__control-checkbox" type="checkbox" name="use_default[]" value="samples_title" onclick="toggleValueElements(this, this.parentNode.parentNode)" <?= /* @noEscape */ $block->getKsUsedDefault() ? 'checked="checked"' : '' ?> data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                            <label class="admin__field-label" for="sample_title_default"><span>Use Default Value</span></label>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="admin__field admin__field-wide">
+                <div class="admin__field-control">
+                    <div class="admin__control-table-wrapper">
+                        <table class="admin__dynamic-rows admin__control-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-sort"><span><?= $block->escapeHtml(__('Sort Order')) ?></span></th>
+                                    <th class="_required col-title"><span><?= $block->escapeHtml(__('Title')) ?></span></th>
+                                    <th class="col-file"><span><?= $block->escapeHtml(__('File')) ?></span></th>
+                                    <th class="col-actions">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sample_items_body">
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class=""><?= $block->getKsAddButtonHtml() ?></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin__fieldset-note admin__scope-old">
+                <?= $block->escapeHtml(__('Alphanumeric, dash and underscore characters are recommended for filenames. Improper characters are replaced with \'_\'.')) ?>
+            </div>
+
+        </fieldset>
+    </div>
+</fieldset>
+
+<script>
+require([
+    'jquery',
+    'uiRegistry',
+    'mage/template',
+    'jquery/file-uploader',
+    'prototype',
+    'mage/translate'
+], function (jQuery, registry, mageTemplate) {
+    registry.get('downloadable', function (Downloadable) {
+        var sampleTemplate = '<tr>'+
+            '<td class="col-sort" data-role="draggable-handle">' +
+                '<input data-container="link-order" type="hidden" name="downloadable[sample][<%- data.id %>][sort_order]" value="<%- data.sort_order %>" class="sort" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />' +
+                '<span class="draggable-handle" title="<?= $block->escapeJs($block->escapeHtmlAttr(__('Sort Variations'))) ?>"></span>' +
+            '</td>'+
+            '<td class="col-title">'+
+                '<input type="hidden" class="__delete__" name="downloadable[sample][<%- data.id %>][is_delete]" value="" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />'+
+                '<input type="hidden" name="downloadable[sample][<%- data.id %>][sample_id]" value="<%- data.sample_id %>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />'+
+                '<input type="hidden" name="downloadable[sample][<%- data.id %>][record_id]" value="<%- data.id %>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />'+
+                '<input type="text" class="required-entry input-text admin__control-text" name="downloadable[sample][<%- data.id %>][title]" value="<%- data.title %>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />'+
+                <?php if ($ksProduct->getStoreId()): ?>
+                    '<div class="admin__field admin__field-option">'+
+                        '<input type="checkbox" id="downloadable_sample_<%- data.id %>_title" name="downloadable[sample][<%- data.id %>][use_default_title]" value="1" class="admin__control-checkbox" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />'+
+                        '<label for="downloadable_link_<%- data.id %>_price" class="admin__field-label"><span><?= $block->escapeJs($block->escapeHtml(__('Use Default Value'))) ?></span></label>'+
+                    '</div>' +
+                <?php endif; ?>
+            '</td>'+
+            '<td class="col-file admin__control-fields">'+
+               '<fieldset class="admin__field">'+
+                '<div class="admin__field admin__field-option admin__field-control admin__control-fields">'+
+                        '<div class="admin__field">'+
+                            '<div class="admin__field-label ks-d-none">'+
+                            '</div>'+
+                            '<div class="admin__field-control">'+
+                                '<select class="admin__control-select" name="downloadable[sample][<%- data.id %>][type]" id="downloadable_sample_<%- data.id %>_type" onchange="ksSampleFileUrlFieldShowHide(this.value, <%- data.id %>)" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />' +
+                                    '<option value="file" id="downloadable_sample_<%- data.id %>_file_type" <%- data.file_selected %> ><?= $block->escapeJs($block->escapeHtml(__('Upload File'))) ?></option>'+
+                                    '<option value="url" id="downloadable_sample_<%- data.id %>_url_type" <%- data.url_selected %> ><?= $block->escapeJs($block->escapeHtml(__('URL'))) ?></option>'+
+                                '</select>' +
+                                '<input class="ks-d-none" id="downloadable_sample_<%- data.id %>_file" type="file" name="<?= /* @noEscape */ $ksJsonData->file_field ?>" data-url="<?= /* @noEscape */ $ksJsonData->url ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" >' +
+                            '</div>'+
+                        '</div>'+
+                        '<input type="hidden" class="validate-downloadable-file" id="downloadable_sample_<%- data.id %>_file_save" name="downloadable[sample][<%- data.id %>][file]" value="<%- data.file_save %>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />'+
+                        '<div class="admin__field ks-mt-2">'+ 
+                            '<div class="admin__field-label ks-d-none">'+
+                            '</div>'+  
+                        '</div>'+
+                        '<div class="admin__field-control">'+
+                                '<div class="admin__field-control">'+      
+                                    '<div id="downloadable_sample_<%- data.id %>_file" class="admin__field-uploader file-uploader" <% if (data.sample_type == "url") { %> style="display:none" <% } %> >'+
+                                        '<div class="file-uploader-summary">'+ 
+                                            '<div id="downloadable_sample_<%- data.id %>_file-old" class="file-row-info file-uploader-filename"></div>'+
+                                        '</div>'+
+                                        '<div id="downloadable_sample_<%- data.id %>_file-new" class="file-row-info new-file"></div>'+
+                                        '<div class="fileinput-button file-uploader-area">'+
+                                            '<input id="downloadable_sample_<%- data.id %>_file" type="file" name="<?= /* @noEscape */ $ksJsonData->file_field?>" data-url="<?= /* @noEscape */ $ksJsonData->url ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" >' +
+                                            '<label for="downloadable_sample_<%- data.id %>_file" class="file-uploader-button action-secondary"><?= $block->escapeJs($block->escapeHtml(__('Browse Files...'))) ?></label>' +
+                                            '<script>' +
+                                            '/*<![CDATA[*/' +
+                                                'sampleUploader("#downloadable_sample_<%- data.id %>_file"); ' +
+                                            '/*]]>*/' +
+                                            '</scr'+'ipt>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<input type="text" class="validate-downloadable-url validate-url admin__control-text" name="downloadable[sample][<%- data.id %>][sample_url]" value="<%- data.sample_url %>" <% if (data.sample_type == "file") { %> style="display:none" <% } %> id="downloadable_sample_<%- data.id %>_url" placeholder="<?= $block->escapeJs($block->escapeHtmlAttr(__('URL'))) ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div>'+
+                        '<span id="downloadable_sample_<%- data.id %>_container"></span>'+
+                    '</div>'+
+                '</fieldset>'+
+            '</td>'+
+            '<td class="col-actions">'+
+                '<button type="button" class="action-delete" title="<?= $block->escapeJs($block->escapeHtmlAttr(__('Delete'))) ?>"><span><?= $block->escapeJs($block->escapeHtml(__('Delete'))) ?></span></button>'+
+            '</td>'+
+        '</tr>';
+        sampleItems = {
+            tbody: $('sample_items_body'),
+            templateText: sampleTemplate,
+            itemCount: 0,
+            add: function(data) {
+                alertAlreadyDisplayed = false;
+                this.template = mageTemplate(this.templateText);
+
+                if(!data.sample_id) {
+                    data = {};
+                    data.sample_type = 'file';
+                    data.sample_id  = 0;
+                    data.sort_order = this.itemCount + 1;
+                }
+
+                data.id = this.itemCount;
+
+                if (data.sample_type == 'url') {
+                    data.url_selected = ' selected="selected"';
+                } else if (data.sample_type == 'file') {
+                    data.file_selected = ' selected="selected"';
+                }
+
+                Element.insert(this.tbody, {
+                    'bottom': this.template({
+                        data: data
+                    })
+                });
+
+                scopeTitle = $('downloadable_sample_'+data.id+'_title');
+                if (scopeTitle) {
+                    Event.observe(scopeTitle, 'click', function(event){
+                        scopeElm = $(Event.findElement(event, 'input'));
+                        titleField = scopeElm.up(0).down('input[type="text"]');
+                        if (scopeElm.checked == true) {
+                            titleField.disabled = true;
+                        } else {
+                            titleField.disabled = false;
+                        }
+                    });
+                }
+                if (!data.store_title && scopeTitle) {
+                    scopeTitle.up(0).down('input[type="text"]').disabled = true;
+                    scopeTitle.checked = true;
+                }
+
+                sampleUrl = $('downloadable_sample_'+data.id+'_url_type');
+
+                if (!data.file_save) {
+                    data.file_save = [];
+                }
+
+                new Downloadable.FileUploader(
+                    'samples',
+                    data.id,
+                    sampleUrl.up('td').down('div.admin__field-uploader'),
+                    'downloadable[sample]['+data.id+']',
+                    data.file_save,
+                    'downloadable_sample_'+data.id+'_file',
+                    <?= /* @noEscape */ $block->getKsConfigJson() ?>
+                );
+
+                sampleUrl.advaiceContainer = 'downloadable_sample_'+data.id+'_container';
+                sampleFile = $('downloadable_sample_'+data.id+'_file_type');
+
+                sampleFile.advaiceContainer = 'downloadable_sample_'+data.id+'_container';
+                $('downloadable_sample_'+data.id+'_file_save').advaiceContainer = 'downloadable_sample_'+data.id+'_container';
+
+                this.itemCount++;
+                this.bindRemoveButtons();
+            },
+            sorting: function () {
+                var list = jQuery(this.tbody);
+                list.sortable({
+                    axis: 'y',
+                    handle: '[data-role=draggable-handle]',
+                    items: 'tr',
+                    update: function (event, data) {
+                        list.find('[data-container=link-order]').each(function (i, el) {
+                            jQuery(el).val(i + 1);
+                        });
+                    },
+                    tolerance: 'pointer'
+                });
+            },
+            remove: function(event) {
+                var element = $(Event.findElement(event, 'tr'));
+                if(element){
+                    element.remove();
+                }
+            },
+            bindRemoveButtons: function() {
+                var buttons = $$('tbody#sample_items_body .action-delete');
+                for(var i=0;i<buttons.length;i++){
+                    if(!$(buttons[i]).binded){
+                        $(buttons[i]).binded = true;
+                        Event.observe(buttons[i], 'click', this.remove.bind(this));
+                    }
+                }
+            }
+        };
+
+        ksSampleFileUrlFieldShowHide = function (val, dataId) {
+            if(val=="url") {
+                $('downloadable_sample_'+dataId+'_file').hide();
+                $('downloadable_sample_'+dataId+'_url').show();
+            } else {
+                $('downloadable_sample_'+dataId+'_url').hide();
+                $('downloadable_sample_'+dataId+'_file').show();
+            }
+        };
+
+        sampleItems.sorting();
+        sampleItems.bindRemoveButtons();
+
+        sampleUploader = function (id) {
+            (function ($, id) {
+                $(id).fileupload({
+                    dataType: 'json',
+                    url: '<?= /* @noEscape */ $block->getKsConfig()->getUrl() ?>',
+                    sequentialUploads: true,
+                    maxFileSize: 2000000,
+                    formData: {
+                        'form_key': window.FORM_KEY
+                    },
+                    add: function (e, data) {
+                        var progressTmpl = mageTemplate(id + '-template'),
+                            fileSize,
+                            tmpl;
+                        $.each(data.files, function (index, file) {
+                            fileSize = typeof file.size == "undefined" ?
+                                $.mage.__('We could not detect a size.') :
+                                byteConvert(file.size);
+
+                            data.fileId = Math.random().toString(36).substr(2, 9);
+
+                            tmpl = progressTmpl({
+                                data: {
+                                    name: file.name,
+                                    size: fileSize,
+                                    id: data.fileId
+                                }
+                            });
+
+                            $(tmpl).appendTo(id);
+                        });
+
+                        $(this).fileupload('process', data).done(function () {
+                            data.submit();
+                        });
+                    },
+                    done: function (e, data) {
+                        var progressSelector = '#' + data.fileId + ' .progressbar-container .progressbar';
+                        $(progressSelector).css('width', '100%');
+                        if (data.result && !data.result.hasOwnProperty('errorcode')) {
+                            $(progressSelector).removeClass('upload-progress').addClass('upload-success');
+                            new Downloadable.FileList(id.substr(1), null).handleUploadComplete(data.result);
+                        } else {
+                            $(progressSelector).removeClass('upload-progress').addClass('upload-failure');
+                            var errorMsg = '<span class="file-info-error">' + data.result.error + '</span>';
+                            $('#' + data.fileId + ' .file-info').append(errorMsg);
+                        }
+                    },
+                    progress: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        var progressSelector = '#' + data.fileId + ' .progressbar-container .progressbar';
+                        $(progressSelector).css('width', progress + '%');
+                    },
+                    fail: function (e, data) {
+                        var progressSelector = '#' + data.fileId + ' .progressbar-container .progressbar';
+                        $(progressSelector).removeClass('upload-progress').addClass('upload-failure');
+                        if (data.result && data.result.hasOwnProperty('errorcode')) {
+                            var errorMsg = '<span class="file-info-error">' + data.result.error + '</span>';
+                            $('#' + data.fileId + ' .file-info').append(errorMsg);
+                        }
+                    }
+                });
+            })(jQuery, id);
+        };
+
+        if($('add_sample_item')){
+            Event.observe('add_sample_item', 'click', sampleItems.add.bind(sampleItems));
+        }
+
+        <?php foreach ($block->getKsSampleData() as $item): ?>
+            sampleItems.add(<?= /* @noEscape */ $item->toJson() ?>);
+        <?php endforeach; ?>
+
+    });
+});
+</script>

@@ -1,0 +1,305 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var \Ksolves\MultivendorMarketplace\Block\Adminhtml\Seller\Tabs\KsPaymentDetails $block  */
+?>
+<?php $ksCustomer = $block->getKsPaymentDetailsData(); ?>
+
+<div class="fieldset-wrapper customer-information ks-payment-details-content">
+
+    <div class="fieldset-wrapper-title" >
+        <span class="title"><?= __('Payment Methods') ?></span>
+    </div>
+
+    <!-- for Check/Money Order Status--> 
+    <div class="fieldset-wrapper-title ks-fieldset-collapsible-tabs-default">
+        <!-- <span class="ks-tab-default-open-heading"><?= $block->escapeHtml(__('Check Money/Order')) ?></span> -->
+        <span role="button" class="ks-tab-default-open-heading ks-fieldset-payment-wrapper-tabs ks-border-bottom-none" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-one-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab"><?= $block->escapeHtml(__('Check Money/Order')) ?>
+        </span>
+        <fieldset class="admin__fieldset">           
+            <table class="admin__table-secondary">
+                <tbody>
+
+                    <!-- enable/disable-->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Enable:')) ?></th>                
+                        <td>
+                            <?php if (isset($ksCustomer['ks_check_money_status']) ) :?>
+                                <label class="ks-switch">
+                                    <input type="checkbox" class="ks-checkbox" <?= $ksCustomer['ks_check_money_status']==1 ? 'checked' : '' ?> disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php else : ?> 
+                                <label class="ks-switch">
+                                    <input class="ks-checkbox" type="checkbox" disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php endif; ?>
+                        </td>    
+                    </tr>
+
+                    <!-- for payee name row -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Payee Name:')) ?></th>
+                        <td><?= isset($ksCustomer['ks_payee_name']) ? $block->escapeHtml($ksCustomer['ks_payee_name']):"" ?></td>
+                    </tr>
+                </tbody>
+            </table>           
+        </fieldset>
+    </div>
+
+    <!-- for Paypal-->
+    <div class="fieldset-wrapper-title ks-fieldset-collapsible-tabs">
+        <span role="button" class="ks-fieldset-payment-wrapper-tabs ks-border-bottom-none" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-one-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab"><?= $block->escapeHtml(__('Paypal')) ?>
+        </span>
+        <fieldset class="admin__fieldset">           
+            <table class="admin__table-secondary">
+                <tbody>
+                    <!-- enable/disable-->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Enable:')) ?></th>                            
+                        <td>
+                            <?php if (isset($ksCustomer['ks_paypal_status']) ) :?>
+                                <label class="ks-switch">
+                                    <input type="checkbox" class="ks-checkbox" <?= $ksCustomer['ks_paypal_status']==1 ? 'checked' : '' ?> disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php else : ?> 
+                                <label class="ks-switch">
+                                    <input class="ks-checkbox" type="checkbox" disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php endif; ?>
+                        </td>    
+                    </tr>
+
+                    <!-- for associated email row -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Associated Email:')) ?></th>
+                        <td><?= isset($ksCustomer['ks_paypal_associated_email']) ? $block->escapeHtml($ksCustomer['ks_paypal_associated_email']) : '' ?></td>
+                    </tr>
+                </tbody>
+            </table>           
+        </fieldset>
+    </div>
+
+    <!-- for Bank Transfer/Wire Transfer--> 
+
+    <div class="fieldset-wrapper-title ks-fieldset-collapsible-tabs">
+        <span role="button" class=" ks-fieldset-payment-wrapper-tabs ks-border-bottom-none" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-one-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab"><?= $block->escapeHtml(__('Bank Transfer/Wire Transfer')) ?>
+        </span>
+        <fieldset class="admin__fieldset">        
+            <table class="admin__table-secondary">
+                <tbody>
+                    <!-- enable/disable-->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Enable:')) ?></th>
+                        <td>
+                            <?php if (isset($ksCustomer['ks_bank_transfer_status']) ) :?>
+                                <label class="ks-switch">
+                                    <input type="checkbox" class="ks-checkbox" <?= $ksCustomer['ks_bank_transfer_status']==1 ? 'checked' : '' ?> disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php else : ?> 
+                                <label class="ks-switch">
+                                    <input class="ks-checkbox" type="checkbox" disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php endif; ?>
+                        </td>    
+                    </tr>
+
+                    <!-- for Primary Account -->
+                    <tr>
+                        <th>
+                            <div class="ks-payment-table-heading">
+                                <?= $block->escapeHtml(__('Primary Account Details')) ?>                                    
+                            </div>
+                        </th>
+                    </tr>
+                    <?php $ksPrimaryAccountDecode = isset($ksCustomer['ks_primary_account_details'])?$block->getKsDecodeData($ksCustomer['ks_primary_account_details']):[]; ?>
+
+                    <!-- for Account Holder Name -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Account Holder Name:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksPrimaryAccountDecode['ks_pri_acc_holder_name']) ? $ksPrimaryAccountDecode['ks_pri_acc_holder_name'] : '') ?></td>
+                    </tr> 
+
+                    <!-- for Bank Account Number -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Bank Account Number:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksPrimaryAccountDecode['ks_pri_bank_acc_no']) ? $ksPrimaryAccountDecode['ks_pri_bank_acc_no'] : "" ) ?></td>
+                    </tr> 
+
+                    <!-- for Bank Name -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Bank Name:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksPrimaryAccountDecode['ks_pri_bank_name']) ? $ksPrimaryAccountDecode['ks_pri_bank_name'] : "" ) ?></td>
+                    </tr> 
+
+                    <!-- for Bank Address -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Bank Address:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksPrimaryAccountDecode['ks_pri_bank_address']) ? $ksPrimaryAccountDecode['ks_pri_bank_address'] : "" ) ?></td>
+                    </tr> 
+
+                    <!-- for Additional Details -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Additional Details:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksPrimaryAccountDecode['ks_pri_additional_details']) ? $ksPrimaryAccountDecode['ks_pri_additional_details'] : "" ) ?></td>
+                    </tr> 
+                    
+                    <!-- for Secondary Account -->
+                    <tr>
+                        <th>
+                            <div class="ks-payment-table-heading">
+                                <?= $block->escapeHtml(__('Secondary Account Details')) ?>
+                            </div>
+                        </th>    
+                    </tr>
+                    <?php $ksSecondaryAccountDecode = isset($ksCustomer['ks_secondary_account_details']) ? $block->getKsDecodeData($ksCustomer['ks_secondary_account_details']) : []; ?>
+
+                    <!-- for Account Holder Name -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Account Holder Name:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksSecondaryAccountDecode['ks_sec_acc_holder_name']) ? $ksSecondaryAccountDecode['ks_sec_acc_holder_name'] : "" ) ?></td>
+                    </tr> 
+
+                    <!-- for Bank Account Number -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Bank Account Number:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksSecondaryAccountDecode['ks_sec_bank_acc_no']) ? $ksSecondaryAccountDecode['ks_sec_bank_acc_no'] : "" ) ?></td>
+                    </tr> 
+
+                    <!-- for Bank Name -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Bank Name:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksSecondaryAccountDecode['ks_sec_bank_name']) ? $ksSecondaryAccountDecode['ks_sec_bank_name'] : "" ) ?></td>
+                    </tr> 
+
+                    <!-- for Bank Address -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Bank Address:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksSecondaryAccountDecode['ks_sec_bank_address']) ? $ksSecondaryAccountDecode['ks_sec_bank_address'] : "" ) ?></td>
+                    </tr> 
+
+                    <!-- for Additional Details -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Additional Details:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksSecondaryAccountDecode['ks_sec_additional_details']) ? $ksSecondaryAccountDecode['ks_sec_additional_details'] : "" ) ?></td>
+                    </tr> 
+                </tbody>
+            </table>           
+        </fieldset>
+    </div>
+
+    <div class="fieldset-wrapper-title ks-fieldset-collapsible-tabs">
+        <span role="button" class=" ks-fieldset-payment-wrapper-tabs ks-border-bottom-none" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-one-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab">
+            <?= $block->escapeHtml(__('Additional Payment Method 1')) ?>
+        </span>
+        <fieldset class="admin__fieldset">        
+            <table class="admin__table-secondary">
+                <tbody>
+                    <!-- enable/disable-->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Enable:')) ?></th>
+                        <td>
+                            <?php if (isset($ksCustomer['ks_additional_payment_method_one_status']) ) :?>
+                                <label class="ks-switch">
+                                    <input type="checkbox" class="ks-checkbox" <?= $ksCustomer['ks_additional_payment_method_one_status']==1 ? 'checked' : '' ?> disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php else : ?> 
+                                <label class="ks-switch">
+                                    <input class="ks-checkbox" type="checkbox" disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php endif; ?>
+                        </td>    
+                    </tr>
+                    <?php $ksAddOneDecode = isset($ksCustomer['ks_additional_payment_method_one_details']) ? $block->getKsDecodeData($ksCustomer['ks_additional_payment_method_one_details']) : []; ?>
+                    <!-- for Name -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Name:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksAddOneDecode['ks_additional_payment_method_one_name']) ? $ksAddOneDecode['ks_additional_payment_method_one_name'] : "" ) ?></td>
+                    </tr> 
+
+                    <!-- for Detail -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Details:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksAddOneDecode['ks_additional_payment_method_one_details']) ? $ksAddOneDecode['ks_additional_payment_method_one_details'] : "") ?></td>
+                    </tr> 
+
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+
+    <div class="fieldset-wrapper-title ks-fieldset-collapsible-tabs">
+        <span role="button" class=" ks-fieldset-payment-wrapper-tabs ks-border-bottom-none" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-one-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab">
+            <?= $block->escapeHtml(__('Additional Payment Method 2')) ?>
+        </span>
+        <fieldset class="admin__fieldset">        
+            <table class="admin__table-secondary">
+                <tbody>
+                    <!-- enable/disable-->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Enable:')) ?></th>
+                        <td>
+                           <?php if (isset($ksCustomer['ks_additional_payment_method_two_status'] )) :?>
+                            <label class="ks-switch">
+                                <input type="checkbox" class="ks-checkbox" <?= $ksCustomer['ks_additional_payment_method_two_status']==1 ? 'checked' : '' ?>  disabled>
+                                <span class="ks-slider ks-round"></span>
+                            </label>
+                            <?php else : ?> 
+                                <label class="ks-switch">
+                                    <input class="ks-checkbox" type="checkbox" disabled>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            <?php endif; ?>
+                        </td>    
+                    </tr>
+                    <?php $ksAddOneDecode = isset($ksCustomer['ks_additional_payment_method_two_details']) ? $block->getKsDecodeData($ksCustomer['ks_additional_payment_method_two_details']) : []; ?>
+                    <!-- for Name -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Name:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksAddOneDecode['ks_additional_payment_method_two_name']) ? $ksAddOneDecode['ks_additional_payment_method_two_name'] : "") ?></td>
+                    </tr> 
+
+                    <!-- for Detail -->
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Details:')) ?></th>
+                        <td><?= $block->escapeHtml(isset($ksAddOneDecode['ks_additional_payment_method_two_details']) ? $ksAddOneDecode['ks_additional_payment_method_two_details'] : "" ) ?></td>
+                    </tr> 
+
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+</div>
+
+<script>
+require(['jquery', 'mage/collapsible'], function($) {
+$( ".ks-fieldset-collapsible-tabs" ).accordion({
+    collapsible: true,
+    active: false
+});
+});
+</script>
+
+<script>
+require(['jquery', 'mage/collapsible'], function($) {
+$( ".ks-fieldset-collapsible-tabs-default" ).accordion({
+    collapsible: true,
+    active: false
+});
+});
+</script>

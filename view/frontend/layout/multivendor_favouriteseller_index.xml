@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+	<update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <head>
+        <script src="Ksolves_MultivendorMarketplace::js/favouriteseller/ks-sendmail.js"/>
+    </head>
+	<body>
+        <referenceContainer name="content" >
+            <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::favouriteseller/seller/ks_sendmail_button.phtml" name="ks_sendmail_button"/>
+        	<block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::favouriteseller/seller/ks_sendmail.phtml" name="ks_sendmail"/>
+            <uiComponent name="ks_followers_listing"/>
+        </referenceContainer>
+    </body>
+</page>

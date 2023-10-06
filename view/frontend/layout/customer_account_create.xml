@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Create an Account</title>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-customer-registration-page.css"/>
+    </head>
+    <body>
+        <referenceBlock name="customer_form_register">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ksolves_MultivendorMarketplace::register-form/ks_registration_form.phtml</argument>
+            </action>
+            <block class="Magento\Framework\View\Element\Template" name="ks_seller_registration" template="Ksolves_MultivendorMarketplace::register-form/ks_seller_register_form.phtml" />
+        </referenceBlock>
+    </body>
+</page>

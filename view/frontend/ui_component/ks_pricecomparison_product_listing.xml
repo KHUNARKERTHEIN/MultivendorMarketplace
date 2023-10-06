@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_Multivendor
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_pricecomparison_product_listing.ks_pricecomparison_product_listing_data_source</item>
+            <item name="deps" xsi:type="string">ks_pricecomparison_product_listing.ks_pricecomparison_product_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">multivendor_pricecomparison_product_columns</item>
+    </argument>
+    <dataSource name="ks_pricecomparison_product_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Frontend\KsPriceComparisonProductList</argument>
+            <argument name="name" xsi:type="string">ks_pricecomparison_product_listing_data_source</argument>
+            <argument name="ksPrimaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="ksRequestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="multivendor/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="cacheRequests" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">Ksolves_MultivendorMarketplace/grid/ks-toolbar</item>
+            </item>
+        </argument>
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">ks_pricecomparison_product_listing.ks_pricecomparison_product_listing.multivendor_pricecomparison_product_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+        <bookmark name="bookmarks">
+           <argument name="data" xsi:type="array">
+               <item name="config" xsi:type="array">
+                   <item name="storageConfig" xsi:type="array">
+                       <item name="namespace" xsi:type="string">ks_pricecomparison_product_listing</item>
+                   </item>
+               </item>
+           </argument>
+        </bookmark>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">ks_pricecomparison_product_listing.ks_pricecomparison_product_listing.multivendor_pricecomparison_product_columns.ids</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+            <action name="massdelete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">massdelete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="multivendor/pricecomparison/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to delete selected products?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="multivendor_pricecomparison_product_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">ks_pricecomparison_product_listing.ks_pricecomparison_product_listing.multivendor_pricecomparison_product_columns.actions</item>
+                        <item name="target" xsi:type="string">applyAction</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">edit</item>
+                            <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <selectionsColumn name="ids" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="entity_id" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                </item>
+            </argument>
+        </column>
+        <column name="thumbnail" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Frontend\Product\KsThumbnail" component="Magento_Ui/js/grid/columns/thumbnail" sortOrder="30">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="hasPreview" xsi:type="string">1</item>
+                    <item name="altField" xsi:type="string">name</item>
+                    <item name="label" xsi:type="string" translate="true">Thumbnail</item>
+                </item>
+            </argument>
+        </column>
+        <column name="name" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Name</item>
+                </item>
+            </argument>
+        </column>
+        <column name="type_id" component="Magento_Ui/js/grid/columns/select" sortOrder="50">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Catalog\Model\Product\Type</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Type</item>
+                </item>
+            </argument>
+        </column>
+        <column name="sku" sortOrder="60">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">SKU</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_product_stage" sortOrder="70">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Product\KsProductCondition</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Condition</item>
+                </item>
+            </argument>
+        </column>
+        <column name="qty" sortOrder="80">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Quantity</item>
+                </item>
+            </argument>
+        </column>
+        <column name="price" class="Magento\Catalog\Ui\Component\Listing\Columns\Price" sortOrder="90">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Price</item>
+                </item>
+            </argument>
+        </column>
+        <column name="status" sortOrder="100">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Product\KsStatusOptions</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/grid/columns/ks-status</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_product_approval_status" sortOrder="110">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Product\KsProductFrontendStatusOptions</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Approval Status</item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/grid/columns/ks-product-status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_rejection_reason" sortOrder="120">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Rejection Reason</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="ks_product_actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Frontend\Product\KsPriceComparisonProductActions" sortOrder="130">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">107</item>
+                    <item name="indexField" xsi:type="string">ks_product_approval_status</item>
+                    <item name="label" xsi:type="string" translate="true">Actions</item>
+                    <item name="urlEntityParamName" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Frontend\Product\KsPriceComaparisionProductEditActions" sortOrder="150">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

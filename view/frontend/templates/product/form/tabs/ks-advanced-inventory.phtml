@@ -1,0 +1,281 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsInventory */
+?>
+<?php
+$ksReadonly = $block->isReadonly() ? ' disabled="disabled" ' : '';
+$ksScope = '[GLOBAL]';
+$ksformId = 'ks_product_form';
+?>
+
+<div id="ks_table_cataloginventory" class="ks-product-model-field">
+
+    <div class="ks-form-field">
+        <div class="ks-form-field-label">
+            <label>
+                <span data-config-scope="<?= $ksScope;?>"><?= /* @escapeNotVerified */ __('Manage Stock') ?></span>
+            </label>
+        </div>
+        <div class="ks-field-control">
+            <?php $ksFieldDisabled = ($block->isReadonly() || $block->getFieldValue('use_config_manage_stock') || $block->IsNew()) ? ' disabled="disabled" ' : '' ?>
+            <select id="ks_inventory_manage_stock" class="ks-field-control-select" name="product[stock_data][manage_stock]" <?= /* @escapeNotVerified */ $ksFieldDisabled;?> form='<?= $ksformId;?>' data-defaultval="<?= /* @escapeNotVerified */ $block->getDefaultConfigValue('manage_stock'); ?>">
+                <option value="1"><?= /* @escapeNotVerified */ __('Yes') ?></option>
+                <option value="0" <?php if ($block->getFieldValue('manage_stock') == 0): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('No') ?></option>
+            </select>
+            <div class="control-inner-wrap">
+                <?php $ksChecked = ($block->getFieldValue('use_config_manage_stock') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+                <input id="ks_inventory_use_config_manage_stock" type="checkbox" name="product[stock_data][use_config_manage_stock]" value="1" <?= /* @escapeNotVerified */ $ksChecked ?> <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'/>
+                <label for="ks_inventory_use_config_manage_stock"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+            </div>
+        </div>
+    </div>
+    
+
+    <?php if (!$block->getKsProduct()->isComposite()): ?>
+        <?php if ($block->ksIsSingleSourceMode()): ?>
+            <div class="ks-form-field">
+                <div class="ks-form-field-label">
+                    <label>
+                        <span data-config-scope="<?= $ksScope;?>"><?= /* @escapeNotVerified */ __('Qty') ?></span>
+                    </label>
+                </div>
+                
+                <div class="ks-field-control">
+                    <?php if (!$ksReadonly): ?>
+                        <input type="hidden" id="original_inventory_qty" name="product[stock_data][original_inventory_qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('qty') * 1 ?>" form='<?= $ksformId;?>'>
+                    <?php endif;?>
+                    <input type="text" class="input-text validate-number" id="inventory_qty" name="product[stock_data][qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('qty') * 1 ?>" <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'>
+                </div>
+                
+            </div>
+        <?php endif;?>
+
+        <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span data-config-scope="<?= $ksScope;?>"><?= /* @escapeNotVerified */ __('Out-of-Stock Threshold') ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control">
+                <?php $ksFieldDisabled = ($block->isReadonly() || $block->getFieldValue('use_config_min_qty') || $block->IsNew()) ? ' disabled="disabled" ' : '' ?>
+                <input type="text" class="input-text validate-number" id="inventory_min_qty" name="product[stock_data][min_qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('min_qty') * 1 ?>" <?= /* @escapeNotVerified */ $ksFieldDisabled;?> form='<?= $ksformId;?>' data-defaultval="<?= /* @escapeNotVerified */ $block->getDefaultConfigValue('min_qty') * 1 ?>">
+
+                <div class="control-inner-wrap">
+                    <?php $ksChecked = ($block->getFieldValue('use_config_min_qty') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+                    <input type="checkbox" name="product[stock_data][use_config_min_qty]" value="1" <?= /* @escapeNotVerified */ $ksChecked ?> <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'/>
+                    <label><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span data-config-scope="<?= $ksScope;?>"><?= /* @escapeNotVerified */ __('Minimum Qty Allowed in Shopping Cart') ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control">
+                <?php $ksFieldDisabled = ($block->isReadonly() || $block->getFieldValue('use_config_min_sale_qty') || $block->IsNew()) ? ' disabled="disabled" ' : '' ?>
+               
+                <?php if (is_array($block->getKsDefaultMinQty())):?>
+                    
+                    <div class="admin__data-grid-wrap">
+                        <table class="data table ks-field-disabled ks-minqty-table <?php if ($block->getFieldValue('use_config_min_sale_qty') || $block->IsNew()) { echo 'ks-minqty-container';}?>" id="inventory_min_sale_qty_table">
+                            <thead>
+                                <tr>
+                                    <th><?= /* @escapeNotVerified */ __('Customer Group') ?></th>
+                                    <th><?= /* @escapeNotVerified */ __('Minimum Qty') ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($block->getKsDefaultMinQty() as $k => $ksData):?>
+                                    <tr>
+                                        <td><?= $block->getKsCustomerGroupCode($ksData['customer_group_id']);?></td>
+                                        <td>
+                                            <input type="hidden" class="input-text" name="product[stock_data][min_qty_allowed_in_shopping_cart][<?= $k;?>][customer_group_id]" value="<?= $ksData['customer_group_id'];?>" disabled="disabled" form='<?= $ksformId;?>'/>
+
+                                            <input type="text" class="input-text ks-minqty" name="product[stock_data][min_qty_allowed_in_shopping_cart][<?= $k;?>][min_sale_qty]" value="<?= $ksData['min_sale_qty'];?>" disabled="disabled" form='<?= $ksformId;?>'/>
+                                        </td>
+                                    </tr>
+                                <?php endforeach;?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <input type="text" class="input-text validate-number ks-minqty ks-minqty-field <?php if (!$block->getFieldValue('use_config_min_sale_qty') && !$block->IsNew()) { echo 'ks-minqty-textfield';}?>" name="product[stock_data][min_sale_qty]" value="<?= $block->getKsProductMinQty();?>" id="inventory_min_sale_qty" form='<?= $ksformId;?>'>
+                <?php else:?>
+                    <input type="text" class="input-text validate-number" id="inventory_min_sale_qty" name="product[stock_data][min_sale_qty]" value="<?php /* @escapeNotVerified */ echo $block->getFieldValue('min_sale_qty') * 1 ?>" <?php /* @escapeNotVerified */ echo $ksFieldDisabled;?> form='<?= $ksformId;?>' data-defaultval="<?php /* @escapeNotVerified */ echo $block->getDefaultConfigValue('min_sale_qty') * 1 ?>"/>
+                <?php endif;?>
+
+                
+                <div class="control-inner-wrap">
+                <?php $ksChecked = ($block->getFieldValue('use_config_min_sale_qty') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+                    <input type="checkbox" name="product[stock_data][use_config_min_sale_qty]" value="1" <?= /* @escapeNotVerified */ $ksChecked ?> class="checkbox" <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'/>
+                    <label><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span data-config-scope="<?= $ksScope;?>"><?= /* @escapeNotVerified */ __('Maximum Qty Allowed in Shopping Cart') ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control">
+                <?php $ksFieldDisabled = ($block->isReadonly() || $block->getFieldValue('use_config_max_sale_qty') || $block->IsNew()) ? ' disabled="disabled" ' : '' ?>
+               
+                <input type="text" class="input-text validate-number" id="inventory_max_sale_qty" name="product[stock_data][max_sale_qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('max_sale_qty') * 1 ?>" <?= /* @escapeNotVerified */ $ksFieldDisabled;?> form='<?= $ksformId;?>' data-defaultval="<?= /* @escapeNotVerified */ $block->getDefaultConfigValue('max_sale_qty') * 1 ?>" />
+                <?php $ksChecked = ($block->getFieldValue('use_config_max_sale_qty') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+                <div class="control-inner-wrap">
+                    <input type="checkbox" name="product[stock_data][use_config_max_sale_qty]" value="1" <?= /* @escapeNotVerified */ $ksChecked ?> class="checkbox" <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'/>
+                    <label><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+                </div>
+            </div>
+        </div>
+
+        <?php if ($block->canUseQtyDecimals()): ?>
+            <div class="ks-form-field">
+                <div class="ks-form-field-label">
+                    <label>
+                        <span data-config-scope="<?= $ksScope;?>">
+                            <?= /* @escapeNotVerified */ __('Qty Uses Decimals') ?></span>
+                    </label>
+                </div>
+                <div class="ks-field-control">
+                    <select id="inventory_is_qty_decimal" name="product[stock_data][is_qty_decimal]" <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'>
+                        <option value="0"><?= /* @escapeNotVerified */ __('No') ?></option>
+                        <option value="1"<?php if ($block->getFieldValue('is_qty_decimal') == 1): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('Yes') ?></option>
+                    </select>
+                </div>
+            </div>
+
+            <?php //if (!$block->isVirtual()) : ?>
+                <div class="ks-form-field">
+                    <label class="label ks-form-field-label" for="inventory_is_decimal_divided">
+                        <span><?= /* @escapeNotVerified */ __('Allow Multiple Boxes for Shipping.') ?></span>
+                    </label>
+                    <div class="ks-field-control">
+                        <select id="inventory_is_decimal_divided" name="product[stock_data][is_decimal_divided]" <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'>
+                            <option value="0"><?= /* @escapeNotVerified */ __('No') ?></option>
+                            <option value="1"<?php if ($block->getFieldValue('is_decimal_divided') == 1): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('Yes') ?></option>
+                        </select>
+                    </div>
+                </div>
+            <?php //endif; ?>
+        <?php endif; ?>
+
+        <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span data-config-scope="<?= $ksScope;?>">
+                        <?= /* @escapeNotVerified */ __('Backorders') ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control">
+                <?php $ksFieldDisabled = ($block->isReadonly() || $block->getFieldValue('use_config_backorders') || $block->IsNew()) ? ' disabled="disabled" ' : '' ?>
+               
+                <select id="inventory_backorders" name="product[stock_data][backorders]" <?= /* @escapeNotVerified */ $ksFieldDisabled;?> form='<?= $ksformId;?>' data-defaultval="<?= $block->getDefaultConfigValue('backorders');?>">
+                    <?php foreach ($block->getBackordersOption() as $option): ?>
+                        <?php $_selected = ($option['value'] == $block->getFieldValue('backorders')) ? 'selected="selected"' : '' ?>
+                    <option value="<?= /* @escapeNotVerified */  $option['value'] ?>" <?= /* @escapeNotVerified */ $_selected ?>><?= /* @escapeNotVerified */ $option['label'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+
+                <div class="control-inner-wrap">
+                    <?php $ksChecked = ($block->getFieldValue('use_config_backorders') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+                    <input type="checkbox" id="inventory_use_config_backorders" name="product[stock_data][use_config_backorders]" value="1" <?= /* @escapeNotVerified */ $ksChecked ?> <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'/>
+                    <label><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span data-config-scope="<?= $ksScope;?>">
+                        <?= /* @escapeNotVerified */ __('Notify for Quantity Below') ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control">
+                <?php $ksFieldDisabled = ($block->isReadonly() || $block->getFieldValue('use_config_notify_stock_qty') || $block->IsNew()) ? ' disabled="disabled" ' : '' ?>
+                
+                <input type="text" class="input-text validate-number" id="inventory_notify_stock_qty" name="product[stock_data][notify_stock_qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('notify_stock_qty') * 1 ?>" <?= /* @escapeNotVerified */ $ksFieldDisabled;?> form='<?= $ksformId;?>'  data-defaultval="<?= /* @escapeNotVerified */ $block->getDefaultConfigValue('notify_stock_qty') * 1 ?>" />
+
+                <div class="control-inner-wrap">
+                    <?php $ksChecked = ($block->getFieldValue('use_config_notify_stock_qty') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+                    <input type="checkbox" name="product[stock_data][use_config_notify_stock_qty]" value="1" <?= /* @escapeNotVerified */ $ksChecked ?> <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'/>
+                    <label><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+                </div>
+            </div>
+        </div>
+
+    <?php endif; ?>
+    <div class="ks-form-field">
+        <div class="ks-form-field-label">
+            <label>
+                <span data-config-scope="<?= $ksScope;?>"><?= /* @escapeNotVerified */ __('Enable Qty Increments') ?></span>
+            </label>
+        </div>
+        <div class="ks-field-control">
+            <?php $ksQtyIncrementsEnabled = $block->getFieldValue('enable_qty_increments'); ?>
+            <?php $ksFieldDisabled = ($block->isReadonly() || $block->getFieldValue('use_config_enable_qty_inc') || $block->IsNew()) ? ' disabled="disabled" ' : '' ?>
+            
+            <select id="ks_inventory_enable_qty_increments" name="product[stock_data][enable_qty_increments]" <?= /* @escapeNotVerified */ $ksFieldDisabled;?> form='<?= $ksformId;?>' data-defaultval="<?php if ($ksQtyIncrementsEnabled) { echo '1';} else { echo "0"; } ?>">
+                <option value="1"<?php if ($ksQtyIncrementsEnabled): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('Yes') ?></option>
+                <option value="0"<?php if (!$ksQtyIncrementsEnabled): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('No') ?></option>
+            </select>
+
+            <div class="control-inner-wrap">
+                <?php $ksChecked = ($block->getFieldValue('use_config_enable_qty_inc') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+                <input type="checkbox" id="ks_inventory_use_config_enable_qty_increments" name="product[stock_data][use_config_enable_qty_increments]" value="1" <?= /* @escapeNotVerified */ $ksChecked ?> <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>' />
+                <label for="ks_inventory_use_config_enable_qty_increments"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="ks-form-field">
+        <div class="ks-form-field-label">
+            <label>
+                <span data-config-scope="<?= $ksScope;?>"><?= /* @escapeNotVerified */ __('Qty Increments') ?></span>
+            </label>
+        </div>
+        <div class="ks-field-control">
+            <?php $ksFieldDisabled = ($block->isReadonly() || $block->getFieldValue('use_config_qty_increments') || $block->IsNew()) ? ' disabled="disabled" ' : '' ?>
+           
+            <input type="text" class="input-text validate-digits" id="inventory_qty_increments" name="product[stock_data][qty_increments]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('qty_increments') * 1 ?>" <?= /* @escapeNotVerified */ $ksFieldDisabled;?> form='<?= $ksformId;?>' data-defaultval="<?= /* @escapeNotVerified */ $block->getDefaultConfigValue('qty_increments') * 1 ?>"/>
+            <div class="control-inner-wrap">
+                <?php $ksChecked = ($block->getFieldValue('use_config_qty_increments') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+                <input type="checkbox" name="product[stock_data][use_config_qty_increments]" value="1" <?= /* @escapeNotVerified */ $ksChecked ?> <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'/>
+                <label><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+            </div>
+        </div>
+    </div>
+
+    <?php if ($block->ksIsSingleSourceMode()): ?>
+        <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span data-config-scope="<?= $ksScope;?>"><?= /* @escapeNotVerified */ __('Stock Status') ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control">
+                <select id="inventory_stock_availability" name="product[stock_data][is_in_stock]" <?= /* @escapeNotVerified */ $ksReadonly;?> form='<?= $ksformId;?>'>
+                    <?php foreach ($block->getStockOption() as $option): ?>
+                        <?php $_selected = ($block->getFieldValue('is_in_stock') !== null && $option['value'] == $block->getFieldValue('is_in_stock')) ? 'selected="selected"' : '' ?>
+                    <option value="<?= /* @escapeNotVerified */ $option['value'] ?>" <?= /* @escapeNotVerified */ $_selected ?>><?= /* @escapeNotVerified */ $option['label'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    <?php endif;?>
+
+</div>

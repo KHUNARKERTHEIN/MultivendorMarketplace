@@ -1,0 +1,23 @@
+/**
+* Ksolves
+*
+* @category  Ksolves
+* @package   Ksolves_MultivendorMarketplace
+* @author    Ksolves Team
+* @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+* @license   https://store.ksolves.com/magento-license
+*/
+
+/************************* Calculated css start *************************/
+@media (min-width: 1025px) {
+    #ks_sellerlocator_result_left_column {
+      max-height: calc(100vh - 344px);
+      margin-bottom: 5px;
+    }
+}
+.ks-account-login-form {
+  height: calc(100vh - 160px);
+}
+.ks-account-reset-form, .ks-account-forgot-form {
+  height: calc(100vh - 90px);
+}

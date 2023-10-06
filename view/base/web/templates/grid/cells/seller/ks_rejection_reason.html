@@ -1,0 +1,37 @@
+<!--
+/**
+* Ksolves
+*
+* @category  Ksolves
+* @package   Ksolves_MultivendorMarketplace
+* @author    Ksolves Team
+* @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+* @license   https://store.ksolves.com/magento-license
+*/
+-->
+<form id="ks-seller-reject-form-<%- id %>" method="get" enctype="multipart/form-data" action="<%- formaction %>">
+    <div class="modal-body">
+        <div class="bootbox-body">
+            <textarea class="bootbox-input bootbox-input-text form-control required-entry" name="ks_reject_message" rows="4" cols="98"></textarea>
+            <input type="hidden" name="id" value="<%- id %>">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <span class="error"></span>
+        <button type="reset" class="btn btn-default"><span><%- cancellabel %></span></button>
+        <button type="submit" class="btn btn-primary"><span><%- submitlabel %></span></button>
+        <span class="clear"></span>
+    </div>
+</form>
+
+<style>
+    .modal-popup .modal-footer{
+        padding-right: 0px;
+    }
+    .modal-popup .action-close:before{
+        font-size: 1.5rem;
+    }
+    .bootbox-input{
+        width: 100%;
+    }
+</style>

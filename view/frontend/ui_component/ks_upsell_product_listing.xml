@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_upsell_product_listing.ks_upsell_product_listing_data_source</item>
+            <item name="deps" xsi:type="string">ks_upsell_product_listing.ks_upsell_product_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">multivendor_upsell_product_columns</item>
+    </argument>
+    <dataSource name="ks_upsell_product_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Product\KsUpSellDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_upsell_product_listing_data_source</argument>
+            <argument name="ksPrimaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="ksRequestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/product/grid/ks-provider</item>
+                    <item name="update_url" xsi:type="url" path="multivendor/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="cacheRequests" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">Ksolves_MultivendorMarketplace/grid/ks-toolbar</item>
+            </item>
+        </argument>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="multivendor_upsell_product_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">multivendorProductListGrid</item>
+                        <item name="target" xsi:type="string">selectOrder</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <selectionsColumn name="ids" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="thumbnail" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Frontend\Product\KsThumbnail" component="Magento_Ui/js/grid/columns/thumbnail" sortOrder="30">
+            <settings>
+                <altField>name</altField>
+                <hasPreview>1</hasPreview>
+                <label translate="true">Thumbnail</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="entity_id" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                </item>
+            </argument>
+        </column>
+        <column name="name" sortOrder="50">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Name</item>
+                    <item name="fieldClass" xsi:type="string">ks-product-name</item>
+                </item>
+            </argument>
+        </column>
+        <column name="attribute_set_id" class="Magento\Catalog\Ui\Component\Listing\Columns\AttributeSetId" component="Magento_Ui/js/grid/columns/select" sortOrder="70">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Catalog\Model\Product\AttributeSet\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Attribute Set</item>
+                    <item name="fieldClass" xsi:type="string">ks-product-attr-set</item>
+                </item>
+            </argument>
+        </column>
+        <column name="attribute_set_text" class="Magento\Catalog\Ui\Component\Listing\Columns\AttributeSetText" sortOrder="41">
+            <settings>
+                <label translate="true">AttributeSetText</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="status" component="Magento_Ui/js/grid/columns/select" sortOrder="50">
+            <settings>
+                <options class="Magento\Catalog\Model\Product\Attribute\Source\Status"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+                <fieldClass>
+                    <class name="ks-product-status">true</class>
+                </fieldClass>
+            </settings>
+        </column>
+        <column name="status_text" class="Magento\Catalog\Ui\Component\Listing\Columns\StatusText" sortOrder="51">
+            <settings>
+                <label translate="true">StatusText</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="type_id" component="Magento_Ui/js/grid/columns/select" sortOrder="60">
+            <settings>
+                <options class="Magento\Catalog\Model\Product\Type"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Type</label>
+            </settings>
+        </column>
+        <column name="sku" sortOrder="70">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">SKU</label>
+                <fieldClass>
+                    <class name="ks-product-sku">true</class>
+                </fieldClass>
+            </settings>
+        </column>
+        <column name="price" class="Magento\Catalog\Ui\Component\Listing\Columns\Price" sortOrder="80">
+            <settings>
+                <addField>true</addField>
+                <filter>textRange</filter>
+                <label translate="true">Price</label>
+                <fieldClass>
+                    <class name="ks-product-price">true</class>
+                </fieldClass>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,85 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+<!-- Get Product Collection from Block Class -->
+<?php
+    $ksData = $block->getKsSearchedProductCollection();
+?>
+
+<!-- Product search page start -->
+<div class="ks-product-search-page">
+    <form method="get" action="<?= $block->escapeUrl($block->getUrl('multivendor/pricecomparison/viewproduct', ['_secure' => $this->getRequest()->isSecure()])) ?>" id="ks_price_comparsion_product" enctype="multipart/form-data" data-mage-init='{"validation":{}}' autocomplete="off" >
+        <div class="ks-page-card fieldset">
+            <div class="field required form-group">
+                <label class="label" for="attribute_set" style="font-size: 15px"><?= $block->escapeHtml(__('Search For Product')) ?></label>
+                <div class="control ks-serach-product-div">
+                    <input type="text" data-validate="{required:true}" class="input-text required-entry form-control" title="ks-query" name="query" id="ks-query" aria-required="true">
+                    <div class="ks-search-actions">
+                        <button type="submit" title="<?= $block->escapeHtmlAttr('Search') ?>" class="ks-search-icon">
+                            <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/search-icon.svg') ?>" alt="" class="ks_img-fluid"/>
+                        </button>
+                    </div>
+                </div>
+                <div class="ks_suggestion">
+                    <ul class="ks_suggestion_list"></ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Product search page end -->
+
+<!-- Check Product Collection -->
+<?php if ($ksData): ?>
+    <table id="ks_price_comparsion_product" class="ks-table-style">
+        <thead>
+            <tr>
+                <th>ID</th>    
+                <th>Thumbnail</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>SKU</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($ksData as $ksRecord): ?>
+            <tr>
+                <td><?= $ksRecord->getEntityId(); ?></td>
+                <td>
+                    <img width="50px" height="50px" src="<?= $this->helper('Magento\Catalog\Helper\Image')->init($ksRecord, 'product_base_image')->getUrl();
+                    ?>"/>
+                </td>
+                <td><?= $ksRecord->getName(); ?></td>
+                <td><?= $ksRecord->getTypeId(); ?></td>
+                <td><?= $ksRecord->getSku(); ?></td>
+                <td><?= $block->getKsCurrentCurrency().$ksRecord->getPrice() ?></td>
+                <td>
+                    <a href="<?= $block->getBaseUrl().'multivendor/pricecomparison/addproduct/parent_id/'.$ksRecord->getEntityId(); ?>">
+                        <button class="ks-table-action">
+                            <span>
+                                <span>Compare Yours</span>
+                            </span>
+                        </button>
+                    </a>
+                </td>
+            </tr>    
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<!-- If Product Collection is null and not array -->
+<?php else: ?>
+    <?php if ((is_array($ksData)) && (empty($ksData))): ?>
+        <h2><strong>No record found</strong></h2>
+    <?php endif; ?>
+<?php endif; ?>

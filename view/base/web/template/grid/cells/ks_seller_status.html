@@ -1,0 +1,28 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<div class="data-grid-cell-content">
+    <span data-bind="if: $col.getLabel($row()) == 'Approved'">
+        <span class="grid-severity-notice">
+            <span data-bind="html: $col.getLabel($row())"></span>
+        </span>
+    </span>
+    <span data-bind="if: $col.getLabel($row()) == 'Rejected'">
+        <span class="grid-severity-major">
+            <span data-bind="html: $col.getLabel($row())"></span>
+        </span>
+    </span>
+    <span data-bind="if: $col.getLabel($row()) == 'Pending'">
+        <span class="grid-severity-pending">
+            <span data-bind="html: $col.getLabel($row())"></span>
+        </span>
+    </span>
+</div>

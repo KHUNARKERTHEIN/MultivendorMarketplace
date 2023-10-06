@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+	<update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+	<body>
+        <!-- Use For Seller Locator Settings on Seller Profile -->
+        <referenceContainer name="content" >
+           <block class="Ksolves\MultivendorMarketplace\Block\Frontend\SellerLocator\KsSellerLocatorProfileSettings" name="ks_location_details_view" cacheable="false" template="Ksolves_MultivendorMarketplace::seller-locator/ks_seller_locator_profile_settings_view.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

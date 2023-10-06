@@ -1,0 +1,146 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketp\Block\Order\KsOrderView */
+$ks_order = $block->getKsOrder();
+?>
+<!-- Order view page start -->
+    
+    <!-- Order view tabs start -->
+    <div class="ks-page-side-tab col-md-3">
+        <div class="ks-tab-sidebar-heading">
+					<h3><?= $block->escapeHtml(__('ORDER VIEW')) ?></h3>
+        </div>
+        <ul>
+          <li>
+            <button class="ks-tablinks" onclick="orderViewTabs(event, 'marketplace_order_details')" id="defaultOpen"><?= $block->escapeHtml(__('Information')) ?></button>
+          </li>
+          <li>
+            <button class="ks-tablinks" onclick="orderViewTabs(event, 'ks-invoice-container')"><?= $block->escapeHtml(__('Invoices')) ?></button>
+          </li>
+          <li>
+            <button class="ks-tablinks" onclick="orderViewTabs(event, 'ks-creditmemo-container')"><?= $block->escapeHtml(__('Credit Memos')) ?></button>
+          </li>
+          <li>
+          <?php 
+            if(!$block->ksIsVirtual()):
+            ?>
+            <button class="ks-tablinks" onclick="orderViewTabs(event, 'ks-shipment-container')"><?= $block->escapeHtml(__('Shipments')) ?></button>
+          <?php endif;?>
+          </li>
+          <li>
+            <button class="ks-tablinks" onclick="orderViewTabs(event, 'ks-commenthistory-container')"><?= $block->escapeHtml(__('Comments History')) ?></button>
+          </li>
+        </ul>
+    </div>
+    <!-- Order view tabs end -->
+
+    <!-- Order Infor tabs content start -->
+    <div id="marketplace_order_details" class="marketplace_order_details col-md-9 pl-5">
+
+      <!-- Order A/C Info start -->
+      <div id="order_account_address_info">
+        <?= $block->getChildHtml("multivendor_order_account_address_info") ?>
+      </div>
+      <!-- Order A/C Info end -->
+
+      <!-- Order Payment shipping start -->
+      <div id="order_payment_shipping_info">
+        <?= $block->getChildHtml("multivendor_order_payment_shipping_info") ?>
+      </div>
+      <!-- Order Payment shipping end -->
+      <div class="mt-3 mb-2">
+          <div class="ks-order-payment-method-title"><?= $block->getChildHtml('order_payment') ?></div>
+          <div class="ks-order-payment-currency">
+              <?= $block->escapeHtml(__('The order was placed using %1.', $ks_order->getOrderCurrencyCode())) ?>
+          </div>
+      </div>
+      <!-- Order view gifts section start -->
+      <div id="view_order">
+        <?= $block->getChildHtml("multivendor_order_view") ?>
+      </div>
+      <!-- Order view gifts section end -->
+
+      <!-- Order Item table start -->
+      <div id="ordered_items">
+        <?= $block->getChildHtml("order_items") ?>
+      </div>
+      <!-- Order Item table end -->
+
+      <!-- Order history & total section start -->
+      <div>
+
+        <!-- Order tab section title start -->
+        <div class="ks-tab-content-title">
+            <span><?= $block->escapeHtml(__('Order Total')) ?></span>
+        </div>
+        <!-- Order tab section title end -->
+        
+        <div class="col-md-12">
+          <div class="row">
+
+            <!-- Order history start -->
+            <div id="history" class="col-md-6 pr-0">
+              <?= $block->getChildHtml("order_history") ?>
+            </div>
+            <!-- Order history end -->
+
+            <!-- Order total start -->
+            <div id="totals" class="col-md-6 pr-0">
+              <?= $block->getChildHtml("order_totals") ?>
+            </div>
+            <!-- Order Item table end -->
+
+          </div>
+        </div>
+
+      </div>
+      <!-- Order history & total section start -->
+      
+    </div>
+    <!-- Order Infor tabs content end -->
+
+<script>
+  function orderViewTabs(evt, orderViewTabs) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("marketplace_order_details");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabcontent = document.getElementsByClassName("ks-invoice-container");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabcontent = document.getElementsByClassName("ks-creditmemo-container");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabcontent = document.getElementsByClassName("ks-shipment-container");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabcontent = document.getElementsByClassName("ks-commenthistory-container");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("ks-tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(orderViewTabs).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+<!-- Order view page end -->

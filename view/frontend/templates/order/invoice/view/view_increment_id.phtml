@@ -1,0 +1,20 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var Ksolves\MultivendorMarketplace\Block\Order\Invoice\View\KsForm */
+$ksInvoice = $block->getKsInvoice();
+?>
+
+<!-- Invoice increment id start --> 
+<div class="ks-main-page-title">
+    <span><?= "#".$block->escapeHtml(__($ksInvoice->getKsInvoiceIncrementId())) ?></span>
+</div>
+<!-- Invoice increment id end --> 

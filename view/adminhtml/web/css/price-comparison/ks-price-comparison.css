@@ -1,0 +1,56 @@
+.ks-d-none {
+    display: none;
+}
+.admin__dynamic-rows.admin__control-table .admin__control-fields > .admin__field {
+    border: 0;
+    padding: 0;
+}
+[class*='admin__control-grouped'] > .admin__field:first-child, .admin__control-fields > .admin__field:first-child {
+    position: static;
+}
+.admin__dynamic-rows td > .admin__field {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+.downloadable-form .admin__control-table tbody tr:first-child td {
+    padding-top: 1.3rem;
+}
+.ks-mt-2 {
+    margin-top: 1.5rem;
+}
+.ks-pt-0 {
+    padding-top: 0px;
+}
+.ks-mt-0 {
+    margin-top: 0px;
+}
+.ks-file-uploader-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+    word-break: break-all;
+    max-width: 170px;
+    margin-bottom: 1rem;
+}
+.downloadable-form .fileinput-button {
+    display: block;
+}
+.col-action .action-delete::before, .col-actions .action-delete::before {
+    color: inherit;
+    font-size: 2rem;
+}
+.ks-mb-0 {
+    margin-bottom: 0px;
+}
+.data-grid tr:nth-child(even) td {
+    background-color: #f5f5f5;
+}
+.ks-price-symbol {
+    position: absolute;
+    padding: 6.5px;
+}
+.ks-pl-16 {
+    padding-left: 16px;
+}

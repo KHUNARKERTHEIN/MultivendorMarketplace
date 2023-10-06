@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="ks_marketplace_report_ks_report_product_ks_acknowledgement_mail_template" label="Customer Report Product Acknowledgement Email" file="ks_report_product_acknowledgment_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_report_ks_report_product_ks_admin_alert_mail_template" label="Report Product Admin Alert Email" file="ks_report_product_admin_alert_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_report_ks_report_seller_ks_acknowledgement_mail_template" label="Customer Report Seller Acknowledgement Email" file="ks_report_seller_acknowledgment_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_report_ks_report_seller_ks_admin_alert_mail_template" label="Report Seller Admin Alert Email" file="ks_report_seller_admin_alert_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_order_settings_ks_seller_new_order_email_template" label="Seller New Order Email" file="ks_seller_new_order_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_order_settings_ks_new_order_email_template" label="Seller Order Email" file="ks_order_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_invoice_settings_ks_request_invoice_email_template" label="Request Invoice Notification Mail" file="ks_request_invoice_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_invoice_settings_ks_invoice_approval_notification_template" label="Request Invoice Approval Notification Mail" file="ks_invoice_approval_notification.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_invoice_settings_ks_invoice_rejection_notification_template" label="Rejected  Invoice Mail" file="ks_invoice_rejection_notification.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_shipment_settings_ks_request_shipment_email_template" label="Request Shipment Mail" file="ks_request_shipment_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_shipment_settings_ks_shipment_approval_notification_template" label="Request Shipment Approval Notification Mail" file="ks_request_shipment_approval_notification_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_shipment_settings_ks_shipment_rejection_notification_template" label="Rejected Shipment Mail" file="ks_shipment_rejection_notification_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_creditmemo_settings_ks_request_creditmemo_email_template" label="Request Credit Memo Mail" file="ks_request_creditmemo_email_template.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_creditmemo_settings_ks_creditmemo_approval_notification_template" label="Request Credit Memo Approval Notification Mail" file="ks_request_creditmemo_approval_notification_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_sales_ks_creditmemo_settings_ks_creditmemo_rejection_notification_template" label="Rejected Credit Memo Mail" file="ks_creditmemo_rejection_notification_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <!-- Favourite Seller Email Templates -->
+    <template id="ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_welcome_email_notification_followers_templates" label="Welcome Email" file="ks_welcome_email_notification_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_new_product_alert_followers_templates" label="New Product Alert" file="ks_new_product_alert_followers_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_price_alerts_followers_templates" label="Price Change Alert" file="ks_price_alert_followers_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_email_notification_newly_added_followers_templates" label="Newly Added Followers" file="ks_email_notification_newly_added_followers_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_followers_mail" label="Followers Seller" file="ks_all_followers_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <!-- Category Request Email Templates -->
+    <template id="ks_marketplace_catalog_ks_product_categories_ks_category_request_email" label="Category Request" file="ks_category_request_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_categories_ks_category_request_approval_email" label="Category Approved" file="ks_category_request_approval_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_categories_ks_category_request_rejection_email" label="Category Rejected" file="ks_category_request_rejection_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_categories_ks_category_assign_email" label="Category Assigned" file="ks_category_assign_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_categories_ks_category_unassign_email" label="Category Unassigned" file="ks_category_unassign_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <!-- Product Attribute Email Templates -->
+    <template id="ks_marketplace_catalog_ks_product_attribute_settings_ks_product_attribute_request_email_template" label="Product Attribute Request" file="ks_product_attribute_request_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_attribute_settings_ks_product_attribute_approval_email_template" label="Product Attribute Approved" file="ks_product_attribute_approval_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_attribute_settings_ks_product_attribute_rejection_email_template" label="Product Attribute Rejected" file="ks_product_attribute_rejection_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_attribute_settings_ks_product_attribute_assign_email_template" label="Product Attribute Assigned" file="ks_product_attribute_assigned_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_attribute_settings_ks_product_attribute_unassign_email_template" label="Product Attribute Unassigned" file="ks_product_attribute_unassigned_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <!-- Seller Email Templates -->
+    <template id="ks_marketplace_seller_ks_seller_settings_ks_seller_approved_templates" label="Seller Approved" file="ks_seller_approved_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_seller_ks_seller_settings_ks_seller_rejection_templates" label="Seller Rejected" file="ks_seller_rejected_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_seller_ks_seller_settings_ks_new_seller_templates" label="Seller Approval" file="ks_new_seller_approval_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <!-- Product Type Emai Templates -->
+    <template id="ks_marketplace_catalog_ks_product_type_settings_ks_admin_product_type_request_email" label="Product Type Request" file="ks_admin_product_type_request_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_type_settings_ks_seller_product_type_request_approval_email" label="Product Type Request Approved" file="ks_seller_product_type_request_approval_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_type_settings_ks_seller_product_type_request_rejection_email" label="Product Type Request Rejection" file="ks_seller_product_type_request_rejection_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_type_settings_ks_seller_product_type_assign_email" label="Product Type Assigned" file="ks_seller_product_type_assign_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_type_settings_ks_seller_product_type_unassign_email" label="Product Type Unassigned" file="ks_seller_product_type_unassign_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_settings_ks_request_email" label="Product Request" file="ks_admin_product_request_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_settings_ks_approval_email" label="Product Approved" file="ks_seller_product_request_approval_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_product_settings_ks_rejection_email" label="Product Rejected" file="ks_seller_product_request_rejection_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_promotion_ks_marketplace_promotion_page_ks_submit_query_email" label="Submit Your Query Email" file="ks_submit_query_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_seller_portal_profile_ks_seller_profile_page_ks_contact_seller_email" label="Contact Seller Email" file="ks_contact_seller_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <!-- assign product mail template -->
+    <template id="ks_marketplace_catalog_ks_assign_product_settings_ks_seller_product_assign_mail_template" label="Product Assigned" file="ks_seller_product_assign_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <template id="ks_marketplace_catalog_ks_assign_product_settings_ks_seller_product_unassign_mail_template" label="Product Unassigned" file="ks_seller_product_unassign_mail.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+    <!-- Reset Password mail template -->
+    <template id="marketplace_ks_forgot_password_settings_ks_seller_forgot_password_email" label="Seller Forgot Password" file="ks_seller_forgot_password_email.html" type="html" module="Ksolves_MultivendorMarketplace" area="frontend"/>
+</config>

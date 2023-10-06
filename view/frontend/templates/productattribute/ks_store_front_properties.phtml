@@ -1,0 +1,302 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+$ksData = $block->getKsAttributeObject()->getData();
+// If the Form is for new Attribute we have to unset the Array
+if ($ksData['frontend_input'] == null) {
+    unset($ksData['entity_type_id']);
+    unset($ksData['frontend_input']);
+    unset($ksData['frontend_model']);
+    unset($ksData['store_labels']);
+}
+$ksData = $ksData ? $ksData : $block->getKsAttributeData();
+?>
+
+<!-- Storefont property main page start -->
+<div id="product_attribute_tabs_front" class="ks-tabcontent ks-attribute-hide-field">
+    <div id="product_attribute_tabs_front_content" class="ui-tabs-panel ui-widget-content ui-corner-bottom ks-fieldset-wrapper-content" role="tabpanel">
+        
+        <!-- Storefont Property without collapse section start -->
+        <div class="ks-form-fieldset"> <!-- no need of this class then remove (entry-edit form-inline) -->
+
+            <!-- storefont Property Title start -->
+            <div class="ks-form-collapsible-block">
+                <div class="ks-fieldset-wrapper-title">
+                    <div class="admin__legend legend ks-form-collapsible-title ks-after-none border-bottom-0 ks-cursor-inherit">
+                        <span><?= $block->escapeHtml(__("Storefront Properties")) ?></span>
+                    </div>
+                </div>
+            </div>
+            <!-- storefont Property Title end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-is_searchable ks-form-field ks-form-field mt-5">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">
+                            <label class="label admin__field-label" for="is_searchable">
+                                <span><?= $block->escapeHtml(__("Use in Search")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="is_searchable" name="is_searchable" title="Use in Search" class="select admin__control-select ks-select-box ks-is_searchable">
+                                <option value="1" <?= $ksData ? ($ksData['is_searchable'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0" <?= $ksData ? ($ksData['is_searchable'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field ks-field-search_weight ks-form-field" style="display: none;">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">    
+                            <label class="label admin__field-label" for="search_weight">
+                                <span><?= $block->escapeHtml(__("Search Weight")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="search_weight" name="search_weight" class="select admin__control-select ignore-validate ks-select-box">
+                                <option value="1" <?= $ksData ? ($ksData['search_weight'] == 1 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("1")) ?></option>
+                                <option value="2" <?= $ksData ? ($ksData['search_weight'] == 2 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("2")) ?></option>
+                                <option value="3" <?= $ksData ? ($ksData['search_weight'] == 3 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("3")) ?></option>
+                                <option value="4" <?= $ksData ? ($ksData['search_weight'] == 4 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("4")) ?></option>
+                                <option value="5" <?= $ksData ? ($ksData['search_weight'] == 5 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("5")) ?></option>
+                                <option value="6" <?= $ksData ? ($ksData['search_weight'] == 6 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("6")) ?></option>
+                                <option value="7" <?= $ksData ? ($ksData['search_weight'] == 7 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("7")) ?></option>
+                                <option value="8" <?= $ksData ? ($ksData['search_weight'] == 8 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("8")) ?></option>
+                                <option value="9" <?= $ksData ? ($ksData['search_weight'] == 9 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("9")) ?></option>
+                                <option value="10" <?= $ksData ? ($ksData['search_weight'] == 10 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("10")) ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-is_visible_in_advanced_search ks-form-field" style="display: none;">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">
+                            <label class="label admin__field-label" for="is_visible_in_advanced_search">
+                                <span><?= $block->escapeHtml(__("Visible in Advanced Search")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="is_visible_in_advanced_search" name="is_visible_in_advanced_search" title="Visible in Advanced Search" class="select admin__control-select ignore-validate ks-select-box" disabled="" style="display: none;">
+                                <option value="1" <?= $ksData ? ($ksData['is_visible_in_advanced_search'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0" <?= $ksData ? ($ksData['is_visible_in_advanced_search'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-is_comparable ks-form-field">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">            
+                            <label class="label admin__field-label" for="is_comparable">
+                                <span><?= $block->escapeHtml(__("Comparable on Storefront")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="is_comparable" name="is_comparable" title="Comparable on Storefront" class="select admin__control-select ks-select-box">
+                                <option value="1" <?= $ksData ? ($ksData['is_comparable'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0" <?= $ksData ? ($ksData['is_comparable'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-is_filterable  with-note ks-form-field">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">    
+                            <label class="label admin__field-label" for="is_filterable">
+                                <span><?= $block->escapeHtml(__("Use in Layered Navigation")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="is_filterable" name="is_filterable" title="Can be used only with catalog input type Yes/No, Dropdown, Multiple Select and Price" class=" select admin__control-select ks-is_filterable ks-select-box">
+                                <option value="0" <?= $ksData ? ($ksData['is_filterable'] == 0 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                                <option value="1" <?= $ksData ? ($ksData['is_filterable'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Filterable (with results)")) ?></option>
+                                <option value="2" <?= $ksData ? ($ksData['is_filterable'] == 2 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Filterable (no results)")) ?></option>
+                            </select>
+                            <div class="note admin__field-note ks-form-field-note" id="is_filterable-note">
+                                <span><?= $block->escapeHtml(__("Can be used only with catalog input type Yes/No, Dropdown, Multiple Select and Price.")) ?></span>
+                                <span><?= $block->escapeHtml(__("Price is not compatible with")) ?></span>
+                                <span><?= $block->escapeHtml(__("'Filterable (no results)'")) ?></span>
+                                <span><?= $block->escapeHtml(__("option - it will make no affect on Price filter.")) ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-is_filterable_in_search  with-note ks-form-field">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">    
+                            <label class="label admin__field-label" for="is_filterable_in_search">
+                                <span><?= $block->escapeHtml(__("Use in Search Results Layered Navigation")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="is_filterable_in_search" name="is_filterable_in_search" title="Can be used only with catalog input type Yes/No, Dropdown, Multiple Select and Price" class=" select admin__control-select ks-is_filterable_in_search ks-select-box">
+                                <option value="1" <?= $ksData ? ($ksData['is_filterable_in_search'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0" <?= $ksData ? ($ksData['is_filterable_in_search'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                            <div class="note admin__field-note ks-form-field-note" id="is_filterable_in_search-note"><span><?= $block->escapeHtml(__("Can be used only with catalog input type Yes/No, Dropdown, Multiple Select and Price.")) ?></span></div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-position  with-note ks-form-field">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">
+                            <label class="label admin__field-label" for="position">
+                                <span><?= $block->escapeHtml(__("Position")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <input id="position" name="position" title="Position in Layered Navigation" class=" ks-control-feild validate-digits input-text admin__control-text" type="text" disabled="disabled"  value="<?= $ksData ? $ksData['position'] : '' ?>" >
+                            <div class="note admin__field-note ks-form-field-note" id="position-note">
+                                <span><?= $block->escapeHtml(__("Position of attribute in layered navigation block.")) ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-is_used_for_promo_rules ks-form-field">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">    
+                            <label class="label admin__field-label" for="is_used_for_promo_rules">
+                                <span><?= $block->escapeHtml(__("Use for Promo Rule Conditions")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="is_used_for_promo_rules" name="is_used_for_promo_rules" title="Use for Promo Rule Conditions" class=" select admin__control-select ks-select-box">
+                                <option value="1" <?= $ksData ? ($ksData['is_used_for_promo_rules'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0" <?= $ksData ? ($ksData['is_used_for_promo_rules'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-is_html_allowed_on_front ks-form-field" style="display: block;">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">
+                            <label class="label admin__field-label" for="is_html_allowed_on_front" >
+                                <span><?= $block->escapeHtml(__("Allow HTML Tags on Storefront")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="is_html_allowed_on_front" name="is_html_allowed_on_front" title="Allow HTML Tags on Storefront" class=" select admin__control-select ks-select-box" style="display: inline-block;">
+                                <option value="1" <?= $ksData ? ($ksData['is_html_allowed_on_front'] == 1 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0"<?= $ksData ? ($ksData['is_html_allowed_on_front'] == 0 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-is_visible_on_front ks-form-field">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">
+                            <label class="label admin__field-label" for="is_visible_on_front">
+                                <span><?= $block->escapeHtml(__("Visible on Catalog Pages on Storefront")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="is_visible_on_front" name="is_visible_on_front" title="Visible on Catalog Pages on Storefront" class=" select admin__control-select ks-select-box">
+                                <option value="1" <?= $ksData ? ($ksData['is_visible_on_front'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0" <?= $ksData ? ($ksData['is_visible_on_front'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-used_in_product_listing  with-note ks-form-field">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">
+                            <label class="label admin__field-label" for="used_in_product_listing">
+                                <span><?= $block->escapeHtml(__("Used in Product Listing")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="used_in_product_listing" name="used_in_product_listing" title="Used in Product Listing" class=" select admin__control-select ks-select-box">
+                                <option value="1" <?= $ksData ? ($ksData['used_in_product_listing'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0" <?= $ksData ? ($ksData['used_in_product_listing'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                            <div class="note admin__field-note ks-form-field-note" id="used_in_product_listing-note"><span><?= $block->escapeHtml(__("Depends on design theme.")) ?></span></div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+            <!-- Storefont Property form field start -->
+            <fieldset class="admin__field field field-used_for_sort_by  with-note ks-form-field">
+                <div class="ks-control-grouped">    
+                    <div class="ks-form-field">
+                        <div class="ks-form-field-label">
+                            <label class="label admin__field-label" for="used_for_sort_by">
+                                <span><?= $block->escapeHtml(__("Used for Sorting in Product Listing")) ?></span>
+                            </label>
+                        </div>
+                        <div class="admin__field-control control ks-field-control">
+                            <select id="used_for_sort_by" name="used_for_sort_by" title="Used for Sorting in Product Listing" class=" select admin__control-select ks-select-box">
+                                <option value="1" <?= $ksData ? ($ksData['used_for_sort_by'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                <option value="0" <?= $ksData ? ($ksData['used_for_sort_by'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                            </select>
+                            <div class="note admin__field-note ks-form-field-note" id="used_for_sort_by-note"><span><?= $block->escapeHtml(__("Depends on design theme.")) ?></span></div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- Storefont Property form field end -->
+
+        </div>
+        <!-- Storefont Property without collapse section end -->
+
+    </div>
+</div>
+<!-- Storefont property main page end -->

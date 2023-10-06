@@ -1,0 +1,38 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketp\Block\Order\KsOrderView */
+$ks_order = $block->getKsOrder();
+switch ($ks_order->getStatus()) {
+    case "complete":
+    $ksOrderClass = "complete";
+    break;
+    case "pending":
+    
+    $ksOrderClass = "pending";
+    break;
+    case "processing":
+    
+    $ksOrderClass = "processing";
+    break;
+    case "closed":
+    
+    $ksOrderClass = "closed";
+    break;
+    case "canceled":
+    
+    $ksOrderClass = "cancel";
+    break;
+}
+?>
+<?= $block->getGiftOptionsHtml() ?>
+
+

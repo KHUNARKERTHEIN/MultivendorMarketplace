@@ -1,0 +1,52 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var \Ksolves\MultivendorMarketplace\Block\Order\CreditMemo\Create\KsForm $block */
+?>
+<div class="ks-invoice-create-page">
+    <div class="ks-page-card">
+        <form id="ks-sales-new-creditmemo-form" method="post" action="<?=$block->getKsSaveUrl()?>">
+            <?= $block->getBlockHtml('formkey') ?>
+            <?php $_order = $block->getKsCreditmemo()->getOrder() ?>
+            <?= $block->getChildHtml('multivendor_order_account_address_info') ?>
+
+            <section class="mb-5">
+                <div class="ks-tab-content-title">
+                    <span><?= $block->escapeHtml(__('Payment &amp; Shipping Method')) ?></span>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                    <div class="order-payment-method col-md-6">
+                        <?php if ($_order->getIsVirtual()): ?> 
+                        <?php endif; ?>
+                        <div class="ks-div-title mb-3">
+                            <span><?= $block->escapeHtml(__('Payment Information')) ?></span>
+                        </div>
+                        <div>
+                            <div class="order-payment-method-title"><?= $block->getChildHtml('order_payment') ?></div>
+                            <div class="order-payment-currency">
+                                <?= $block->escapeHtml(__('The order was placed using %1.', $_order->getOrderCurrencyCode())) ?>
+                            </div>
+                            <div class="order-payment-additional"><?= $block->getChildHtml('order_payment_additional') ?>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+            <section id="creditmemo_item_container">
+                <?= $block->getChildHtml('creditmemo_items') ?>
+            </section>
+        </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,57 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\MultivendorMarketplace\Block\Order\View\Tab\History $block */
+?>
+
+<section class="admin__page-section edit-order-comments ks-sales-comments-page">
+    <ul class="note-list ks-comment-list">
+    <?php foreach ($block->getFullHistory() as $ksItem) : ?>
+        <li class="note-list-item ks-comment-list-item">
+            <span class="note-list-date ks-item-date"><?= /* @noEscape */ $block->getItemCreatedAt($ksItem) ?></span>
+            <span class="note-list-time ks-item-time"><?= /* @noEscape */ $block->getItemCreatedAt($ksItem, 'time') ?></span>
+            <span class="note-list-status ks-item-status"><?= /* @noEscape */ $block->getItemTitle($ksItem) ?></span>
+            <?php if ($block->isItemNotified($ksItem, false)) : ?>
+                <span class="note-list-customer ks-comment-customer-list">
+                    <?= $block->escapeHtml(__('Customer')) ?>
+                    <?php if ($block->isCustomerNotificationNotApplicable($ksItem)) : ?>
+                        <span class="note-list-customer-notapplicable ks-comment-customer-notapplicable"><?= $block->escapeHtml(__('Notification Not Applicable')) ?></span>
+                    <?php elseif ($block->isItemNotified($ksItem)) : ?>
+                        <span class="note-list-customer-notified ks-comment-customer-notified"><?= $block->escapeHtml(__('Notified')) ?></span>
+                    <?php else : ?>
+                        <span class="note-list-customer-not-notified ks-comment-customer-not-notified"><?= $block->escapeHtml(__('Not Notified')) ?></span>
+                    <?php endif; ?>
+                </span>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+    <div class="edit-order-comments-block ks-order-comment-block">
+        <div class="edit-order-comments-block-title ks-order-comment-block-title">
+            <?= $block->escapeHtml(__('Notes for this Order')) ?>
+        </div>
+        <?php foreach ($block->getFullHistory() as $ksItem) : ?>
+            <?php if ($ksComment = $block->getItemComment($ksItem)) : ?>
+                <div class="comments-block-item ks-comment-block-item">
+                    <div class="comments-block-item-comment ks-comment-block-box">
+                        <!-- has comments -->
+                        <?= /* @noEscape */ $ksComment ?>
+                    </div>
+                    <span class="comments-block-item-date-time ks-comment-block-dt">
+                        <?= $block->escapeHtml(__('Comment added')) ?>
+                        <?= /* @noEscape */ $block->getItemCreatedAt($ksItem) ?>
+                        <?= /* @noEscape */ $block->getItemCreatedAt($ksItem, 'time') ?>
+                    </span>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+</section>

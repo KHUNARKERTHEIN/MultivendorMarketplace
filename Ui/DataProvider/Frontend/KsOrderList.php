@@ -1,0 +1,300 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+namespace Ksolves\MultivendorMarketplace\Ui\DataProvider\Frontend;
+
+use Magento\Ui\DataProvider\AbstractDataProvider;
+use Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesOrder\CollectionFactory;
+use Ksolves\MultivendorMarketplace\Helper\KsSellerHelper;
+use Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter;
+
+/**
+ * Class KsOrderList
+ */
+class KsOrderList extends AbstractDataProvider
+{
+    /**
+     * ks_sales_order collection
+     *
+     * @var Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesOrder\Collection
+     */
+    protected $collection;
+
+    /**
+     * @var KsSellerHelper
+     */
+    protected $ksSellerHelper;
+
+    /**
+     * @var FulltextFilter
+     */
+    protected $ksFulltextFilter;
+
+    /**
+     * @var RequestInterface
+     */
+    protected $ksRequest;
+
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    protected $ksCustomerSession;
+
+    /**
+     * Construct
+     *
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
+     * @param CollectionFactory $collectionFactory
+     * @param KsSellerHelper $ksSellerHelper
+     * @param FulltextFilter $ksFulltextFilter
+     * @param RequestInterface $ksRequest
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
+     * @param array $meta
+     * @param array $data
+     * @param \Magento\Customer\Model\Session $ksCustomerSession
+     */
+    public function __construct(
+        $name,
+        $primaryFieldName,
+        $requestFieldName,
+        CollectionFactory $collectionFactory,
+        KsSellerHelper $ksSellerHelper,
+        FulltextFilter $ksFulltextFilter,
+        \Magento\Framework\App\RequestInterface $ksRequest,
+        \Magento\Customer\Model\Session $ksCustomerSession,
+        array $addFieldStrategies = [],
+        array $addFilterStrategies = [],
+        array $meta = [],
+        array $data = []
+    ) {
+        parent::__construct(
+            $name,
+            $primaryFieldName,
+            $requestFieldName,
+            $meta,
+            $data
+        );
+        $this->ksRequest = $ksRequest;
+        $this->ksCustomerSession = $ksCustomerSession;
+        $this->ksFulltextFilter = $ksFulltextFilter;
+        $this->collection = $collectionFactory->create();
+        $this->ksSellerHelper = $ksSellerHelper;
+        
+        $ksSellerId = $ksSellerHelper->getKsCustomerId();
+        $ksCustomerId = $this->ksCustomerSession->getKsOrderCustomerId();
+        $ks_joinTable = $this->collection->getTable('sales_order_grid');
+
+        if ($ksCustomerId) {
+            $this->collection->getSelect()->join(
+                $ks_joinTable.' as sog',
+                'main_table.ks_order_id = sog.entity_id',
+                [
+                'entity_id'       =>'main_table.id',
+                'status',
+                'ks_base_grand_total' =>'main_table.ks_base_grand_total',
+                'subtotal',
+                'ks_order_date' => 'sog.created_at',
+                'ks_grand_total' => 'main_table.ks_grand_total',
+                'billing_name',
+                'shipping_name',
+                'store_id',
+                'billing_address',
+                'shipping_address'
+            ]
+            )->where("main_table.ks_seller_id = '$ksSellerId'")->where("sog.customer_id='$ksCustomerId'");
+        } else {
+            $this->collection->getSelect()->join(
+                $ks_joinTable.' as sog',
+                'main_table.ks_order_id = sog.entity_id',
+                [
+                'entity_id'       =>'main_table.id',
+                'status',
+                'ks_base_grand_total' =>'main_table.ks_base_grand_total',
+                'subtotal',
+                'ks_order_date' => 'sog.created_at',
+                'ks_grand_total' => 'main_table.ks_grand_total',
+                'billing_name',
+                'shipping_name',
+                'store_id',
+                'billing_address',
+                'shipping_address',
+                'order_currency_code',
+                'base_currency_code'
+            ]
+            )->where("main_table.ks_seller_id = '$ksSellerId'");
+        }
+    }
+
+    /**
+     * Add processing fulltext query
+     *
+     *
+     * @param Filter $filter
+     * @return void
+     */
+    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    {
+        if ('fulltext' == $filter->getField()) {
+            $this->ksFulltextFilter->apply($this->collection, $filter);
+        } else {
+            parent::addFilter($filter);
+        }
+    }
+
+    /**
+     * Get data
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        $searchKey = $this->ksRequest->getParam('search');
+        $ksAppliedFilters = $this->ksRequest->getParam('filters');
+        $this->getCollection()->getSelect()->reset(\Magento\Framework\DB\Select::WHERE);
+        $ksSellerId = $this->ksSellerHelper->getKsCustomerId();
+        $ksCustomerId = $this->ksCustomerSession->getKsOrderCustomerId();
+        
+        if ($ksCustomerId) {
+            $this->getCollection()->addFieldToFilter('sog.customer_id', $ksCustomerId)->addFieldToFilter('main_table.ks_seller_id', $ksSellerId);
+        } else {
+            $this->getCollection()->addFieldToFilter('main_table.ks_seller_id', $ksSellerId);
+        }
+        
+        if (isset($ksAppliedFilters['ks_order_date'])) {
+            if (isset($ksAppliedFilters['ks_order_date']['from'])) {
+                $ksDate = new \DateTime($ksAppliedFilters['ks_order_date']['from']);
+                $ksDate->setTime(00, 00, 00);
+                $this->getCollection()->addFieldToFilter(
+                    'sog.created_at',
+                    ['gteq' => $ksDate]
+                );
+            }
+
+            if (isset($ksAppliedFilters['ks_order_date']['to'])) {
+                $ksDate = new \DateTime($ksAppliedFilters['ks_order_date']['to']);
+                $ksDate->setTime(23, 59, 59);
+                $this->getCollection()->addFieldToFilter('sog.created_at', ['lteq' => $ksDate]);
+            }
+        }
+
+        if (isset($ksAppliedFilters['ks_order_increment_id'])) {
+            if (isset($ksAppliedFilters['ks_order_increment_id']['from'])) {
+                $this->getCollection()->addFieldToFilter(
+                    'ks_order_increment_id',
+                    ['gteq' => $ksAppliedFilters['ks_order_increment_id']['from']]
+                );
+            }
+
+            if (isset($ksAppliedFilters['ks_order_increment_id']['to'])) {
+                $this->getCollection()->addFieldToFilter(
+                    'ks_order_increment_id',
+                    ['lteq' => $ksAppliedFilters['ks_order_increment_id']['to']]
+                );
+            }
+        }
+
+        if (isset($ksAppliedFilters['ks_base_grand_total'])) {
+            if (isset($ksAppliedFilters['ks_base_grand_total']['from'])) {
+                $this->getCollection()->addFieldToFilter(
+                    'ks_base_grand_total',
+                    ['gteq' => $ksAppliedFilters['ks_base_grand_total']['from']]
+                );
+            }
+
+            if (isset($ksAppliedFilters['ks_base_grand_total']['to'])) {
+                $this->getCollection()->addFieldToFilter(
+                    'ks_base_grand_total',
+                    ['lteq' => $ksAppliedFilters['ks_base_grand_total']['to']]
+                );
+            }
+        }
+
+        if (isset($ksAppliedFilters['ks_grand_total'])) {
+            if (isset($ksAppliedFilters['ks_grand_total']['from'])) {
+                $this->getCollection()->addFieldToFilter(
+                    'ks_grand_total',
+                    ['gteq' => $ksAppliedFilters['ks_grand_total']['from']]
+                );
+            }
+
+            if (isset($ksAppliedFilters['ks_grand_total']['to'])) {
+                $this->getCollection()->addFieldToFilter(
+                    'ks_grand_total',
+                    ['lteq' => $ksAppliedFilters['ks_grand_total']['to']]
+                );
+            }
+        }
+
+        if (isset($ksAppliedFilters['billing_address'])) {
+            $this->getCollection()->addFieldToFilter(
+                'billing_address',
+                ['like' => '%'.$ksAppliedFilters['billing_address'].'%']
+            );
+        }
+
+        if (isset($ksAppliedFilters['billing_name'])) {
+            $this->getCollection()->addFieldToFilter(
+                'billing_name',
+                ['like' => '%'.$ksAppliedFilters['billing_name'].'%']
+            );
+        }
+
+        if (isset($ksAppliedFilters['shipping_address'])) {
+            $this->getCollection()->addFieldToFilter(
+                'shipping_address',
+                ['like' => '%'.$ksAppliedFilters['shipping_address'].'%']
+            );
+        }
+
+        if (isset($ksAppliedFilters['shipping_name'])) {
+            $this->getCollection()->addFieldToFilter(
+                'shipping_name',
+                ['like' => '%'.$ksAppliedFilters['shipping_name'].'%']
+            );
+        }
+
+        if (isset($ksAppliedFilters['status'])) {
+            $this->getCollection()->addFieldToFilter(
+                'status',
+                ['eq' => $ksAppliedFilters['status']]
+            );
+        }
+
+        if (isset($ksAppliedFilters['store_id'])) {
+            $this->getCollection()->addFieldToFilter(
+                'store_id',
+                ['eq' => $ksAppliedFilters['store_id']]
+            );
+        }
+
+        if ($searchKey) {
+            $this->getCollection()->addFieldToFilter(
+                [ 'increment_id',
+                'billing_name',
+                'shipping_name',
+                'billing_address',
+                'shipping_address'],
+                [
+                    ['eq'=>$searchKey],
+                    ['like'=> '%'.$searchKey.'%'],
+                    ['like'=> '%'.$searchKey.'%'],
+                    ['like'=> '%'.$searchKey.'%'],
+                    ['like'=> '%'.$searchKey.'%']
+                ]
+            );
+        }
+
+        return $this->getCollection()->load()->toArray();
+    }
+}

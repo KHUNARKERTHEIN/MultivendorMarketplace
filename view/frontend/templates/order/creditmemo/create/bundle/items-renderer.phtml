@@ -1,0 +1,265 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Order\CreditMemo\Create\KsItems */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+
+<?php $_item = $block->getKsBundleItem(); ?>
+<?php $items = $block->getChildren($_item); 
+$ksShowStoreCurrency = $block->canKsShowOrderCurrencyValue();?>
+<?php $_count = count($items) ?>
+<?php $_index = 0 ?>
+<?php
+/** @var \Magento\Catalog\Helper\Data $catalogHelper */
+$catalogHelper = $block->getData('ksCatalogHelper');
+$ksOrderHelper = $block->getData('ksOrderHelper');
+?>
+
+<?php $_prevOptionId = '' ?>
+
+<?php if ($block->getOrderOptions($_item) || $_item->getDescription()): ?>
+    <?php $_showlastRow = true ?>
+<?php else: ?>
+    <?php $_showlastRow = false ?>
+<?php endif; ?>
+
+<?php foreach ($items as $_item): ?>
+    <?php $attributes = $block->getSelectionAttributes($_item) ?>
+    <?php if ($_item->getOrderItem()->getParentItem()): ?>
+        <?php if ($_prevOptionId != $attributes['option_id']): ?>
+        <tr class="ks-bundle-item">
+            <td class="col-product">
+                <div class="option-label"><?= $block->escapeHtml($attributes['option_label']) ?></div>
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td class="last">&nbsp;</td>
+        </tr>
+            <?php $_prevOptionId = $attributes['option_id'] ?>
+        <?php endif; ?>
+    <?php endif; ?>
+    <tr <?php if($_item->getOrderItem()->getParentItem()):?> class="ks-bundle-item" <?php endif;?> id="order-item-row-4">
+        <?php if (!$_item->getOrderItem()->getParentItem()): ?>
+        <td class="col-product">
+            <span><?= $block->escapeHtml(__($_item->getName())) ?></span></br>
+            <div class="product-sku-block">
+                <span class="ks-order-item-sku"><?= $block->escapeHtml(__('SKU')) ?>:</span>
+                <?= /* @noEscape */ implode('<br />', $catalogHelper->splitSku($_item->getSku())) ?>
+            </div>
+        </td>
+        <?php else: ?>
+        <td class="col-product"><div class="option-value"><?= $block->getValueHtml($_item) ?></div></td>
+        <?php endif; ?>
+        <td class="col-price">
+            <?php if ($block->canShowPriceInfo($_item)): ?>
+                <span><?= $block->formatValue($_item->getBasePrice() + $_item->getBaseWeeeTaxAppliedAmount()) ?></span>
+                <br>
+                <?php if($ksShowStoreCurrency):?>
+                    <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($_item->getPrice() + $_item->getWeeeTaxAppliedAmount())?></span>
+                <?php endif;?>
+                <?php if ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($_item)) : ?>
+                                        
+                    <span>
+                        <?php foreach ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($_item) as $ksTax) : ?>
+                            <span class="nobr"><?= $block->escapeHtml($ksTax['title']) ?>:<?= $block->formatValue($ksTax['base_amount']) ?></span>
+                            <br>
+                            <?php if($ksShowStoreCurrency):?>
+                                <span><?= $block->formatToOrderCurrency($ksTax['amount'])?></span>
+                            <?php endif;?>                                                  
+                        <?php endforeach; ?>
+                    </span>
+                <?php endif; ?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if ($block->canShowPriceInfo($_item)): ?>
+                <!-- get qty of ordered product -->
+                <p>
+                    <span><?= $block->escapeHtml(__('Ordered: '.(float) $_item->getOrderItem()->getQtyOrdered())) ?></span>
+                </p> 
+                <!-- check qty of invoiced product -->
+                <?php if ($_item->getOrderItem()->getQtyInvoiced() != 0) : ?>
+                <p>
+                    <span><?= $block->escapeHtml(__('Invoiced: '.(float) $_item->getOrderItem()->getQtyInvoiced())) ?></span>
+                </p>
+                <?php endif; ?>
+                <!-- check qty of shipped product -->
+                <?php if ($_item->getOrderItem()->getQtyShipped() != 0) : ?>
+                    <p>
+                        <span><?= $block->escapeHtml(__('Shipped: '.(float) $_item->getOrderItem()->getQtyShipped())) ?></span>
+                    </p>
+                
+                 <?php endif;?>
+                <!-- check qty of refunded product -->
+                 <?php if ($_item->getOrderItem()->getQtyRefunded() != 0) : ?>
+                    <p>
+                        <span><?= $block->escapeHtml(__('Refunded: '.(float) $_item->getOrderItem()->getQtyRefunded())) ?></span>
+                    </p>
+                <?php endif; ?>
+                <!-- check qty of canceled product -->
+                <?php if ($_item->getOrderItem()->getQtyCanceled() != 0) : ?>
+                    <p>
+                        <span><?= $block->escapeHtml(__('Canceled: '.(float) $_item->getOrderItem()->getQtyCanceled())) ?></span>
+                    </p>
+                <?php endif; ?>
+            <?php elseif ($block->isShipmentSeparately($_item)): ?>
+               <!-- get qty of ordered product -->
+                <p>
+                    <span><?= $block->escapeHtml(__('Ordered: '.(float) $_item->getOrderItem()->getQtyOrdered())) ?></span>
+                </p> 
+                <?php if ($_item->getOrderItem()->getQtyShipped() != 0) : ?>
+                    <p>
+                        <span><?= $block->escapeHtml(__('Shipped: '.(float) $_item->getOrderItem()->getQtyShipped())) ?></span>
+                    </p>
+                
+                 <?php endif;?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <?php if ($block->canKsParentReturnToStock($_item)): ?>
+            <td class="col-return-to-stock">
+                <?php if ($block->canShowPriceInfo($_item)): ?>
+                    <?php if ($block->canKsReturnItemsToStock($_item)): ?>
+                        <input type="checkbox"
+                               name="creditmemo[items][<?= $block->escapeHtmlAttr($_item->getOrderItemId())
+                                ?>][back_to_stock]"
+                               value="1"<?php if ($_item->getBackToStock()):?> checked="checked"<?php endif;?> />
+                        <label class="admin__field-label"></label>
+                    <?php endif; ?>
+                <?php else: ?>
+                    &nbsp;
+                <?php endif; ?>
+            </td>
+        <?php endif; ?>
+        <td class="col-refund col-qty">
+            <?php if ($block->canShowPriceInfo($_item)): ?>
+                <?php if($_item->getOrderItem()->getIsQtyDecimal()):?>
+                    <input type="text" class="ks-creditmemo-item-qty ks-max-w-60" name="creditmemo[items][<?= (int) $_item->getOrderItemId() ?>][qty]" item-id="items[<?=$_item->getOrderItem()->getId();?>]" value="<?= $_item->getQty(); ?>" >
+                <!-- creditmemo[items][<?= (int) $_item->getOrderItemId() ?>][qty] -->
+                <?php else:?>
+                   <input type="text" class="ks-creditmemo-item-qty ks-max-w-60" name="creditmemo[items][<?= (int) $_item->getOrderItemId() ?>][qty]"  item-id="<?=$_item->getOrderItem()->getId();?>" value="<?= floor($_item->getQty()); ?>" >                                
+                <?php endif;?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="col-subtotal">
+            <?php if ($block->canShowPriceInfo($_item)): ?>
+                <span><?= $block->formatValue($_item->getBaseRowTotal() + ($_item->getBaseWeeeTaxAppliedAmount() * $_item->getQty())) ?></span>
+                <br>
+                <?php if($ksShowStoreCurrency):?>
+                    <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($_item->getRowTotal() + ($_item->getWeeeTaxAppliedAmount()* $_item->getQty()))?></span>
+                <?php endif;?>
+                <?php if ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($_item)) : ?>
+                            
+                    <span>
+                        <?php foreach ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($_item) as $ksTax) : ?>
+                            <span class="nobr"><?= $block->escapeHtml($ksTax['title']) ?>:<?= $block->formatValue($ksTax['base_row_amount']) ?></span>
+                            <br>
+                            <?php if($ksShowStoreCurrency):?>
+                                <span><?= $block->formatToOrderCurrency($ksTax['row_amount'])?></span>
+                            <?php endif;?>                                                  
+                        <?php endforeach; ?>
+                    </span>
+                <?php endif; ?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="col-tax">
+            <?php if ($block->canShowPriceInfo($_item)): ?>
+                <span><?= $block->formatValue($_item->getBaseTaxAmount()) ?></span>
+                <br>
+                <?php if($ksShowStoreCurrency):?>
+                    <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($_item->getTaxAmount())?></span>
+                <?php endif;?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="col-discount">
+            <?php if ($block->canShowPriceInfo($_item)): ?>
+                <span><?= $block->formatValue($_item->getBaseDiscountAmount()) ?></span>
+                <br>
+                <?php if($ksShowStoreCurrency):?>
+                        <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($_item->getDiscountAmount())?></span>
+                <?php endif;?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="col-total last">
+            <?php if ($block->canShowPriceInfo($_item)): ?>
+                <span><?= $block->formatValue($_item->getBaseRowTotal()-$_item->getBaseDiscountAmount() + $ksOrderHelper->ksCalcItemBaseTaxAmt($_item->getOrderItem(),$_item->getQty()) + ($_item->getBaseWeeeTaxAppliedAmount()* $_item->getQty())) ?></span>
+                <br>
+                <?php if($ksShowStoreCurrency):?>
+                    <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($_item->getRowTotal()-$_item->getDiscountAmount() + $ksOrderHelper->ksCalcItemTaxAmt($_item->getOrderItem(),$_item->getQty()) + ($_item->getWeeeTaxAppliedAmount()* $_item->getQty()))?></span>
+                <?php endif;?>
+                <?php else: ?>
+                 &nbsp;
+            <?php endif; ?>
+        </td>
+    </tr>
+<?php endforeach; ?>
+<?php if ($_showlastRow): ?>
+    <tr class="border">
+        <td class="col-product">
+            <?php if ($block->getOrderOptions($_item->getOrderItem())): ?>
+                <dl class="item-options">
+                <?php foreach ($block->getOrderOptions($_item->getOrderItem()) as $option): ?>
+                    <dt><?= $block->escapeHtml($option['label']) ?></dt>
+                    <dd>
+                    <?php if (isset($option['custom_view']) && $option['custom_view']): ?>
+                        <?= $block->escapeHtml($option['value']) ?>
+                    <?php else: ?>
+                        <?= $block->escapeHtml($block->truncateString($option['value'], 55, '', $_remainder)) ?>
+                        <?php if ($_remainder):?>
+                            ... <span id="<?= $block->escapeHtmlAttr($_id = 'id' . uniqid())
+                            ?>"><?= $block->escapeHtml($_remainder) ?></span>
+                            <?php $escapedId = /* @noEscape */ $block->escapeJs($_id);
+                            $scriptString = <<<script
+                                require(['prototype'], function(){
+                                    $('{$escapedId}').hide();
+                                    $('{$escapedId}').up().observe('mouseover', function(){\$('{$escapedId}').show();});
+                                    $('{$escapedId}').up().observe('mouseout',  function(){\$('{$escapedId}').hide();});
+                                });
+script;
+                            ?>
+                            <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+                        <?php endif;?>
+                    <?php endif;?>
+                    </dd>
+                <?php endforeach; ?>
+                </dl>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+            <?= $block->escapeHtml($_item->getDescription()) ?>
+        </td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td class="last">&nbsp;</td>
+    </tr>
+<?php endif; ?>

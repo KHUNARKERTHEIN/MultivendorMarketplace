@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_product_review_listing.ks_product_review_listing_data_source</item>
+            <item name="deps" xsi:type="string">ks_product_review_listing.ks_product_review_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">multivendor_review_product_columns</item>
+    </argument>
+    <dataSource name="ks_product_review_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Frontend\Product\KsProductReview</argument>
+            <argument name="name" xsi:type="string">ks_product_review_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">review_id</argument>
+            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/product/grid/ks-provider</item>
+                    <item name="update_url" xsi:type="url" path="multivendor/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="cacheRequests" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">Ksolves_MultivendorMarketplace/grid/ks-toolbar</item>
+            </item>
+        </argument>
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">ks_product_review_listing.ks_product_review_listing.multivendor_review_product_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+        <bookmark name="bookmarks">
+           <argument name="data" xsi:type="array">
+               <item name="config" xsi:type="array">
+                   <item name="storageConfig" xsi:type="array">
+                       <item name="namespace" xsi:type="string">ks_product_review_listing</item>
+                   </item>
+               </item>
+           </argument>
+        </bookmark>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="multivendor_review_product_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">multivendorProductReviewListGrid</item>
+                        <item name="target" xsi:type="string">selectOrder</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <column name="review_id" sortOrder="0">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="review_created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="10">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created</label>
+            </settings>
+        </column>
+        <column name="status_id" class="Magento\Review\Ui\Component\Listing\Columns\Status" sortOrder="20">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Review\Ui\Component\Listing\Columns\Status"/>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="title" sortOrder="30">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="truncate" xsi:type="number">50</item>
+                    <item name="nl2br" xsi:type="boolean">true</item>
+                    <item name="escape" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Title</label>
+            </settings>
+        </column>
+        <column name="nickname" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="truncate" xsi:type="number">50</item>
+                    <item name="nl2br" xsi:type="boolean">true</item>
+                    <item name="escape" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Nickname</label>
+            </settings>
+        </column>
+        <column name="detail" sortOrder="50">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="truncate" xsi:type="number">50</item>
+                    <item name="nl2br" xsi:type="boolean">true</item>
+                    <item name="escape" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Review</label>
+            </settings>
+        </column>
+        <column name="visibility" class="Magento\Review\Ui\Component\Listing\Columns\Visibility" sortOrder="60">
+            <settings>
+                <label translate="true">Visibility</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
+        <column name="type" class="Magento\Review\Ui\Component\Listing\Columns\Type" sortOrder="70">
+            <settings>
+                <label translate="true">Type</label>
+            </settings>
+        </column>
+        <column name="name" sortOrder="80">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Product</label>
+            </settings>
+        </column>
+        <column name="sku" sortOrder="90">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">SKU</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

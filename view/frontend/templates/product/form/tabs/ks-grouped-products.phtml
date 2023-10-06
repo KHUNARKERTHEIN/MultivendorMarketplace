@@ -1,0 +1,133 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+<div data-mage-init='{"ksGroupedProductDialog":{}}'>
+    <div class="ks-fieldset ks-product-content mb-5 pl-5">
+        <div class="ks-custom-option-action">
+            <div class="d-inline-block">    
+                <button type="button" class="ks-add-grouped-product action-secondary ks-action-btn ks-secondry ks-btn-padding ks-secondry-child" data-title="<?= $block->escapeHtml(__("Add Products to Group")) ?>">
+                    <span data-role="button-label"><?= $block->escapeHtml(__("Add Products to Group")) ?></span>
+                </button>
+            </div>
+        </div>
+        <div class="product-create-configuration-info ks-custom-option-text">
+            <div class="note">
+                <?= $block->escapeHtml(__('A grouped product is made up of multiple, standalone products that are presented as a group.
+                You can offer variations of a single product, or group them by season or theme to create a coordinated set.
+                Each product can be purchased separately, or as part of the group.')) ?>
+            </div>
+        </div>
+    </div>
+    <div id="ks_grouped_product_modal" class="ks-product-model-table-style"></div>
+
+    <script type="text/x-magento-template" id="ks_grouped_product_template">
+        <tr title="#" class="ks-gridrow pointer" data-role="row">
+            <td data-column="info" class="col-draggable col-info">
+                <span class="ks-draggable-handle"></span>
+                <input
+                    type="hidden"
+                    name="links[associated][<%- data.id %>][id]"
+                    value="<%- data.id %>"
+                    data-role="id" />
+            </td>
+            <td data-column="id" class="col-id">
+                <%- data.id %>
+            </td>
+            <td data-column="thumbnail" class="col-thumbnail data-grid-thumbnail-cell">
+                <img src="<%- data.thumbnail %>" />
+            </td>
+            <td data-column="name" class="editable col-name">
+                <%- data.name %>
+            </td>
+            <td data-column="status" class="col-status">
+                <%- data.status %>
+            </td>
+            <td data-column="attributeset" class="col-attributeset">
+                <%- data.attributeset %>
+            </td>
+            <td data-column="sku" class="col-sku">
+                <%- data.sku %>
+            </td>
+            <td data-column="price" class="col-price">
+                <%- data.price %>
+            </td>
+            <td data-column="qty" class="col-qty">
+                <input
+                    type="text"
+                    name="links[associated][<%- data.id %>][qty]"
+                    value="<%- data.qty %>"
+                    data-role="id" />
+            </td>
+            <td data-column="position" class="col-position">
+                <input
+                    type="text"
+                    name="links[associated][<%- data.id %>][position]"
+                    value="<%- data.position %>"
+                    data-role="position" />
+            </td>
+            <td data-column="actions" class="col-actions">
+                <button
+                    type="button"
+                    class="action-delete"
+                    data-role="delete">Remove</button>
+            </td>
+        </tr>
+    </script>
+
+    <div class="admin__data-grid-wrap table-wrapper grid-container no-display ks-product-table-details ks-grouped-product-list">
+        <!--add custom paging-->
+        <?php echo $block->getLayout()
+            ->createBlock('Magento\Framework\View\Element\Template')
+            ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/link-item/ks-custom-paging.phtml')
+            ->toHtml();?>
+        <table class="data table data-grid" data-role="grouped-product-grid" data-products="<?php echo $block->escapeHtml($this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->getKsAssociateProduct())); ?>">
+            <thead>
+            <tr class="headings">
+                <th data-column="info" class="col-draggable no-link col-info">
+                    <span></span>
+                </th>
+                <th data-column="id" class="no-link col-id">
+                    <span><?php /* @escapeNotVerified */ echo __('ID') ?></span>
+                </th>
+                <th data-column="thumbnail" class="no-link col-thumbnail">
+                    <span><?php /* @escapeNotVerified */ echo __('Thumbnail') ?></span>
+                </th>
+                <th data-column="name" class="no-link col-name">
+                    <span><?php /* @escapeNotVerified */ echo __('Name') ?></span>
+                </th>
+                <th data-column="status" class="no-link col-status">
+                    <span><?php /* @escapeNotVerified */ echo __('Status') ?></span>
+                </th>
+                <th data-column="attributeset" class="no-link col-attributeset">
+                    <span><?php /* @escapeNotVerified */ echo __('Attribute set') ?></span>
+                </th>
+                <th data-column="sku" class="no-link col-sku">
+                    <span><?php /* @escapeNotVerified */ echo __('SKU') ?></span>
+                </th>
+                <th data-column="price" class="no-link col-price">
+                    <span><?php /* @escapeNotVerified */ echo __('Price') ?></span>
+                </th>
+                <th data-column="qty" class="no-link col-qty">
+                    <span><?php /* @escapeNotVerified */ echo __('Default Qty') ?></span>
+                </th>
+                <th data-column="position" class="no-link col-position">
+                    <span><?php /* @escapeNotVerified */ echo __('Position') ?></span>
+                </th>
+                <th data-column="actions" class="last no-link col-actions">
+                    <span><?php /* @escapeNotVerified */ echo __('Actions') ?></span>
+                </th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>

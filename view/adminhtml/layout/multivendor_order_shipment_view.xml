@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <head>
+        <script src="Ksolves_MultivendorMarketplace::js/sales/ks-reject-memo.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Shipment\View" name="multivendor_order_shipment_view">
+                <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Shipment\View\KsForm" name="form" template="Ksolves_MultivendorMarketplace::order/shipment/view/ksform.phtml">
+                    <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\View\Info" name="multivendor_order_account_address_info" template="Ksolves_MultivendorMarketplace::order/view/info.phtml">
+                        <container name="extra_customer_info"/>
+                    </block>
+                    <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Payment" name="order_payment"/>
+                    <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Shipment\View\Items" name="shipment_items" template="Ksolves_MultivendorMarketplace::order/shipment/view/items.phtml">
+                        <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Shipment\View\Items" name="bundle_items" template="Ksolves_MultivendorMarketplace::order/shipment/view/bundle/items-renderer.phtml">
+                            <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Shipment\View\Items" name="bundle_request_items" template="Ksolves_MultivendorMarketplace::order/shipment/view/bundle/request-item-renderer.phtml"/>
+                        </block>
+                    </block>
+                    <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Shipment\View\KsTracking" name="shipment_tracking" template="Ksolves_MultivendorMarketplace::order/shipment/view/tracking.phtml" />
+                    <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Shipment\View\Items" name="shipment_comments" template="Ksolves_MultivendorMarketplace::order/shipment/view/comments.phtml" />
+                    <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::sales/ks-reject.phtml" name="ks_rejection"/>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

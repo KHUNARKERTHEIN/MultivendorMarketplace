@@ -1,0 +1,94 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+<!-- Attribute set main page start -->
+<div class= "ks-attribute-set-page">
+    <form method="post" id="set-prop-form" action="<?= $block->escapeUrl($block->getUrl('multivendor/productattribute_set/save', ['_secure' => $this->getRequest()->isSecure()])) ?>" data-mage-init='{"validation":{}}'>
+        
+        <!-- Set Attribute action header start -->
+        <div class="page-actions _fixed">
+            <div class="page-actions-inner">
+                <div class="page-actions-buttons ks-page-action">
+                    <button title="Back" type="button" class="action- scalable back ks-back" onclick="location.href='<?= $block->escapeUrl($block->getUrl('multivendor/productattribute_set/index', ['_secure' => $this->getRequest()->isSecure()])) ?>'">
+                        <span><?= $block->escapeHtml(__("Back")) ?></span>
+                    </button>
+                    <button id="save-button" name="save" title="Save" class="ks-action-btn ks-primary scalable save float-right" data-type="submit" value="save">
+                        <span><?= $block->escapeHtml(__("Save")) ?></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Set Attribute action header end -->
+
+        <div class="ks-page-card ks-tab-page">
+            <div class="ks-fieldset-wrapper-content">
+                <div class="ks-form-fieldset">
+
+                    <!-- Attribute Set Title start -->
+                    <div class="admin__legend ks-form-collapsible-block">
+                        <div class="ks-fieldset-wrapper-title">
+                            <div class="ks-form-collapsible-title ks-after-none ks-cursor-inherit">
+                            <span><?= $block->escapeHtml(__("Attribute Set Information")) ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Attribute Set Title end -->
+
+                    <!-- Attribute Property form field start -->
+                    <fieldset class="fieldset admin__fieldset ks-form-field mt-5" id="set_name">
+                        <div class="admin__field field-attribute_set_name  required _required with-note ks-control-grouped">
+                            <div class="ks-form-field required">
+                                <div class="ks-form-field-label">
+                                    <label class="label admin__field-label" for="attribute_set_name">
+                                        <span><?= $block->escapeHtml(__("Name")) ?></span>
+                                    </label>
+                                </div>
+                                <div class="admin__field-control control ks-field-control">
+                                    <input id="attribute_set_name" name="attribute_set_name" value="" class="ks-control-feild required-entry validate-no-html-tags input-text admin__control-text required-entry _required" type="text" aria-required="true">               
+                                    <div class="ks-form-field-note" id="attribute_set_name-note"><?= $block->escapeHtml(__("For internal use")) ?></div>            
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Attribute Property form field end -->
+
+                    <input id="gotoEdit" name="gotoEdit" value="1" type="hidden"> 
+
+                    <!-- Attribute Property form field start -->
+                    <fieldset class="fieldset admin__fieldset ks-form-field mt-4" id="set_name">
+                        <div class="admin__field field-skeleton_set  required _required ks-control-grouped">
+                            <div class="ks-form-field required">
+                                <div class="ks-form-field-label">
+                                    <label class="label admin__field-label" for="skeleton_set">
+                                        <span><?= $block->escapeHtml(__("Based On")) ?></span>
+                                    </label>
+                                </div>
+                                <div class="admin__field-control control ks-field-control">
+                                    <select id="skeleton_set" name="skeleton_set" class="select ks-select-box required-entry required-entry _required select admin__control-select" aria-required="true">
+                                        <?php $ksSetCollection = $block->getKsAllowedAttributeSet();
+                                        foreach ($ksSetCollection as $ksKey => $ksValue): ?>
+                                            <option value="<?= $ksValue['value']?>" ><?= $ksValue['label']?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Attribute Property form field end -->
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<!-- Attribute set main page end -->

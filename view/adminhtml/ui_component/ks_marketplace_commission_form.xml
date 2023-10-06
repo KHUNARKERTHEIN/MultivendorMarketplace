@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_commission_form.ks_marketplace_commission_form_data_source</item>
+            <item name="deps" xsi:type="string">ks_marketplace_commission_form.ks_marketplace_commission_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Commission Rule</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
+        <item name="buttons" xsi:type="array">
+            <item name="save_and_continue" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\Buttons\KsSaveAndContinueButton</item>
+            <item name="save" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\Buttons\KsSaveButton</item>
+            <item name="reset" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\Buttons\KsResetButton</item>
+            <item name="delete" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\Buttons\KsDeleteButton</item>
+            <item name="back" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\Seller\Buttons\KsBackButton</item>
+        </item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+            <item name="navContainerName" xsi:type="string">left</item>
+        </item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">ks_marketplace_commission_form</item>
+        </item>
+    </argument>
+    <dataSource name="ks_marketplace_commission_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\KsCommissionFormDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_marketplace_commission_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">main_table.id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="multivendor/commissionrule/save"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <fieldset name="commission_details">
+        <settings>
+            <label translate="true">Rule Information</label>
+        </settings>
+        <fieldset name="rule_information">
+            <settings>
+                <opened>true</opened>
+                <label/>
+            </settings>
+            <field name="id" formElement="text">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="sortOrder" xsi:type="number">10</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>number</dataType>
+                    <visible>false</visible>
+                    <dataScope>id</dataScope>
+                </settings>
+            </field>
+            <field name="ks_rule_name" formElement="input">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="notice" xsi:type="string" translate="true">Provide a unique rule name to differentiate from the other given rules.</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>text</dataType>
+                    <label>Rule Name</label>
+                    <visible>true</visible>
+                    <required>true</required>
+                    <dataScope>ks_rule_name</dataScope>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                </settings>
+            </field>
+            <field name="ks_rule_desc" formElement="textarea">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="cols" xsi:type="number">15</item>
+                        <item name="rows" xsi:type="number">5</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>textarea</dataType>
+                    <label>Description</label>
+                    <visible>true</visible>
+                    <dataScope>ks_rule_desc</dataScope>
+                </settings>
+            </field>
+            <field name="ks_status" formElement="select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">ks_commission_rule</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>number</dataType>
+                    <label>Status</label>
+                    <visible>true</visible>
+                    <dataScope>ks_status</dataScope>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Magento\Config\Model\Config\Source\Enabledisable"/>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
+            <field name="ks_rule_type" formElement="select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/commission/ks-commission-dependency</item>
+                        <item name="source" xsi:type="string">ks_commission_rule</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>number</dataType>
+                    <label>Rule Type</label>
+                    <visible>true</visible>
+                    <dataScope>ks_rule_type</dataScope>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <imports>
+                        <link name="disabled">${ $.provider}:data.do_we_disable_it</link>
+                    </imports>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Ksolves\MultivendorMarketplace\Model\Source\CommissionRule\KsRuleType"/>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
+            <field name="ks_seller_id">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="showCheckbox" xsi:type="boolean">false</item>
+                        <item name="disableLabel" xsi:type="boolean">true</item>
+                        <item name="multiple" xsi:type="boolean">false</item>
+                        <item name="filterOptions" xsi:type="boolean">true</item>
+                        <item name="label" xsi:type="string" translate="true">Seller</item>
+                        <item name="formElement" xsi:type="string">select</item>
+                        <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                        <item name="source" xsi:type="string">rule_information</item>
+                        <item name="dataScope" xsi:type="string">ks_seller_id</item>
+                        <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/ks-seller-list</item>
+                    </item>
+                </argument>
+                <settings>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                </settings>
+            </field>
+            <field name="ks_priority" formElement="input">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="notice" xsi:type="string" translate="true">In the ascending order, priority will be given to different rules. If priority of two rules is same , then the rule which is newly created will get more priority.</item>
+                    </item>
+                </argument>
+                <settings>
+                    <validation>
+                        <rule name="validate-digits" xsi:type="boolean">true</rule>
+                    </validation>
+                    <dataType>text</dataType>
+                    <label>Priority</label>
+                    <visible>true</visible>
+                    <dataScope>ks_priority</dataScope>
+                </settings>
+            </field>
+        </fieldset>
+        <fieldset name="extra_details">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="collapsible" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Extra Conditions</item>
+                    <item name="sortOrder" xsi:type="number">15</item>
+                </item>
+            </argument>
+            <settings>
+                <imports>
+                    <link name="visible">${ $.provider}:data.do_we_show_it</link>
+                </imports>
+            </settings>
+            <field name="ks_website">
+                <argument name="data" xsi:type="array">
+                    <item name="options" xsi:type="object">Magento\Store\Model\ResourceModel\Website\Collection</item>
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="label" xsi:type="string" translate="true">Website</item>
+                        <item name="formElement" xsi:type="string">multiselect</item>
+                        <item name="source" xsi:type="string"></item>
+                        <item name="dataScope" xsi:type="string">ks_website</item>
+                    </item>
+                </argument>
+            </field>
+            <field name="ks_seller_group">
+                <argument name="data" xsi:type="array">
+                    <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsSellerGroup</item>
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="label" xsi:type="string" translate="true">Seller Groups</item>
+                        <item name="formElement" xsi:type="string">multiselect</item>
+                        <item name="source" xsi:type="string"></item>
+                        <item name="dataScope" xsi:type="string">ks_seller_group</item>
+                    </item>
+                </argument>
+            </field>
+            <field name="ks_product_type">
+                <argument name="data" xsi:type="array">
+                    <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\CommissionRule\KsProductTypes</item>
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="label" xsi:type="string" translate="true">Product Type</item>
+                        <item name="formElement" xsi:type="string">multiselect</item>
+                        <item name="source" xsi:type="string"></item>
+                        <item name="dataScope" xsi:type="string">ks_product_type</item>
+                    </item>
+                </argument>
+            </field>
+            <field name="ks_start_date">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">string</item>
+                        <item name="label" xsi:type="string" translate="true">From</item>
+                        <item name="formElement" xsi:type="string">date</item>
+                        <item name="source" xsi:type="string">page</item>
+                        <item name="sortOrder" xsi:type="number">21</item>
+                        <item name="dataScope" xsi:type="string">ks_start_date</item>
+                    </item>
+                </argument>
+                <settings>
+                    <validation>
+                        <rule name="validate-date" xsi:type="boolean">true</rule>
+                    </validation>
+                </settings>
+            </field>
+            <field name="ks_end_date">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">string</item>
+                        <item name="label" xsi:type="string" translate="true">To</item>
+                        <item name="formElement" xsi:type="string">date</item>
+                        <item name="source" xsi:type="string">page</item>
+                        <item name="sortOrder" xsi:type="number">25</item>
+                        <item name="dataScope" xsi:type="string">ks_end_date</item>
+                    </item>
+                </argument>
+                <settings>
+                    <validation>
+                        <rule name="validate-date" xsi:type="boolean">true</rule>
+                    </validation>
+                </settings>
+            </field>
+            <field name="ks_min_price" formElement="input">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">ks_commission_rule</item>
+                    </item>
+                </argument>
+                <settings>
+                    <validation>
+                        <rule name="validate-number" xsi:type="boolean">true</rule>
+                    </validation>
+                    <dataType>text</dataType>
+                    <label>Price Bracket (Min)</label>
+                    <visible>true</visible>
+                    <dataScope>ks_min_price</dataScope>
+                </settings>
+            </field>
+            <field name="ks_max_price" formElement="input">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">ks_commission_rule</item>
+                    </item>
+                </argument>
+                <settings>
+                    <validation>
+                        <rule name="validate-number" xsi:type="boolean">true</rule>
+                    </validation>
+                    <dataType>text</dataType>
+                    <label>Price Bracket (Max)</label>
+                    <visible>true</visible>
+                    <dataScope>ks_max_price</dataScope>
+                </settings>
+            </field>
+            <field name="ks_price_roundoff">
+                <argument name="data" xsi:type="array">
+                    <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\CommissionRule\KsPriceRoundOff</item>
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">ks_commission_rule</item>
+                        <item name="formElement" xsi:type="string">select</item>
+                        <item name="label" xsi:type="string">Price Round Off</item>
+                        <item name="dataScope" xsi:type="string">ks_price_roundoff</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                    </item>
+                </argument>
+            </field>
+        </fieldset>
+        <fieldset name="commission_fieldset">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="collapsible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Commission Details</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+            <field name="ks_calculation_baseon">
+                <argument name="data" xsi:type="array">
+                    <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\CommissionRule\KsCalculationBaseOption</item>
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">ks_commission_rule</item>
+                        <item name="formElement" xsi:type="string">select</item>
+                        <item name="label" xsi:type="string">Calculation Based On</item>
+                        <item name="dataScope" xsi:type="string">ks_calculation_baseon</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                    </item>
+                </argument>
+            </field>
+            <field name="ks_commission_type">
+                <argument name="data" xsi:type="array">
+                    <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\CommissionRule\KsCommissionType</item>
+                    <item name="config" xsi:type="array">
+                        <item name="additionalClasses" xsi:type="string">admin__field-small ks-cm</item>
+                        <item name="source" xsi:type="string">ks_commission_rule</item>
+                        <item name="formElement" xsi:type="string">select</item>
+                        <item name="label" xsi:type="string">Commission Type</item>
+                        <item name="dataScope" xsi:type="string">ks_commission_type</item>
+                        <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/commission/ks-commission-validation</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                    </item>
+                </argument>
+                <settings>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <imports>
+                        <link name="disabled">${ $.provider}:data.do_we_disable_it</link>
+                    </imports>
+                </settings>
+            </field>
+            <button name="ks_calculation">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="buttonClasses" xsi:type="string">ks-calculation-button</item>
+                        <item name="title" xsi:type="string">Commission Calculator</item>
+                        <item name="displayAsLink" xsi:type="boolean">true</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="targetName" xsi:type="string">${ $.parentName}.ks_commission_calculator</item>
+                                <item name="actionName" xsi:type="string">openModal</item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </button>
+            <modal name="ks_commission_calculator">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="onCancel" xsi:type="string">actionCancel</item>
+                        <item name="options" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Commission Calculator</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <deps>
+                        <dep>ks_marketplace_commission_form.ks_marketplace_commission_form_data_source</dep>
+                    </deps>
+                    <options>
+                        <option name="title" xsi:type="string" translate="true"></option>
+                    </options>
+                </settings>
+                <insertForm name="ks_marketplace_commission_calculator_loader">
+                    <settings>
+                        <formSubmitType>ajax</formSubmitType>
+                        <renderUrl path="mui/index/render">
+                            <param name="handle">ks_marketplace_commission_calculator</param>
+                            <param name="buttons">1</param>
+                        </renderUrl>
+                        <loading>true</loading>
+                        <autoRender>true</autoRender>
+                        <externalProvider>${ $.ns }.ks_marketplace_commission_calculator_data_source</externalProvider>
+                        <toolbarContainer>${ $.parentName }</toolbarContainer>
+                        <ns>ks_marketplace_commission_calculator</ns>
+                    </settings>
+                </insertForm>
+                <htmlContent name="ks-chart">
+                    <settings>
+                        <additionalClasses>
+                            <class name="ks-chart-div">true</class>
+                        </additionalClasses>
+                    </settings>
+                    <block class="Magento\Framework\View\Element\Template" name="pie-chart">
+                        <arguments>
+                            <argument name="template" xsi:type="string">Ksolves_MultivendorMarketplace::commission/ks-pie-chart.phtml</argument>
+                        </arguments>
+                    </block>
+                </htmlContent>
+            </modal>
+            <field name="ks_commission_value">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">ks_commission_rule</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                        <item name="label" xsi:type="string">Commission Value</item>
+                        <item name="dataScope" xsi:type="string">ks_commission_value</item>
+                        <item name="dataType" xsi:type="string">number</item>
+                    </item>
+                </argument>
+                <settings>
+                    <validation>
+                        <rule name="validate-number" xsi:type="boolean">true</rule>
+                        <rule name="validate-not-negative-number" xsi:type="boolean">true</rule>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <visible>true</visible>
+                </settings>
+            </field>
+        </fieldset>
+    </fieldset>
+    <!--  product conditions tab -->
+    <htmlContent name="ks_product_categories">
+        <settings>
+            <wrapper>
+                <canShow>true</canShow>
+                <componentType>fieldset</componentType>
+            </wrapper>
+        </settings>
+        <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\Edit\Tab\KsConditions" name="ks_filter_details">
+            <arguments>
+                <argument name="sort_order" xsi:type="number">70</argument>
+                <argument name="tab_label" xsi:type="string" translate="true">Product Categories</argument>
+            </arguments>
+        </block>
+    </htmlContent>
+</form>

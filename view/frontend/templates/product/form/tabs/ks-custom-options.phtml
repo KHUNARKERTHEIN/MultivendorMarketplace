@@ -1,0 +1,70 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+<div id="ks_custom_options_container" id="product-custom-options-content"
+         data-role="product-custom-options-content">
+
+    <div class="pl-5 mb-5">
+        <div class="ks-custom-option-action">
+            <a href="#" id="ks-custom-import">
+                <span><?= $block->escapeHtml(__("Import Options")) ?></span>
+            </a>
+
+            <a href="#" onclick="event.preventDefault()" class="ks-action-btn ks-secondry ks-secondry-child ks-btn-padding" id="ks-custom-options">
+                <span><?= $block->escapeHtml(__("Add Options")) ?></span>
+            </a>
+        </div>
+
+        <div class="ks-custom-option-text">
+            <div>
+                <p><?= $block->escapeHtml(__("Custom options let customers choose the product variations they want.")) ?></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ks-custom-option-msg pl-4">
+        <div class="messages">
+            <div class="message message-error ks-info-message-box" id="dynamic-price-warning">
+                <div class="message-inner">
+                    <div class="message-content">
+                        <?= $block->escapeHtml(__(
+                            'We can\'t save custom-defined options for bundles with dynamic pricing.'
+                        )) ?></div>
+                </div>
+            </div>
+            <?= /* @noEscape */ $secureRenderer->renderStyleAsTag("display: none;", '#dynamic-price-warning') ?>
+        </div>
+
+        <div class="messages">
+            <div class="message message-error ks-info-message-box" id="ks-configurable-product-warning">
+                <div class="message-inner">
+                    <div class="message-content">
+                        <?= $block->escapeHtml(__(
+                            'Custom options with price type "percent" is not available for configurable product.'
+                        )) ?></div>
+                </div>
+            </div>
+            <?= /* @noEscape */ $secureRenderer->renderStyleAsTag("display: none;", '#ks-configurable-product-warning') ?>
+        </div>
+    </div>
+
+    <div id="ks_product_options_container" class="sortable-wrapper pl-4">
+        <div id="ks_product_options_container_top">
+            <!--add custom paging-->
+            <?= $block->getLayout()
+                ->createBlock('Magento\Framework\View\Element\Template')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/link-item/ks-custom-paging.phtml')
+                ->toHtml();?>
+        </div>
+        <?= $block->getKsOptionsBoxHtml() ?>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php
+    $ksPendingSellerCount = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerHelper')->getKsPendingSellerCount();
+    $ksPendingCategoryRequestsCount = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsCategoryRequests')->getKsPendingCategoryRequestsCount();
+    $ksPendingProductCount = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsProductHelper')->getKsPendingProductCount();
+    $ksPendingPriceComparisonProductCount = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsProductHelper')->getKsPendingPriceComparisonProductCount();
+?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Ksolves_MultivendorMarketplace/js/notification/ks-pending-notifications-icon-count": {
+                "ksPendingSellerCount": "<?= $ksPendingSellerCount ?>",
+                "ksPendingCategoryRequestsCount": "<?= $ksPendingCategoryRequestsCount ?>",
+                "ksPendingProductCount": "<?= $ksPendingProductCount?>",
+                "ksPendingPriceComparisonProductCount": "<?= $ksPendingPriceComparisonProductCount ?>"
+            }
+        }
+    }
+</script>

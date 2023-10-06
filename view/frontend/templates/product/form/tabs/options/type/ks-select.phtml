@@ -1,0 +1,113 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+?>
+<?php /** @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Options\Type\KsSelect */ ?>
+<script id="ks-custom-option-select-type-template" type="text/x-magento-template">
+    <div id="product_option_<%- data.option_id %>_type_<%- data.group %>" class="fieldset ks-advance-table">
+        <table class="data table ks-tiers_table">
+            <thead>
+                <tr>
+                    <th class="col-draggable">&nbsp;</th>
+                    <th class="col-name ks-required"><?= $block->escapeHtml(__('Title')) ?><span class="required">*</span></th>
+                    <?php if ($block->getCanReadPrice() !== false): ?>
+                    <th class="col-price ks-required"><?= $block->escapeHtml(__('Price')) ?></th>
+                    <th class="col-price-type"><?= $block->escapeHtml(__('Price Type')) ?></th>
+                    <?php endif; ?>
+                    <th class="col-sku"><?= $block->escapeHtml(__('SKU')) ?></th>
+                    <th class="col-actions">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody id="select_option_type_row_<%- data.option_id %>"></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <input name="validation_<%- data.option_id %>_result" class="required-option-select-type-rows" type="hidden" value="">
+                        <button type="button" title="Delete" class="add add-select-row primary" id="product_option_<%- data.id %>__add_select_row">
+                                <span><?= $block->escapeHtml(__('Add Value')) ?></span>
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</script>
+
+<script id="ks-custom-option-select-type-row-template" type="text/x-magento-template">
+    <tr id="product_option_<%- data.id %>_select_<%- data.select_id %>" data-role="row">
+        <td class="col-draggable ks-draggable-icon">
+            <div data-role="draggable-handle" class="draggable-handle"
+                 title="<?= $block->escapeHtmlAttr(__('Sort Custom Option')) ?>"></div>
+            <input name="product[options][<%- data.id %>][values][<%- data.select_id %>][sort_order]" type="hidden" value="<%- data.sort_order %>">
+        </td>
+        <td class="col-name select-opt-title">
+            <% if (data.option_id!="") { %>
+                <input name="product[options][<%- data.id %>][values][<%- data.select_id %>][option_id]" type="hidden" value="<%- data.option_id %>">
+            <% } %>
+            <% if (data.option_type_id > 0) { %>
+                <input name="product[options][<%- data.id %>][values][<%- data.select_id %>][option_type_id]" type="hidden" value="<%- data.option_type_id %>">
+            <% } %>
+            
+            <input id="product_option_<%- data.id %>_select_<%- data.select_id %>_is_delete" name="product[options][<%- data.id %>][values][<%- data.select_id %>][is_delete]" type="hidden" value="">
+
+            <input name="product[options][<%- data.id %>][values][<%- data.select_id %>][default_title]" type="hidden" value="<%- data.defaultTitle %>">
+            
+            <div class="ks-use-default">
+                <input id="product_option_<%- data.id %>_select_<%- data.select_id %>_title" <% if (typeof data.scopeTitleDisabled != 'undefined' && data.scopeTitleDisabled != null) { %> disabled="disabled" <% } %> name="product[options][<%- data.id %>][values][<%- data.select_id %>][title]" class="required-entry input-text select-type-title <% if (typeof data.scopeTitleDisabled != 'undefined' && data.scopeTitleDisabled != null) { %> disabled <% } %>" type="text" value="<%- data.title %>" data-store-label="<%- data.title %>">
+                
+                <?php if ($block->getRequest()->getParam('store')!=0):?>
+                    <div class="ks-field-default-checkbox">
+                        <label class="ks-use-checkbox-container">
+                            <input type="hidden" name="options_use_default[<%- data.id %>][values][<%- data.select_id %>][title]" value="0">
+                            <input type="checkbox" name="options_use_default[<%- data.id %>][values][<%- data.select_id %>][title]" class="ks-use-default-control" value="1" <%- data.scopeTitleUseDefaultChecked %> onclick="this.value = this.checked ? 1 : 0">
+                            <span class="ks-use-default-label"><?= $block->escapeHtmlAttr(__('Use Default')) ?></span>
+                        </label>
+                    </div>
+                <?php endif;?>
+            </div>
+
+        </td>
+        <?php if ($block->getCanReadPrice() !== false): ?>
+        <td class="col-price select-opt-price">
+            <div class="ks-dollor-sign">
+                <span>
+                    <% if(data.price_type=="percent") {%>%<% } %>
+                    <% if(!data.price_type || data.price_type=="fixed") {%>
+                    <?= $block->getKsCurrentCurrency();?><% } %>
+                </span>
+                <input id="product_option_<%- data.id %>_select_<%- data.select_id %>_price"
+                       name="product[options][<%- data.id %>][values][<%- data.select_id %>][price]"
+                       class="input-text validate-number product-option-price"
+                       type="text" value="<%- data.price %>" data-store-label="<%- data.price %>"
+                       data-price-sysmbol="<?= $block->getKsCurrentCurrency();?>"
+                    <?php if ($block->getCanEditPrice() === false): ?>
+                       disabled="disabled"
+                    <?php endif; ?>>
+            </div>
+        </td>
+        <td class="col-price-type select-opt-price-type">
+            <?= /* @noEscape */ $block->getPriceTypeSelectHtml('data-attr="price-type" <% if (typeof data.scopePriceDisabled != "undefined" && data.scopePriceDisabled != null) { %> disabled="disabled" <% } %>') ?>
+        </td>
+        <?php else: ?>
+            <input id="product_option_<%- data.id %>_select_<%- data.select_id %>_price" name="product[options][<%- data.id %>][values][<%- data.select_id %>][price]" type="hidden">
+            <input id="product_option_<%- data.id %>_select_<%- data.select_id %>_price_type" name="product[options][<%- data.id %>][values][<%- data.select_id %>][price_type]" type="hidden">
+            </div>
+        <?php endif; ?>
+        <td class="col-sku">
+            <input name="product[options][<%- data.id %>][values][<%- data.select_id %>][sku]" class="input-text" type="text" value="<%- data.sku %>">
+        </td>
+        <td class="col-actions col-delete ks-col-delete">
+            <button type="button" title="Delete" class="delete delete-select-row icon-btn" id="product_option_<%- data.id %>_select_<%- data.select_id %>_delete">
+                    <span>Delete</span>
+            </button>
+        </td>
+    </tr>
+</script>

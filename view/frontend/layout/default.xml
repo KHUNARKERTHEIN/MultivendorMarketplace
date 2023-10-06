@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="header.links">
+            <block class="Magento\Framework\View\Element\Html\Link" name="ks_sell_link" ifconfig="ks_marketplace_promotion/ks_marketplace_promotion_page/ks_show_sell_page">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Sell</argument>
+                    <argument name="path" xsi:type="string">multivendor/sellerprofile/sell</argument>
+                </arguments>
+            </block>
+            <block class="Ksolves\MultivendorMarketplace\Block\Account\KsDashboadLink" name="ks_seller_portal_link">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Seller Portal</argument>
+                    <argument name="path" xsi:type="helper" helper="Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper::getSellerPortalPath"></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <!-- Provide link in top.link -->
+        <referenceBlock name="top.links">
+            <block class="Magento\Framework\View\Element\Html\Link" name="ks_sell_top_link" after="wish-list-link" ifconfig="ks_marketplace_promotion/ks_marketplace_promotion_page/ks_show_sell_page">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Sell</argument>
+                    <argument name="path" xsi:type="string">multivendor/sellerprofile/sell</argument>
+                </arguments>
+            </block>
+            <block class="Ksolves\MultivendorMarketplace\Block\Account\KsDashboadLink" name="ks_seller_portal_top_link">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Seller Portal</argument>
+                    <argument name="path" xsi:type="helper" helper="Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper::getSellerPortalPath"></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <!--  Link provide in Footer to Locate Seller(SellerLocator) -->
+        <referenceBlock name="footer_links">
+            <block class="Magento\Framework\View\Element\Html\Link" name="ks_sellerlocator_footer_link" ifconfig="ks_marketplace_seller_locator/ks_seller_locator/ks_seller_locator_enable">
+                <arguments>
+                    <argument name="label" xsi:type="helper" helper="Ksolves\MultivendorMarketplace\Helper\KsSellerLocatorHelper::getKsSLTitle" />
+                    <argument name="path" xsi:type="string">multivendor/sellerlocator/view</argument>
+                </arguments>
+            </block>
+            <!--  Login Link provide for seller login  -->
+             <block class="Magento\Framework\View\Element\Html\Link" name="ks-multivendor-seller-login-link" ifconfig="ks_marketplace_login_and_registration/ks_marketplace_login_and_registration_settings/ks_enable_seller_login">
+                <arguments>
+                    <argument name="label" xsi:type="helper" helper="Ksolves\MultivendorMarketplace\Helper\KsSellerHelper::getKsSellerLoginFooterText" />
+                    <argument name="path" xsi:type="string">multivendor/login/index</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,49 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject {{trans "New product Added In %ks_store" ks_store=$ksStore}}  @-->
+<!--@vars {
+  "var ksCustomer":"Customer Name",
+  "var ksStore":"Store Name",
+  "var ksProIds":"Product Ids",
+  "var ksStoreId":"Store Id"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+  <tr class="email-intro">
+    <td colspan="4">
+      <p class="greeting">{{trans "Hello %ks_customer_name," ks_customer_name=$ksCustomer}}</p>
+    </td>
+  </tr>
+
+  <tr class="email-summary">
+    <td colspan="4">
+      <p>{{trans "I would like to inform you that I have added a new product to the %ks_store store." ks_store=$ksStore}}</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="4">
+      <p>{{trans "Here is the summary of the same: "}}</p>
+    </td>
+  </tr>
+
+  {{layout handle="ks_new_product_alert_email" ks_pro_ids=$ksProIds ks_store_id=$ksStoreId}}
+
+  <tr>
+    <td colspan="4">
+      <p>{{trans "Thank You"}}</p>
+    </td>
+  </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

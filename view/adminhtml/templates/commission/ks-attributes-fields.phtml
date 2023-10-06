@@ -1,0 +1,136 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+
+<?php
+/** @var $block \Magento\ConfigurableProduct\Block\Product\View\Type\Configurable*/
+$ksProduct    = $block->getProduct();
+$ksAttributes = $block->decorateArray($block->getAllowAttributes());
+?>
+
+<?php if ($ksProduct->isSaleable() && count($ksAttributes)):?>
+
+<div id="product-attributes" class="admin__fieldset">
+    <?php foreach ($ksAttributes as $_attribute): ?>
+        <div class="admin__field field configurable">
+            <label class="admin__field-label" for="attribute<?= $block->escapeHtmlAttr($_attribute->getAttributeId()) ?>">
+                <span><?= $block->escapeHtml($_attribute->getProductAttribute()->getStoreLabel()) ?></span>
+            </label>
+            <div class="admin__field-control">
+                <?php $ksOptions = $_attribute->getOptions() ?>
+                <select name="super_attribute[<?= $block->escapeHtmlAttr($_attribute->getAttributeId()) ?>]"
+                    data-selector="super_attribute[<?= $block->escapeHtmlAttr($_attribute->getAttributeId()) ?>]"
+                    data-validate="{required:true}"
+                    id="<?= $block->escapeHtmlAttr($_attribute->getAttributeId()) ?>"
+                    class="super-attribute-select admin__control-select">
+                    <option value=""><?= $block->escapeHtml(__('Choose an Option...')) ?></option>
+                    <?php foreach ($ksOptions as $option): ?>
+                        <?php if ($option['label']): ?>
+                            <option value="<?= $option['label'] ?>"><?= $option['label'] ?></option>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                }
+            }
+        </select>
+    </div>
+</div>
+<?php endforeach; ?>
+</div>
+<?php endif;?>
+
+<script type="text/javascript">
+    require([
+    'mage/url',
+    'jquery',
+    'uiRegistry',
+    'ko'
+], function(url, $, uiRegistry, ko) {
+
+    $('.super-attribute-select').on('change', function(input) {
+        var ksProductId = uiRegistry.get('index=ks_products').value();
+        var ksSellerId = uiRegistry.get('index=ks_sellers').value();
+        if (ksSellerId == []) {
+            ksSellerId = '';
+        }
+
+        var ksFireAjax = true;
+        $('.super-attribute-select').each(function(index) {
+            if (this.value == '') {
+                ksFireAjax = false;
+            }
+        });
+        if (ksFireAjax) {
+            var ksPrice = uiRegistry.get('index = ks_price').value();
+            var ksDiscount = uiRegistry.get('index = ks_discount').value();
+            var ksQuantity = uiRegistry.get('index = ks_quantity').value();
+            var ksTax = uiRegistry.get('index = ks_tax').value();
+            if (uiRegistry.get('index = ks_quantity').validate().valid == true) {
+                $.ajax({
+                    type: "POST",
+                    url: url.build("multivendor/commissionrule_ajax/commissionruleslist"),
+                    data: {
+                        form_key: window.FORM_KEY,
+                        ksAttributesData: $("#product-attributes select").serialize(),
+                        ksProductId: ksProductId,
+                        ksSellerId: ksSellerId,
+                        ksPrice: ksPrice,
+                        ksDiscount: ksDiscount,
+                        ksQuantity: ksQuantity,
+                        ksTax: ksTax,
+                    },
+                    success: function(ksResponseData) {
+                        uiRegistry.get(function(component) {
+
+                            if (component.name != undefined) {
+                                if (component.name.indexOf('ks_marketplace_seller_product_commission_listing') != -1) {
+                                    uiRegistry.remove(component.name);
+                                }
+                            }
+                        });
+
+                        ko.cleanNode($('.rules-container')[0]);
+                        $('.rules-container').html(ksResponseData);
+                        $(".rules-container").trigger('contentUpdated');
+                        $('.rules-container').applyBindings();
+
+                        $.ajax({
+                            type: "POST",
+                            url: url.build("multivendor/commissionrule_ajax/productdata"),
+                            data: {
+                                form_key: window.FORM_KEY,
+                                ksProductId: ksProductId,
+                                ksAttributesData: $("#product-attributes select").serialize()
+                            },
+                            success: function(ksResponse) {
+                                if (ksResponse.output != null) {
+                                    var ksQuantity = uiRegistry.get("index = ks_quantity");
+                                    uiRegistry.get("index = ks_price", function(input) {
+                                        input.value(ksResponse.output.price);
+                                    }.bind(this));
+                                    if (ksQuantity.validate().valid == true) {
+                                        uiRegistry.get("index = ks_subtotal", function(input) {
+                                            input.value(ksResponse.output.price * ksQuantity.value());
+                                        }.bind(this));
+                                        uiRegistry.get("index = ks_grandtotal", function(input) {
+                                            input.value(ksResponse.output.price * ksQuantity.value());
+                                        }.bind(this));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            
+        }
+    });
+});
+</script>

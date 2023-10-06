@@ -1,0 +1,147 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+ 
+<?php
+$ksHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksSellerHelper = $this->helper('\Ksolves\MultivendorMarketplace\Helper\KsSellerHelper');
+$ksObjectManager    = \Magento\Framework\App\ObjectManager::getInstance();
+$ksCustomerSession  = $ksObjectManager->create("Magento\Customer\Model\Session");
+$ksSellerName = "";
+$ksCustomerId = "";
+if ($ksCustomerSession->isLoggedIn()) {
+    $ksCustomerId  = $ksCustomerSession->getCustomer()->getId();
+    $ksSellerName  = $ksCustomerSession->getCustomer()->getName();
+}
+$ksStoreStatus = $ksHelper->getKsStoreStatus($ksCustomerId);
+$ksPageHeading = $ksHelper->getKsPageTitle();
+
+// get seller profile redirect url
+$ksStoreUrl = $ksSellerHelper->getKsSellerProfileUrl($ksCustomerId);
+if ($ksStoreUrl) {
+    $ksActionUrl= $block->getUrl($ksStoreUrl);
+} else {
+    $ksActionUrl = $block->getUrl('multivendor/sellerprofile/sellerprofile', ['seller_id' => $ksCustomerId ]);
+} 
+
+// This is used to overcome the error when someone with invalid ssl certificate
+// tried to access and server verfying ssl cerificate gets failed or not responding
+//  so we set verify ssl to false
+stream_context_set_default([
+    'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            ],
+]);
+?>
+
+<!-- Desktop Header Start -->
+<header class="ks-dashboard-header d-none d-md-flex">
+  <div class="ks-db-left-zone">
+    <button id="sidve-nav-toggler" class="navbar-toggler dashboard-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashboard-menus-outer" aria-expanded="true" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="ks-db-logo">
+      <?php if($ksHelper->isKsSellerPanelLogoEnable()): ?>
+        <?php if($ksHelper->getKsSellerConfigData('ks_homepage')): ?>
+          <a href="<?= $block->getUrl('multivendor/sellerprofile/homepage') ?>"><img src="<?=$ksHelper->getKsSellerPanelLogo() ?>" class="" alt="<?=$ksHelper->getKsSellerPanelLogo()?>"> </a>
+        <?php else: ?>
+          <a href="<?= $block->getUrl('multivendor/product/index') ?>"><img src="<?=$ksHelper->getKsSellerPanelLogo() ?>" class="" alt="<?=$ksHelper->getKsSellerPanelLogo()?>"> </a>
+        <?php endif; ?>
+      <?php endif;  ?>
+    </div>
+    <div class="ks-db-header-title">
+      <h2 title="<?= $ksPageHeading ?>"><?= $ksPageHeading ?></h2>
+    </div>
+  </div>
+  <div class="ks-db-right-zone ks-header-profile-dropdown">
+    <ul class="d-flex list-unstyled m-auto align-items-center"> 
+      <?php if($ksStoreStatus === "Active"): ?> 
+        <li class="dropdown mb-0 mr-4">
+            <button class="btn ks-earth-icon ks-db-header-icon mb-0 dropdown-toggle" type="button" data-action="my-profile" title="My Frontend Profile" data-bs-toggle="dropdown" onclick="window.open('<?= $ksActionUrl ?>','_blank')">
+            <span class=""><?= file_get_contents($this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/header/globe.svg')); ?></span>
+          </button>
+        </li>
+      <?php endif; ?>
+      <li class="dropdown mb-0">
+        <button class="btn ks-user-icon ks-db-header-icon d-flex justify-content-around ks-dropdown-toggle dropdown-toggle" type="button" data-toggle="dropdown">
+          <span class="ks-user-img"><?= file_get_contents($this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/header/profile.svg')); ?></span>
+          <div class="ks-user-name"><?= $ksSellerName; ?></div>
+          <span class="dropdown-icon"></span>
+        </button>
+        <ul class="ks-dropdown-menu dropdown-menu">
+          <li><a href="<?= $block->getUrl('multivendor/sellerprofile/profile') ?>"><?= $block->escapeHtml(__('My Profile')) ?></a></li>
+          <li><a href="<?= $block->getUrl('multivendor/sellerprofile/logout') ?>"><?= $block->escapeHtml(__('Log Out')) ?></a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</header>
+<!-- Desktop Header End -->
+
+<!-- Mobile Header Start -->
+<header class="ks-dashboard-header d-flex d-md-none">
+  <div class="ks-db-left-zone">
+    <button id="sidve-nav-mobile-toggler" class="navbar-toggler dashboard-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashboard-menus-outer" aria-expanded="true" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="ks-db-logo">
+      <?php if($ksHelper->isKsSellerPanelLogoEnable()): ?>
+        <?php if($ksHelper->getKsSellerConfigData('ks_homepage')): ?>
+          <a href="<?= $block->getUrl('multivendor/sellerprofile/homepage') ?>"><img src="<?=$ksHelper->getKsSellerPanelLogo() ?>" class="" alt="<?=$ksHelper->getKsSellerPanelLogo()?>"> </a>
+        <?php else: ?>
+          <a href="<?= $block->getUrl('multivendor/product/index') ?>"><img src="<?=$ksHelper->getKsSellerPanelLogo() ?>" class="" alt="<?=$ksHelper->getKsSellerPanelLogo()?>"> </a>
+        <?php endif; ?>
+      <?php endif;  ?>
+    </div>
+    <div class="ks-db-header-title">
+      <h2 title="<?= $ksPageHeading ?>"><?= $ksPageHeading ?></h2>
+    </div>
+  </div>
+  <div class="ks-db-right-zone ks-header-profile-dropdown">
+    <ul class="d-flex list-unstyled m-auto align-items-center">  
+      <li class="dropdown mb-0">
+        <button class="btn ks-user-icon ks-db-header-icon d-flex justify-content-around dropdown-toggle ks-dropdown-toggle" type="button" data-toggle="dropdown">
+          <span class="ks-user-img"><?= file_get_contents($this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/header/profile.svg')); ?></span>
+        </button>
+        <ul class="ks-dropdown-menu dropdown-menu ks-user-profile">
+          <li class="ks-user-icon d-flex">
+            <span class="ks-user-img"><?= file_get_contents($this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/header/profile.svg')); ?></span>
+            <div class="ks-user-name"><?= $ksSellerName; ?></div>
+          </li>
+          <li><a href="<?= $block->getUrl('multivendor/sellerprofile/profile') ?>"><?= $block->escapeHtml(__('My Profile')) ?></a></li>
+          <li><a href="<?= $block->getUrl('multivendor/sellerprofile/logout') ?>"><?= $block->escapeHtml(__('Log Out')) ?></a></li>
+        </ul>
+      </li>
+      <li class="dropdown mb-0">
+        <button class="btn ks-user-icon ks-db-header-icon d-flex justify-content-around dropdown-toggle ks-dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          <span class="ks-user-img"><?= file_get_contents($this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/more.svg')); ?></span>
+        </button>
+        <ul class="ks-dropdown-menu dropdown-menu">
+          <?php if($ksStoreStatus === "Active"): ?> 
+            <li class="dropdown mb-0 mr-4">
+                <button class="btn ks-earth-icon ks-db-header-icon mb-0 dropdown-toggle" type="button" data-action="my-profile" title="My Frontend Profile" data-bs-toggle="dropdown" onclick="window.open('<?= $ksActionUrl ?>','_blank')">
+                <span class=""><?= file_get_contents($this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/header/globe.svg')); ?></span>
+              </button>
+            </li>
+          <?php endif; ?>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</header>
+<!-- Mobile Header End -->
+
+<script type="text/javascript">
+  require(['jquery',"bootstrap"], function ($) {
+    $.fn.bsModal = $.fn.modal.noConflict();
+  });
+</script>

@@ -1,0 +1,42 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<?php
+// This is used to overcome the error when someone with invalid ssl certificate
+// tried to access and server verfying ssl cerificate gets failed or not responding
+//  so we set verify ssl to false
+stream_context_set_default([
+    'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            ],
+]);
+?>
+<?php if(count($block->KsAddProductButtonOptions()) > 0):?>
+     <div class="dropdown ks-add-prod">
+        <button class="btn ks-add-prod-btn d-flex justify-content-around dropdown-toggle" type="button" data-toggle="dropdown">
+            <span class="ks-add-product-icon">
+                <?= file_get_contents($this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/plus.svg')); ?>
+            </span>
+            <span class="ks-add-product-title"><?= $block->escapeHtml(__('Add Product')) ?></span>
+        </button>
+
+        <ul class="dropdown-menu" x-placement="bottom-start">
+            <?php foreach ($block->KsAddProductButtonOptions() as $ksTypeId => $ksType):?>
+                <li>
+                    <a class="action-menu-item" href="<?= $block->getUrl('multivendor/product/new', ['set'=> $block->ksDefaultAttributeSetId(),'type'=> $ksTypeId])?>">
+                        <?= $block->escapeHtml(__($ksType['label'])) ?>
+                    </a>
+                </li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+<?php endif;?>

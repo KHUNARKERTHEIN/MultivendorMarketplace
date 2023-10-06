@@ -1,0 +1,22 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php $ksScalableQuantity = $block->getKsScalableQuantity();?>
+<fieldset class="ks-form-field ks-product-scable">
+    <?php if (!empty($ksScalableQuantity)) { foreach ($ksScalableQuantity as $ksItem):?>
+    <div class="ks-field-control">
+        <strong><?= $ksItem['stock_name']?>:</strong>
+        <span><?= $ksItem['qty']?></span>
+    </div>
+    <br>
+    <?php endforeach;
+    };?>
+</fieldset>

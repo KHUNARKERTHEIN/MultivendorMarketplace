@@ -1,0 +1,92 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var \Magento\Sales\Block\Adminhtml\Order\Creditmemo\View\Form $block */
+?>
+<?php  $_order = $block->getCreditMemo(); 
+$order=$block->getOrder();
+?>
+<?= $block->getChildHtml('order_info') ?>
+<?= $block->getChildHtml('ks_rejection') ?>
+<input type="hidden" name="ks_page_id" value="<?= $block->getCreditMemo()->getId(); ?>">
+<input type="hidden" name="ks_page_reject_url" value="<?= $block->getKsRejectUrl(); ?>">
+<section class="admin__page-section order-view-billing-shipping">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Payment &amp; Shipping Method')); ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-payment-method admin__fieldset-wrapper">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $block->escapeHtml(__('Payment Information')); ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <div class="order-payment-method-title"><?= $block->getChildHtml('order_payment') ?></div>
+                <div class="order-payment-currency">
+                    <?= $block->escapeHtml(__('The order was placed using %1.', $order->getOrderCurrencyCode())); ?>
+                </div>
+            </div>
+        </div>
+        <?php if (!$order->getIsVirtual()) : ?>
+        <div class="admin__page-section-item order-shipping-address">
+            <?php /* Shipping Address */ ?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $block->escapeHtml(__('Shipping Information')) ?></span>
+            </div>
+            <div class="shipping-description-wrapper admin__page-section-item-content">
+                <div class="shipping-description-title"><?= $block->escapeHtml($order->getShippingDescription()) ?></div>
+                <div class="shipping-description-content">
+                    <?= $block->escapeHtml(__('Total Shipping Charges')) ?>:
+
+                    <?php if ($this->helper(\Magento\Tax\Helper\Data::class)->displayShippingPriceIncludingTax()) : ?>
+                        <?php $_excl = $block->displayShippingPriceInclTax($order); ?>
+                    <?php else : ?>
+                        <?php $_excl = $block->displayPriceAttribute('shipping_amount', false, ' '); ?>
+                    <?php endif; ?>
+                    <?php $_incl = $block->displayShippingPriceInclTax($order); ?>
+
+                    <?= /* @noEscape */ $_excl ?>
+                    <?php if ($this->helper(\Magento\Tax\Helper\Data::class)->displayShippingBothPrices() && $_incl != $_excl) : ?>
+                        (<?= $block->escapeHtml(__('Incl. Tax')) ?> <?= /* @noEscape */ $_incl ?>)
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+</section>
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Items Refunded')) ?></span>
+    </div>
+     <div id="creditmemo_item_container" class="admin__page-section-content">
+        <?= $block->getChildHtml('creditmemo_items') ?>
+    </div>
+</section>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Memo Total')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-comments-history">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $block->escapeHtml(__('Credit Memo History')) ?></span>
+            </div>
+            <div class="admin__page-section-item-content"><?= $block->getChildHtml('creditmemo_comments') ?></div>
+        </div>
+        <div class="admin__page-section-item order-totals" id="history_form">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $block->escapeHtml(__('Credit Memo Totals')) ?></span>
+            </div>
+            <div class="admin__page-section-content"><?= $block->getChildHtml('creditmemo_totals') ?></div>
+        </div>
+    </div>
+</section>

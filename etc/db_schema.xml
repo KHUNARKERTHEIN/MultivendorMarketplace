@@ -1,0 +1,994 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!-- create ks_seller_details table -->
+    <table name="ks_seller_details" resource="default" comment="Ksolves Seller Details Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="smallint" name="ks_seller_group_id" padding="5" unsigned="true" nullable="true" comment="Seller Group Id"/>
+        <column xsi:type="smallint" name="ks_seller_status" padding="5" unsigned="true" nullable="false" default="0" comment="Seller Status"/>
+        <column xsi:type="smallint" name="ks_store_status" padding="5" unsigned="true" nullable="false" default="0" comment="Seller Store Status"/>
+        <column xsi:type="smallint" name="ks_seller_producttype_request_status" padding="5" unsigned="true" nullable="false" default="1" comment="Seller Product Type Request Status"/>
+        <column xsi:type="smallint" name="ks_producttype_auto_approval_status" padding="5" unsigned="true" nullable="false" default="0" comment="Seller Product Type Auto Approval Status"/>
+        <column xsi:type="varchar" name="ks_store_name" nullable="false" length="255" comment="Store Name"/>
+        <column xsi:type="varchar" name="ks_store_url" nullable="false" length="255" comment="Store URL"/>
+        <column xsi:type="text" name="ks_store_available_countries" nullable="true"  comment="Seller Store Available Countries"/>
+        <column xsi:type="varchar" name="ks_company_name" nullable="true" length="255" comment="Seller Company Name"/>
+        <column xsi:type="varchar" name="ks_company_contact_no" nullable="true" length="255" comment="Seller Company Contact Number"/>
+        <column xsi:type="varchar" name="ks_company_contact_email" nullable="true" length="255" comment="Seller Company Contact Email"/>
+        <column xsi:type="text" name="ks_company_address" nullable="true" comment="Seller Company Address"/>
+        <column xsi:type="varchar" name="ks_company_country" nullable="true" length="255" comment="Seller Company Country"/>
+        <column xsi:type="varchar" name="ks_company_state" nullable="true" length="255" comment="Seller Company State"/>
+        <column xsi:type="int" name="ks_company_state_id" nullable="true" comment="Seller Company State Id"/>
+        <column xsi:type="varchar" name="ks_company_postcode" nullable="true" length="255" comment="Seller Company Postcode"/>
+        <column xsi:type="varchar" name="ks_company_taxvat_number" nullable="true" length="255" comment="Seller Company Taxvat Number"/>
+        <column xsi:type="text" name="ks_rejection_reason" nullable="true" comment="Seller Rejection Reason"/>
+        <column xsi:type="smallint" name="ks_product_auto_approval" padding="5" unsigned="true" nullable="false" default="0" comment="Product Auto Approval"/>
+        <column xsi:type="smallint" name="ks_product_attribute_request_allowed_status" padding="5" unsigned="true" nullable="false" default="0" comment="Product Attribute Request Status"/>
+        <column xsi:type="smallint" name="ks_product_attribute_auto_approval_status" padding="5" unsigned="true" nullable="false" default="0" comment="Product Attribute Auto Approval"/>
+        <column xsi:type="int" name="ks_report_count" padding="10" unsigned="true" nullable="false" default="0" comment="Count of  reports agains the seller"/>
+        <column xsi:type="decimal" name="ks_min_order_amount" precision="20" scale="4" unsigned="true" nullable="true" comment="Min Order Amount"/>
+        <column xsi:type="varchar" name="ks_min_order_message" length="255" comment="Error message for minimum order"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="KS_SELLER_DETAILS_KS_SELLER_ID">
+            <column name="ks_seller_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_DETAILS_KS_SELLER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="ks_seller_details" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+            <column name="ks_seller_id"/>
+        </index>
+    </table>
+    <!-- create ks_seller_store_details table -->
+    <table name="ks_seller_store_details" resource="default" comment="Ksolves Seller Account Details Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="smallint" name="ks_store_id" padding="5" unsigned="true" nullable="false" default="0" comment="Magento Store Id"/>
+        <column xsi:type="text" name="ks_store_logo" nullable="true" comment="Seller Store Logo"/>
+        <column xsi:type="text" name="ks_store_banner" nullable="true" comment="Seller Store Banner"/>
+        <column xsi:type="text" name="ks_store_description" nullable="true" comment="Seller Store Description"/>
+        <column xsi:type="varchar" name="ks_support_contact" nullable="true" length="255" comment="Seller Support Contact Number"/>
+        <column xsi:type="varchar" name="ks_support_email" nullable="true" length="255" comment="Seller Support Contact Email"/>
+        <column xsi:type="varchar" name="ks_twitter_id" nullable="true" length="255" comment="Twitter Id"/>
+        <column xsi:type="varchar" name="ks_facebook_id" nullable="true" length="255" comment="Facebook Id"/>
+        <column xsi:type="varchar" name="ks_instagram_id" nullable="true" length="255" comment="Instagram Id"/>
+        <column xsi:type="varchar" name="ks_googleplus_id" nullable="true" length="255" comment="Googleplus Id"/>
+        <column xsi:type="varchar" name="ks_youtube_id" nullable="true" length="255" comment="Youtube Id"/>
+        <column xsi:type="varchar" name="ks_vimeo_id" nullable="true" length="255" comment="Vimeo Id"/>
+        <column xsi:type="varchar" name="ks_pinterest_id" nullable="true" length="255" comment="Pinterest Id"/>
+        <column xsi:type="text" name="ks_meta_keyword" nullable="true" comment="Meta Keywords"/>
+        <column xsi:type="text" name="ks_meta_description" nullable="true" comment="Meta Description"/>
+        <column xsi:type="text" name="ks_refund_policy" nullable="true" comment="Store Refund Policy"/>
+        <column xsi:type="text" name="ks_privacy_policy" nullable="true" comment="Store Privacy Policy"/>
+        <column xsi:type="text" name="ks_shipping_policy" nullable="true" comment="Store Shipping Policy"/>
+        <column xsi:type="text" name="ks_terms_of_service" nullable="true" comment="Store Terms of Service Policy"/>
+        <column xsi:type="text" name="ks_legal_notice" nullable="true" comment="Store Legal Notice"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_STORE_DETAILS_KS_SELLER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="ks_seller_store_details" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_STORE_DETAILS_KS_STORE_ID_STORE_STORE_ID" table="ks_seller_store_details" column="ks_store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="ks_store_id"/>
+            <column name="ks_seller_id"/>
+        </index>
+    </table>
+    <!-- create ks_seller_group table -->
+    <table name="ks_seller_group" resource="default" comment="Ksolves Seller Group Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Group Id"/>
+        <column xsi:type="varchar" name="ks_seller_group_name" nullable="false" length="255" comment="Seller Group Name"/>
+        <column xsi:type="smallint" name="ks_status" padding="5" nullable="false" default="0" comment="Seller Group Status"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="KS_SELLER_GROUP_KS_SELLER_GROUP_NAME">
+            <column name="ks_seller_group_name"/>
+        </constraint>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+        </index>
+    </table>
+    <!--  create ks_seller_product_type_requests table for storing seller product types-->
+    <table name="ks_seller_product_type_requests" resource="default" comment="Ksolves Seller Product Type Request Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="varchar" name="ks_product_type" nullable="false" length="255" comment="Product Type"/>
+        <column xsi:type="smallint" name="ks_product_type_status" padding="5" unsigned="true" nullable="false" default="1" comment="Product Type Status"/>
+        <column xsi:type="smallint" name="ks_request_status" padding="5" unsigned="true" nullable="false" default="4" comment="Product Type Request Status"/>
+        <column xsi:type="text" name="ks_product_type_rejection_reason" nullable="true" comment="Product Type Rejection Reason"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+            <column name="ks_seller_id"/>
+        </index>
+    </table>
+    <!-- create ks_commission_rule table -->
+    <table name="ks_commission_rule" resource="default" comment="Ksolves Commission Rules Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="varchar" name="ks_rule_name" nullable="true" length="500" comment="Rule Name"/>
+        <column xsi:type="int" name="ks_status" padding="5" nullable="true" default="0" comment="Status"/>
+        <column xsi:type="text" name="ks_rule_desc" nullable="true" comment="Rule Description"/>
+        <column xsi:type="int" name="ks_rule_type" padding="5" nullable="true" default="0" comment="Rule Type"/>
+        <column xsi:type="int" name="ks_seller_id" padding="5" unsigned="true" nullable="false" default="0" comment="Seller ID"/>
+        <column xsi:type="text" name="ks_website"  nullable="true" comment="Website Id"/>
+        <column xsi:type="int" name="ks_seller_group" nullable="true" comment="Seller Group"/>
+        <column xsi:type="text" name="ks_product_type" nullable="true" comment="Product Type"/>
+        <column xsi:type="timestamp" name="ks_start_date" nullable="true"
+			default="NULL" comment="Start Date"/>
+        <column xsi:type="timestamp" name="ks_end_date" nullable="true"
+			default="NULL" comment="End Date"/>
+        <column xsi:type="decimal" name="ks_min_price" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Min Amount"/>
+        <column xsi:type="decimal" name="ks_max_price" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Max Amount"/>
+        <column xsi:type="int" name="ks_price_roundoff" padding="5" nullable="true" default="0" comment="Price Roundoff"/>
+        <column xsi:type="decimal" name="ks_commission_value" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Commission Value"/>
+        <column xsi:type="text" name="ks_commission_type" nullable="true" comment="Commission Type"/>
+        <column xsi:type="int" name="ks_calculation_baseon" padding="5"  nullable="true" default="0" comment="Commission Base On"/>
+        <column xsi:type="int" name="ks_priority" nullable="true" default="0" comment="Priority"/>
+        <column xsi:type="text" name="conditions_serialized" nullable="true" comment="Conditions"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+        </index>
+        <index referenceId="KS_COMMISSION_RULE_KS_RULE_NAME_KS_SELLER_GROUP" indexType="fulltext">
+            <column name="ks_rule_name"/>
+        </index>
+    </table>
+    <!-- create ks_category_requests table -->
+    <table name="ks_category_requests" resource="default" engine="innodb" comment="Ksolves Seller Category Requests">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller Id"/>
+        <column xsi:type="int" name="ks_category_id" padding="10" unsigned="true" nullable="false" comment="Category Id"/>
+        <column xsi:type="varchar" name="ks_category_name" nullable="false" length="255" comment="Seller Category Name"/>
+        <column xsi:type="int" name="ks_global_product_count" padding="10" unsigned="true" nullable="false" comment="Global Product Count"/>
+        <column xsi:type="int" name="ks_seller_product_count" padding="10" unsigned="true" nullable="false" comment="Seller Product Count"/>
+        <column xsi:type="text" name="ks_rejection_reason" nullable="true" comment="Seller Rejection Reason"/>
+        <column xsi:type="int" name="ks_request_status" padding="10" unsigned="true" nullable="false" comment="Request Status"/>
+        <column xsi:type="timestamp" name="ks_requested_on" comment="Requested On"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_CATEGORY_REQUESTS_KS_SELLER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="ks_category_requests" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_CATEGORY_REQUESTS_KS_CATEGORY_ID_CATALOG_CATEGORY_ENTITY_ENTITY_ID" table="ks_category_requests" column="ks_category_id" referenceTable="catalog_category_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <!-- create ks_seller_categories table -->
+    <table name="ks_seller_categories" resource="default" engine="innodb" comment="Ksolves Seller Categories">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller Id"/>
+        <column xsi:type="int" name="ks_category_id" padding="10" unsigned="true" nullable="false" comment="Category Id"/>
+        <column xsi:type="int" name="ks_category_status" padding="10" unsigned="true" nullable="false" comment="Category Status"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_CATEGORIES_KS_SELLER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="ks_seller_categories" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_CATEGORIES_KS_CATEGORY_ID_CATALOG_CATEGORY_ENTITY_ENTITY_ID" table="ks_seller_categories" column="ks_category_id" referenceTable="catalog_category_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <!-- create ks_category_requests_allowed table -->
+    <table name="ks_category_requests_allowed" resource="default" engine="innodb" comment="Ksolves Seller Category Requests Allowed">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller Id"/>
+        <column xsi:type="int" name="ks_is_requests_allowed" padding="10" unsigned="true" nullable="false" comment="Category Requests Allowed"/>
+        <column xsi:type="int" name="ks_is_init" padding="10" unsigned="true" nullable="false" comment="Seller Init"/>
+        <column xsi:type="int" name="ks_is_auto_approved" padding="10" unsigned="true" nullable="false" comment="Seller Auto Approval"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_CATEGORY_REQUESTS_ALLOWED_KS_SELLER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="ks_category_requests_allowed" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <!-- create ks_product_details table -->
+    <table name="ks_product_details" resource="default" comment="Ksolves Seller Product Details Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="true" comment="Seller ID"/>
+        <column xsi:type="int" name="ks_parent_product_id" padding="10" nullable="true" default="0" comment="Parent Product ID"/>
+        <column xsi:type="int" name="ks_product_id" padding="10" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="smallint" name="ks_is_admin_assigned_product" padding="5" nullable="false" default="0" comment="Is Admin Assigned Product"/>
+        <column xsi:type="smallint" name="ks_product_stage" nullable="true" padding="5" default="1" comment="Product Stage"/>
+        <column xsi:type="int" name="ks_product_approval_status" padding="5" nullable="true" default="0" comment="Approval Status"/>
+        <column xsi:type="text" name="ks_rejection_reason" nullable="true" comment="Product Rejection Reason"/>
+        <column xsi:type="int" name="ks_edit_mode" padding="10" unsigned="true" nullable="false" default="0" comment="Check Edit/New mode of product"/>
+        <column xsi:type="int" name="ks_report_count" padding="10" unsigned="true" nullable="false" default="0" comment="Count of reports agains the product"/>
+        <column xsi:type="varchar" name="ks_email" nullable="true" length="255" comment="Seller Email"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="KS_PRODUCT_DETAILS_KS_PRODUCT_ID">
+            <column name="ks_product_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_PRODUCT_DETAILS_KS_SELLER_ID_KS_SELLER_DETAILS_KS_SELLER_ID" table="ks_product_details" column="ks_seller_id" referenceTable="ks_seller_details" referenceColumn="ks_seller_id" onDelete="SET NULL"/>
+        <constraint xsi:type="foreign" referenceId="KS_PRODUCT_DETAILS_KS_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID" table="ks_product_details" column="ks_product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="ks_product_id"/>
+            <column name="ks_seller_id"/>
+        </index>
+    </table>
+    <!-- create ks_report_product_reasons  table -->
+    <table name="ks_report_product_reasons" resource="default" engine="innodb" comment="Ksolves Report Product Reasons">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="varchar" name="ks_reason" nullable="false" length="255" comment="Report reason"/>
+        <column xsi:type="smallint" name="ks_reason_status" padding="5" unsigned="true" nullable="false" default="0" comment="Reason Status"/>
+        <column xsi:type="varchar" name="ks_subreason" nullable="false" length="255" comment="Report sub reason"/>
+        <column xsi:type="smallint" name="ks_subreason_status" padding="5" unsigned="true" nullable="false" default="0" comment="Sub Reason Status"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <!-- create ks_report_seller_reasons  table -->
+    <table name="ks_report_seller_reasons" resource="default" engine="innodb" comment="Ksolves Report Seller Reasons">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="varchar" name="ks_reason" nullable="false" length="255" comment="Report reason"/>
+        <column xsi:type="smallint" name="ks_reason_status" padding="5" unsigned="true" nullable="false" default="0" comment="Reason Status"/>
+        <column xsi:type="varchar" name="ks_subreason" nullable="false" length="255" comment="Report sub reason"/>
+        <column xsi:type="smallint" name="ks_subreason_status" padding="5" unsigned="true" nullable="false" default="0" comment="Sub Reason Status"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <!-- create ks_marketplace_benefits table -->
+    <table name="ks_marketplace_benefits" resource="default" engine="innodb" >
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="text" name="ks_picture" nullable="true" comment="Picture"/>
+        <column xsi:type="varchar" name="ks_title" nullable="true" length="100" comment="Title"/>
+        <column xsi:type="varchar" name="ks_text" nullable="true" length="500" comment="Text"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"   
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <!-- create ks_marketplace_howitworks table -->
+    <table name="ks_marketplace_howitworks" resource="default" engine="innodb" >
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="text" name="ks_picture" nullable="true" comment="Picture"/>
+        <column xsi:type="varchar" name="ks_title" nullable="true" length="100" comment="Title"/>
+        <column xsi:type="varchar" name="ks_text" nullable="true" length="250" comment="Text"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <!-- create ks_seller_payment_details table -->
+    <table name="ks_seller_payment_details" resource="default" comment="Ksolves Seller Payment Details Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="smallint" name="ks_check_money_status" padding="5" nullable="false" default="0" comment="Check/Money Order Status"/>
+        <column xsi:type="varchar" name="ks_payee_name" nullable="true" length="255" comment="Payee Name"/>
+        <column xsi:type="smallint" name="ks_paypal_status" padding="5" nullable="false" default="0" comment="Paypal Status"/>
+        <column xsi:type="varchar" name="ks_paypal_associated_email" nullable="true" length="255" comment="Paypal Associated Email"/>
+        <column xsi:type="smallint" name="ks_bank_transfer_status" padding="5" nullable="false" default="0" comment="Bank Transfer Status"/>
+        <column xsi:type="text" name="ks_primary_account_details" nullable="true" comment="Primary Account Details"/>
+        <column xsi:type="text" name="ks_secondary_account_details" nullable="true" comment="Secondary Account Details"/>
+        <column xsi:type="smallint" name="ks_additional_payment_method_one_status" padding="5" nullable="false" default="0" comment="Additional Payment Method 1 Status"/>
+        <column xsi:type="text" name="ks_additional_payment_method_one_details" nullable="true" comment="Additional Payment Method 1 Details"/>
+        <column xsi:type="smallint" name="ks_additional_payment_method_two_status" padding="5" nullable="false" default="0" comment="Additional Payment Method 2 Status"/>
+        <column xsi:type="text" name="ks_additional_payment_method_two_details" nullable="true" comment="Additional Payment Method 2 Details"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="smallint" name="ks_store_id" padding="5" unsigned="true" nullable="false" default="0" comment="Store Id"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_PAYMENT_DETAILS_KS_SELLER_ID_KS_SELLER_DETAILS_KS_SELLER_ID" table="ks_seller_payment_details" column="ks_seller_id" referenceTable="ks_seller_details" referenceColumn="ks_seller_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_PAYMENT_DETAILS_KS_STORE_ID_STORE_STORE_ID" table="ks_seller_payment_details" column="ks_store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+        </index>
+    </table>
+    <!-- create ks_sales_order  table -->
+    <table name="ks_sales_order" resource="default" engine="innodb" comment="Ksolves Seller Orders Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_order_id" padding="10" unsigned="true" nullable="false" default="0" comment="Magento Sales Order ID"/>
+        <column xsi:type="varchar" name="ks_order_increment_id" nullable="true" length="50" comment="Magento Sales Order Increment ID"/><column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="decimal" name="ks_subtotal" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Subtotal"/>
+        <column xsi:type="decimal" name="ks_base_subtotal" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Subtotal"/>
+        <column xsi:type="decimal" name="ks_grand_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Grand Total"/>
+        <column xsi:type="decimal" name="ks_base_grand_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Grand Total"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_ORDER_KS_ORDER_ID_SALES_ORDER_ENTITY_ID" table="ks_sales_order" column="ks_order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_ORDER_KS_ORDER_INCREMENT_ID_SALES_ORDER_INCREMENT_ID" table="ks_sales_order" column="ks_order_increment_id" referenceTable="sales_order" referenceColumn="increment_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_ORDER_KS_SELLER_ID_KS_SELLER_DETAILS_KS_SELLER_ID" table="ks_sales_order" column="ks_seller_id" referenceTable="ks_seller_details" referenceColumn="ks_seller_id" onDelete="CASCADE"/>
+    </table>
+    <!-- create ks_sales_order_item  table -->
+    <table name="ks_sales_order_item" resource="default" engine="innodb" comment="Ksolves Seller Order Item Details Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_order_id" padding="10" unsigned="true" nullable="false" default="0" comment="Magento Sales Order ID"/>
+        <column xsi:type="varchar" name="ks_order_increment_id" nullable="true" length="50" comment="Magento Sales Order Increment ID"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="int" name="ks_sales_order_item_id" padding="10" unsigned="true" nullable="false" comment="Sales Order Item ID"/>
+        <column xsi:type="int" name="ks_product_id" padding="10" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="decimal" name="ks_qty_canceled" scale="4" precision="12" unsigned="false" nullable="true"
+                default="0" comment="Qty Canceled"/>
+        <column xsi:type="decimal" name="ks_qty_invoiced" scale="4" precision="12" unsigned="false" nullable="true"
+                default="0" comment="Qty Invoiced"/>
+        <column xsi:type="decimal" name="ks_qty_ordered" scale="4" precision="12" unsigned="false" nullable="true"
+                default="0" comment="Qty Ordered"/>
+        <column xsi:type="decimal" name="ks_qty_refunded" scale="4" precision="12" unsigned="false" nullable="true"
+                default="0" comment="Qty Refunded"/>
+        <column xsi:type="decimal" name="ks_qty_shipped" scale="4" precision="12" unsigned="false" nullable="true"
+                default="0" comment="Qty Shipped"/>
+        <column xsi:type="text" name="ks_commission_type" nullable="true" comment="Commission Type"/>
+        <column xsi:type="decimal" name="ks_commission_rate" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Commission Rate"/>
+        <column xsi:type="decimal" name="ks_base_commission_value" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Commission Base Value"/>
+        <column xsi:type="decimal" name="ks_commission_value" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Commission Value"/>
+        <column xsi:type="decimal" name="ks_base_weee_tax_applied_row_amnt" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Weee Tax Applied Row Amnt"/>
+        <column xsi:type="decimal" name="ks_weee_tax_applied_row_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="Weee Tax Applied Row Amount"/>
+        <column xsi:type="decimal" name="ks_base_product_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Product Total"/>
+        <column xsi:type="decimal" name="ks_product_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Product Total"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_ORDER_ITEM_KS_ORDER_ID_SALES_ORDER_ENTITY_ID" table="ks_sales_order_item" column="ks_order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_ORDER_ITEM_KS_ORDER_INCREMENT_ID_SALES_ORDER_INCREMENT_ID" table="ks_sales_order_item" column="ks_order_increment_id" referenceTable="sales_order" referenceColumn="increment_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_ORDER_ITEM_KS_SELLER_ID_KS_SELLER_DETAILS_KS_SELLER_ID" table="ks_sales_order_item" column="ks_seller_id" referenceTable="ks_seller_details" referenceColumn="ks_seller_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_ORDER_ITEM_KS_SALES_ORDER_ITEM_ID_SALES_ORDER_ITEM_ITEM_ID" table="ks_sales_order_item" column="ks_sales_order_item_id" referenceTable="sales_order_item" referenceColumn="item_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_ORDER_ITEM_KS_PRODUCT_ID_CATALOG_PRODUT_ENTITY_ENTITY_ID" table="ks_sales_order_item" column="ks_product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <!-- create ks_sales_shipment table -->
+    <table name="ks_sales_shipment" resource="default" engine="innodb" comment="Sales Flat Shipment">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="smallint" name="ks_store_id" unsigned="true" nullable="true" identity="false"
+                comment="Store ID"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="smallint" name="ks_approval_required" unsigned="true" nullable="true" identity="false"
+                comment="Approval Required"/>
+        <column xsi:type="smallint" name="ks_approval_status" unsigned="true" nullable="true" identity="false"
+                comment="Approval Status"/>
+        <column xsi:type="text" name="ks_rejection_reason" nullable="true" comment="Shipment Rejection Reason"/>
+        <column xsi:type="decimal" name="ks_total_weight" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Total Weight"/>
+        <column xsi:type="decimal" name="ks_total_qty" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Total Qty"/>
+        <column xsi:type="smallint" name="ks_email_sent" unsigned="true" nullable="true" identity="false"
+                comment="Email Sent"/>
+        <column xsi:type="smallint" name="ks_send_email" unsigned="true" nullable="true" identity="false"
+                comment="Send Email"/>
+        <column xsi:type="int" name="ks_order_id" padding="10" unsigned="true" nullable="false" default="0" comment="Magento Sales Order ID"/>
+        <column xsi:type="int" name="ks_customer_id" unsigned="false" nullable="true" identity="false"
+                comment="Customer ID"/>
+        <column xsi:type="int" name="ks_shipping_address_id" unsigned="false" nullable="true" identity="false"
+                comment="Shipping Address ID"/>
+        <column xsi:type="int" name="ks_billing_address_id" unsigned="false" nullable="true" identity="false"
+                comment="Billing Address ID"/>
+        <column xsi:type="int" name="ks_shipment_status" unsigned="false" nullable="true" identity="false"
+                comment="Shipment Status"/>
+        <column xsi:type="varchar" name="ks_shipment_increment_id" nullable="true" length="50" comment="Shipment Increment ID"/>
+        <column xsi:type="varchar" name="ks_order_increment_id" nullable="true" length="50" comment="Order Increment ID"/>
+        <column xsi:type="varchar" name="ks_request_increment_id" nullable="true" length="50" comment="Request Increment ID"/>
+        <column xsi:type="timestamp" name="ks_order_created_at" comment="Order Created At"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <column xsi:type="text" name="ks_packages" nullable="true" comment="Packed Products in Packages"/>
+        <column xsi:type="mediumblob" name="ks_shipping_label" nullable="true" comment="Shipping Label Content"/>
+        <column xsi:type="text" name="ks_customer_note" nullable="true" comment="Customer Note"/>
+        <column xsi:type="smallint" name="ks_comment_customer_notify" unsigned="true" nullable="true"
+                identity="false" comment="Customer Note Notify"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_SHIPMENT_KS_ORDER_ID_SALES_ORDER_ENTITY_ID" table="ks_sales_shipment"
+                    column="ks_order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_SHIPMENT_KS_STORE_ID_STORE_STORE_ID" table="ks_sales_shipment"
+                    column="ks_store_id" referenceTable="store" referenceColumn="store_id" onDelete="SET NULL"/>
+    </table>
+    <!-- create ks_sales_shipment_item table -->
+    <table name="ks_sales_shipment_item" resource="sales" engine="innodb" comment="Sales Flat Shipment Item">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="ks_parent_id" unsigned="true" nullable="false" identity="false"
+                comment="Parent ID"/>
+        <column xsi:type="decimal" name="ks_row_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Row Total"/>
+        <column xsi:type="decimal" name="ks_price" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Price"/>
+        <column xsi:type="decimal" name="ks_weight" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Weight"/>
+        <column xsi:type="decimal" name="ks_qty" scale="4" precision="12" unsigned="false" nullable="true" comment="Qty"/>
+        <column xsi:type="int" name="ks_product_id" unsigned="false" nullable="true" identity="false"
+                comment="Product ID"/>
+        <column xsi:type="int" name="ks_order_item_id" unsigned="false" nullable="true" identity="false"
+                comment="Order Item ID"/>
+        <column xsi:type="text" name="ks_additional_data" nullable="true" comment="Additional Data"/>
+        <column xsi:type="text" name="ks_description" nullable="true" comment="Description"/>
+        <column xsi:type="varchar" name="ks_name" nullable="true" length="255" comment="Name"/>
+        <column xsi:type="varchar" name="ks_sku" nullable="true" length="255" comment="Sku"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_SHIPMENT_ITEM_KS_PARENT_ID_KS_SALES_SHIPMENT_ENTITY_ID"
+                    table="ks_sales_shipment_item" column="ks_parent_id" referenceTable="ks_sales_shipment"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <!-- create ks_sales_shipment_track table -->
+    <table name="ks_sales_shipment_track" resource="sales" engine="innodb" comment="Sales Flat Shipment Track">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="ks_parent_id" unsigned="true" nullable="false" identity="false"
+                comment="Parent ID"/>
+        <column xsi:type="int" name="ks_tracking_id" unsigned="true" nullable="false" identity="false"
+                comment="Sales Track table ID"/>
+        <column xsi:type="decimal" name="ks_weight" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Weight"/>
+        <column xsi:type="decimal" name="ks_qty" scale="4" precision="12" unsigned="false" nullable="true" comment="Qty"/>
+        <column xsi:type="int" name="ks_order_id" padding="10" unsigned="true" nullable="false" default="0" comment="Magento Sales Order ID"/>
+        <column xsi:type="text" name="ks_track_number" nullable="true" comment="Number"/>
+        <column xsi:type="text" name="ks_description" nullable="true" comment="Description"/>
+        <column xsi:type="varchar" name="ks_title" nullable="true" length="255" comment="Title"/>
+        <column xsi:type="varchar" name="ks_carrier_code" nullable="true" length="32" comment="Carrier Code"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_SHIPMENT_TRACK_KS_PARENT_ID_KS_SALES_SHIPMENT_ENTITY_ID"
+                    table="ks_sales_shipment_track" column="ks_parent_id" referenceTable="ks_sales_shipment"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <!-- create ks_sales_invoice -->
+    <table name="ks_sales_invoice" resource="sales" engine="innodb" comment="Sales Flat Invoice">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="smallint" name="ks_store_id" unsigned="true" nullable="true" identity="false"
+                comment="Store ID"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="smallint" name="ks_approval_required" unsigned="true" nullable="true" identity="false"
+                comment="Approval Required"/>
+        <column xsi:type="smallint" name="ks_approval_status" unsigned="true" nullable="true" identity="false"
+                comment="Approval Status"/>
+        <column xsi:type="text" name="ks_rejection_reason" nullable="true" comment="Invoice Rejection Reason"/>
+        <column xsi:type="decimal" name="ks_base_total_commission" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Commission Base Value"/>
+        <column xsi:type="decimal" name="ks_total_commission" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Commission Value"/>
+        <column xsi:type="decimal" name="ks_total_earning" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Total Seller Earning"/>
+        <column xsi:type="decimal" name="ks_base_total_earning" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Base Total Seller Earning"/>
+        <column xsi:type="decimal" name="ks_base_tax_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Tax Amount"/>
+        <column xsi:type="decimal" name="ks_tax_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Tax Amount"/>
+        <column xsi:type="decimal" name="ks_base_grand_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Grand Total"/>
+        <column xsi:type="decimal" name="ks_grand_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Grand Total"/>
+        <column xsi:type="decimal" name="ks_total_qty" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Total Qty"/>
+        <column xsi:type="decimal" name="ks_subtotal" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Subtotal"/>
+        <column xsi:type="decimal" name="ks_base_subtotal" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Subtotal"/>
+        <column xsi:type="decimal" name="ks_discount_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Discount Amount"/>
+        <column xsi:type="decimal" name="ks_base_discount_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Base Discount Amount"/>
+        <column xsi:type="int" name="ks_billing_address_id" unsigned="false" nullable="true" identity="false"
+                comment="Billing Address ID"/>
+        <column xsi:type="int" name="ks_order_id" padding="10" unsigned="true" nullable="false" default="0" comment="Magento Sales Order ID"/>
+        <column xsi:type="smallint" name="ks_send_email" unsigned="true" nullable="true" identity="false"
+                comment="Send Email"/>
+        <column xsi:type="int" name="ks_state" unsigned="false" nullable="true" identity="false"
+                comment="State"/>
+        <column xsi:type="int" name="ks_shipping_address_id" unsigned="false" nullable="true" identity="false"
+                comment="Shipping Address ID"/>
+        <column xsi:type="varchar" name="ks_invoice_increment_id" nullable="true" length="50" comment="Invoice Increment ID"/>
+        <column xsi:type="varchar" name="ks_request_increment_id" nullable="true" length="50" comment="Request Increment ID"/>
+        <column xsi:type="varchar" name="ks_order_increment_id" nullable="true" length="50" comment="Order Increment ID"/>
+        <column xsi:type="timestamp" name="ks_order_created_at" comment="Order Created At"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" 		comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <column xsi:type="text" name="ks_customer_note" nullable="true" comment="Customer Note"/>
+        <column xsi:type="smallint" name="ks_comment_customer_notify" unsigned="true" nullable="true"
+                identity="false" comment="Customer Note Notify"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_INVOICE_ORDER_ID_SALES_ORDER_ENTITY_ID" table="ks_sales_invoice"
+                    column="ks_order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_INVOICE_STORE_ID_STORE_STORE_ID" table="ks_sales_invoice"
+                    column="ks_store_id" referenceTable="store" referenceColumn="store_id" onDelete="SET NULL"/>
+    </table>
+    <!-- create ks_sales_invoice_item -->
+    <table name="ks_sales_invoice_item" resource="sales" engine="innodb" comment="Sales Flat Invoice Item">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="ks_parent_id" unsigned="true" nullable="false" identity="false"
+                comment="Parent ID"/>
+        <column xsi:type="decimal" name="ks_base_price" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Price"/>
+        <column xsi:type="decimal" name="ks_tax_amount" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Tax Amount"/>
+        <column xsi:type="decimal" name="ks_base_row_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Row Total"/>
+        <column xsi:type="decimal" name="ks_discount_amount" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Discount Amount"/>
+        <column xsi:type="decimal" name="ks_row_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Row Total"/>
+        <column xsi:type="decimal" name="ks_base_discount_amount" scale="4" precision="12" unsigned="false"
+                nullable="true" comment="Base Discount Amount"/>
+        <column xsi:type="decimal" name="ks_price_incl_tax" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Price Incl Tax"/>
+        <column xsi:type="decimal" name="ks_base_tax_amount" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Tax Amount"/>
+        <column xsi:type="decimal" name="ks_base_price_incl_tax" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Price Incl Tax"/>
+        <column xsi:type="decimal" name="ks_qty" scale="4" precision="12" unsigned="false" nullable="true" comment="Qty"/>
+        <column xsi:type="decimal" name="ks_base_cost" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Cost"/>
+        <column xsi:type="decimal" name="ks_price" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Price"/>
+        <column xsi:type="decimal" name="ks_base_row_total_incl_tax" scale="4" precision="12" unsigned="false"
+                nullable="true" comment="Base Row Total Incl Tax"/>
+        <column xsi:type="decimal" name="ks_row_total_incl_tax" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Row Total Incl Tax"/>
+        <column xsi:type="int" name="ks_product_id" unsigned="false" nullable="true" identity="false"
+                comment="Product ID"/>
+        <column xsi:type="int" name="ks_order_item_id" unsigned="false" nullable="true" identity="false"
+                comment="Order Item ID"/>
+        <column xsi:type="text" name="ks_additional_data" nullable="true" comment="Additional Data"/>
+        <column xsi:type="text" name="ks_description" nullable="true" comment="Description"/>
+        <column xsi:type="varchar" name="ks_sku" nullable="true" length="255" comment="Sku"/>
+        <column xsi:type="varchar" name="ks_name" nullable="true" length="255" comment="Name"/>
+        <column xsi:type="decimal" name="ks_discount_tax_compensation_amount" scale="4" precision="12" unsigned="false"
+                nullable="true" comment="Discount Tax Compensation Amount"/>
+        <column xsi:type="decimal" name="ks_base_discount_tax_compensation_amount" scale="4" precision="12"
+                unsigned="false" nullable="true" comment="Base Discount Tax Compensation Amount"/>
+        <column xsi:type="text" name="ks_tax_ratio" nullable="true"
+                comment="Ratio of tax invoiced over tax of the order item"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" 		 comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_INVOICE_ITEM_KS_PARENT_ID_KS_SALES_INVOICE_ENTITY_ID"
+                    table="ks_sales_invoice_item" column="ks_parent_id" referenceTable="ks_sales_invoice"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="KS_SALES_INVOICE_ITEM_KS_PARENT_ID" indexType="btree">
+            <column name="ks_parent_id"/>
+        </index>
+    </table>
+    <!-- create ks_sales_creditmemo -->
+    <table name="ks_sales_creditmemo" resource="sales" engine="innodb" comment="Sales Flat Creditmemo">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="smallint" name="ks_store_id" unsigned="true" nullable="true" identity="false"
+                comment="Store ID"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="smallint" name="ks_approval_required" unsigned="true" nullable="true" identity="false"
+                comment="Approval Required"/>
+        <column xsi:type="smallint" name="ks_approval_status" unsigned="true" nullable="true" identity="false"
+                comment="Approval Status"/>
+        <column xsi:type="text" name="ks_rejection_reason" nullable="true" comment="Creditmemo Rejection Reason"/>
+        <column xsi:type="decimal" name="ks_adjustment_positive" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Adjustment Positive"/>
+        <column xsi:type="decimal" name="ks_base_shipping_tax_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Shipping Tax Amount"/>
+        <column xsi:type="decimal" name="ks_store_to_order_rate" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Store To Order Rate"/>
+        <column xsi:type="decimal" name="ks_base_discount_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Discount Amount"/>
+        <column xsi:type="decimal" name="ks_base_to_order_rate" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base To Order Rate"/>
+        <column xsi:type="decimal" name="ks_grand_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Grand Total"/>
+        <column xsi:type="decimal" name="ks_base_adjustment_negative" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Adjustment Negative"/>
+        <column xsi:type="decimal" name="ks_base_subtotal_incl_tax" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Subtotal Incl Tax"/>
+        <column xsi:type="decimal" name="ks_shipping_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Shipping Amount"/>
+        <column xsi:type="decimal" name="ks_subtotal_incl_tax" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Subtotal Incl Tax"/>
+        <column xsi:type="decimal" name="ks_adjustment_negative" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Adjustment Negative"/>
+        <column xsi:type="decimal" name="ks_base_shipping_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Shipping Amount"/>
+        <column xsi:type="decimal" name="ks_store_to_base_rate" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Store To Base Rate"/>
+        <column xsi:type="decimal" name="ks_base_to_global_rate" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base To Global Rate"/>
+        <column xsi:type="decimal" name="ks_base_adjustment" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Adjustment"/>
+        <column xsi:type="decimal" name="ks_base_subtotal" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Subtotal"/>
+        <column xsi:type="decimal" name="ks_discount_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Discount Amount"/>
+        <column xsi:type="decimal" name="ks_subtotal" scale="4" precision="20" unsigned="false" nullable="true"
+                comment=" Subtotal"/>
+        <column xsi:type="decimal" name="ks_adjustment" scale="4" precision="20" unsigned="false" nullable="true"
+                comment=" Adjustment"/>
+        <column xsi:type="decimal" name="ks_base_grand_total" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Grand Total"/>
+        <column xsi:type="decimal" name="ks_base_adjustment_positive" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Adjustment Positive"/>
+        <column xsi:type="decimal" name="ks_base_tax_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Tax Amount"/>
+        <column xsi:type="decimal" name="ks_shipping_tax_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Shipping Tax Amount"/>
+        <column xsi:type="decimal" name="ks_tax_amount" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Tax Amount"/>
+        <column xsi:type="int" name="ks_order_id" padding="10" unsigned="true" nullable="false" default="0" comment="Magento Sales Order ID"/>
+        <column xsi:type="smallint" name="ks_email_sent" unsigned="true" nullable="true" identity="false"
+                comment="Email Sent"/>
+        <column xsi:type="smallint" name="ks_send_email" unsigned="true" nullable="true" identity="false"
+                comment="Send Email"/>
+        <column xsi:type="int" name="ks_creditmemo_status" unsigned="false" nullable="true" identity="false"
+                comment="Creditmemo Status"/>
+        <column xsi:type="int" name="ks_state" unsigned="false" nullable="true" identity="false"
+                comment="State"/>
+        <column xsi:type="int" name="ks_shipping_address_id" unsigned="false" nullable="true" identity="false"
+                comment="Shipping Address ID"/>
+        <column xsi:type="int" name="ks_billing_address_id" unsigned="false" nullable="true" identity="false"
+                comment="Billing Address ID"/>
+        <column xsi:type="int" name="ks_invoice_id" unsigned="false" nullable="true" identity="false"
+                comment="Invoice ID"/>
+        <column xsi:type="varchar" name="ks_store_currency_code" nullable="true" length="3" comment="Store Currency Code"/>
+        <column xsi:type="varchar" name="ks_order_currency_code" nullable="true" length="3" comment="Order Currency Code"/>
+        <column xsi:type="varchar" name="ks_base_currency_code" nullable="true" length="3" comment="Base Currency Code"/>
+        <column xsi:type="varchar" name="ks_global_currency_code" nullable="true" length="3"
+                comment="Global Currency Code"/>
+        <column xsi:type="varchar" name="ks_transaction_id" nullable="true" length="255" comment="Transaction ID"/>
+        <column xsi:type="varchar" name="ks_creditmemo_increment_id" nullable="true" length="50" comment="Creditmemo Increment ID"/>
+        <column xsi:type="varchar" name="ks_request_increment_id" nullable="true" length="50" comment="Request Increment ID"/>
+        <column xsi:type="varchar" name="ks_order_increment_id" nullable="true" length="50" comment="Order Increment ID"/>
+        <column xsi:type="timestamp" name="ks_order_created_at" comment="Order Created At"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <column xsi:type="decimal" name="ks_discount_tax_compensation_amount" scale="4" precision="20" unsigned="false"
+                nullable="true" comment="Discount Tax Compensation Amount"/>
+        <column xsi:type="decimal" name="ks_base_discount_tax_compensation_amount" scale="4" precision="20"
+                unsigned="false" nullable="true" comment="Base Discount Tax Compensation Amount"/>
+        <column xsi:type="decimal" name="ks_shipping_discount_tax_compensation_amount" scale="4" precision="20"
+                unsigned="false" nullable="true" comment="Shipping Discount Tax Compensation Amount"/>
+        <column xsi:type="decimal" name="ks_base_shipping_discount_tax_compensation_amnt" scale="4" precision="20"
+                unsigned="false" nullable="true" comment="Base Shipping Discount Tax Compensation Amount"/>
+        <column xsi:type="decimal" name="ks_shipping_incl_tax" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Shipping Incl Tax"/>
+        <column xsi:type="decimal" name="ks_base_shipping_incl_tax" scale="4" precision="20" unsigned="false"
+                nullable="true" comment="Base Shipping Incl Tax"/>
+        <column xsi:type="varchar" name="ks_discount_description" nullable="true" length="255"
+                comment="Discount Description"/>
+        <column xsi:type="decimal" name="ks_total_commission" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Commission Value"/>
+        <column xsi:type="decimal" name="ks_base_total_commission" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Base Commission Value"/>
+        <column xsi:type="decimal" name="ks_total_earning" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Total Seller Earning"/>
+        <column xsi:type="decimal" name="ks_base_total_earning" precision="20" scale="4" unsigned="true" nullable="false" default="0" comment="Base Total Seller Earning"/>
+        <column xsi:type="text" name="ks_customer_note" nullable="true" comment="Customer Note"/>
+        <column xsi:type="smallint" name="ks_comment_customer_notify" unsigned="true" nullable="true"
+                identity="false" comment="Customer Note Notify"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_CREDITMEMO_ORDER_ID_SALES_ORDER_ENTITY_ID" table="ks_sales_creditmemo"
+                    column="ks_order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_CREDITMEMO_STORE_ID_STORE_STORE_ID" table="ks_sales_creditmemo"
+                    column="ks_store_id" referenceTable="store" referenceColumn="store_id" onDelete="SET NULL"/>
+    </table>
+    <!-- create ks_sales_creditmemo_item -->
+    <table name="ks_sales_creditmemo_item" resource="sales" engine="innodb" comment="Sales Flat Creditmemo Item">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="ks_parent_id" unsigned="true" nullable="false" identity="false"
+                comment="Parent ID"/>
+        <column xsi:type="decimal" name="ks_base_price" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Price"/>
+        <column xsi:type="decimal" name="ks_tax_amount" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Tax Amount"/>
+        <column xsi:type="decimal" name="ks_base_row_total" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Row Total"/>
+        <column xsi:type="decimal" name="ks_discount_amount" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Discount Amount"/>
+        <column xsi:type="decimal" name="ks_row_total" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Row Total"/>
+        <column xsi:type="decimal" name="ks_base_discount_amount" scale="4" precision="12" unsigned="false"
+                nullable="true" comment="Base Discount Amount"/>
+        <column xsi:type="decimal" name="ks_price_incl_tax" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Price Incl Tax"/>
+        <column xsi:type="decimal" name="ks_base_tax_amount" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Tax Amount"/>
+        <column xsi:type="decimal" name="ks_base_price_incl_tax" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Price Incl Tax"/>
+        <column xsi:type="decimal" name="ks_qty" scale="4" precision="12" unsigned="false" nullable="true" comment="Qty"/>
+        <column xsi:type="smallint" name="ks_back_to_stock" unsigned="true" nullable="true"
+                identity="false" comment="Return item to stock"/>
+        <column xsi:type="decimal" name="ks_base_cost" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Base Cost"/>
+        <column xsi:type="decimal" name="ks_price" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Price"/>
+        <column xsi:type="decimal" name="ks_base_row_total_incl_tax" scale="4" precision="12" unsigned="false"
+                nullable="true" comment="Base Row Total Incl Tax"/>
+        <column xsi:type="decimal" name="ks_row_total_incl_tax" scale="4" precision="12" unsigned="false" nullable="true"
+                comment="Row Total Incl Tax"/>
+        <column xsi:type="int" name="ks_product_id" unsigned="false" nullable="true" identity="false"
+                comment="Product ID"/>
+        <column xsi:type="int" name="ks_order_item_id" unsigned="false" nullable="true" identity="false"
+                comment="Order Item ID"/>
+        <column xsi:type="text" name="ks_additional_data" nullable="true" comment="Additional Data"/>
+        <column xsi:type="text" name="ks_description" nullable="true" comment="Description"/>
+        <column xsi:type="varchar" name="ks_sku" nullable="true" length="255" comment="Sku"/>
+        <column xsi:type="varchar" name="ks_name" nullable="true" length="255" comment="Name"/>
+        <column xsi:type="decimal" name="ks_discount_tax_compensation_amount" scale="4" precision="12" unsigned="false"
+                nullable="true" comment="Discount Tax Compensation Amount"/>
+        <column xsi:type="decimal" name="ks_base_discount_tax_compensation_amount" scale="4" precision="12"
+                unsigned="false" nullable="true" comment="Base Discount Tax Compensation Amount"/>
+        <column xsi:type="text" name="ks_tax_ratio" nullable="true"
+                comment="Ratio of tax invoiced over tax of the order item"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false"
+			default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false"
+        	default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SALES_CREDIT_ITEM_KS_PARENT_ID_KS_SALES_CREDITMEMO_ENTITY_ID"
+                    table="ks_sales_creditmemo_item" column="ks_parent_id" referenceTable="ks_sales_creditmemo"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="KS_SALES_CREDITMEMO_ITEM_KS_PARENT_ID" indexType="btree">
+            <column name="ks_parent_id"/>
+        </index>
+    </table>
+    <!-- create ks_seller_profile_banners table -->
+    <table name="ks_seller_profile_banners" resource="default" engine="innodb" >
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="text" name="ks_picture" nullable="true" comment="Picture"/>
+        <column xsi:type="varchar" name="ks_title" nullable="true" length="100" comment="Title"/>
+        <column xsi:type="varchar" name="ks_text" nullable="true" length="250" comment="Text"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_PROFILE_BANNERS_KS_SELLER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="ks_seller_profile_banners" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+        </index>
+    </table>
+    <!-- create ks_favourite_seller table -->
+    <table name="ks_favourite_seller" resource="default" comment="Ksolves Favourite Seller Details Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller Id"/>
+        <column xsi:type="int" name="ks_customer_id" padding="10" unsigned="true" nullable="false" comment="Customer Id"/>
+        <column xsi:type="smallint" name="ks_store_view_id" padding="5" unsigned="true" nullable="false" comment="Store View Id"/>
+        <column xsi:type="smallint" name="ks_website_id" padding="5" unsigned="true" nullable="false" comment="Website Id"/>
+        <column xsi:type="smallint" name="ks_seller_new_product_alert" padding="5" unsigned="true" nullable="false" default="1" comment="Seller New Product Alert"/>
+        <column xsi:type="smallint" name="ks_seller_price_alert" padding="5" unsigned="true" nullable="false" default="1" comment="Seller Price Change Alert"/>
+        <column xsi:type="smallint" name="ks_customer_new_product_alert" padding="5" unsigned="true" nullable="false" comment="Customer New Product Alert"/>
+        <column xsi:type="smallint" name="ks_customer_price_alert" padding="5" unsigned="true" nullable="false" comment="Customer Price Change Alert"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_CUSTOMER_ID" table="ks_favourite_seller" column="ks_customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_ID" table="ks_favourite_seller" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_FAVOURITE_SELLER_KS_STORE_VIEW_ID_STORE_STORE_ID" table="ks_favourite_seller" column="ks_store_view_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_FAVOURITE_SELLER_KS_WEBSITE_ID_STORE_WEBSITE_WEBSITE_ID" table="ks_favourite_seller" column="ks_website_id" referenceTable="store_website" referenceColumn="website_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="ks_customer_id"/>
+            <column name="ks_seller_id"/>
+            <column name="ks_website_id"/>
+            <column name="ks_store_view_id"/>
+        </index>
+    </table>
+    <!-- create ks_seller_config_data table -->
+    <table name="ks_seller_config_data" resource="default" comment="Ksolves Seller Config Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="smallint" name="ks_show_banner" padding="5" unsigned="true" nullable="false" default="1" comment="Seller Banner Status"/>
+        <column xsi:type="smallint" name="ks_show_recently_products" padding="5" unsigned="true" nullable="false" default="1" comment="Seller Recently Products Status"/>
+        <column xsi:type="varchar" name="ks_recently_products_text" nullable="false" length="255" comment="Seller Recently Products Text"/>
+        <column xsi:type="int" name="ks_recently_products_count" padding="10" unsigned="true" nullable="false" comment="Seller Recently Products Count"/>
+        <column xsi:type="smallint" name="ks_show_best_products" padding="5" unsigned="true" nullable="false" default="1" comment="Seller Best Products Status"/>
+        <column xsi:type="varchar" name="ks_best_products_text" nullable="false" length="255" comment="Seller Best Products Text"/>
+        <column xsi:type="int" name="ks_best_products_count" padding="10" unsigned="true" nullable="false" comment="Seller Best Products Count"/>
+        <column xsi:type="smallint" name="ks_show_discount_products" padding="5" unsigned="true" nullable="false" default="1" comment="Seller Discount Products Status"/>
+        <column xsi:type="varchar" name="ks_discount_products_text" nullable="false" length="255" comment="Seller Discount Products Text"/>
+        <column xsi:type="int" name="ks_discount_products_count" padding="10" unsigned="true" nullable="false" comment="Seller Discount Products Count"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_CONFIG_DATA_KS_SELLER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="ks_seller_config_data" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+        </index>
+    </table>
+    <!-- Create Seller Locator (ks_seller_locator) Table -->
+    <table name="ks_seller_locator" resource="default" comment="Ksolves Seller Locator Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="varchar" name="ks_latitude" nullable="true" length="255" comment="Latitude"/>
+        <column xsi:type="varchar" name="ks_longitude" nullable="true" length="255" comment="Longitude"/>
+        <column xsi:type="text" name="ks_location" nullable="true" comment="Seller Location"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_SELLER_LOCATOR_KS_SELLER_ID_KS_SELLER_DETAILS_KS_SELLER_ID" table="ks_seller_locator" column="ks_seller_id" referenceTable="ks_seller_details" referenceColumn="ks_seller_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+        </index>
+    </table>
+    <!-- Added Column of Seller Id in sales_order_status_history table -->
+    <table name="sales_order_status_history" resource="default" engine="innodb">
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+    </table>
+    <!-- Added Column of Seller Id in sales_invoice_comment table -->
+    <table name="sales_invoice_comment" resource="default" engine="innodb">
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+    </table>
+    <!-- Added Column of Seller Id in sales_creditmemo_comment table -->
+    <table name="sales_creditmemo_comment" resource="default" engine="innodb">
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+    </table>
+    <!-- Added Column of Seller Id in sales_shipment_comment table -->
+    <table name="sales_shipment_comment" resource="default" engine="innodb">
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+    </table>
+    <!-- Added Column of Seller Id in sales_shipment_track table -->
+    <table name="sales_shipment_track" resource="default" engine="innodb">
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+    </table>
+    <table name="eav_attribute" resource="default" engine="innodb">
+        <column xsi:type="int" name="ks_seller_id" unsigned="true" nullable="false" default="0"
+                comment="SELLER ID"/>
+        <column xsi:type="smallint" name="ks_attribute_approval_status" unsigned="true" nullable="false" default="0" comment="Attribute Approval Status"/>
+        <column xsi:type="text" name="ks_attribute_rejection_reason" nullable="true" comment="Attribute Rejection Reason"/>
+        <column xsi:type="smallint" name="ks_include_in_marketplace" padding="5" unsigned="true" nullable="false" default="1" comment="Attribute Include in Marketplace"/>
+        <constraint xsi:type="unique" referenceId="EAV_ATTRIBUTE_ENTITY_TYPE_ID_ATTRIBUTE_CODE">
+            <column name="ks_seller_id"/>
+        </constraint>
+    </table>
+    <table name="eav_attribute_set" resource="default" engine="innodb">
+        <column xsi:type="int" name="ks_seller_id" unsigned="true" nullable="false" default="0"
+                comment="SELLER ID"/>
+        <constraint xsi:type="unique" referenceId="EAV_ATTRIBUTE_SET_ENTITY_TYPE_ID_ATTRIBUTE_SET_NAME">
+            <column name="ks_seller_id"/>
+        </constraint>
+    </table>
+    <!-- create ks_seller_sitemap table -->
+    <table name="ks_seller_sitemap" resource="default" comment="Ksolves Seller Sitemap Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Group Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="smallint" name="ks_store_id" padding="5" unsigned="true" nullable="false" default="0" comment="Store Id"/>
+        <column xsi:type="smallint" name="ks_included_sitemap_profile" padding="4" nullable="false" default="1" comment="Seller Profile Included"/>
+        <column xsi:type="smallint" name="ks_included_sitemap_product" padding="4" nullable="false" default="0" comment="Seller Product Included"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+        </index>
+    </table>
+    <!-- create ks_favourite_seller_email table -->
+    <table name="ks_favourite_seller_email" resource="default" comment="Ksolves Favourite Seller Email Table">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Id"/>
+        <column xsi:type="int" name="ks_product_id" padding="10" unsigned="true" nullable="false" comment="Product Id"/>
+        <column xsi:type="int" name="ks_seller_id" padding="10" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="float" name="ks_product_old_special_price" unsigned="true" nullable="false" default="0" comment="Product Old Special Price"/>
+        <column xsi:type="smallint" name="ks_store_id" padding="5" unsigned="true" nullable="false" comment="Store Id"/>
+        <column xsi:type="smallint" name="ks_website_id" padding="5" unsigned="true" nullable="false" comment="Website Id"/>
+        <column xsi:type="smallint" name="ks_is_email_sent" padding="5" unsigned="true" nullable="false" default="0" comment="Email Sent"/>
+        <column xsi:type="smallint" name="ks_product_state" padding="5" unsigned="true" nullable="false" comment="Product State"/>
+        <column xsi:type="timestamp" name="ks_created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="ks_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="KS_FAVOURITE_SELLER_EMAIL_KS_PRODUCT_ID_KS_STORE_ID">
+            <column name="ks_product_id"/>
+            <column name="ks_store_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_FAVOURITE_SELLER_EMAIL_KS_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID" table="ks_favourite_seller_email" column="ks_product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_FAVOURITE_SELLER_EMAIL_KS_STORE_ID_STORE_STORE_ID" table="ks_favourite_seller_email" column="ks_store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_FAVOURITE_SELLER_EMAIL_KS_WEBSITE_ID_STORE_WEBSITE_WEBSITE_ID" table="ks_favourite_seller_email" column="ks_website_id" referenceTable="store_website" referenceColumn="website_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_FAVOURITE_SELLER_EMAIL_KS_SELLER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="ks_favourite_seller_email" column="ks_seller_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="INDEX_REFERENCE" indexType="btree">
+            <column name="id"/>
+            <column name="ks_website_id"/>
+            <column name="ks_store_id"/>
+        </index>
+    </table>
+    <!-- create ks_product_category_backup  table -->
+    <table name="ks_product_category_backup" resource="default" engine="innodb" comment="Ksolves Product Category Backup">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_category_id" padding="10" unsigned="true" nullable="false" comment="Category Id"/>
+        <column xsi:type="int" name="ks_product_id" padding="10" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="int" name="ks_position" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Position"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_PRODUCT_CATEGORY_BACKUP_KS_CATEGORY_ID_CATALOG_CATEGORY_ENTITY_ENTITY_ID" table="ks_product_category_backup" column="ks_category_id" referenceTable="catalog_category_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_PRODUCT_CATEGORY_BACKUP_KS_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID" table="ks_product_category_backup" column="ks_product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+
+    <!-- create commission rule/product indexer table -->
+    <table name="ks_commissionrule_product_indexer" resource="default" engine="innodb" comment="Ksolves Product Category Backup">
+        <column xsi:type="int" name="id" padding="10" identity="true" unsigned="true" nullable="false" comment="Entity Id"/>
+        <column xsi:type="int" name="ks_commission_rule_id" padding="10" unsigned="true" nullable="false" comment="Commission Rule Id"/>
+        <column xsi:type="int" name="ks_product_id" padding="10" unsigned="true" nullable="false" comment="Product Id"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KS_COMMISSIONRULE_PRODUCT_INDEXER_KS_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID" table="ks_commissionrule_product_indexer" column="ks_product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KS_COMMISSIONRULE_PRODUCT_INDEXER_KS_COMMISSION_RULE_ID_KS_COMMISSION_RULE_ID" table="ks_commissionrule_product_indexer" column="ks_commission_rule_id" referenceTable="ks_commission_rule" referenceColumn="id" onDelete="CASCADE"/>
+    </table>
+</schema>

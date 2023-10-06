@@ -1,0 +1,66 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright(c) Ksolves India Limited(https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php
+// Created Helper Object
+$ksHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsDataHelper');
+// Get the Title Text
+$ksLoginTitle = $ksHelper->getKsConfigLoginAndRegistrationSetting('ks_seller_login_title');
+// Get seller registration allowed or not
+$ksSellerRegistration = $ksHelper->getKsConfigValue('ks_marketplace_login_and_registration/ks_marketplace_login_and_registration_settings/ks_allow_seller_registration', $ksHelper->getKsCurrentStoreView());
+?>
+<div class="ks-account-page ks-page-content">
+    <header class="ks-account-header">
+        <div class="ks-section-container">
+            <div class="ks-account-logo">
+                <a href="<?= $block->getBaseUrl()?>"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-logo.png') ?>"/></a>
+            </div>
+            <?php if($ksSellerRegistration): ?>
+                <div class="ks-header-title">
+                    <span>New Seller?</span><a href="<?= $block->getUrl('customer/account/create') ?>">Create An Account</a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </header>
+    <div class="ks_container">
+        <div class="ks_row">
+            <form class="ks-account-login-form ks-account-form form-login login-container"
+             action="<?= $block->getBaseUrl().'multivendor/login/login/'?>"
+             method="post" id="login-form" data-mage-init='{"validation":{}}'>
+             <?= $block->getBlockHtml('formkey') ?>
+                <h1><?= $block->escapeHtml(__($ksLoginTitle)) ?></h1>
+                <div class="fieldset login ks-mb-0">
+                    <div class="field ks-form-note"><?= $block->escapeHtml(__("Registered Seller's")) ?></div>
+                    <div class="field ks-form-note ks-form-note-message"><?= $block->escapeHtml(__('If you have an account, sign in with your email address.')) ?></div>
+                    <div class="field email required">
+                        <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+                        <div class="control">
+                            <input name="login[username]" value="<?= $block->escapeHtml($block->getUsername()) ?>"  <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email" type="email" class="input-text" title="<?= $block->escapeHtml(__('Username')) ?>" data-validate="{required:true, 'validate-email':true}">
+                        </div>
+                    </div>
+                    <div class="field password required">
+                        <label for="pass" class="label"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
+                        <div class="control">
+                            <input name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>  class="input-text" id="pass" title="<?= $block->escapeHtml(__('Password')) ?>" data-validate="{required:true}">
+                        </div>
+                    </div>
+                    <div class="ks-submit-login-button">
+                        <button type="submit" class="ks-frontend-btn ks-account-btn ks-frontend-medium-btn">
+                            <span><?= /* @escapeNotVerified */$block->escapeHtml(__('Sign in')) ?></span>
+                        </button>               
+                    </div>  
+                    <a href="<?= $block->getBaseUrl().'multivendor/forgotpassword/index/'?>" class="field ks-forgot-note"><?= $block->escapeHtml(__('Forgot Your Password?')) ?></div>  
+                </div>
+                <input type="hidden" name="ks_seller_login" value="1"/>
+            </form>
+        </div>
+    </div>
+</div>

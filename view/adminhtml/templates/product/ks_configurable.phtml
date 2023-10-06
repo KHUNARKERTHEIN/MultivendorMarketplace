@@ -1,0 +1,205 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<?php if ($block->getKsSellerProduct()->getTypeId() == "configurable"): ?>
+    <div class="entry-edit form-inline admin__field-complex ks-mt-0" id="<?= $block->escapeHtmlAttr($block->getId()) ?>" data-panel="product-variations">
+        <div class="product-create-configuration admin__field-complex-content ks-pt-0">
+            <div class="product-create-configuration-info">
+                <div class="note" data-role="product-create-configuration-info">
+                    <?= $block->escapeHtml(__('Configurable products allow customers to choose options (Ex: shirt color). You need to create a simple product for each configuration (Ex: a product for each color).'));?>
+                </div>
+            </div>
+        </div>
+        <div class="fieldset">
+            <input type="hidden" name="affect_configurable_product_attributes" value="1" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+        </div>
+    </div>
+    <?php
+        $ksProductMatrix = $block->getKsSellerProductMatrix();
+        $ksAttributes = $block->getKsSellerProductAttributes();
+    ?>
+    <div id="ks-product-variations-matrix">
+        <div data-bind="scope: 'configurableVariations'" class="admin__field admin__field-wide _no-header">
+            <label class="admin__field-label">
+                <span><?= __('Current Variations'); ?></span>
+            </label>
+
+            <div class="admin__field-control" >
+                <!--  product attribute data  -->
+                <div data-role="configurable-attributes-container">
+
+                    <?php foreach ($ksAttributes as $key => $ksAttribute): ?>
+
+                        <div data-role="attribute-info">
+                            <input name="attributes[<?= $key ?>]" value="<?= $ksAttribute['id'] ?>" type="hidden" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                            <input name="attribute_codes[<?= $key ?>]" value="<?= $ksAttribute['code'] ?>" type="hidden" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                            <input name="product[configurable_attributes_data][<?= $ksAttribute['id'] ?>][attribute_id]" value="<?= $ksAttribute['id'] ?>"  type="hidden" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                            <input name="product[configurable_attributes_data][<?= $ksAttribute['id'] ?>][code]" value="<?= $ksAttribute['code'] ?>" type="hidden" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                            <input name="product[configurable_attributes_data][<?= $ksAttribute['id'] ?>][label]" value="<?= $ksAttribute['label'] ?>" type="hidden" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                            <input name="product[configurable_attributes_data][<?= $ksAttribute['id'] ?>][position]" value="<?= $ksAttribute['position'] ?>" type="hidden" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                            <?php foreach ($ksAttribute['chosen'] as $key => $ksOption): ?>
+                                <div data-role="option-info">
+                                    <input name="product[configurable_attributes_data][<?= $ksAttribute['id'] ?>][values][<?= $ksOption['value'] ?>][include]" value="1" type="hidden" data-form-part="ks_marketplace_pricecomparsion_product_edit_form"/>
+                                    <input name="product[configurable_attributes_data][<?= $ksAttribute['id'] ?>][values][<?= $ksOption['value'] ?>][value_index]" value="<?= $ksOption['value'] ?>" type="hidden" data-form-part="ks_marketplace_pricecomparsion_product_edit_form"/>
+                                </div>
+                            <?php endforeach ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+                <!-- pagination -->
+                <div class="admin__data-grid-wrap admin__data-grid-wrap-static admin__control-table-pagination ks-mb-0">
+                    <div class="ks-grid-pager admin__data-grid-pager-wrap">
+                        <select class="ks-pager-select admin__control-select">
+                            <option value="5" selected="selected">5</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                            <option value="500">500</option>
+                        </select>
+                        <label class="ks-perpage-text admin__control-support-text">per page</label>
+                        <div class="admin__data-grid-pager">
+                            <button class="action-previous" type="button" title="Previous Page"></button>
+                            <input class="admin__control-text" type="number" value="1"/>
+                            <label class="admin__control-support-text"></label>
+                            <button class="action-next" type="button" title="Next Page"></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- configurable product matrix data  -->
+                <div class="admin__control-table-wrapper">
+                    <table class="data-grid admin__dynamic-rows data-grid" id="ks-table">
+                        <thead>
+                            <tr>
+                                <th class="data-grid-th data-grid-thumbnail-cell col-image" data-column="image">
+                                    <?=  __('Image'); ?>
+                                </th>
+                                <th class="data-grid-th col-name" data-column="name">
+                                    <?=  __('Name'); ?>
+                                </th>
+                                <th class="data-grid-th col-sku" data-column="sku">
+                                    <?=  __('SKU'); ?>
+                                </th>
+                                <th class="data-grid-th col-price" data-column="price">
+                                    <?=  __('Price'); ?>
+                                </th>
+                                <th class="data-grid-th col-qty" data-column="qty">
+                                    <?=  __('Quantity'); ?>
+                                </th>
+                                <th class="data-grid-th col-weight" data-column="weight">
+                                    <?=  __('Weight'); ?>
+                                </th>
+                                <th class="data-grid-th col-status" data-column="status">
+                                    <?=  __('Status'); ?>
+                                </th>
+                                <th class="data-grid-th col-attributes" data-column="attributes">
+                                    <?=  __('Attributes'); ?>
+                                </th>
+                                <th class="data-grid-th col-stage" data-column="stage">
+                                    <?=  __('Condition'); ?>
+                                </th>
+                                <th class="data-grid-th">
+                                    <?=  __('Actions'); ?>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($ksProductMatrix as $key => $ksVariation): ?>
+            
+                            <tr data-role="row" data-row-index="<?= $key ?>">
+                                <input type="hidden" name="configurable-matrix[<?= $key ?>][id]" value="<?= $ksVariation['productId'] ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form"/>
+                                <input type="hidden" name="associated_product_ids[<?= $key ?>]" value="<?= $ksVariation['productId'] ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form"/>
+                                <input type="hidden" name="configurable-matrix[<?= $key ?>][canEdit]" value="1" data-form-part="ks_marketplace_pricecomparsion_product_edit_form"/>
+                                <input type="hidden" name="configurable-matrix[<?= $key ?>][newProduct]" value="0" data-form-part="ks_marketplace_pricecomparsion_product_edit_form"/>
+                                <input type="hidden" name="configurable-matrix[<?= $key ?>][was_changed]" value="true" data-form-part="ks_marketplace_pricecomparsion_product_edit_form"/>
+                                <td class="col-image" data-column="image">
+                                    <div class="actions split actions-image-uploader">
+                                        <div class="action-upload action split" data-action="upload-image">
+                                            <img src="<?= $ksVariation['images']['preview'] ?>" class="variation" data-role="image"/>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="col-name" data-column="name">
+                                    <a  name="configurable-matrix[<?= $key ?>][name]" target="_blank" href="<?= $ksVariation['productUrl'] ?>"><?= $block->escapeHtmlAttr($ksVariation['name']) ?></a>
+                                </td>
+                                <td class="col-sku" data-column="sku">
+                                    <input type="text" name="configurable-matrix[<?= $key ?>][sku]" class="admin__control-text required-entry" value="<?= $ksVariation['sku'] ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                                </td>
+                                <td class="col-price" data-column="price">
+                                    <div>
+                                        <span class="ks-price-symbol"><?= $block->getKsCurrencySymbol() ?></span>
+                                        <input type="text" name="configurable-matrix[<?= $key ?>][price]" addbefore="<?= $block->getKsCurrencySymbol() ?>" class="admin__control-text required-entry validate-zero-or-greater dollor-input-style ks-pl-16" value="<?= $ksVariation['price'] ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" /></span>
+                                    </div>
+                                </td>
+                                <td class="col-qty" data-column="qty">
+                                    <input type="text" name="configurable-matrix[<?= $key ?>][qty]" class="admin__control-text validate-zero-or-greater" value="<?= $ksVariation['quantity'] ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                                </td>
+                                <td class="col-weight" data-column="weight">
+                                    <input type="text" name="configurable-matrix[<?= $key ?>][weight]" class="admin__control-text validate-zero-or-greater" value="<?= $ksVariation['weight'] ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                                </td>
+                                <td class="col-status" data-column="status">
+                                    <span><?php if ($ksVariation['status'] == 1) {
+                                        echo "Enabled";
+                                          } else {
+                                              echo "Disabled";
+                                          } ?></span>
+                                    <input type="hidden" name="configurable-matrix[<?= $key ?>][status]" class="validate-zero-or-greater product-status" value="<?= $ksVariation['status'] ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form" />
+                                </td>
+                                <td class="col-attributes" data-column="attributes"> 
+                                    <?php foreach ($ksVariation['options'] as $ksOptionkey => $ksOption): ?>
+                                        <span> <?= $ksOption['attribute_label']?>: <?= $ksOption['label'] ?></span>
+                                    <?php endforeach; ?>
+                                </td>
+                                <td class="col-stage" data-column="stage">
+                                    <select class="admin__control-select" name="configurable-matrix[<?= $key ?>][stage]"  ?>" data-form-part="ks_marketplace_pricecomparsion_product_edit_form">
+                                        <option value="1" <?= $ksVariation['stage'] == 1 ? 'selected' : '' ?> 
+                                            >New</option>
+                                        <option value="0" <?= $ksVariation['stage'] == 0 ? 'selected' : '' ?>>Used</option>
+                                    </select>
+                                </td>
+                                <td class="data-grid-actions-cell">
+                                    
+                                    <div class="action-select-wrap">
+                                        <button class="ks-action-select action-select" >
+                                            <span>Select</span>
+                                        </button>
+                                        <ul class="ks-dropdown-link action-menu">
+                                            <li>
+                                                <a class="ks-change-status-item-action action-menu-item" data-item-status ="<?= $ksVariation['status'] ?>"><?php if ($ksVariation['status'] == 1) {
+                                                    echo __("Disable");} else { echo __("Enable"); } ?>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="ks-remove-item-action action-menu-item">
+                                                    <?=  __('Remove');?>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        require(['jquery', 'ksConfigProductTab'], function($, ksConfigProductTab) {
+            
+        });
+    </script>
+<?php endif; ?>
+

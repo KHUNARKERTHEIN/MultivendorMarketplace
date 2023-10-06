@@ -1,0 +1,434 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- For Common Method   -->
+    <virtualType name="KsolvesMultivendorMarketplaceGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- for collection   -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ks_marketplace_seller_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSeller\Grid\Collection</item>
+                <item name="ks_marketplace_seller_pendinglisting_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSeller\Grid\SellerPendingListCollection</item>
+                <item name="ks_marketplace_seller_group_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSellerGroup\Grid\Collection</item>
+                <item name="ks_marketplace_commission_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsCommissionRule\Grid\Collection</item>
+                <item name="ks_marketplace_benefits_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsBenefits\Grid\Collection</item>
+                <item name="ks_marketplace_howitworks_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsHowItWorks\Grid\Collection</item>
+                <item name="ks_report_product_reason_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReason\Grid\Collection</item>
+                <item name="ks_marketplace_report_product_reason_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReason\Grid\Collection</item>
+                <item name="ks_report_product_subreason_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductSubReason\Grid\Collection</item>
+                <item name="ks_marketplace_report_product_reasons_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReasons\Grid\Collection</item>
+                <item name="ks_marketplace_report_seller_reasons_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportSellerReasons\Grid\Collection</item>
+                <item name="ks_customer_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsCustomerListing\Grid\Collection</item>
+                <item name="ks_sales_orders_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsOrdersListing\Grid\Collection</item>
+                <item name="ks_sales_shipment_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsShipmentListing\Grid\Collection</item>
+                <item name="ks_sales_seller_shipment_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesShipment\Grid\Collection</item>
+                <item name="ks_sales_orders_invoice_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesInvoice\Grid\Collection</item>
+                <item name="ks_sales_orders_creditmemo_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesCreditMemo\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- For all seller listing Admin grid   -->
+    <virtualType name="KsolvesMultivendorMarketplaceGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSeller\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSeller\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_seller_details</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_marketplace_seller_collection</argument>
+            <argument name="eventObject" xsi:type="string">ks_seller_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSeller</argument>
+        </arguments>
+    </type>
+    <!--     For Seller Group Admin Grid -->
+    <virtualType name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSellerGroup\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_seller_group</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSellerGroup</argument>
+        </arguments>
+    </virtualType>
+    <!-- For Commission Admin grid   -->
+    <virtualType name="KsolvesCommissionRuleGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsCommissionRule\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesCommissionRuleGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsCommissionRule\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_commission_rule</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_marketplace_commissionrule_collection</argument>
+            <argument name="eventObject" xsi:type="string">ks_commissionrule_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsCommissionRule</argument>
+        </arguments>
+    </type>
+    <type name="Ksolves\MultivendorMarketplace\Block\Adminhtml\CustomerEdit\Tab\KsCategoryView">
+        <arguments>
+            <argument name="deleteorderAction" xsi:type="array">
+                <item name="context" xsi:type="string">\Magento\Framework\View\Element\Template\Context</item>
+                <item name="helper" xsi:type="string">\Magento\Catalog\Helper\Category</item>
+                <item name="flatstate" xsi:type="string">\Magento\Catalog\Model\Indexer\Category\Flat\State</item>
+                <item name="menu" xsi:type="string">\Magento\Theme\Block\Html\Topmenu</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- For all pending seller listing Admin grid   -->
+    <virtualType name="KsolvesMultivendorMarketplaceSellerPendingGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSeller\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSeller\Grid\SellerPendingListCollection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_seller_details</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_marketplace_seller_collection</argument>
+            <argument name="eventObject" xsi:type="string">ks_seller_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSeller</argument>
+        </arguments>
+    </type>
+    <!-- For all reason listing Admin grid   -->
+    <virtualType name="KsolvesMultivendorMarketplaceReportProductReasonGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReason\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReason\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_report_product_reason</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_report_product_reason</argument>
+            <argument name="eventObject" xsi:type="string">ks_report_product_reason</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReason</argument>
+        </arguments>
+    </type>
+    <!-- For all product report reason listing Admin grid   -->
+    <virtualType name="KsolvesMultivendorMarketplaceReportProductReasonsGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReasons\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReasons\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_report_product_reasons</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_report_product_reasons</argument>
+            <argument name="eventObject" xsi:type="string">ks_report_product_reasons</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportProductReasons</argument>
+        </arguments>
+    </type>
+    <!-- For all seller report reason listing Admin grid   -->
+    <virtualType name="KsolvesMultivendorMarketplaceReportSellerReasonsGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportSellerReasons\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportSellerReasons\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_report_seller_reasons</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_report_seller_reasons</argument>
+            <argument name="eventObject" xsi:type="string">ks_report_seller_reasons</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsReportSellerReasons</argument>
+        </arguments>
+    </type>
+    <!--  To change existing abstract product data provider   -->
+    <preference for="\Magento\Catalog\Ui\DataProvider\Product\Related\AbstractDataProvider" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Product\KsAbstractDataProvider"/>
+    <!--  To change existing cross sell product data provider   -->
+    <preference for="\Magento\Catalog\Ui\DataProvider\Product\Related\CrossSellDataProvider" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Product\KsCrossSellDataProvider"/>
+    <!--  To change existing related product data provider   -->
+    <preference for="\Magento\Catalog\Ui\DataProvider\Product\Related\RelatedDataProvider" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Product\KsRelatedDataProvider"/>
+    <!--  To change existing up sell product data provider   -->
+    <preference for="\Magento\Catalog\Ui\DataProvider\Product\Related\UpSellDataProvider" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Product\KsUpSellDataProvider"/>
+    <!--  To change existing category data provider   -->
+    <type name="Magento\Catalog\Model\Category\DataProvider">
+        <plugin name="ks_category_data_provider" type="Ksolves\MultivendorMarketplace\Plugin\Category\KsDataProvider" sortOrder="1" disabled="false"/>
+    </type>
+    <!--  To change existing product model   -->
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="ks_product_model" type="Ksolves\MultivendorMarketplace\Plugin\Model\KsProduct" sortOrder="1" disabled="false"/>
+    </type>
+    <!-- For Marketplace Benefits Admin grid   -->
+    <virtualType name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsBenefits\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_marketplace_benefits</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsBenefits</argument>
+        </arguments>
+    </virtualType>
+    <!-- For Marketplace How It Works? Admin grid   -->
+    <virtualType name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsHowItWorks\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_marketplace_howitworks</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsHowItWorks</argument>
+        </arguments>
+    </virtualType>
+    <!-- For all customers listing in seller panel -->
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsCustomerListing\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">customer_grid_flat</argument>
+            <argument name="eventPrefix" xsi:type="string">customer_grid_flat</argument>
+            <argument name="eventObject" xsi:type="string">customer_grid_flat</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsCustomerListing</argument>
+        </arguments>
+    </type>
+    <!-- For Customers Online Listing -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ks_marketplace_customersonline_listing_data_source" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsOnline\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsOnline\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">customer_visitor</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsVisitor</argument>
+        </arguments>
+    </type>
+    <!--For invoice listing  -->
+    <virtualType name="KsolvesMultivendorMarketplaceInvoiceGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesInvoice\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesInvoice\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_sales_invoice</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_sales_invoice</argument>
+            <argument name="eventObject" xsi:type="string">ks_sales_invoice</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesInvoice</argument>
+        </arguments>
+    </type>
+    <!-- For all orders listing Admin grid   -->
+    <virtualType name="KsolvesMultivendorMarketplaceOrdersListingGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsOrdersListing\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsOrdersListing\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_sales_order</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_marketplace_orders_collection</argument>
+            <argument name="eventObject" xsi:type="string">ks_orders_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsOrdersListing</argument>
+        </arguments>
+    </type>
+    <!-- For all shipment listing Admin grid   -->
+    <virtualType name="KsolvesMultivendorMarketplaceShipmentListingGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsShipmentListing\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsShipmentListing\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_sales_shipment</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_marketplace_shipment_collection</argument>
+            <argument name="eventObject" xsi:type="string">ks_shipment_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsShipmentListing</argument>
+        </arguments>
+    </type>
+    <!-- For shipment listing grid   -->
+    <virtualType name="KsolvesMultivendorMarketplaceShipmentGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsShipmentListing\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesShipment\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_sales_shipment</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_marketplace_shipment_collection</argument>
+            <argument name="eventObject" xsi:type="string">ks_shipment_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesShipment</argument>
+        </arguments>
+    </type>
+    <!--For credit memo listing  -->
+    <virtualType name="KsolvesMultivendorMarketplaceMemoGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesCreditMemo\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">KsolvesMultivendorMarketplaceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesCreditMemo\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ks_sales_creditmemo</argument>
+            <argument name="eventPrefix" xsi:type="string">ks_sales_creditmemo</argument>
+            <argument name="eventObject" xsi:type="string">ks_sales_creditmemo</argument>
+            <argument name="resourceModel" xsi:type="string">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsSalesCreditMemo</argument>
+        </arguments>
+    </type>
+    <!-- Override Catalog Product Back Button    -->
+    <preference for="\Magento\Catalog\Block\Adminhtml\Product\Edit\Button\Back" type="\Ksolves\MultivendorMarketplace\Block\Adminhtml\Product\Buttons\KsBackButton"/>
+    <!-- To change catalog product data provider  -->
+    <preference for="Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\Product\Listing\KsCatalogProductDataProvider" />
+    <!-- To change group product data provider  -->
+    <preference for="\Magento\GroupedProduct\Ui\DataProvider\Product\GroupedProductDataProvider" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Product\KsGroupedProductDataProvider" />
+    <!-- To change bundle product data provider  -->
+    <preference for="\Magento\Bundle\Ui\DataProvider\Product\BundleDataProvider" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Product\KsBundleProductDataProvider" />
+    <type name="Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\Product\Listing\KsCatalogProductDataProvider">
+        <arguments>
+            <argument name="addFilterStrategies" xsi:type="array">
+                <item name="store_id" xsi:type="object">Magento\Catalog\Ui\DataProvider\Product\AddStoreFieldToCollection</item>
+                <item name="fulltext" xsi:type="object">Magento\CatalogSearch\Ui\DataProvider\Product\AddFulltextFilterToCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--    For Allowed Delete -->
+    <preference for="Magento\Framework\Model\ActionValidator\RemoveAction" type="Magento\Framework\Model\ActionValidator\RemoveAction\Allowed" />
+    <!-- Plugin for Catalog Product Helper    -->
+    <type name="Magento\Catalog\Helper\Product">
+        <plugin name="productApproved" type="\Ksolves\MultivendorMarketplace\Plugin\Product\KsCatalogProductHelper" />
+    </type>
+    <!-- Starting of Overriding Classes for Product Attribute Module -->
+    <!-- To change attribute in product attribute list  -->
+    <preference for="Magento\Catalog\Block\Adminhtml\Product\Attribute\Grid" type="Ksolves\MultivendorMarketplace\Block\ProductAttribute\KsGrid" />
+    <!-- TO remove seller product attribute from attribute set  -->
+    <preference for="Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main" type="Ksolves\MultivendorMarketplace\Block\Adminhtml\ProductAttribute\KsHideSellerAttribute" />
+    <!-- TO hide Seller Attribute Set from Admin All Attribute Set  -->
+    <preference for="Magento\Eav\Model\ResourceModel\Entity\Attribute\Grid\Collection" type="Ksolves\MultivendorMarketplace\Model\ResourceModel\KsProductAttribute\Grid\Collection" />
+    <!-- To Remove Seller Attribute From Product Attribute List -->
+    <preference for="Magento\Catalog\Ui\DataProvider\Product\Attributes\Listing" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\ProductAttribute\KsRemoveProductAttributeList" />
+    <!-- To OverRide Attribute Form Back button -->
+    <preference for="Magento\Catalog\Block\Adminhtml\Product\Attribute\Edit" type="Ksolves\MultivendorMarketplace\Block\Adminhtml\ProductAttribute\KsEdit" />
+    <!-- To OverRide Attribute Form Delete Controller -->
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\Attribute\Delete" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\ProductAttribute\Delete" />
+    <!-- To Override Attribute Save Controller -->
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\Attribute\Save" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\ProductAttribute\Save" />
+    <!-- To Hide Seller Product Attribute From Product Listing Column -->
+    <preference for="Magento\Catalog\Ui\Component\Listing\Attribute\Repository" type="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\ProductAttribute\KsRepository" />
+    <!-- Hide Attribute Set of Seller from Admin Side -->
+    <preference for="Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main\Formset" type="Ksolves\MultivendorMarketplace\Block\Adminhtml\ProductAttribute\Set\KsFormSet" />
+    <!-- Change Attribute Set According to the Seller and Default Attributes -->
+    <preference for="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\AttributeSet" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\ProductAttribute\KsAttributeSet" />
+    <!-- Override Save Controller of Attribute Set Admin Side -->
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\Set\Save" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\ProductAttribute\Set\Save" />
+    <!-- Unique for Attribute Code -->
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\Attribute\Validate" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\ProductAttribute\Validate" />
+    <!--  Remove Seller's Attribute from Configurable Attributes -->
+    <preference for="Magento\ConfigurableProduct\Model\ConfigurableAttributeHandler" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\ProductAttribute\KsConfigurableAttributes" />
+    <!-- END of Overriding Classes for Product Attribute Module -->
+    <preference for="Magento\Framework\App\State" type="Ksolves\MultivendorMarketplace\App\State" />
+    <type name="Magento\CatalogSearch\Model\Indexer\Fulltext\Action\DataProvider">
+        <plugin name="sellerApprovedProductFilterPlugin" type="Ksolves\MultivendorMarketplace\Plugin\Product\KsSellerApprovedProductFilter" sortOrder="10"/>
+    </type>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\Invoice\Save" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\Order\Invoice\KsSaveInvoice" />
+    <!-- End of Pdf Class Override -->
+    <!-- Override Magento Invoice Service -->
+    <type name="Magento\Sales\Model\Service\InvoiceService">
+        <plugin name="ks_invoice_service" type="Ksolves\MultivendorMarketplace\Plugin\Sales\KsSalesInvoiceService" sortOrder="10" disabled="false"  />
+    </type>
+    <!-- Override Magento Invoice Service -->
+    <type name="Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader">
+        <plugin name="ks_creditmemo_loader" type="Ksolves\MultivendorMarketplace\Plugin\Sales\KsSalesCreditmemoLoader" sortOrder="10" disabled="false"  />
+    </type>
+    <!-- Override Magento Invoice Service -->
+    <type name="Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader">
+        <plugin name="ks_shipment_loader" type="Ksolves\MultivendorMarketplace\Plugin\Sales\KsSalesShipmentLoader" sortOrder="10" disabled="false"  />
+    </type>
+    <!-- To Restrict checkout if minimum order amount for any seller is not fulfilled -->
+    <type name="Magento\Checkout\Controller\Index\Index">
+        <plugin name="ks_restrict_checkout" type="Ksolves\MultivendorMarketplace\Plugin\Checkout\Controller\KsRestrictCheckout"/>
+    </type>
+    <!-- To disable proceed to checkout button and raise info message -->
+    <type name="Magento\Checkout\Block\Onepage\Link">
+        <plugin name="ks_cart_helper" type="Ksolves\MultivendorMarketplace\Plugin\Checkout\KsOnepageLink"/>
+    </type>
+    <!-- To remove checkout with multiple addresses -->
+    <type name="Magento\Multishipping\Helper\Data">
+        <plugin name="ks_multishipping_helper" type="Ksolves\MultivendorMarketplace\Plugin\Checkout\KsCheckoutMultishipping"/>
+    </type>
+    <type name="Ksolves\MultivendorMarketplace\Ui\DataProvider\Frontend\KsProductList">
+        <arguments>
+            <argument name="addFilterStrategies" xsi:type="array">
+                <item name="fulltext" xsi:type="object">Magento\CatalogSearch\Ui\DataProvider\Product\AddFulltextFilterToCollection</item>
+                <item name="store_id" xsi:type="object">Magento\Catalog\Ui\DataProvider\Product\AddStoreFieldToCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- For Providing Data in KsAssignGroupOption file -->
+    <type name="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\Seller\MassAction\KsAssignGroupOption">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="urlPath" xsi:type="string">multivendor/seller/massAssignGroup</item>
+                <item name="paramName" xsi:type="string">group</item>
+                <item name="confirm" xsi:type="array">
+                    <item name="title" xsi:type="string" translatable="true">Assign a Seller Group</item>
+                    <item name="message" xsi:type="string" translatable="true">Are you sure to assign selected sellers to new group?</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ConfigurableProduct\Model\ResourceModel\Product\Indexer\Price\Configurable">
+        <arguments>
+            <argument name="baseSelectProcessor" xsi:type="object">Ksolves\MultivendorMarketplace\Plugin\Product\Configurable\Pricing\KsPriceSelectProcessor</argument>
+        </arguments>
+    </type>
+    <!-- To Restrict enable seller product if type not allowed -->
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\MassStatus">
+        <plugin name="ks_restrict_enable_seller_product_not_allowedtype" type="Ksolves\MultivendorMarketplace\Plugin\Product\KsMassStatus"/>
+    </type>
+    <!-- for sitemap -->
+    <type name="Magento\Sitemap\Model\ItemProvider\Composite">
+        <arguments>
+            <argument name="itemProviders" xsi:type="array">
+                <item name="ksMarketplace" xsi:type="object">
+                    Ksolves\MultivendorMarketplace\Model\ItemProvider\KsMarketplace</item>
+                <item name="ksSellerProfileProvider" xsi:type="object">
+                    Ksolves\MultivendorMarketplace\Model\ItemProvider\KsSellerProfile</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Ksolves\MultivendorMarketplace\Ui\Component\Seller\Form\Element\KsWysiwyg">
+        <arguments>
+            <argument name="windowSize" xsi:type="array">
+                <item name="height" xsi:type="number">600</item>
+                <item name="width" xsi:type="number">1000</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Override magento product category Class -->
+    <preference for="Magento\Catalog\Block\Adminhtml\Category\Tab\Product" type="Ksolves\MultivendorMarketplace\Block\Adminhtml\CategoryRequests\Tab\KsProduct" />
+    <!-- Override magento product sitemap Class -->
+    <preference for="Magento\Sitemap\Model\ItemProvider\Product" type="Ksolves\MultivendorMarketplace\Model\ItemProvider\KsProductInclude" />
+    <!-- Override magento product crosssell Class -->
+    <preference for="Magento\Checkout\Block\Cart\Crosssell" type="Ksolves\MultivendorMarketplace\Block\Checkout\Cart\KsCrosssell" />
+    <!-- Override magento assign product block Class -->
+    <preference for="Magento\Catalog\Block\Adminhtml\Category\AssignProducts" type="Ksolves\MultivendorMarketplace\Block\Adminhtml\CategoryRequests\KsAssignProducts" />
+    <!-- Override Configurable Product Handler-->
+    <preference for="Magento\ConfigurableProduct\Ui\DataProvider\Product\Form\Modifier\ConfigurableAttributeSetHandler" type="Ksolves\MultivendorMarketplace\Ui\DataProvider\Product\KsConfigurableAttributeSetHandler" />
+
+    <!-- commission rule indexing after product save-->
+    <type name="Magento\Catalog\Model\ResourceModel\Product">
+        <plugin name="ks_commission_indexing_after_product_save" type="Ksolves\MultivendorMarketplace\Plugin\Indexer\Product\Save\KsCommissionRulesIndex"/>
+    </type>
+    <!-- commission rule indexing after category save-->
+    <type name="Magento\Catalog\Model\Category">
+        <plugin name="ks_after_products_assign" type="Ksolves\MultivendorMarketplace\Plugin\Indexer\KsCategory"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Action">
+        <plugin name="ks_after_mass_action" type="Ksolves\MultivendorMarketplace\Plugin\Indexer\Product\KsAction"/>
+    </type>
+</config>
+

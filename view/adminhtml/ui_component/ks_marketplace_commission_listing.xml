@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_commission_listing.ks_marketplace_commission_listing_data_source</item>
+            <item name="deps" xsi:type="string">ks_marketplace_commission_listing.ks_marketplace_commission_listing_data_source</item>
+        </item>
+        <item name="childrenFromMeta" xsi:type="boolean">true</item>
+        <item name="spinner" xsi:type="string">commission_columns</item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add Commission</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <!-- <button name="ksAnalyser" class="Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\Edit\Button\KsAnalyser"/> -->
+            <button name="ksCalculator" class="Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\Edit\Button\KsCalculator"/>
+        </buttons>
+    </settings>
+    <dataSource name="ks_marketplace_commission_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">KsolvesCommissionRuleGridDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_marketplace_commission_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <exportButton name="export_button"/>
+        <filters name="listing_filters" component="Magento_Customer/js/grid/filters/filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="templates" xsi:type="array">
+                        <item name="filters" xsi:type="array">
+                            <item name="select" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <storageConfig>
+                    <param name="provider" xsi:type="string">ks_marketplace_commission_listing.ks_marketplace_commission_listing.listing_top.bookmarks</param>
+                    <param name="namespace" xsi:type="string">current.filters</param>
+                </storageConfig>
+                <childDefaults>
+                    <param name="provider" xsi:type="string">ks_marketplace_commission_listing.ks_marketplace_commission_listing.listing_top.listing_filters</param>
+                    <param name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">ks_marketplace_commission_listing.ks_marketplace_commission_listing.listing_top.bookmarks:current.columns.${ $.index }.visible</item>
+                    </param>
+                </childDefaults>
+            </settings>
+        </filters>
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <action name="status">
+                <settings>
+                    <type>status</type>
+                    <label translate="true">Change Status</label>
+                    <actions>
+                        <action name="0">
+                            <type>enable</type>
+                            <label translate="true">Enable</label>
+                            <url path="multivendor/commissionrule/massstatus">
+                                <param name="status">1</param>
+                            </url>
+                        </action>
+                        <action name="1">
+                            <type>disable</type>
+                            <label translate="true">Disable</label>
+                            <url path="multivendor/commissionrule/massstatus">
+                                <param name="status">0</param>
+                            </url>
+                        </action>
+                    </actions>
+                </settings>
+            </action>
+            <action name="delete">
+                <settings>
+                    <confirm>
+                        <message translate="true">Delete selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="multivendor/commissionrule/massDelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
+            </action>
+            <action name="duplicate">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure to duplicate selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="multivendor/commissionrule/massDuplicate"/>
+                    <type>duplicate</type>
+                    <label translate="true">Duplicate</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="commission_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">ks_marketplace_commission_listing.multivendor_kscommission_listing.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+            </item>
+        </argument>
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">ks_marketplace_commission_listing.ks_marketplace_commission_listing.commission_columns.actions</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">edit</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids" sortOrder="10">
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="sortOrder" xsi:type="number">15</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_rule_name" sortOrder="20">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Rule Name</label>
+            </settings>
+        </column>
+        <column name="ks_commission_value" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\CommissionRule\KsCommission" sortOrder="30">
+            <settings>
+                <filter>text</filter>
+                <sortable>false</sortable>
+                <label translate="true">Commission Value</label>
+            </settings>
+        </column>
+        <column name="ks_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">
+                   Ksolves\MultivendorMarketplace\Model\Source\KsStatusOptions
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/grid/columns/ks-status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_seller_id" component="Magento_Ui/js/grid/columns/select" sortOrder="50">
+            <settings>
+                <options class="Ksolves\MultivendorMarketplace\Model\Source\CommissionRule\KsSellerList"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Seller</label>
+            </settings>
+        </column>
+        <column name="ks_start_date" sortOrder="60">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dateFormat" xsi:type="string">MMM dd, YYYY</item>
+                    <item name="label" xsi:type="string" translate="true">Start Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_end_date" sortOrder="70">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dateFormat" xsi:type="string">MMM dd, YYYY</item>
+                    <item name="label" xsi:type="string" translate="true">End Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_min_price" sortOrder="80">
+            <settings>
+                <filter>text</filter>
+                <sortable>false</sortable>
+                <label translate="true">Min Price</label>
+            </settings>
+        </column>
+        <column name="ks_max_price" sortOrder="90">
+            <settings>
+                <filter>text</filter>
+                <sortable>false</sortable>
+                <label translate="true">Max Price</label>
+            </settings>
+        </column>
+        <column name="ks_calculation_baseon" component="Magento_Ui/js/grid/columns/select" sortOrder="100">
+            <settings>
+                <options class="Ksolves\MultivendorMarketplace\Model\Source\CommissionRule\KsCalculationBaseOption"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Calculation Based On</label>
+            </settings>
+        </column>
+        <column name="ks_website" component="Magento_Ui/js/grid/columns/select" sortOrder="110">
+            <settings>
+                <options class="Magento\Config\Model\Config\Source\Website"></options>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <filter>text</filter>
+                <label translate="true">Website</label>
+            </settings>
+        </column>
+        <column name="ks_seller_group" component="Magento_Ui/js/grid/columns/select" sortOrder="120">
+            <settings>
+                <options class="Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsSellerGroup"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Seller Group</label>
+            </settings>
+        </column>
+        <column name="ks_priority" sortOrder="130">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Priority</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\CommissionRule\KscommissionruleActions" sortOrder="140">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">Ksolves_MultivendorMarketplace/grid/cells/actions</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

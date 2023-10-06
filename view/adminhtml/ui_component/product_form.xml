@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <!-- <fieldset name="ks_product_pricecomparison_section" sortOrder="6">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Price Comparsion Products</label>
+        </settings>
+        <insertListing name="ks_marketplace_product_pricecomparison_listing">
+            <settings>
+                <externalProvider>ks_marketplace_product_pricecomparison_listing.ks_marketplace_product_pricecomparison_listing_data_source</externalProvider>
+                <autoRender>true</autoRender>
+                <dataScope>ks_marketplace_product_pricecomparison_listing</dataScope>
+                <ns>ks_marketplace_product_pricecomparison_listing</ns>
+                <exports>
+                    <link name="ks_product_id">${ $.externalProvider }:params.product_id</link>
+                </exports>
+                <imports>
+                    <link name="ks_product_id">${ $.provider }:data.product.stock_data.product_id</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset> -->
+</form>

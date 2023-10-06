@@ -1,0 +1,40 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+?>
+<div class="ks-related-products-sells">
+    <?php
+    //related product
+    if ($block->KsEnabledRelatedProduct()):
+        echo $block->getLayout()
+                ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsRelated')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/link-item/ks-product-related.phtml')
+                ->toHtml();
+    endif;
+
+    //upsell product
+    if ($block->KsEnabledUpsellProduct()):
+        echo $block->getLayout()
+                ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsRelated')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/link-item/ks-product-upsell.phtml')
+                ->toHtml();
+    endif;
+           
+    //crosssell product
+    if ($block->KsEnabledCrosssellProduct()):
+        echo $block->getLayout()
+                ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsRelated')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/link-item/ks-product-crosssell.phtml')
+                ->toHtml();
+    endif; ?>
+</div>      
+    
+    

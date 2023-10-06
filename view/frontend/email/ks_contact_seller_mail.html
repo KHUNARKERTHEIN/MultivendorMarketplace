@@ -1,0 +1,77 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Contact Seller Submitted Notification  @-->
+<!--@vars {
+"var ks_customer_name":"Customer Name",
+"var ks_customer_email":"Customer Email",
+"var ks_customer_subject":"Customer Subject",
+"var ks_customer_message":"Customer Message"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+  <tr class="email-intro">
+    <td colspan="6">
+        <p class="greeting">{{trans "Dear %ks_seller_name," ks_seller_name=$ksSellerName}}</p>
+    </td>
+  </tr>
+
+  <tr class="email-summary">
+    <td colspan="6">
+      <p>{{trans "I have submitted contact seller form, and requesting for your confirmation for the same."}}</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="6">
+      <p>{{trans "Here is the summary of the same: "}}</p>
+    </td>
+  </tr>
+
+  <tr style="background-color: #e0e0e0;">
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px; font-weight: 600;">Name</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px; font-weight: 600;">Email</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px; font-weight: 600;">Subject</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px; font-weight: 600;">Message</p>
+    </td>
+  </tr>
+
+  <tr style="background: #fff;">
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 2);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px;">{{var ks_customer_name}}</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px;">{{var ks_customer_email}}</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px;">{{var ks_customer_subject}}</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 2);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px;">{{var ks_customer_message}}</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="6">
+      <p>{{trans "Thank You"}}</p>
+    </td>
+  </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

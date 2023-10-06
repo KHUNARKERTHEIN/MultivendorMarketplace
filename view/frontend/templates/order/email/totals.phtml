@@ -1,0 +1,67 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Order\Items\KsItems */
+$ks_orderedCollection = $block->getOrderedItems();
+$ks_order = $block->getKsOrder(); 
+$ksSubtotalAmount = 0;
+$ksDiscountAmount = 0;
+$ksTaxAmount = 0;
+$ksdiscountAmount = 0;
+$ksItemCommission = 0;
+$ksTotalPaid = 0;
+$ksTotalRefund = 0;
+
+foreach($ks_orderedCollection->getAllItems() as $ks_item){
+    if ($block->KsIsSellerProduct($ks_item->getProductId())) {
+        $ksSubtotalAmount += $ks_item->getRowTotal();  
+        $ksTaxAmount += $ks_item->getTaxAmount();
+        $ksDiscountAmount += $ks_item->getDiscountAmount();
+    }
+}
+
+?> 
+    <?php 
+    $ksTotalOrderedAmount = ($ksSubtotalAmount  + $ksTaxAmount) - $ksDiscountAmount;  
+    ?>
+    <tr>
+        <th colspan="2" scope="row" style="font-weight: 400; text-align: right; padding: 10px;"><?= $block->escapeHtml(__('
+                            Subtotal                    ')) ?></th>
+        <td style="text-align: right; padding: 10px;">
+            <span style="white-space: nowrap;"><?= $block->formatToOrderCurrency($ksSubtotalAmount,false) ?></span>
+        </td>
+    </tr>
+    <?php if($ksDiscountAmount):?>
+        <tr>
+            <th colspan="2" scope="row" style="font-weight: 400; text-align: right; padding: 0 10px 10px;"><?= $block->escapeHtml(__('
+                                Discount                    ')) ?></th>
+            <td style="text-align: right; padding: 0 10px 10px;">
+                <span style="white-space: nowrap;">-<?= $block->formatToOrderCurrency($ksDiscountAmount,false) ?></span>
+            </td>
+        </tr>
+    <?php endif;?>
+    
+    <?php if($ksTaxAmount):?>
+        <tr>
+            <th colspan="2" scope="row" style="font-weight: 400; text-align: right; padding: 0 10px 10px;"><?= $block->escapeHtml(__('
+                                Discount                    ')) ?></th>
+            <td style="text-align: right; padding: 0 10px 10px;">
+                <span style="white-space: nowrap;"><?= $block->formatToOrderCurrency($ksTaxAmount,false) ?></span>
+            </td>
+        </tr>
+    <?php endif;?>
+    <tr>
+        <th colspan="2" scope="row" style="text-align: right; padding: 0 10px 10px;"><strong><?= $block->escapeHtml(__('Grand Total')) ?></strong></th>
+        <td style="text-align: right; padding: 0 10px 10px;">
+            <strong style="white-space: nowrap;"><?= $block->formatToOrderCurrency($ksTotalOrderedAmount,false) ?></strong>
+        </td>
+    </tr>   
+        

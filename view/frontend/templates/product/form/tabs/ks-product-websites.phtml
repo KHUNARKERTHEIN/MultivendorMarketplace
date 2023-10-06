@@ -1,0 +1,111 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php
+$ksWebsiteCount = $ksTooltipCount = 0;
+$ksIsNewProduct = !$block->getKsProduct()->getId();
+$ksDefaultWebsiteId = $block->getKsDefaultWebsiteId();
+?>
+<fieldset id="grop_fields" class="">
+    <div class="ks-store-website">
+        <div class="ks-store-tree">
+            <?php $ksWebsites = $block->getWebsiteCollection()?>
+            <?php foreach ($ksWebsites as $ksWebsite):?>
+                <div class="ks-form-field">
+                    <div class="ks-form-field-label">
+                        <label>
+                            <?php if ($ksWebsiteCount==0):?>
+                                <span><?= $block->escapeHtml(__('Website'));?></span>
+                                <?php $ksWebsiteCount++;
+                            endif;?>
+                        </label>
+                    </div>
+                    <div class="ks-field-control ks-store-website-control">
+                        <div class="d-inline-block">
+                            <input name="product[website_ids][]"
+                                value="<?= (int) $ksWebsite->getId() ?>"
+                                <?php if ($block->isReadonly()):?>
+                                    disabled="disabled"
+                                <?php endif;?>
+                                class="ks-website-checkbox"
+                                id="product_website_<?= (int) $ksWebsite->getId() ?>"
+                                type="checkbox"
+                                <?php if ($block->hasKsWebsite($ksWebsite->getId()) ||
+                                    ($ksDefaultWebsiteId == $ksWebsite->getId() && $ksIsNewProduct)):?>
+                                    checked="checked"
+                                <?php endif; ?>
+                            />
+                            <label for="product_website_<?= (int) $ksWebsite->getId() ?>">
+                                <?= $block->escapeHtml($ksWebsite->getName()) ?>
+                            </label>
+                        </div>
+                        <?php if ($ksTooltipCount==0):?>
+                            <a class="scope-question-icon" href="https://docs.magento.com/m2/ce/user_guide/configuration/scope.html" title="If your Magento installation has multiple websites, you can edit the scope to use the product on specific sites." target="_blank"><img src="<?= $block->getViewFileUrl('Ksolves_MultivendorMarketplace::images/question-icon.svg') ?>" alt="question-icon"></a>
+                            <?php $ksTooltipCount++;
+                            endif;?>
+                    </div>
+
+                    <div class="ks-form-field-label">
+                        <label></label>
+                    </div>
+                    <div class="ks-website-groups table-wrapper ks-field-control" style="display:none">
+                        <?php foreach ($block->getGroupCollection($ksWebsite) as $ksGroup):?>
+                            <?php if ($block->getKsProduct()->getId() && !$block->hasKsWebsite($ksWebsite->getId()) && count($block->getStoreCollection($ksGroup))> 0):?>
+                                <table class="data table ks-website-table">
+                                    <thead>
+                                        <tr>
+                                            <th><?= $block->escapeHtml(__('Store View')) ?></th>
+                                            <th><?= $block->escapeHtml(__('Copy Data From')) ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $kscount = 0;
+                                        foreach ($block->getStoreCollection($ksGroup) as $ksStore): $kscount++;?>
+                                            <tr>
+                                                <td><?= $block->escapeHtml(__($ksStore->getName())) ?></td>
+                                                <td>
+                                                    <input type="hidden" name="product[copy_to_stores][<?= (int) $ksWebsite->getId() ?>][<?= $kscount ?>][storeView]" value="<?= $ksStore->getName();?>"/>
+                                                    <input type="hidden" name="product[copy_to_stores][<?= (int) $ksWebsite->getId() ?>][<?= $kscount ?>][copy_to]" value="<?= $ksStore->getId();?>"/>
+                                                    <select class="admin__control-select" name="product[copy_to_stores][<?= (int) $ksWebsite->getId() ?>][<?= $kscount ?>][copy_from]"
+                                                    >
+                                                        <?= $block->getKsChooseFromStoreHtml();?>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</fieldset>
+
+<script type="text/javascript">
+    require([
+    'jquery'
+], function ($) {
+    'use strict';
+        $('.ks-website-checkbox').change(function(){
+            if($(this).is(":checked")){
+                if($(this).parent().parent().parent().find(".ks-website-groups").has('table').length > 0){
+                    $(this).parent().parent().parent().find(".ks-website-groups").show();
+                }
+            }else{
+                $(this).parent().parent().parent().find(".ks-website-groups").hide();
+            }
+        })
+});
+</script>
+

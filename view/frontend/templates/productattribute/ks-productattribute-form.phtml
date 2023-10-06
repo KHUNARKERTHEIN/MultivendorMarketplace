@@ -1,0 +1,521 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+// Get Value of the Attribute
+$ksData = $block->getKsAttributeObject()->getData();
+if ($ksData['frontend_input'] == null) {
+    unset($ksData['entity_type_id']);
+    unset($ksData['frontend_input']);
+}
+$ksAdditional = $block->ksCheckAdditionalData();
+if ($ksAdditional) {
+    $ksData['frontend_input'] = $ksAdditional;
+}
+$ksData = $ksData ? $ksData : $block->getKsAttributeData();
+?>
+
+<!-- Add New Attribute main page start -->
+<div class= "ks-productattribute-page">
+    <form action="<?= $block->escapeUrl($block->getUrl('multivendor/productattribute/save', ['_secure' => $this->getRequest()->isSecure()])) ?>" method="post" enctype="multipart/form-data" id="ks_productattribute_form" data-mage-init='{"validation":{}}'>
+        
+        <!-- Check Admin Attribute -->
+        <input type="hidden" class="ks-admin-attribute" value="<?= $ksData ? $ksData['ks_seller_id'] : '' ?>">
+        <!-- Add New Attribute action header start -->
+        <div class="page-actions _fixed">
+            <div class="page-actions-inner">
+                <div class="ks-page-action ks-d-mobile">
+                    <button title="Back" type="button" class="action- scalable back ks-back" onclick="window.history.back();">
+                        <span><?= $block->escapeHtml(__("Back")) ?></span>
+                    </button>
+                </div>
+                <div class="page-actions-buttons ks-page-action ks-mob-page-action">
+                    <button title="Back" type="button" class="action- scalable back ks-back ks-d-desktop" onclick="window.history.back();">
+                        <span><?= $block->escapeHtml(__("Back")) ?></span>
+                    </button>
+                    <button id="save" title="Save &amp; Submit" data-type="submit" class="ks-action-btn ks-primary scalable save primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only float-right" data-ui-id="attribute-edit-content-save-button" name="save_and_submit" role="button" value="save_and_submit">
+                        <span class="ui-button-text">
+                            <span><?= $block->escapeHtml(__("Save &amp; Submit"))?></span>
+                        </span>
+                    </button>
+                    <?php if (isset($ksData)) : ?>
+                        <?php if (!array_key_exists('attribute_id', $ksData) || ($block->ksNotSubmittedState())) :?>
+                    <button id="ks-save-button" name="save" title="Save Attribute" class="scalable ks-action-btn float-right mr-3" data-type="submit" value="save"
+                    >
+                        <span><?= $block->escapeHtml(__("Save Attribute")) ?></span>
+                    </button>
+
+                    <button id="save_and_continue_edit" name="save_and_continue_edit" title="Save &amp; Continue Edit" class="ks-action-btn scalable float-right mr-3" data-type="submit" value="save_and_continue_edit">
+                        <span><?= $block->escapeHtml(__("Save &amp; Continue Edit")) ?></span>
+                    </button>
+                        <?php endif; ?>
+                    <?php else : ?>
+                        <button id="ks-save-button" name="save" title="Save Attribute" class="scalable ks-action-btn float-right mr-3 <?= $ksData ? (array_key_exists('attribute_id', $ksData) ? 'disabled' : "" ) : "" ?>" data-type="submit" value="save"
+                    >
+                        <span><?= $block->escapeHtml(__("Save Attribute")) ?></span>
+                    </button>
+
+                    <button id="save_and_continue_edit" name="save_and_continue_edit" title="Save &amp; Continue Edit" class="ks-action-btn scalable float-right mr-3" data-type="submit" value="save_and_continue_edit">
+                        <span><?= $block->escapeHtml(__("Save &amp; Continue Edit")) ?></span>
+                    </button>
+                    <?php endif; ?>
+                    <button title="Reset" type="button" class="ks-action-btn scalable reset ks-reset float-right" onclick="window.location.reload();">
+                        <span><?= $block->escapeHtml(__("Reset")) ?></span>
+                    </button>
+                    <?php if ($block->hasKsDeleteCondition()) : ?>
+                        <a class="ks-seller-attribute-delete" href="<?= $block->escapeUrl($block->getUrl('multivendor/productattribute/delete', ['attribute_id' => $block->getKsAttributeId()])) ?>">
+                            <button title="Delete Attribute" type="button" class="ks-action-btn scalable ks-delete float-right">
+                                <span><?= $block->escapeHtml(__("Delete Attribute")) ?></span>
+                            </button>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <!-- Add New Attribute action header end -->
+
+        <!-- Add New Attribute body start -->
+        <div class="ks-page-card d-flex-nowrap-between ks-tab-page">
+
+            <!-- Add New Attribute sidebar tabs start -->
+            <div class="ks-tab">
+                <div class="ks-tab-sidebar-heading">
+                    <h3><?= $block->escapeHtml(__("Attribute Information")) ?></h3>
+                </div>
+                <a class="ks-tablinks" onclick="ksOpenTab(event, 'product_attribute_tabs_main')" id="ksDefaultOpen"><?= $block->escapeHtml(__("Attribute Properties")) ?>
+                </a>
+                <a class="ks-tablinks" onclick="ksOpenTab(event, 'product_attribute_tabs_labels')"><?= $block->escapeHtml(__("Manage Labels")) ?>    
+                </a>
+                <a class="ks-tablinks ks-store-front" onclick="ksOpenTab(event, 'product_attribute_tabs_front')">
+                    <?= $block->escapeHtml(__("Storefront Properties")) ?>
+                    </a>
+            </div>
+            <!-- Add New Attribute sidebar tabs end -->
+
+            <!-- Add New Attribute Property tabs page start -->
+            <div id="product_attribute_tabs_main" class="ks-tabcontent">
+                <div id="product_attribute_tabs_main_content" class="ks-fieldset-wrapper-content" role="tabpanel">
+                    
+                    <!-- Attribute Property without collapse section start -->
+                    <div class="ks-form-fieldset">
+
+                        <!-- Attribute Property Title start -->
+                        <div class="ks-form-collapsible-block">
+                            <div class="ks-fieldset-wrapper-title">
+                                <div class="ks-form-collapsible-title ks-after-none ks-cursor-inherit">
+                                    <span><?= $block->escapeHtml(__("Attribute Properties")) ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Attribute Property Title end -->
+
+                        <!-- Attribute id -->
+                        <?php if ($ksData): ?>
+                            <?php if (array_key_exists('attribute_id', $ksData)) : ?>
+                                <input type="hidden" name="attribute_id" class="ks-attibute-id" value="<?= $ksData ? $ksData['attribute_id'] : '' ?>">
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        
+                        <!-- Attribute Property form field start -->
+                        <fieldset class="ks-form-field mt-5">
+                            <div class="ks-control-grouped">
+                                <div class="ks-form-field  required">
+                                    <div class="ks-form-field-label">
+                                        <label for="ks-attribute_label">
+                                            <span><?= $block->escapeHtml(__("Default Label")) ?></span>
+                                        </label>
+                                    </div>
+                                    <div class="messages"></div>
+                                    <div class="ks-field-control">
+                                        <?php if ($ksData): ?>
+                                            <?php if (is_array($ksData['frontend_label'])): ?>
+                                                <input type="text" id="ks-attribute_label" name="frontend_label[0]" value ="<?= $ksData ? $ksData['frontend_label'][0] : "" ?>" title="Default label" class="ks-control-feild required-entry" aria-required="true">
+                                                <?php else : ?>
+                                                    <input type="text" id="ks-attribute_label" name="frontend_label[0]" value ="<?= $ksData ? $ksData['frontend_label'] : "" ?>" title="Default label" class="ks-control-feild required-entry" aria-required="true">   
+                                            <?php endif ?> 
+                                                <?php else : ?>
+                                                    <input type="text" id="ks-attribute_label" name="frontend_label[0]" value ="<?= $ksData ? $ksData['frontend_label'] : "" ?>" title="Default label" class="ks-control-feild required-entry" aria-required="true">                                  
+                                        <?php endif ?> 
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- Attribute Property form field end -->
+
+                        <!-- Attribute Property form field start -->
+                        <fieldset class="ks-form-field">
+                            <div class="ks-control-grouped">
+                                <div class="ks-form-field">
+                                    <div class="ks-form-field-label">
+                                        <label for="frontend_input">
+                                            <span><?= $block->escapeHtml(__("Catalog Input Type for Store Owner")) ?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control ks-field-control-select">
+                                        <select id="frontend_input" name="frontend_input" title="Catalog Input Type for Store Owner" class="select ks-select-box ks-input-type-select">
+                                            <option value="text" <?= $ksData ? ($ksData['frontend_input'] == 'text' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Text Field")) ?></option>
+                                            <option value="textarea" <?= $ksData ? ($ksData['frontend_input'] == 'textarea' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Text Area")) ?></option>
+                                            <option value="texteditor" <?= $ksData ? ($ksData['frontend_input'] == 'texteditor' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Text Editor")) ?></option>
+                                            <option value="date" <?= $ksData ? ($ksData['frontend_input'] == 'date' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Date")) ?></option>
+                                            <option value="datetime" <?= $ksData ? ($ksData['frontend_input'] == 'datetime' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Date and Time")) ?></option>
+                                            <option value="boolean" <?= $ksData ? ($ksData['frontend_input'] == 'boolean' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes/No")) ?></option>
+                                            <option value="multiselect" <?= $ksData ? ($ksData['frontend_input'] == 'multiselect' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Multiple Select")) ?></option>
+                                            <option value="select" <?= $ksData ? ($ksData['frontend_input'] == 'select' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Dropdown")) ?></option>
+                                            <option value="price" <?= $ksData ? ($ksData['frontend_input'] == 'price' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Price")) ?></option>
+                                            <option value="media_image" <?= $ksData ? ($ksData['frontend_input'] == 'media_image' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Media Image")) ?></option>
+                                            <option value="swatch_visual" <?= $ksData ? ($ksData['frontend_input'] == 'swatch_visual' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Visual Swatch")) ?></option>
+                                            <option value="swatch_text" <?= $ksData ? ($ksData['frontend_input'] == 'swatch_text' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Text Swatch")) ?></option>
+                                            <option value="weee" <?= $ksData ? ($ksData['frontend_input'] == 'weee' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Fixed Product Tax")) ?></option>
+                                        </select>
+                                        <div class="note admin__field-note ks-form-field-note">
+                                            <p class="ks-text-editor-note" generated="true" style="display: none;"><?= $block->escapeHtml(__("Text Editor input type requires WYSIWYG to be enabled in Stores &gt; Configuration &gt; Content Management.")) ?></p>
+                                        </div>
+                                        <div class="ks-attribute_label-change-note" style="display: none;"><?= $block->escapeHtml(__("These changes affect all related products.")) ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- Attribute Property form field end -->
+
+                        <!-- Attribute Property form field start -->
+                        <fieldset class="ks-form-field ks-field-is_required">
+                            <div class="ks-control-grouped">
+                                <div class="ks-form-field">
+                                    <div class="ks-form-field-label">
+                                        <label for="is_required">
+                                            <span><?= $block->escapeHtml(__("Values Required")) ?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control ks-field-control-select">
+                                        <select id="is_required" name="is_required" title="Values Required" class="select ks-select-box">
+                                            <option value="1"  <?= $ksData ? ($ksData['is_required'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                            <option value="0" <?= $ksData ? ( $ksData['is_required'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- Attribute Property form field end -->
+
+                        <!-- Attribute Property form field start -->
+                        <fieldset class="ks-form-field ks-field-update_product_preview_image ks-attribute-hide-field">
+                            <div class="ks-control-grouped">
+                                <div class="ks-form-field">
+                                    <div class="ks-form-field-label">
+                                        <label for="update_product_preview_image">
+                                            <span><?= $block->escapeHtml(__("Update Product Preview Image")) ?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control ks-field-control-select">
+                                        <select id="update_product_preview_image" name="update_product_preview_image" title="Update Product Preview Image" class="select ks-select-box">
+                                            <option value="1" ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                            <option value="0" selected="selected"><?= $block->escapeHtml(__("No")) ?></option>
+                                        </select>
+                                        <div class="ks-form-field-note" id="update_product_preview_image-note"><span><?= $block->escapeHtml(__("Filtering by this attribute will update the product image on catalog page.")) ?></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- Attribute Property form field end -->
+
+                        <!-- Attribute Property form field start -->
+                        <fieldset class="ks-form-field ks-field-use_product_image_for_swatch ks-attribute-hide-field">
+                            <div class="ks-control-grouped">
+                                <div class="ks-form-field">
+                                    <div class="ks-form-field-label">
+                                        <label for="use_product_image_for_swatch">
+                                            <span><?= $block->escapeHtml(__("Use Product Image for Swatch if Possible")) ?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control ks-field-control-select">
+                                        <select id="use_product_image_for_swatch" name="use_product_image_for_swatch" title="Use Product Image for Swatch if Possible" class="select ks-select-box">
+                                            <option value="1" ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                            <option value="0" selected="selected"><?= $block->escapeHtml(__("No")) ?></option>
+                                        </select>
+                                        <div class="ks-form-field-note" id="use_product_image_for_swatch-note"><span><?= $block->escapeHtml(__("Allows use fallback logic for replacing swatch image with product swatch or base image")) ?></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- Attribute Property form field end -->
+
+                        <?= $block->getLayout()
+                        ->createBlock('Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options')
+                        ->setTemplate('Ksolves_MultivendorMarketplace::productattribute/ks-dynamic-row.phtml')->setKsOptions($this->getKsOptions())->toHtml(); ?>
+                        <?= $block->getLayout()
+                        ->createBlock('Magento\Swatches\Block\Adminhtml\Attribute\Edit\Options\Visual')
+                        ->setTemplate('Ksolves_MultivendorMarketplace::productattribute/ks_visual_swatch.phtml')->toHtml(); ?>
+                        <?= $block->getLayout()
+                        ->createBlock('Magento\Swatches\Block\Adminhtml\Attribute\Edit\Options\Text')
+                        ->setTemplate('Ksolves_MultivendorMarketplace::productattribute/ks_text_swatch.phtml')->toHtml(); ?>
+                    </div>
+                    <!-- Attribute Property without collapse section end -->
+                    
+                    <!-- Attribute Property with collapse section start -->
+                    <div class="ks-form-fieldset">
+                        <div class="ks-fieldset-wrapper ks-form-collapsible-block" id="ks-advanced-fieldset-wrapper" data-role="ks-advanced-fieldset-wrapper">
+                            
+                            <!-- Attribute Property Title start -->
+                            <div class="ks-fieldset-wrapper-title">
+                                <strong class="ks-form-collapsible-title" data-toggle="collapse" data-target="#ks-advanced_fieldset-content">
+                                    <span><?= $block->escapeHtml(__("Advanced Attribute Properties")) ?></span>
+                                </strong>
+                                <div class="actions"></div>
+                            </div>
+                            <!-- Attribute Property Title end -->
+
+                            <div class="ks-fieldset-wrapper-content collapse" id="ks-advanced_fieldset-content" data-role="ks-advanced_fieldset-content">
+                                <div class="messages"></div>
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field mt-4">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="ks-attribute_code">
+                                                    <span><?= $block->escapeHtml(__("Attribute Code")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control">
+                                                <input type="text"  id="ks-attribute_code" name="attribute_code" value="<?= $ksData ? (array_key_exists('attribute_code', $ksData) ? $ksData['attribute_code'] : "" ) : "" ?>" title="Attribute Code" class="ks-control-feild" aria-required="true">  
+                                                <div class="ks-form-field-note" id="attribute_code-note">
+                                                    <span><?= $block->escapeHtml(__("This is used internally. Make sure you don't use spaces or more than 60 symbols.")) ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field ks-field-is_global">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="is_global">
+                                                    <span><?= $block->escapeHtml(__("Scope")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control ks-field-control-select">
+                                                <select id="is_global" name="is_global" title="Scope" class="select ks-select-box" formelementhookid="elemId7J2VA46RPm" data-ui-id="attribute-edit-content-form-fieldset-element-select-is-global">
+                                                    <option value="0" <?= $ksData ? ($ksData['is_global'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("Store View")) ?></option>
+                                                    <option value="2" <?= $ksData ? ($ksData['is_global'] == 2 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Website")) ?></option>
+                                                    <option value="1" <?= $ksData ? ($ksData['is_global'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Global")) ?></option>
+                                                </select>
+                                                <div class="ks-form-field-note" id="is_global-note"><span><?= $block->escapeHtml(__("Declare attribute value saving scope.")) ?></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field ks-field-default_value_text">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="default_value_text">
+                                                    <span><?= $block->escapeHtml(__("Default Value")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control">
+                                                <input type="text"  id="default_value_text" name="default_value_text" value="<?= $ksData ? (array_key_exists('default_value', $ksData) ? $ksData['default_value'] : "" ) : '' ?>" title="Default Value" class="ks-control-feild" aria-required="true">  
+                                                <div class="ks-form-field-note" id="attribute_code-note"><span><?= $block->escapeHtml(__("This is used internally. Make sure you don't use spaces or more than 60 symbols.")) ?></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field ks-field-default_value_yesno" style="display: none;">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="default_value_yesno">
+                                                    <span><?= $block->escapeHtml(__("Default Value")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control ks-field-control-select">
+                                                <select id="default_value_yesno" name="default_value_yesno" title="Default Value" class="select ks-select-box" >
+                                                    <option value="1" <?= $ksData ? (array_key_exists('default_value', $ksData) ? ($ksData['default_value'] == 1 ? 'selected' : ''  ) : '' ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                                    <option value="0" <?= $ksData ? (array_key_exists('default_value', $ksData) ? ($ksData['default_value'] == 1 ? 'selected' : ''  ) : '' ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field ks-field-default_value_date" style="display: none;">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field ">
+                                            <div class="ks-form-field-label">
+                                                <label for="default_value_date">
+                                                    <span><?= $block->escapeHtml(__("Default Value")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control ks-datepicker-field">
+                                                <input type="text"  id="ks-default_value_date" name="default_value_date" value="<?= $ksData ? (array_key_exists('default_value', $ksData) ? $ksData['default_value'] : "" ) : '' ?>" title="Default Value" class="ks-control-feild" aria-required="true">  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field ks-field-default_value_datetime" style="display: none;">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="default_value_datetime">
+                                                    <span><?= $block->escapeHtml(__("Default Value")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control ks-datepicker-field">
+                                                <input type="text"  id="ks-default_value_datetime" name="default_value_datetime" value="<?= $ksData ? (array_key_exists('default_value', $ksData) ? $ksData['default_value'] : "" ) : '' ?>" title="Default Value" class="ks-control-feild" aria-required="true">  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <fieldset class="ks-form-field ks-field-default_value_textarea" >
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="default_value_datetime">
+                                                    <span><?= $block->escapeHtml(__("Default Value")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control">
+                                                <textarea id="default_value_textarea" name="default_value_textarea" title="Default Value" rows="2" cols="15" class="ks-control-feild" value="<?= $ksData ? (array_key_exists('default_value', $ksData) ? $ksData['default_value'] : "" ) : '' ?>"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field ks-field-is_unique">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="is_unique">
+                                                    <span><?= $block->escapeHtml(__("Unique Value")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control ks-field-control-select">
+                                                <select id="is_unique" name="is_unique" title="Unique Value (not shared with other products)" class="select ks-select-box" formelementhookid="elemIdl3WUqGMNL4" data-ui-id="attribute-edit-content-form-fieldset-element-select-is-unique">
+                                                    <option value="1" <?= $ksData ? ($ksData['is_unique'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                                    <option value="0" <?= $ksData ? ($ksData['is_unique'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                                                </select>
+                                                <div class="ks-form-field-note" id="is_unique-note"><span><?= $block->escapeHtml(__("Not shared with other products.")) ?></span></div>                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field ks-field-frontend_class">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="frontend_class">
+                                                    <span><?= $block->escapeHtml(__("Input Validation for Store Owner")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control ks-field-control-select">
+                                                <select id="frontend_class" name="frontend_class" title="Input Validation for Store Owner" class="select ks-select-box ks-frontend_class">
+                                                    <option value="" <?= $ksData ? ($ksData['frontend_class'] == '' ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("None")) ?></option>
+                                                    <option value="validate-number" <?= $ksData ? ($ksData['frontend_class'] == 'validate-number' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Decimal Number")) ?></option>
+                                                    <option value="validate-digits" <?= $ksData ? ($ksData['frontend_class'] == 'validate-digits' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Integer Number")) ?></option>
+                                                    <option value="validate-email" <?= $ksData ? ($ksData['frontend_class'] == 'validate-email' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Email")) ?></option>
+                                                    <option value="validate-url" <?= $ksData ? ($ksData['frontend_class'] == 'validate-url' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("URL")) ?></option>
+                                                    <option value="validate-alpha" <?= $ksData ? ($ksData['frontend_class'] == 'validate-alpha' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Letters")) ?></option>
+                                                    <option value="validate-alphanum" <?= $ksData ? ($ksData['frontend_class'] == 'validate-alphanum' ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Letters (a-z, A-Z) or Numbers (0-9)")) ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="is_used_in_grid">
+                                                    <span><?= $block->escapeHtml(__("Add to Column Options")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control ks-field-control-select">
+                                                <select id="is_used_in_grid" name="is_used_in_grid" title="Add to Column Options" class="select ks-select-box" formelementhookid="elemIdZRGzTscAsl" data-ui-id="attribute-edit-content-form-fieldset-element-select-is-used-in-grid">
+                                                    <option value="1" <?= $ksData ? ($ksData['is_used_in_grid'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                                    <option value="0" <?= $ksData ? ($ksData['is_used_in_grid'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                                                </select>
+                                                <div class="ks-form-field-note" id="is_used_in_grid-note"><span><?= $block->escapeHtml(__("Select 'Yes' to add this attribute to the list of column options in the product grid.")) ?></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                                <input id="is_visible_in_grid" name="is_visible_in_grid" data-ui-id="attribute-edit-content-form-fieldset-element-hidden-is-visible-in-grid" value="1" type="hidden">    
+
+                                <!-- Attribute Property form field start -->
+                                <fieldset class="ks-form-field mt-4">
+                                    <div class="ks-control-grouped">
+                                        <div class="ks-form-field">
+                                            <div class="ks-form-field-label">
+                                                <label for="is_filterable_in_grid">
+                                                    <span><?= $block->escapeHtml(__("Use in Filter Options")) ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="ks-field-control ks-field-control-select">
+                                                <select id="is_filterable_in_grid" name="is_filterable_in_grid" title="Use in Filter Options" class="select ks-select-box">
+                                                    <option value="1" <?= $ksData ? ($ksData['is_filterable_in_grid'] == 1 ? 'selected' : ''  ) : '' ?> ><?= $block->escapeHtml(__("Yes")) ?></option>
+                                                    <option value="0" <?= $ksData ? ($ksData['is_filterable_in_grid'] == 0 ? 'selected' : ''  ) : 'selected' ?> ><?= $block->escapeHtml(__("No")) ?></option>
+                                                </select>
+                                                <div class="ks-form-field-note" id="is_filterable_in_grid-note"><span><?= $block->escapeHtml(__("Select 'Yes' to add this attribute to the list of filter options in the product grid.")) ?></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Attribute Property form field end -->
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Attribute Property with collapse section start -->
+                    
+                </div>
+            </div>
+            <!-- Add New Attribute Property tabs page end -->
+
+            <!-- Manage Labels -->
+            <?= $block->getLayout()
+                        ->createBlock('Ksolves\MultivendorMarketplace\Block\ProductAttribute\KsEdit')
+                        ->setTemplate('Ksolves_MultivendorMarketplace::productattribute/ks_manage_labels.phtml')->toHtml(); ?>
+
+            <!-- Store Front Properties -->
+            <?= $block->getLayout()
+                        ->createBlock('Ksolves\MultivendorMarketplace\Block\ProductAttribute\KsEdit')
+                        ->setTemplate('Ksolves_MultivendorMarketplace::productattribute/ks_store_front_properties.phtml')->toHtml(); ?>
+        </div>
+        <!-- Add New Attribute body end -->
+
+    </form>
+    <?php $block->clearDataPersistorAttribute(); ?>
+</div>
+<!-- Add New Attribute main page end -->

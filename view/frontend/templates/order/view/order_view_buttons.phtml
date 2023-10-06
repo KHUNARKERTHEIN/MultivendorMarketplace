@@ -1,0 +1,31 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<!-- Order View Action header -->
+<?php $ks_order = $block->getKsOrder();?>
+<div class="ks-page-action">
+	<a href="<?= $block->getBackUrl(); ?>" class="ks-back ks-header-row-action"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
+	<?php if ($block->checkShipmentAllowed()&& $block->ksCanShip() && !$ks_order->getForcedShipmentWithInvoice()):?>
+		<a href="<?= $block->getShipmentUrl($ks_order); ?>" class="ks-action-btn float-right ks-header-row-action"><span><?= $block->escapeHtml(__('Ship')) ?></span></a>
+	<?php endif; ?>
+	<?php if ($block->checkInvoiceAllowed() && $block->ksCanInvoice()):
+		$_label = $ks_order->getForcedShipmentWithInvoice() ? __('Invoice and Ship') : __('Invoice');?>
+		<a href="<?= $block->getInvoiceUrl($ks_order); ?>" class="ks-action-btn float-right ks-header-row-action mr-3"><span><?= $block->escapeHtml(__($_label)) ?></span></a>
+	<?php endif; ?>
+	<?php if ($block->ksCanCreditmemo() && $block->checkCreditMemoAllowed()):?>
+		<a href="<?= $block->getCreditmemoUrl($ks_order); ?>" class="ks-action-btn ks-header-row-action float-right"><span><?= $block->escapeHtml(__('Credit Memo')) ?></span></a>
+	<?php endif; ?>
+	<?php if ($block->getKsSendEmailAllowed()):?>
+		<a id="ks-send-order-email" href="<?= $block->getKsSendEmailUrl($ks_order); ?>" class="ks-action-btn ks-header-row-action float-right"><span><?= $block->escapeHtml(__('Send Email')) ?></span></a>
+	<?php endif; ?>
+
+</div>
+<!-- Order View Action header -->

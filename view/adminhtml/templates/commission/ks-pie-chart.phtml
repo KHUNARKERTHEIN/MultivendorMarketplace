@@ -1,0 +1,44 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<body>
+	<div id="canvas-holder" class="ks-calculator-chart" style="width:40%">
+		<canvas id="chart-area" class="ks-calc-canvas"></canvas>
+	</div>
+	<script>
+		require([
+	    'jquery',
+	    'chartJs',],
+	    function ($, Chart) {
+		window.config = {
+			type: 'pie',
+			data: {
+				datasets: [{
+					backgroundColor: [
+						'#377AC2',
+						'#e67432',
+					],
+					label: 'Dataset 1'
+				}],
+				labels: [
+					'Seller\'s Earning',
+					'Commission',
+				]
+			},
+			options: {
+				responsive: true
+			}
+		};
+		var ksCtx = document.getElementById('chart-area').getContext('2d');
+		window.myPie = new Chart(ksCtx, window.config);
+	 });
+	</script>
+</body>

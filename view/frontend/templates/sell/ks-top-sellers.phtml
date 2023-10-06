@@ -1,0 +1,127 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * Seller Marketplace template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsTopSellers
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$ksSellerHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksFavouriteSellerHelper = $this->helper(\Ksolves\MultivendorMarketplace\Helper\KsFavouriteSellerHelper::class);
+$ksStoreId = $block->getKsStoreId();
+
+//Check favourite seller module enabled
+$ksEnable = $ksFavouriteSellerHelper->isKsEnabled();
+$ksCustomerId = $ksFavouriteSellerHelper->getKsCustomerId();
+?>
+<div class="ks-top-selling-section">
+    <div class="ks-top-seller-area ks_container">  
+        <div class="ks-top-selling-div ks_row">
+            <div class="ks-selling-product-main-heading ks-page-action">
+                <div class="ks-selling-product-heading">
+                    <h2><?= $block->escapeHtml(__("Top Sellers"))?></h2>
+                </div>
+            </div>
+            <div class="ks-top-seller-haeder">
+                <div class="ks_searchbar ks-topseller-searchbar">
+                    <form class="ks-form ks-search-form" id="ks-search-form">
+                        <div class="ks_input-group">
+                            <input type="text" id="ks-search-value" class="ks_form-control" placeholder="Search.." name="s" value="<?= $block->getPostValue() ?>">
+                            <div class="ks_input-group-append">
+                                <button type="submit"></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <?php if ($block->getPagerHtml()): ?>
+                    <div class="order-products-toolbar toolbar bottom ks-profile-pager ">
+                        <?= $block->getPagerHtml(); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <?php if ($block->getKsSellerCollection()->getSize() != 0): ?>
+                <div class="ks-selling-card-div">
+                    <?php foreach ($block->getKsSellerCollection() as $ksItem): ?>
+                        <!-- get seller profile redirect url -->
+                        <?php $ksSellerId = $ksItem->getKsSellerId();
+                            $ksStoreUrl = $block->getKsSellerProfileUrl($ksItem->getKsSellerId());
+                            if ($ksStoreUrl) {
+                                $ksActionUrl= $block->getUrl($ksStoreUrl);
+                            } else {
+                                $ksActionUrl = $block->getUrl('multivendor/sellerprofile/sellerprofile', ['seller_id' => $ksItem->getKsSellerId()]);
+                            } 
+                        ?>
+                        <div class="ks_col-xs-6 ks_col-sm-6 ks_col-md-4 ks_col-lg-3 ks_col-xl-2">
+                            <div class="ks-selling-prod-card">
+                                <div class="ks-top-seller-heart">
+                                    <?php $ksSellerId = $ksItem->getKsSellerId(); ?>
+                                    <?php if ($ksEnable && $ksCustomerId && $ksCustomerId != $ksSellerId): ?>
+                                        <?php if ($ksFavouriteSellerHelper->isKsSellerAdded($ksCustomerId, $ksSellerId)): ?> 
+                                            <a href="<?= $block->getUrl("multivendor/favouriteseller/save", ['sellerid' => $ksSellerId, 'customerid' => $ksCustomerId, '_secure' => $this->getRequest()->isSecure()])?>" class="ks-favourite action">
+                                                <span class="ks-favourite-blank-heart"></span>
+                                            </a>
+                                        <?php else: ?>          
+                                            <?php $ksFavouriteSellerCollection = $ksFavouriteSellerHelper->getKsFavouriteSellerRemove($ksCustomerId, $ksSellerId); ?>
+                                            <?php foreach ($ksFavouriteSellerCollection as $ksId): ?>
+                                                <a href="<?= $block->getKsDeleteAction().'id/'.$ksId->getId();?>" class="ks-favourite action">
+                                                    <span class="ks-favourite-fill-heart"></span>
+                                                </a>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>    
+                                    <?php endif; ?>
+                                </div>
+                                <div class="ks-card-thum">
+                                    <a href="<?= $ksActionUrl ?>" target="_blank">
+                                        <?php $ksStoreCollection = $ksSellerHelper->getKsSellerStoreCollection($ksItem->getKsSellerId(), $ksStoreId)->getFirstItem(); ?>
+                                        <?php if ($ksSellerBannerLogo = $ksStoreCollection->getKsStoreLogo()): ?>
+                                            <img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksSellerBannerLogo ?>" class="max-width-100" alt="ks-Top-Seller-Img"/>
+                                        <?php else: ?>
+                                            <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-store-logo.png') ?>" class="max-width-100" alt="ks-Top-Seller-Img">
+                                        <?php endif; ?> 
+                                    </a>
+                                </div>
+                                <div class="ks-card-body">
+                                    <?php $ksSellerCollection = $ksSellerHelper->getKsSellerCollection($ksItem->getKsSellerId())->getFirstItem() ?>
+                                    <a href="<?= $ksActionUrl ?>" target="_blank" class="ks-card-title"><?= strlen($ksSellerCollection->getKsStoreName()) > 50 ? substr_replace($ksSellerCollection->getKsStoreName(), "...", 50) : $ksSellerCollection->getKsStoreName() ?></a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="message info empty ks-margin-bottom-2">
+                    <div><?= $escaper->escapeHtml(__('We can\'t find sellers matching the selection.')) ?></div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>    
+</div>
+<script>
+    require(["jquery",
+             "mage/url"
+            ], 
+            function ($,url) {
+                
+            $('#ks-search-form').submit(function(){
+               var ksUrl =  '<?= $this->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]) ?>';
+               var ksIsParam = '<?= $this->getRequest()->getParam('s') ?>';
+               var ksString = '/s/'+ ksIsParam;
+               ksUrl = ksUrl.replace(ksString,'');
+
+               $('#ks-search-form').attr('action', ksUrl);
+            });
+    });
+</script>
+

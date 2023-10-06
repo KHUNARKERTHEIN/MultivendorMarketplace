@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+<!-- **
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ks_marketplace_general>
+            <ks_general_settings>
+                <ks_admin_name>owner</ks_admin_name>
+                <ks_admin_email>owner@example.com</ks_admin_email>
+            </ks_general_settings>
+        </ks_marketplace_general>
+        <ks_marketplace_login_and_registration>
+            <ks_marketplace_login_and_registration_settings>
+                <ks_enable_seller_login>1</ks_enable_seller_login>
+                <ks_seller_login_title>Seller Login</ks_seller_login_title>
+                <ks_seller_login_footer_title> Login as Seller</ks_seller_login_footer_title>
+                <ks_allow_seller_registration>1</ks_allow_seller_registration>
+            </ks_marketplace_login_and_registration_settings>
+        </ks_marketplace_login_and_registration>
+        <ks_marketplace_promotion>
+            <ks_marketplace_promotion_page>
+                <ks_show_sell_page>1</ks_show_sell_page>
+                <ks_open_marketplace_shop_text>Open A Marketplace Shop</ks_open_marketplace_shop_text>
+                <ks_start_selling_button_text>Start Selling</ks_start_selling_button_text>
+                <ks_why_to_sell_text>Why to Sell with us</ks_why_to_sell_text>
+                <ks_submit_query_text>Submit your Query</ks_submit_query_text>
+                <ks_submit_query_email>ks_marketplace_promotion_ks_marketplace_promotion_page_ks_submit_query_email</ks_submit_query_email>
+                <ks_email_sender>1</ks_email_sender>
+            </ks_marketplace_promotion_page>
+        </ks_marketplace_promotion>
+        <ks_marketplace_seller>
+            <ks_seller_settings>
+                <ks_seller_group>1</ks_seller_group>
+                <ks_store_approval>1</ks_store_approval>
+                <ks_seller_approval>1</ks_seller_approval>
+                <ks_seller_approved_templates>ks_marketplace_seller_ks_seller_settings_ks_seller_approved_templates</ks_seller_approved_templates>
+                <ks_seller_rejection_templates>ks_marketplace_seller_ks_seller_settings_ks_seller_rejection_templates</ks_seller_rejection_templates>
+                <ks_new_seller_templates>ks_marketplace_seller_ks_seller_settings_ks_new_seller_templates</ks_new_seller_templates>
+            </ks_seller_settings>
+        </ks_marketplace_seller>
+        <ks_marketplace_seller_portal_profile>
+            <ks_seller_profile_page>
+                <ks_seller_since>0</ks_seller_since>
+                <ks_homepage>0</ks_homepage>
+                <ks_social_media>1</ks_social_media>
+                <ks_refund_policy>1</ks_refund_policy>
+                <ks_privacy_policy>1</ks_privacy_policy>
+                <ks_terms_of_service>1</ks_terms_of_service>
+                <ks_shipping_policy>1</ks_shipping_policy>
+                <ks_legal_notice>1</ks_legal_notice>
+                <ks_show_contact_us_details>1</ks_show_contact_us_details>
+                <ks_show_contact_us_form>1</ks_show_contact_us_form>
+                <ks_contact_seller_email>ks_marketplace_seller_portal_profile_ks_seller_profile_page_ks_contact_seller_email</ks_contact_seller_email>
+                <ks_email_sender>1</ks_email_sender>
+            </ks_seller_profile_page>
+        </ks_marketplace_seller_portal_profile>
+        <ks_marketplace_catalog>
+            <ks_product_type_settings>
+                <ks_admin_product_type_request_email>ks_marketplace_catalog_ks_product_type_settings_ks_admin_product_type_request_email</ks_admin_product_type_request_email>
+                <ks_seller_product_type_request_approval_email>ks_marketplace_catalog_ks_product_type_settings_ks_seller_product_type_request_approval_email</ks_seller_product_type_request_approval_email>
+                <ks_seller_product_type_request_rejection_email>ks_marketplace_catalog_ks_product_type_settings_ks_seller_product_type_request_rejection_email</ks_seller_product_type_request_rejection_email>
+                <ks_seller_product_type_assign_email>ks_marketplace_catalog_ks_product_type_settings_ks_seller_product_type_assign_email</ks_seller_product_type_assign_email>
+                <ks_seller_product_type_unassign_email>ks_marketplace_catalog_ks_product_type_settings_ks_seller_product_type_unassign_email</ks_seller_product_type_unassign_email>
+            </ks_product_type_settings>
+        </ks_marketplace_catalog>
+        <ks_marketplace_catalog>
+            <ks_product_categories>
+                <ks_allowed_categories>0</ks_allowed_categories>
+                <ks_category_request_email>ks_marketplace_catalog_ks_product_categories_ks_category_request_email</ks_category_request_email>
+                <ks_category_request_approval_email>ks_marketplace_catalog_ks_product_categories_ks_category_request_approval_email</ks_category_request_approval_email>
+                <ks_category_request_rejection_email>ks_marketplace_catalog_ks_product_categories_ks_category_request_rejection_email</ks_category_request_rejection_email>
+                <ks_category_assign_email>ks_marketplace_catalog_ks_product_categories_ks_category_assign_email</ks_category_assign_email>
+                <ks_category_unassign_email>ks_marketplace_catalog_ks_product_categories_ks_category_unassign_email</ks_category_unassign_email>
+            </ks_product_categories>
+        </ks_marketplace_catalog>
+        <ks_marketplace_catalog>
+            <ks_product_settings>
+                <ks_admin_approval>1</ks_admin_approval>
+                <ks_update_approval>1</ks_update_approval>
+                <ks_seller_product_limit>100</ks_seller_product_limit>
+                <ks_request_email>ks_marketplace_catalog_ks_product_settings_ks_request_email</ks_request_email>
+                <ks_approval_email>ks_marketplace_catalog_ks_product_settings_ks_approval_email</ks_approval_email>
+                <ks_rejection_email>ks_marketplace_catalog_ks_product_settings_ks_rejection_email</ks_rejection_email>
+                <ks_email_sender>1</ks_email_sender>
+                <ks_related_product>1</ks_related_product>
+                <ks_up_sell_product>1</ks_up_sell_product>
+                <ks_cross_sell_product>1</ks_cross_sell_product>
+            </ks_product_settings>
+        </ks_marketplace_catalog>
+        <ks_marketplace_sales>
+            <ks_order_settings>
+                <ks_seller_new_order_email_template>ks_marketplace_sales_ks_order_settings_ks_seller_new_order_email_template</ks_seller_new_order_email_template>
+            </ks_order_settings>
+        </ks_marketplace_sales>
+        <ks_marketplace_sales>
+            <ks_invoice_settings>
+                <ks_request_invoice_email_template>ks_marketplace_sales_ks_invoice_settings_ks_request_invoice_email_template</ks_request_invoice_email_template>
+            </ks_invoice_settings>
+            <ks_invoice_settings>
+                <ks_invoice_approval_notification_template>ks_marketplace_sales_ks_invoice_settings_ks_invoice_approval_notification_template</ks_invoice_approval_notification_template>
+            </ks_invoice_settings>
+            <ks_invoice_settings>
+                <ks_invoice_rejection_notification_template>ks_marketplace_sales_ks_invoice_settings_ks_invoice_rejection_notification_template</ks_invoice_rejection_notification_template>
+            </ks_invoice_settings>
+        </ks_marketplace_sales>
+        <ks_marketplace_sales>
+            <ks_shipment_settings>
+                <ks_request_shipment_email_template>ks_marketplace_sales_ks_shipment_settings_ks_request_shipment_email_template</ks_request_shipment_email_template>
+                <ks_shipment_approval_notification_template>ks_marketplace_sales_ks_shipment_settings_ks_shipment_approval_notification_template</ks_shipment_approval_notification_template>
+                <ks_shipment_rejection_notification_template>ks_marketplace_sales_ks_shipment_settings_ks_shipment_rejection_notification_template</ks_shipment_rejection_notification_template>
+            </ks_shipment_settings>
+        </ks_marketplace_sales>
+        <ks_marketplace_sales>
+            <ks_creditmemo_settings>
+                <ks_request_creditmemo_approval>1</ks_request_creditmemo_approval>
+                <ks_request_creditmemo_email_template>ks_marketplace_sales_ks_creditmemo_settings_ks_request_creditmemo_email_template</ks_request_creditmemo_email_template>
+                <ks_creditmemo_approval_notification_template>ks_marketplace_sales_ks_creditmemo_settings_ks_creditmemo_approval_notification_template</ks_creditmemo_approval_notification_template>
+                <ks_creditmemo_rejection_notification_template>ks_marketplace_sales_ks_creditmemo_settings_ks_creditmemo_rejection_notification_template</ks_creditmemo_rejection_notification_template>
+            </ks_creditmemo_settings>
+        </ks_marketplace_sales>
+        <ks_marketplace_favourite_seller>
+            <ks_favourite_seller_settings>
+                <ks_favourite_seller_enable>0</ks_favourite_seller_enable>
+                <ks_welcome_email_notification_followers_templates>ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_welcome_email_notification_followers_templates</ks_welcome_email_notification_followers_templates>
+                <ks_new_product_alert_followers_templates>ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_new_product_alert_followers_templates</ks_new_product_alert_followers_templates>
+                <ks_price_alerts_followers_templates>ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_price_alerts_followers_templates</ks_price_alerts_followers_templates>
+                <ks_email_notification_newly_added_followers_templates>ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_email_notification_newly_added_followers_templates</ks_email_notification_newly_added_followers_templates>
+                <ks_followers_mail>ks_marketplace_favourite_seller_ks_favourite_seller_settings_ks_followers_mail</ks_followers_mail>
+            </ks_favourite_seller_settings>
+        </ks_marketplace_favourite_seller>
+        <ks_marketplace_seller_locator>
+            <ks_seller_locator>
+                <ks_seller_locator_enable>0</ks_seller_locator_enable>
+                <ks_seller_locator_title_footer>Locate Seller</ks_seller_locator_title_footer>
+                <ks_seller_locator_title_product_page>Locate Seller</ks_seller_locator_title_product_page>
+                <ks_seller_locator_map_style>default</ks_seller_locator_map_style>
+            </ks_seller_locator>
+        </ks_marketplace_seller_locator>
+        <ks_marketplace_report>
+            <ks_report_product>
+                <ks_acknowledgement_mail_template>ks_marketplace_report_ks_report_product_ks_acknowledgement_mail_template</ks_acknowledgement_mail_template>
+                <ks_admin_alert_mail_template>ks_marketplace_report_ks_report_product_ks_admin_alert_mail_template</ks_admin_alert_mail_template>
+                <ks_reason_text>Reason</ks_reason_text>
+                <ks_reason_placeholder>Please select a reason</ks_reason_placeholder>
+                <ks_sub_reason_text>Sub-Reason</ks_sub_reason_text>
+                <ks_sub_reason_placeholder>Please select a sub-reason</ks_sub_reason_placeholder>
+                <ks_comments_text>Comments</ks_comments_text>
+                <ks_comments_placeholder>Please add comments</ks_comments_placeholder>
+            </ks_report_product>
+        </ks_marketplace_report>
+        <ks_marketplace_report>
+            <ks_report_seller>
+                <ks_acknowledgement_mail_template>ks_marketplace_report_ks_report_seller_ks_acknowledgement_mail_template</ks_acknowledgement_mail_template>
+                <ks_admin_alert_mail_template>ks_marketplace_report_ks_report_seller_ks_admin_alert_mail_template</ks_admin_alert_mail_template>
+                <ks_reason_text>Reason</ks_reason_text>
+                <ks_reason_placeholder>Please select a reason</ks_reason_placeholder>
+                <ks_sub_reason_text>Sub-Reason</ks_sub_reason_text>
+                <ks_sub_reason_placeholder>Please select a sub-reason</ks_sub_reason_placeholder>
+                <ks_comments_text>Comments</ks_comments_text>
+                <ks_comments_placeholder>Please add comments</ks_comments_placeholder>
+            </ks_report_seller>
+        </ks_marketplace_report>
+        <ks_marketplace_sitemap>
+            <ks_sitemap>
+                <ks_enable_marketplace>1</ks_enable_marketplace>
+                <ks_profile_priority_marketplace>1.0</ks_profile_priority_marketplace>
+                <ks_profile_frequency_marketplace>daily</ks_profile_frequency_marketplace>
+                <ks_enable_sitemap>1</ks_enable_sitemap>
+                <ks_include_seller_profile_url>1</ks_include_seller_profile_url>
+                <ks_include_seller_product_url>1</ks_include_seller_product_url>
+                <ks_profile_priority>1.0</ks_profile_priority>
+                <ks_profile_frequency>daily</ks_profile_frequency>
+            </ks_sitemap>
+        </ks_marketplace_sitemap>
+        <!-- <marketplace>
+            <ks_seller_panel>
+                <ks_logo>0</ks_logo>
+                <ks_favicon>0</ks_favicon>
+                <ks_custom_header>0</ks_custom_header>
+                <ks_footer>0</ks_footer>
+                <ks_rtl_theme>0</ks_rtl_theme>
+                <ks_primary_color>#000000</ks_primary_color>
+                <ks_secondary_color>#000000</ks_secondary_color>
+                <ks_sidebar_front_color>#000000</ks_sidebar_front_color>
+                <ks_sidebar_back_color>#000000</ks_sidebar_back_color>
+                <ks_header_font_color>#000000</ks_header_font_color>
+                <ks_header_background_color>#000000</ks_header_background_color>
+            </ks_seller_panel>
+            <ks_price_comparison_product_settings>
+                <ks_show_minimum_price_on_product_page>1</ks_show_minimum_price_on_product_page>
+                <ks_product_approval_required>1</ks_product_approval_required>
+                <ks_product_edit_approval_required>1</ks_product_edit_approval_required>
+                <ks_product_type_restrictions></ks_product_type_restrictions>
+                <ks_secondary_product_owner>creation_date_asc</ks_secondary_product_owner>
+                <ks_secondary_configurable_product_owner>creation_date_asc</ks_secondary_configurable_product_owner>
+                <ks_limit_to_price_comparison_per_product>5</ks_limit_to_price_comparison_per_product>
+                <ks_allow_admin_products_in_comparison>1</ks_allow_admin_products_in_comparison>
+                <ks_show_seller_logo>1</ks_show_seller_logo>
+                <ks_show_product_image>1</ks_show_product_image>
+                <ks_show_product_description>1</ks_show_product_description>
+                <ks_show_product_condition>1</ks_show_product_condition>
+                <ks_show_product_review_rating>1</ks_show_product_review_rating>
+                <ks_allow_product_report>1</ks_allow_product_report>
+            </ks_price_comparison_product_settings>
+            <ks_assign_product_settings>
+                <ks_seller_product_assign_mail_template>marketplace_ks_assign_product_settings_ks_seller_product_assign_mail_template</ks_seller_product_assign_mail_template>
+            </ks_assign_product_settings>
+        </marketplace> -->
+    </default>
+</config>

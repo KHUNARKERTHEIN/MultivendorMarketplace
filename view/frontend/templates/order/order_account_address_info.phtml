@@ -1,0 +1,249 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketp\Block\Order\KsOrderView */
+$ks_order = $block->getKsOrder();
+switch ($ks_order->getStatus()) {
+    case "complete":
+    $ksOrderClass = "complete";
+    break;
+    case "pending":
+    
+    $ksOrderClass = "pending";
+    break;
+    case "processing":
+    
+    $ksOrderClass = "processing";
+    break;
+    case "closed":
+    
+    $ksOrderClass = "closed";
+    break;
+    case "canceled":
+    
+    $ksOrderClass = "cancel";
+    break;
+    case "fraud":
+    
+    $ksOrderClass = "fraud";
+    break;
+    case "holded":
+    
+    $ksOrderClass = "holded";
+    break;
+    case "payment_review":
+    
+    $ksOrderClass = "payment_review";
+    break;
+    case "paypal_canceled_reversal":
+    
+    $ksOrderClass = "paypal_canceled_reversal";
+    break;
+    case "paypal_reversed":
+    
+    $ksOrderClass = "paypal_reversed";
+    break;
+    case "pending_payment":
+    
+    $ksOrderClass = "pending_payment";
+    break;
+    case "pending_paypal":
+    
+    $ksOrderClass = "pending_paypal";
+    break;
+}
+
+$orderStoreDate = $block->formatDate(
+    $ks_order->getCreatedAt(),
+    \IntlDateFormatter::MEDIUM,
+    true,
+    $block->getTimezoneForStore($ks_order->getStore())
+);
+
+$orderAdminDate = $block->formatDate(
+    $block->getKsOrderAdminDate($ks_order->getCreatedAt()),
+    \IntlDateFormatter::MEDIUM,
+    true
+);
+$ksBaseCurrencyCode = (string)$ks_order->getBaseCurrencyCode();
+$ksGlobalCurrencyCode = (string)$ks_order->getGlobalCurrencyCode();
+$ksOrderCurrencyCode = (string)$ks_order->getOrderCurrencyCode();
+$customerUrl = $block->getKsCustomerViewUrl();
+$allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub', 'sup', 'ul'];
+?>
+
+<!-- Order A/C Info start -->
+<section class="ks-order-view-account-information mb-5">
+
+    <!-- Order tab section title start -->
+    <div class="ks-tab-content-title">
+        <span><?= $block->escapeHtml(__('Order & Account Information')) ?></span>
+    </div>
+    <!-- Order tab section title end -->
+
+    <div class="col-md-12">
+        <div class="row">
+
+            <!-- Order Info start --> 
+            <div class="col-md-6 pl-0">
+                
+                <!-- Order tab div title start -->
+                <div class="ks-order-information">
+                    <?php /* Order Information */ ?>
+                    <?php $confirmationEmailStatusMessage = $ks_order->getEmailSent() ? __('The order confirmation email was sent') : __('The order confirmation email is not sent'); ?>
+                    <div class="ks-div-title">
+                        <?php if ($block->getNoUseOrderLink()) : ?>
+                        <?= $block->escapeHtml(__('Order # %1', $ks_order->getRealOrderId())) ?> (<span><?= $block->escapeHtml($confirmationEmailStatusMessage) ?></span>)
+                        <?php else : ?>
+                            <a href="<?= $block->escapeUrl($block->getViewUrl($ks_order->getId())) ?>"><?= $block->escapeHtml(__('Order # %1', $ks_order->getRealOrderId())) ?></a>
+                            <span>(<?= $block->escapeHtml($confirmationEmailStatusMessage) ?>)</span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <!-- Order tab div title end -->
+
+                <div class="ks-order-information-table ks-sales-table">
+                    <table>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Order Date')) ?></th>
+                            <td><?= $block->escapeHtml($orderAdminDate) ?></td>
+                        </tr>
+                        <?php if ($orderAdminDate != $orderStoreDate) : ?>
+                            <tr>
+                                <th><?= $block->escapeHtml(__('Order Date (%1)', $block->getTimezoneForStore($order->getStore()))) ?></th>
+                                <td><?= $block->escapeHtml($orderStoreDate) ?></td>
+                            </tr>
+                        <?php endif;?>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Order Status')) ?></th>
+                            <td><span id="order_status"><?= $block->escapeHtml($ks_order->getStatusLabel()) ?></span></td>
+                        </tr>
+                        <?= $block->getChildHtml() ?>
+                        <?php if ($block->isSingleStoreMode() == false) : ?>
+                            <tr>
+                                <th><?= $block->escapeHtml(__('Purchased From')) ?></th>
+                                <td><?= $block->escapeHtml($block->getOrderStoreName(), ['br']) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                        <?php if ($ksGlobalCurrencyCode !== $ksBaseCurrencyCode) : ?>
+                            <tr>
+                                <th><?= $block->escapeHtml(__('%1 / %2 rate:', $ksGlobalCurrencyCode, $ksBaseCurrencyCode)) ?></th>
+                                <td><?= $block->escapeHtml($ks_order->getBaseToGlobalRate()) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                        <?php if ($ksBaseCurrencyCode !== $ksOrderCurrencyCode && $ksGlobalCurrencyCode !== $ksOrderCurrencyCode) : ?>
+                            <tr>
+                                <th><?= $block->escapeHtml(__('%1 / %2 rate:', $ksOrderCurrencyCode, $ksBaseCurrencyCode)) ?></th>
+                                <td><?= $block->escapeHtml($ks_order->getBaseToOrderRate()) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    </table>
+                </div>
+            </div>
+            <!-- Order Info end --> 
+
+            <!-- A/C Info start --> 
+            <div class="col-md-6 pr-0">
+
+                <!-- Order tab div title start -->
+                <div class="ks-order-information">
+                    <div class="ks-div-title">
+                        <span>Account Information</span>
+                    </div>
+                </div>
+                <!-- Order tab div title end -->
+                
+                <div class="ks-order-account-information-table ks-sales-table">
+                    <table>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Customer Name')) ?></th>
+                            <td>
+                                <span><?= $block->escapeHtml($ks_order->getCustomerName()) ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Email')) ?></th>
+                            <td><?= $block->escapeHtmlAttr($ks_order->getCustomerEmail()) ?></td>
+                        </tr>
+                        <?php foreach ($block->getKsCustomerAccountData() as $data) : ?>
+                            <tr>
+                                <th><?= $block->escapeHtml($data['label']) ?></th>
+                                <td><?= $block->escapeHtml($data['value'], ['br']) ?></td>
+                            </tr>
+                        <?php endforeach;?>
+                        <?= $block->getChildHtml('extra_customer_info') ?>
+                    </table>
+                </div>
+            </div>
+            <!-- A/C Info end -->
+
+        </div>
+    </div>
+
+</section>
+<!-- Order A/C Info end --> 
+
+
+<!-- Address Information start -->
+<section class="ks-order-addresses mb-5">
+
+    <!-- Order tab section title start -->
+    <div class="ks-tab-content-title">
+        <span class="title"><?= $block->escapeHtml(__('Address Information')) ?></span>
+    </div>
+    <!-- Order tab section title end -->
+    
+    <div class="col-md-12">
+        <div class="row">
+
+            <!-- Billing Add section start --> 
+            <div class="col-md-6 pl-0">
+                <?php /* Billing Address */ ?>
+
+                 <!-- Order tab div title start -->
+                 <div class="ks-order-information">
+                    <div class="ks-div-title">
+                        <span class="title"><?= $block->escapeHtml(__('Billing Address')) ?></span>
+                    </div>
+                </div>
+                <!-- Order tab div title end -->
+
+                <div class="ks-order-billing-address mt-3 mb-2">
+                    <div><?= $block->escapeHtml($block->getFormattedAddress($ks_order->getBillingAddress()), $allowedAddressHtmlTags); ?></div>
+                </div>
+            </div>
+            <!-- Billing Add section end -->
+            
+            <!-- Shipping Add section start -->
+            <?php if (!$block->getKsOrder()->getIsVirtual()) : ?>
+            <div class="col-md-6 pr-0">
+                <?php /* Shipping Address */ ?>
+
+                <!-- Order tab div title start -->
+                <div class="ks-order-information">
+                    <div class="ks-div-title">
+                        <span class="title"><?= $block->escapeHtml(__('Shipping Address')) ?></span>
+                    </div>
+                </div>
+                <!-- Order tab div title end -->
+
+                <div class="ks-order-shipping-address mt-3 mb-2">
+                    <div><?= $block->escapeHtml($block->getFormattedAddress($ks_order->getShippingAddress()), $allowedAddressHtmlTags); ?></div>
+                </div>
+            </div>
+            <?php endif; ?>
+            <!-- Shipping Add section end -->
+
+        </div>
+    </div>
+
+</section>
+<!-- Address Information end -->

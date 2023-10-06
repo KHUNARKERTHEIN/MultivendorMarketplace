@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/commission/ks-analyser.css"/>
+        <css src="Ksolves_MultivendorMarketplace::css/commission/ks-calculator.css"/>
+        <script src="Ksolves_MultivendorMarketplace::js/commission/ks-show-analyser.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/commission/ks-calculator.js"/>
+    </head>
+    <body>
+        <referenceContainer name="admin.scope.col.wrap" htmlClass="admin__old" />
+        <referenceContainer name="content">
+            <uiComponent name="ks_marketplace_commission_form"/>
+            <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\KsCommissionData" name="ks_backend_currency" template="Ksolves_MultivendorMarketplace::commission/ks-price-currency.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="ks_backend_url" 
+          template="Ksolves_MultivendorMarketplace::ks-script.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

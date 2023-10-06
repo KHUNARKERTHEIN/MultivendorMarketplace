@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+	<update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <update handle="msrp_popup"/>
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/owl-carousel-slider/owl.carousel.css"/>
+        <script src="Ksolves_MultivendorMarketplace::js/profile/main.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/profile/validation.js"/>
+    </head>
+	<body>
+        <referenceContainer name="content">
+            <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsHomePage" name="homepage" template="Ksolves_MultivendorMarketplace::profile/ks-homepage.phtml" cacheable="false">
+                <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsRecentlyProducts" name="seller.recently.products" template ="Ksolves_MultivendorMarketplace::profile/ks-seller-recently-products.phtml" cacheable="false"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsBestProducts" name="seller.best.products" template ="Ksolves_MultivendorMarketplace::profile/ks-seller-best-products.phtml" cacheable="false"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsDiscountProducts" name="seller.discount.products" template ="Ksolves_MultivendorMarketplace::profile/ks-seller-discount-products.phtml" cacheable="false"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

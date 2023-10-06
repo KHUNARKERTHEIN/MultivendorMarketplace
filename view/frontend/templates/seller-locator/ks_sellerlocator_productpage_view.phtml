@@ -1,0 +1,21 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php
+$ksHelperData = $this->helper(\Ksolves\MultivendorMarketplace\Helper\KsSellerLocatorHelper::class);
+$ksSellerId = $block->getKsSellerId();
+$ksProductId = $block->getKsProductId();
+?>
+<?php if($block->getKsProduct()->getSize() && $ksHelperData->getKsLocation($ksSellerId)):?>
+<a href="<?php echo $this->getUrl('multivendor/sellerlocator/map',['seller_id'=>$ksSellerId,'product_id'=>$ksProductId]); ?>" class="ks-sellerlocator ks-product-action-link">
+        <span><?=$ksHelperData->getKsLocateStoresTitle();?></span>
+</a>
+<?php endif;?>

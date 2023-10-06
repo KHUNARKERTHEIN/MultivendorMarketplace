@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-category-tree.css" />
+        <css src="Ksolves_MultivendorMarketplace::css/ks-backend.css" />
+        <script src="Ksolves_MultivendorMarketplace::js/seller/ks-new-seller.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/category/ks-cat-req-rejection.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/seller/ks-producttype-rejection.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/commission/ks-view-products.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/product/ks-product-rejection.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/product/ks-product-status.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/productattribute/ks-product-attribute.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/category/ks-category.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/assignproduct/ks-assign.js"/>
+    </head>
+    <body>
+        <referenceContainer name="admin.scope.col.wrap" htmlClass="admin__old" />
+        <referenceContainer name="page.main.actions">
+            <block class="Magento\Backend\Block\Store\Switcher" name="store_switcher">
+                <action method="setUseConfirm">
+                    <argument name="params" xsi:type="string">1</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="ks_backend_url"
+                template="Ksolves_MultivendorMarketplace::ks-script.phtml"/>
+            <uiComponent name="ks_marketplace_seller_form"/>
+            <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::seller/rejection/ks_rejection.phtml" name="ks_seller_rejection"/>
+            <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::seller/rejection/ks_producttype_rejection.phtml" name="ks_producttype_rejection"/>
+            <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::product/rejection/ks_rejection.phtml" name="ks_product_rejection"/>
+            <container name="commission.product.container" htmlTag="div" htmlClass="product-container" htmlId="product-container">
+                <block class="Magento\Framework\View\Element\Text">
+                    <arguments>
+                        <argument name="text" xsi:type="string">
+                            <![CDATA[&nbsp;]]>
+                        </argument>
+                    </arguments>
+                </block>
+            </container>
+            <container name="content.container" htmlTag="div" htmlClass="ks-assign-product-list" htmlId="ks-assign-product-list">
+                <block class="Magento\Framework\View\Element\Text">
+                    <arguments>
+                        <argument name="text" xsi:type="string"><![CDATA[&nbsp;]]></argument>
+                    </arguments>
+                </block>
+            </container>
+            <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::product/rejection/ks_rejection.phtml" name="ks_product_rejection"/>
+            <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::assignproduct/ks_assign_product_details.phtml" name="ks_assign_product_details"/>
+        </referenceContainer>
+    </body>
+</page>

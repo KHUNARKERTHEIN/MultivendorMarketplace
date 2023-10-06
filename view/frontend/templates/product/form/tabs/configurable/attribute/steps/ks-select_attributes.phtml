@@ -1,0 +1,42 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\Multivendor\Block\Catalog\Product\Steps\KsSelectAttributes */
+?>
+<div class="select-attributes-block">
+    <div class="select-attributes-actions" data-type="skipKO">
+    </div>
+    <h2 class="steps-wizard-title"><?= /* @escapeNotVerified */  __('Step 1: Select Attributes') ?></h2>
+    <div class="selected-attributes" data-bind="scope: 'ks-variation-steps-wizard_ks-step1'">
+        <?= /* @escapeNotVerified */  __('Selected Attributes:') ?>
+        <span data-bind="text: selectedAttributes() || '--'"></span>
+    </div>
+</div>
+
+<?= $block->getChildHtml(); ?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "ks-variation-steps-wizard_ks-step1": {
+                        "component": "Ksolves_MultivendorMarketplace/js/product/variations/steps/ks-select_attributes",
+                        "multiselectName":
+                            "ks_product_attributes_listing.ks_product_attributes_listing.product_attributes_columns.ids",
+                        "providerName": "ks_product_attributes_listing.multivendor_product_attributes_listing_data_source",
+                        "appendTo": "ks-variation-steps-wizard"
+                    }
+                }
+            }
+        }
+    }
+</script>

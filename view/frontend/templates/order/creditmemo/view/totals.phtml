@@ -1,0 +1,152 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\MultivendorMarketplace\Block\Order\CreditMemos\Create\KsItems $block */
+$ksCreditmemo = $block->getKsCreditmemo();
+$ksOrderId= $ksCreditmemo->getKsOrderId();
+$ksBaseSubtotalAmount = 0;
+$ksBaseTaxAmount = 0;
+$ksBasediscountAmount = 0;
+$ksBaseItemCommission = 0;
+$ksBaseWeeeTax = 0;
+$ksWeeeTax = 0;
+$ksShowStoreCurrency = $block->canKsShowOrderCurrencyValue();
+$ks_items = $block->getKsCreditmemoItems();
+
+foreach ($ks_items as $ksItem) {                                    
+    $ksBaseSubtotalAmount += $ksItem->getKsBaseRowTotal();  
+    $ksBaseTaxAmount += $ksItem->getKsBaseTaxAmount();
+    $ksBasediscountAmount += $ksItem->getKsBaseDiscountAmount();
+    $ksOrderItem = $block->getKsOrderItem($ksItem->getKsOrderItemId());
+    $ksBaseWeeeTax += $ksOrderItem->getBaseWeeeTaxAppliedAmount() * $ksItem->getKsQty();
+    $ksWeeeTax += $ksOrderItem->getWeeeTaxAppliedAmount() * $ksItem->getKsQty();
+}
+
+?>  
+
+<!-- Credit memo tools start -->
+<table>
+    <thead>                         
+        <tr class="subtotal">
+             <th ><?= $block->escapeHtml(__('Subtotal')) ?></th>
+             <td>
+                <span class="price"><?= $block->formatValue($ksCreditmemo->getKsBaseSubtotal()) ?></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <br>
+                    <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($ksCreditmemo->getKsSubtotal())?></span>
+                <?php endif;?>
+            </td>
+        </tr>
+        <?php if($ksBaseWeeeTax>0):?>
+            <tr class="tax">
+                <th ><?= $block->escapeHtml(__('FPT')) ?></th>
+                <td>
+                    <span class="price"><?= $block->formatValue($ksBaseWeeeTax) ?></span>
+                    <?php if($ksShowStoreCurrency):?>
+                        <br>
+                        <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($ksWeeeTax)?></span>
+                    <?php endif;?>
+                </td>
+            </tr>
+        <?php endif;?>
+        <?php if($ksCreditmemo->getKsBaseDiscountAmount()):?>
+            <tr class="discount">
+                <th ><?= $block->escapeHtml(__('Discount')) ?></th>
+                <td>
+                    <span class="price"><?= $block->formatValue($ksCreditmemo->getKsBaseDiscountAmount()) ?></span>
+                        <?php if($ksShowStoreCurrency):?>
+                            <br>
+                            <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($ksCreditmemo->getKsDiscountAmount())?></span>
+                        <?php endif;?>
+                </td>
+            </tr>
+        <?php endif;?>
+        <?php if($ksCreditmemo->getKsBaseTaxAmount()>0):?>
+            <tr class="tax">
+                <th ><?= $block->escapeHtml(__('Tax')) ?></th>
+                <td>
+                    <span class="price"><?= $block->formatValue($ksCreditmemo->getKsBaseTaxAmount()) ?></span>
+                        <?php if($ksShowStoreCurrency):?>
+                            <br>
+                            <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($ksCreditmemo->getKsTaxAmount())?></span>
+                        <?php endif;?>
+                </td>
+            </tr>
+        <?php endif;?>
+        <?php 
+        $ksBaseTotalOrderedAmount = ($ksBaseSubtotalAmount  + $ksBaseTaxAmount) - $ksBasediscountAmount;  
+        ?>                                                   
+    </thead> 
+    <tfoot>
+        <tr class="grand_total">
+            <th><?= $block->escapeHtml(__('Grand Total')) ?></th>
+                <td>
+                    <span class="price"><?= $block->formatValue($ksCreditmemo->getKsBaseGrandTotal()) ?></span>
+                        <?php if($ksShowStoreCurrency):?>
+                            <br>
+                            <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($ksCreditmemo->getKsGrandTotal())?></span>
+                        <?php endif;?>
+                </td>
+        </tr>
+        <tr class="grand_total">
+            <th>
+                <?= $block->escapeHtml(__("Total Admin's Commission")) ?>
+            </th>
+            <td>
+                <span class="price"><?= $block->formatValue($ksCreditmemo->getKsBaseTotalCommission()) ?></span>  
+                    <?php if($ksShowStoreCurrency):?>
+                        <br>
+                        <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($ksCreditmemo->getKsTotalCommission())?></span>
+                    <?php endif;?>                          
+            </td>                
+        </tr>
+        <tr class="grand_total">
+            <th ><?= $block->escapeHtml(__("Total Earning")) ?></th>
+            <td>
+                <span class="price"><?= $block->formatValue($ksCreditmemo->getKsBaseTotalEarning()) ?></span>
+                    <?php if($ksShowStoreCurrency):?>
+                        <br>
+                        <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($ksCreditmemo->getKsTotalEarning())?></span>
+                    <?php endif;?>
+            </td>
+        </tr>   
+    </tfoot>
+</table>
+<?php if($ksCreditmemo->getKsApprovalStatus()==2):?>
+    <div class="order-totals-actions">
+        <?php if($block->ksCheckNotesAndNotifyCreditMemo()): ?>
+        <div class="field choice field-append-comments">
+            <input id="notify_customer"
+            name="creditmemo[comment_customer_notify]"
+            value="1"
+            type="checkbox" />
+            <label for="notify_customer">
+                <span><?= $block->escapeHtml(__('Append Comments')) ?></span>
+            </label>
+        </div>
+        <?php if ($block->canSendKsCreditmemoEmail()):?>
+        <div class="field choice field-email-copy">
+            <input id="send_email"
+            name="creditmemo[send_email]"
+            value="1"
+            type="checkbox" />
+            <label for="send_email">
+                <span><?= $block->escapeHtml(__('Email Copy of Credit Memo')) ?></span>
+            </label>
+        </div>
+        <?php endif; ?>
+        <?php endif; ?>
+        <div class="float-right mt-5 mb-3">
+            <input type="submit" name="submit" class="ks-action-btn ks-primary ks-padding-btn border-0" value="<?= $block->escapeHtml('Refund Offline')?>">
+        </div>
+    </div> 
+<?php endif;?>
+<!-- Credit memo totals end -->

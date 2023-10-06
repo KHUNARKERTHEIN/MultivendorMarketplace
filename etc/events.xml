@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- customer register success -->
+    <event name="customer_register_success">
+        <observer name="ks_customer_register_success_observer" instance="Ksolves\MultivendorMarketplace\Observer\KsCustomerRegisterSuccessObserver" />
+    </event>
+    <!-- customer login -->
+    <!--     <event name="customer_login">
+        <observer name="ks_customer_login_observer" instance="Ksolves\MultivendorMarketplace\Observer\KsCustomerLoginObserver" />
+    </event> -->
+    <!-- seller product and category type product attribute save -->
+    <event name="admin_system_config_changed_section_ks_marketplace_catalog">
+        <observer name="custom_admin_system_config_changed_section_general" instance="Ksolves\MultivendorMarketplace\Observer\KsProductTypeDataSave"/>
+        <observer name="ks_product_attribute_set_change" instance="Ksolves\MultivendorMarketplace\Observer\KsProductAttributeDataSave"/>
+    </event>
+    <event name="admin_system_config_changed_section_ks_marketplace_sitemap">
+        <observer name="ks_seller_sitemap_change" instance="Ksolves\MultivendorMarketplace\Observer\KsSellerSitemapDataSave" />
+    </event>
+    <!-- seller category save -->
+    <event name="controller_action_postdispatch_catalog_category_save">
+        <observer name="ks_seller_category_save" instance="Ksolves\MultivendorMarketplace\Observer\KsSellerCategorySave" />
+    </event>
+    <event name="catalog_product_delete_after">
+        <observer name="Ksolves_MultivendorMarketplace::product_delete" instance="Ksolves\MultivendorMarketplace\Observer\KsProductDeleteAfter" />
+    </event>
+    <!-- after order placed -->
+    <event name="checkout_submit_all_after">
+        <observer name="Ksolves_MultivendorMarketplace::checkout_submit_all_after" instance="Ksolves\MultivendorMarketplace\Observer\KsAfterOrderPlace" />
+    </event>
+    <!-- after seller store change -->
+    <event name="ksseller_store_change_after">
+        <observer name="ksseller_store_change_after_observer" instance="Ksolves\MultivendorMarketplace\Observer\KsAfterSellerStoreChange" />
+    </event>
+</config>

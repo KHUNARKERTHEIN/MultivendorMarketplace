@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="additional.product.info">
+            <block class="Ksolves\MultivendorMarketplace\Block\Checkout\Cart\KsSellerDetails" name="cart_item_addional_info" template="Ksolves_MultivendorMarketplace::cart/item/sellername.phtml" cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

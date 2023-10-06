@@ -1,0 +1,78 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\Multivendor\Block\FavouriteSeller\FavouriteSeller\KsShowData $block */
+
+$ksHelper = $this->helper(\Ksolves\MultivendorMarketplace\Helper\KsFavouriteSellerHelper::class);
+$ksDataHelper = $this->helper(\Ksolves\MultivendorMarketplace\Helper\ksDataHelper::class);
+$ksCurrentProduct = $block->getKsCurrentProduct();
+$ksSellerId = $ksHelper->getKsCurrentSeller($ksCurrentProduct);
+$ksCustomerId = $ksHelper->getKsCustomerId();
+$ksFavouriteSellerCollection = $ksHelper->getKsFavouriteSellerRemove($ksCustomerId, $ksSellerId);
+$ksEnable = $ksHelper->isKsEnabled();
+$ksStoreId = $ksDataHelper->getKsCurrentStoreView();
+?>
+
+<?php if ($ksSellerId && $ksCustomerId != $ksSellerId): ?>
+    <!-- get seller profile redirect url -->
+    <?php $ksStoreUrl = $block->getKsSellerProfileUrl($ksSellerId);
+        if ($ksStoreUrl) {
+            $ksActionUrl = $block->getBaseUrl().$ksStoreUrl;
+        } else {
+            $ksActionUrl = $block->getBaseUrl().'multivendor/sellerprofile/sellerprofile/seller_id/'.$ksSellerId;
+        }
+        $ksStoreInfo = $ksHelper->getKsStoreInfo($ksSellerId, $ksStoreId); 
+    ?>
+    <div class="ks-seller-report">
+        <div class="ks-seller-report-banner">
+            <a href="<?= $ksActionUrl ?>">
+                <img src="<?= $block->getKsStoreManagerData($ksStoreInfo['banner']); ?>"/>
+            </a>
+        </div>
+        <div class="ks-logo-section">
+            <a href="<?= $ksActionUrl ?>">
+                <div class="ks-circle-logo-area">
+                    <img src="<?= $block->getKsStoreManagerData($ksStoreInfo['logo']); ?>">
+                </div>
+            </a>
+        </div>
+        <?php if($ksEnable && $ksCustomerId): ?>
+            <div class="ks-heart">
+                <?php if($ksHelper->isKsSellerAdded($ksCustomerId, $ksSellerId)): ?>
+                    <a href="<?= $block->getUrl("multivendor/favouriteseller/save", ['sellerid' => $ksSellerId, 'customerid' => $ksCustomerId, '_secure' => $this->getRequest()->isSecure()])?>" class="ks-favourite action">
+                        <span class="ks-profile-blank-heart"></span>
+                    </a>
+                <?php else: ?>
+                    <?php foreach($ksFavouriteSellerCollection as $ksId): ?>
+                        <a href="<?= $block->getKsDeleteAction().'id/'.$ksId->getId();?>" class="ks-favourite action">
+                            <span class="ks-favourite-fill-heart"></span>
+                        </a>
+                    <?php endforeach; ?>
+                <?php endif; ?>    
+            </div>
+        <?php endif; ?>
+        <a class="ks-store-name" href="<?=$ksActionUrl ?>">
+            <div class="ks-seller-report-text"><p><?= $ksHelper->getKsStoreName($ksSellerId) ?></p></div>
+        </a>
+        <div class="ks-seller-report-footer">
+            <a href="<?= $ksActionUrl.'?tab_id=tab-4' ?>">
+                <div><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/mail-icon.svg') ?>"/> <span><?= $block->escapeHtml(__('Contact Us')) ?></span></div>
+            </a>
+            <?php if ($block->isReportEnabled()):?>
+                <div id="ks-product-report-seller" >
+                    <a>
+                        <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/report-flag-icon.svg') ?>"/> <span><?= $block->escapeHtml(__('Report')) ?></span>
+                    </a>
+                </div>
+            <?php endif;?>
+        </div>
+    </div>
+<?php endif; ?>

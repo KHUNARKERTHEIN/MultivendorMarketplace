@@ -1,0 +1,135 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\MultivendorMarketplace\Block\Order\Invoice\Create\KsForm */
+$invoice = $block->getKsInvoice();
+$ksViewOrderBlock = $block->getData('ksViewOrderBlock');
+?>
+<div class="ks-invoice-create-page">
+    <div class="ks-page-card">
+        <form id="ks-sales-new-invoice-form" method="post" action="<?=$block->getBaseUrl().'multivendor/order_invoice/save/order_id/'.$invoice->getOrderId()?>">
+            <?= $block->getBlockHtml('formkey') ?>
+            <?php $_order = $block->getKsInvoice()->getOrder() ?>
+            <?php
+            /** @var \Magento\Tax\Helper\Data $taxHelper */
+            $taxHelper = $block->getData('taxHelper');
+            ?>
+            <?= $block->getChildHtml('multivendor_order_account_address_info') ?>
+
+            <!-- payment shiping section start -->
+            <section class="ks-payment-ship-section mb-5">
+
+                <!-- Order tab section title start -->
+                <div class="ks-tab-content-title">
+                    <span><?= $block->escapeHtml(__('Payment &amp; Shipping Method')) ?></span>
+                </div>
+                <!-- Order tab section title end -->
+
+                <div class="ks-payment-shipping-div col-md-12">
+                    <div class="row">
+                        <div class="col-md-6 pl-0">
+                            <div class="ks-order-payment-method
+                            <?php if ($_order->getIsVirtual()): ?> order-payment-method-virtual<?php endif; ?>">
+                                <!-- Order tab div title start -->
+                                <div class="ks-div-title mb-3">
+                                    <span><?=$block->escapeHtml(__('Payment Information')) ?></span>
+                                </div>
+                                <!-- Order tab div title end -->
+                                <div class="admin__page-section-item-content ks-pay-info">
+                                    <div><?= $block->getChildHtml('order_payment') ?></div>
+                                    <div class="order-payment-currency">
+                                        <?= $block->escapeHtml(__('The order was placed using %1.', $_order->getOrderCurrencyCode())) ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pr-0">
+                            <?php if (!$_order->getIsVirtual() &&  $ksViewOrderBlock->checkShipmentAllowed() && $ksViewOrderBlock->ksCanShip()): ?>
+                                <div class="ks-order-shipping-address">
+                                    <?php /*Shipping Address */ ?>
+
+                                    <!-- Order tab div title start -->
+                                        <div class="ks-div-title mb-3">
+                                            <span><?= $block->escapeHtml(__('Shipping Information')) ?></span>
+                                        </div>
+                                    <!-- Order tab div title end -->
+                                    <div>
+                                        <?php if ($block->canKsCreateShipment() && $block->canKsShipPartiallyItem()): ?>
+                                            <div>
+                                                <input type="checkbox" name="invoice[do_shipment]" id="invoice_do_shipment" value="1"
+                                                    <?= $block->hasKsInvoiceShipmentTypeMismatch() ? ' disabled="disabled"' : '' ?> />
+                                                <label for="invoice_do_shipment">
+                                                    <span><?= $block->escapeHtml(__('Create Shipment')) ?></span>
+                                                </label>
+                                            </div>
+                                            <?php if ($block->hasKsInvoiceShipmentTypeMismatch()): ?>
+                                                <div class="font-12">
+                                                    <?= $block->escapeHtml(__(
+                                                        'Invoice and shipment types do not match for some items on this order. ' .
+                                                        'You can create a shipment only after creating the invoice.'
+                                                    )) ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        
+                                        <div id="tracking"><?= $block->getChildHtml('tracking', false) ?></div>
+                                        <?= /* @noEscape */ $secureRenderer->renderStyleAsTag("display:none;", 'div#tracking') ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- payment shiping section end -->
+
+            <section id="invoice_item_container" class="mb-5">
+                <?= $block->getChildHtml('order_items') ?> 
+            </section>
+        </form>
+    </div>
+</div>
+<?php $forcedShipmentCreate = (int) $block->getKsForcedShipmentCreate();
+$scriptString = <<<script
+
+require(['prototype'], function(){
+
+//<![CDATA[
+    var createShipment = $('invoice_do_shipment');
+    if (createShipment) {
+        createShipment.observe('click', function(e){
+            if (createShipment.checked) {
+                document.getElementById('tracking').style.display = 'block';
+            } else {
+                document.getElementById('tracking').style.display = 'none'
+            }
+        })
+    }
+
+    /*forced creating of shipment*/
+    var forcedShipmentCreate = {$forcedShipmentCreate};
+    var shipmentElement = $('invoice_do_shipment');
+    if (forcedShipmentCreate && shipmentElement) {
+        shipmentElement.checked = true;
+        shipmentElement.disabled = true;
+        document.getElementById('tracking').style.display = 'block';
+    }
+
+    window.createShipment = createShipment;
+    window.forcedShipmentCreate = forcedShipmentCreate;
+    window.shipmentElement = shipmentElement;
+//]]>
+
+});
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+

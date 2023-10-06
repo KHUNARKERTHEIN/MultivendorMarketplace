@@ -1,0 +1,51 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketp\Block\Order\KsOrderView */
+$ks_order = $block->getKsOrder();
+?>
+
+<!-- Payment info section start -->
+<?= $block->getChildHtml('order_info') ?>
+<input type="hidden" name="order_id" value="<?= (int) $ks_order->getId() ?>"/>
+
+<section class="ks-order-view-billing-shipping mb-5">
+
+    <!-- Order tab section title start -->
+    <div class="ks-tab-content-title">
+        <span><?= $block->escapeHtml(__('Payment &amp; Shipping Method')) ?></span>
+    </div>
+    <!-- Order tab section title end -->
+
+    <div class="col-md-12">
+        <div class="row">
+
+            <!-- Order-payment-method -->
+            <div class="col-md-6 pl-0"> 
+                <div class="ks-order-payment-method<?= ($ks_order->getIsVirtual() ?
+                    ' order-payment-method-virtual' : '') ?>">
+                    <?php /* Payment Method */ ?>
+
+                    <!-- Order tab div title start -->
+                    <div class="ks-order-information">
+                        <div class="ks-div-title">
+                            <span><?= $block->escapeHtml(__('Payment Information')) ?></span>
+                        </div>
+                    </div>
+                    <!-- Order tab div title end -->
+
+                </div>
+            </div>
+            <!-- Order-payment-method end -->
+        </div>
+    </div>
+</section>
+<!-- Payment info section start -->

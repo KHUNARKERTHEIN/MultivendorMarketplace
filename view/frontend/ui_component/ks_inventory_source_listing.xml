@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_inventory_source_listing.ks_inventory_source_listing_data_source</item>
+            <item name="deps" xsi:type="string">ks_inventory_source_listing.ks_inventory_source_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">ks_inventory_source_listing_columns</item>
+    </argument>
+    <dataSource name="ks_inventory_source_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Magento\InventoryAdminUi\Ui\DataProvider\SourceDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_inventory_source_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">source_code</argument>
+            <argument name="requestFieldName" xsi:type="string">source_code</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/product/grid/ks-provider</item>
+                    <item name="update_url" xsi:type="url" path="multivendor/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="cacheRequests" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">ks_inventory_source_listing.ks_inventory_source_listing.ks_inventory_source_listing_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+        <bookmark name="bookmarks">
+           <argument name="data" xsi:type="array">
+               <item name="config" xsi:type="array">
+                   <item name="storageConfig" xsi:type="array">
+                       <item name="namespace" xsi:type="string">ks_inventory_source_listing</item>
+                   </item>
+               </item>
+           </argument>
+        </bookmark>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="ks_inventory_source_listing_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">ks_inventory_source_listing.ks_inventory_source_listing.inventory_source_listing_columns_editor</item>
+                    <item name="target" xsi:type="string">startEdit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        <item name="1" xsi:type="boolean">true</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids" sortOrder="10">
+            <settings>
+                <indexField>source_code</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="source_code" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Code</item>
+                    <item name="fieldClass" xsi:type="string">ks-source-code</item>
+                </item>
+            </argument>
+        </column>
+        
+        <column name="name" sortOrder="30">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Name</item>
+                    <item name="fieldClass" xsi:type="string">ks-source-name</item>
+                </item>
+            </argument>
+        </column>
+        <column name="enabled" sortOrder="40" component="Magento_Ui/js/grid/columns/select">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Seller\KsEnabledDisabled</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Is Enabled</item>
+                    <item name="fieldClass" xsi:type="string">ks-source-status</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

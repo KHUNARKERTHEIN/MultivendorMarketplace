@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!-- **
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Ksolves_MultivendorMarketplace::multivendor" title="Marketplace" sortOrder="10" >
+                    <resource id="Ksolves_MultivendorMarketplace::manage_sellers" title="Manage Sellers" sortOrder="10">
+                        <resource id="Ksolves_MultivendorMarketplace::all_sellers" title="All Sellers" sortOrder="10" />
+                        <resource id="Ksolves_MultivendorMarketplace::seller_pending" title="Pending Approval" sortOrder="20" />
+                        <resource id="Ksolves_MultivendorMarketplace::seller_group" title="Seller Groups" sortOrder="30" />
+                    </resource>
+                    <resource id="Ksolves_MultivendorMarketplace::manage_products" title="Manage Seller Products" sortOrder="20">
+                        <resource id="Ksolves_MultivendorMarketplace::all_products" title="All Seller Products" sortOrder="10" />
+                        <resource id="Ksolves_MultivendorMarketplace::product_pending" title="Pending Approval" sortOrder="20" />
+                        <resource id="Ksolves_MultivendorMarketplace::categoryrequests" title="Category Requests" sortOrder="30" />
+                    </resource>
+                    <resource id="Ksolves_MultivendorMarketplace::manage_commission" title="Manage Commission" sortOrder="30">
+                        <resource id="Ksolves_MultivendorMarketplace::commission_rule" title="Commission Rules" sortOrder="10" />
+                    </resource>
+                    <!-- <resource id="Ksolves_MultivendorMarketplace::manage_price_comparison_products" title="Manage Price Comparison Products" sortOrder="30">
+                        <resource id="Ksolves_MultivendorMarketplace::all_price_comparison_products" title="All Products" sortOrder="10" />
+                        <resource id="Ksolves_MultivendorMarketplace::price_comparison_product_pending" title="Pending Products" sortOrder="20" />
+                    </resource> -->
+                    <resource id="Ksolves_MultivendorMarketplace::manage_sales" title="Manage Sales" sortOrder="50">
+                        <resource id="Ksolves_MultivendorMarketplace::all_orders" title="Orders" sortOrder="10"/>
+                        <resource id="Ksolves_MultivendorMarketplace::all_invoices" title="Invoices" sortOrder="20"/>
+                        <resource id="Ksolves_MultivendorMarketplace::all_shipment" title="Shipment" sortOrder="30"/>
+                        <resource id="Ksolves_MultivendorMarketplace::all_creditmemos" title="CreditMemos" sortOrder="40"/>    
+                    </resource>
+                    <resource id="Ksolves_MultivendorMarketplace::manage_report_reason" title="Manage Report Reasons" sortOrder="60">
+                        <resource id="Ksolves_MultivendorMarketplace::product_report_reasons" title="Report Product Reaons" sortOrder="10" />
+                        <resource id="Ksolves_MultivendorMarketplace::seller_report_reasons" title=" Report Seller Reaons" sortOrder="20" />
+                    </resource>
+                    <resource id="Ksolves_MultivendorMarketplace::manage_product_attribute" title="Manage Seller Product Attributes" sortOrder="70">
+                        <resource id="Ksolves_MultivendorMarketplace::default_attribute" title="Default" sortOrder="10" />
+                        <resource id="Ksolves_MultivendorMarketplace::custom_attribute" title="Custom" sortOrder="20" />
+                    </resource>
+                    <resource id="Ksolves_MultivendorMarketplace::settings" title="Settings" sortOrder="80">
+                        <resource id="Ksolves_MultivendorMarketplace::configurations" title="Configurations" sortOrder="10" />
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Ksolves_MultivendorMarketplace::config_multivendor" title="Ksolves MultiVendor"/>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

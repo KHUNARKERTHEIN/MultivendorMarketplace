@@ -1,0 +1,63 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Invoice Request Rejected  @-->
+<!--@vars {
+"var ks-request-id":"Invoice",
+"var ks-invoice-date":"Invoice Date",
+"var ks-invoice-name":"Bill-to Name",
+"var ks-invoice-status":"Status",
+"var ks-total-amount":"Amount",
+"var ks_seller_email":"Seller Email"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+  <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_seller_name," ks_seller_name=$ksSellerName}}</p>
+        </td>
+    </tr>
+
+    <tr class="email-summary">
+        <td>
+            <p>{{trans "I would like to inform you that, your request for invoice has been rejected."}}</p>
+        
+          <p>{{trans "Here is the summary of the same: "}}</p>
+          <ul>
+            <li><strong>{{trans "Invoice:"}}</strong> {{var ks-request-id}}</li>
+            <li><strong>{{trans "Invoice Date:"}}</strong> {{var ks-invoice-date}}</li>
+            <li><strong>{{trans "Bill-to Name:"}}</strong> {{var ks-invoice-name}}</li>
+            <li><strong>{{trans "Status:"}}</strong> {{var ks-invoice-status}}</li>
+            <li><strong>{{trans "Amount:"}}</strong> {{var ks-total-amount}}</li>
+          </ul>
+          <p>{{trans "Reason for Rejection: %ks_rejection." ks_rejection=$ksRejection}}</p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <p>{{trans "To sign in to our site, use these credentials on the <a href="%ks_customer_url">My Account</a> page to login into seller dashboard." ks_customer_url=$this.getUrl($store,'customer/account/',[_nosid:1])
+            |raw}}</p>
+            <ul>
+                <li><strong>{{trans "Email:"}}</strong> {{var ks_seller_email}}</li>
+                <li><strong>{{trans "Password:"}}</strong> <em>{{trans "Password you set when creating account"}}</em></li>
+            </ul>
+        </td>
+    </tr>
+    <p>
+        {{trans
+            'Forgot your account password? Click <a href="%ks_reset_url">here</a> to reset it.' ks_reset_url="$this.getUrl($store,'customer/account/forgotpassword/',[_query:[id:$customer.id,token:$customer.rp_token],_nosid:1])"
+        |raw}}
+    </p>
+    <p>{{trans "Thank You"}}</p>
+</table>
+
+{{template config_path="design/email/footer_template"}}

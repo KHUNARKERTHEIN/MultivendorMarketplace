@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/seller/ks-form</item>
+            <item name="provider" xsi:type="string">ks_marketplace_seller_add.ks_marketplace_seller_add_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
+        <item name="buttons" xsi:type="array">
+            <item name="save" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\Seller\Buttons\KsSaveButton</item>
+            <item name="reset" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\Seller\Buttons\KsResetButton</item>
+            <item name="back" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\Seller\Buttons\KsBackButton</item>
+        </item>
+    </argument>
+    <settings>
+        <namespace>ks_marketplace_seller_add</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>ks_marketplace_seller_add.ks_marketplace_seller_add_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ks_marketplace_seller_add_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\KsSellerCreateDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_marketplace_seller_add_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="multivendor/seller/create"/>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <fieldset name="base_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Customer/Owner Details</item>
+                <item name="opened" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <field name="website_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Customer\ViewModel\Customer\Website</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="label" xsi:type="string" translate="true">Associate to Website</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">website_id</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/seller/ks-owner-website</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_seller_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">false</item>
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="label" xsi:type="string" translate="true">Select the Owner</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">data.ks_seller_id</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="additionalInfo" xsi:type="string" translate="true">
+                        <![CDATA[<span> or </span><button id="ks_new_seller">Create New</button><br></br><div class="ks-check-customer"></div>]]>
+                    </item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/seller/ks-select-seller</item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-seller-list" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="ks_owner_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true"></item>
+                <item name="sortOrder" xsi:type="number">20</item>
+                <item name="visible" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+    </fieldset>
+    <fieldset name="ks_new_customer_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true"></item>
+                <item name="sortOrder" xsi:type="number">20</item>
+                <item name="visible" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <field name="created_in" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="default_billing" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">boolean</item>
+                </item>
+            </argument>
+        </field>
+        <field name="default_shipping" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">boolean</item>
+                </item>
+            </argument>
+        </field>
+        <container name="container_group" component="Magento_Ui/js/form/components/group" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="type" xsi:type="string">group</item>
+                <item name="config" xsi:type="array">
+                    <item name="validateWholeGroup" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <field name="group_id" formElement="select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="fieldGroup" xsi:type="string">group_id</item>
+                        <item name="visible" xsi:type="boolean">true</item>
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="dataType" xsi:type="string">number</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="additionalClasses" xsi:type="array">
+                            <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+            <field name="disable_auto_group_change" formElement="checkbox" class="Magento\Customer\Ui\Component\Form\Field\DisableAutoGroupChange">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="fieldGroup" xsi:type="string">group_id</item>
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="dataType" xsi:type="string">boolean</item>
+                        <item name="additionalClasses" xsi:type="array">
+                            <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+                <formElements>
+                    <checkbox>
+                        <settings>
+                            <description translate="true">Disable Automatic Group Change Based on VAT ID</description>
+                            <valueMap>
+                                <map name="false" xsi:type="string">0</map>
+                                <map name="true" xsi:type="string">1</map>
+                            </valueMap>
+                            <prefer>checkbox</prefer>
+                        </settings>
+                    </checkbox>
+                </formElements>
+            </field>
+        </container>
+        <field name="prefix" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="firstname" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="middlename" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="lastname" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="suffix" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="email" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-email" xsi:type="boolean">true</item>
+                        <item name="ks-verify-email" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="additionalInfo" xsi:type="string" translate="true">
+                        <![CDATA[<div class="ks-check-email"></div>]]>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="dob" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-date" xsi:type="boolean">true</item>
+                        <item name="validate-dob" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="options" xsi:type="array">
+                        <item name="maxDate" xsi:type="string">-1d</item>
+                    </item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="taxvat" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="gender" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-customer-fields" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="ks_seller_profile_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Public Profile</item>
+                <item name="sortOrder" xsi:type="number">30</item>
+            </item>
+        </argument>
+        <field name="ks_store_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Store Name</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_store_name]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-check-store-available" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/seller/ks-storeurl-autofill</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_store_url">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Store Url</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_store_url]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="ks-validate-store-url" xsi:type="boolean">true</item>
+                        <!-- <item name="ks-verify-store-url" xsi:type="boolean">true</item> -->
+                    </item>
+                    <item name="additionalClasses" xsi:type="array">
+                        <item name="ks-check-store-available" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="additionalInfo" xsi:type="string" translate="true">
+                        <![CDATA[<div class="ks-available"></div><a id="ks-check-availability" href="#">Check Availability</a>]]>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_store_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="label" xsi:type="string" translate="true">Store Status</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_store_status]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="prefer" xsi:type="string">toggle</item>
+                    <item name="valueMap" xsi:type="array">
+                        <item name="true" xsi:type="number">1</item>
+                        <item name="false" xsi:type="number">0</item>
+                    </item>
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_store_logo">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" translate="true" xsi:type="string">Store Logo</item>
+                    <item name="formElement" xsi:type="string">imageUploader</item>
+                    <item name="componentType" xsi:type="string">imageUploader</item>
+                    <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="allowedExtensions" xsi:type="string">jpg jpeg gif png svg</item>
+                    <item name="maxFileSize" xsi:type="number">1572864</item>
+                    <item name="dataScope" xsi:type="string">store[ks_store_logo]</item>
+                    <item name="scopeLabel" xsi:type="string">[STORE VIEW]</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="multivendor/seller/newimageupload"/>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_store_banner">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" translate="true" xsi:type="string">Store Banner</item>
+                    <item name="formElement" xsi:type="string">imageUploader</item>
+                    <item name="componentType" xsi:type="string">imageUploader</item>
+                    <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="allowedExtensions" xsi:type="string">jpg jpeg gif png svg</item>
+                    <item name="maxFileSize" xsi:type="number">1572864</item>
+                    <item name="dataScope" xsi:type="string">store[ks_store_banner]</item>
+                    <item name="scopeLabel" xsi:type="string">[STORE VIEW]</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="multivendor/seller/newimageupload"/>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_store_description" template="ui/form/field" formElement="wysiwyg">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="scopeLabel" xsi:type="string">[STORE VIEW]</item>
+                    <item name="wysiwygConfigData" xsi:type="array">
+                        <item name="height" xsi:type="string">220px</item>
+                        <item name="add_variables" xsi:type="boolean">false</item>
+                        <item name="add_widgets" xsi:type="boolean">false</item>
+                        <item name="add_images" xsi:type="boolean">false</item>
+                        <item name="add_directives" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="source" xsi:type="string">seller</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Store Description</label>
+                <dataScope>ks_store_description</dataScope>
+            </settings>
+            <formElements>
+                <wysiwyg class="Ksolves\MultivendorMarketplace\Ui\Component\Seller\Form\Element\KsWysiwyg">
+                    <settings>
+                        <rows>8</rows>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+        <field name="ks_store_available_countries">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Directory\Model\Config\Source\Country</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="label" xsi:type="string" translate="true">Available in Different Country</item>
+                    <item name="formElement" xsi:type="string">multiselect</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_store_available_countries]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="ks_group_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Seller Group</item>
+                <item name="sortOrder" xsi:type="number">40</item>
+            </item>
+        </argument>
+        <field name="ks_seller_group_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsSellerGroupOptions</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="label" xsi:type="string" translate="true">Seller Group</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_seller_group_id]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="ks_company_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Company</item>
+                <item name="sortOrder" xsi:type="number">50</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <field name="ks_company_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Company Name</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_company_name]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_company_address">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Company Address</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_company_address]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="rows" xsi:type="number">4</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_company_contact_no">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Company Contact Number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_company_contact_no]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_company_contact_email">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Company Email</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_company_contact_email]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-email" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="country_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Directory\Model\Config\Source\Country</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Country</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">country_id</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/country</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_company_state_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Directory\Model\ResourceModel\Region\Collection</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">State</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Customer/js/form/element/region</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_company_state_id]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="filterBy" xsi:type="array">
+                        <item name="target" xsi:type="string">${ $.provider }:${ $.parentScope }.country_id</item>
+                        <item name="field" xsi:type="string">country_id</item>
+                    </item>
+                    <item name="customEntry" xsi:type="string">seller[ks_company_state]</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_company_postcode">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Postcode</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_company_postcode]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-alphanum" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_company_taxvat_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Tax/Vat Number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_company_taxvat_number]</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-alphanum" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="ks_approval_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Approval</item>
+                <item name="sortOrder" xsi:type="number">60</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <field name="ks_seller_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Seller\KsAddSellerStatusOptions</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="label" xsi:type="string" translate="true">Seller Status</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/seller/ks-seller-status-options</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_seller_status]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_rejection_reason">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="source" xsi:type="string">seller</item>
+                    <item name="label" xsi:type="string">Last Rejection Reason</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="dataScope" xsi:type="string">seller[ks_rejection_reason]</item>
+                    <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                    <item name="rows" xsi:type="number">8</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

@@ -1,0 +1,251 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Order\Items\KsItems */
+$ks_orderedCollection = $block->getOrderedItems();
+$ks_order = $block->getKsOrder(); 
+$ksShowStoreCurrency = $block->canKsShowOrderCurrencyValue();
+?>
+
+<!-- Order Item table section start -->
+<section class="mb-5">  
+    
+    <!-- Order tab section title start -->
+    <div class="ks-tab-content-title">
+        <span class="title"><?= $block->escapeHtml(__('Items Ordered')) ?></span>
+    </div>
+    <!-- Order tab section title end -->
+
+    <?= $block->getItemsHtml() ?>
+
+    <div class="">        
+        <div class="table-wrapper order-items mb-0 ks-simple-table">
+            <table class="data table table-order-items" id="my-orders-table" summary="Items Ordered">
+                <thead >
+                    <tr >
+                        <th><span><?= $block->escapeHtml(__('Product')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Item Status')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Original Price')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Price')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Qty')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Subtotal')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Tax Amount')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Tax Percent')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Discount Amount')) ?></span></th>
+                        <th><span><?= $block->escapeHtml(__('Row Total')) ?></span></th>
+                        
+                    </tr>
+                </thead>   
+                <?php foreach($ks_orderedCollection->getAllItems() as $ks_item) : ?>
+                    <?php if($block->KsIsSellerProduct($ks_item->getProductId())) : ?>
+                        <?php if ($ks_item->getParentItem()) : ?> 
+                            <?php continue; ?>
+                        <?php  endif; ?>
+                    <tbody>
+                        <?php if ($ks_item->getProductType()!=\Magento\Catalog\Model\Product\Type::TYPE_BUNDLE):?> 
+                            <tr id="order-item-row-4" >
+                                <td>
+                                    <span><?= $block->escapeHtml(__($ks_item->getName())) ?></span></br>
+                                    <span class="ks-order-item-sku"><?= $block->escapeHtml("SKU: ".__($ks_item->getSku())) ?></span>
+                                    <!-- get ordered product attributes -->                                
+                                    <span><?= $block->getKsOrderItemAttrValue($ks_item) ?></span>
+                                    <?php if ($ks_item->getProductType()=='downloadable' && $block->getKsDownloadableLinkTitle($ks_item)):?>
+                                        <div class="ks-download-link-data">
+                                            <span><?= $block->escapeHtml($block->getKsDownloadableLinkTitle($ks_item)) ?>:</span>
+                                            <?php foreach ($block->getKsDownloadableItemData($ks_item)->getPurchasedItems() as $ksLink): ?>
+                                                <span><?= $block->escapeHtml($ksLink->getLinkTitle()) ?>
+                                                    (<?= $block->escapeHtml($ksLink->getNumberOfDownloadsUsed() . ' / ' .
+                                                        ($ksLink->getNumberOfDownloadsBought() ? $ksLink->getNumberOfDownloadsBought() : __('U'))) ?>)
+                                                </span>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endif;?>
+                                </td>
+                                <td>
+                                    <span><?= $block->escapeHtml($ks_item->getStatus()) ?></span>
+                                </td>
+                                <td>
+                                    <span><?= $block->formatValue($ks_item->getBaseOriginalPrice()) ?></span>
+                                    <?php if($ksShowStoreCurrency):?>
+                                        <span><?= $block->formatToOrderCurrency($ks_item->getOriginalPrice())?></span>
+                                    <?php endif;?>
+                                </td>
+                                <td>
+                                    <span><?= $block->formatValue($ks_item->getBasePrice() + $ks_item->getBaseWeeeTaxAppliedAmount()) ?></span>
+                                    <?php if($ksShowStoreCurrency):?>
+                                        <span><?= $block->formatToOrderCurrency($ks_item->getPrice() + $ks_item->getWeeeTaxAppliedAmount())?></span>
+                                    <?php endif;?>
+                                    <?php if ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($ks_item)) : ?>
+                                        
+                                            <span>
+                                                <?php foreach ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($ks_item) as $ksTax) : ?>
+                                                    <span class="nobr"><?= $block->escapeHtml($ksTax['title']) ?>:<?= $block->formatValue($ksTax['base_amount']) ?></span>
+                                                    <br>
+                                                    <?php if($ksShowStoreCurrency):?>
+                                                        <span><?= $block->formatToOrderCurrency($ksTax['amount'])?></span>
+                                                    <?php endif;?>                                                  
+                                                <?php endforeach; ?>
+                                            </span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="ks-order-quantity">
+                                    <!-- get qty of ordered product -->
+                                    <p>
+                                        <span><?= $block->escapeHtml(__('Ordered '.(float) $ks_item->getQtyOrdered())) ?></span>
+                                    </p> 
+                                    <!-- check qty of invoiced product -->
+                                    <?php if ($ks_item->getQtyInvoiced() != 0) : ?>
+                                        <p>
+                                            <span><?= $block->escapeHtml(__('Invoiced '.(float) $ks_item->getQtyInvoiced())) ?></span>
+                                        </p>
+                                    <?php endif; ?>
+                                    <!-- check qty of shipped product -->
+                                    <?php if ($ks_item->getQtyShipped() != 0) : ?>
+                                        <p>
+                                            <span><?= $block->escapeHtml(__('Shipped '.(float) $ks_item->getQtyShipped())) ?></span>
+                                        </p>
+                                    <?php endif; ?>
+                                    <!-- check qty of refunded product -->
+                                    <?php if ($ks_item->getQtyRefunded() != 0) : ?>
+                                        <p>
+                                            <span><?= $block->escapeHtml(__('Refunded '.(float) $ks_item->getQtyRefunded())) ?></span>
+                                        </p>
+                                    <?php endif; ?>
+                                    <!-- check qty of canceled product -->
+                                    <?php if ($ks_item->getQtyCanceled() != 0) : ?>
+                                        <p>
+                                            <span><?= $block->escapeHtml(__('Canceled '.(float) $ks_item->getQtyCanceled())) ?></span>
+                                        </p>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <span><?= $block->formatValue($ks_item->getBaseRowTotal() + $ks_item->getBaseWeeeTaxAppliedRowAmnt()) ?></span>
+                                    <?php if($ksShowStoreCurrency):?>
+                                        <span><?= $block->formatToOrderCurrency($ks_item->getRowTotal() + $ks_item->getWeeeTaxAppliedRowAmount())?></span>
+                                    <?php endif;?>
+                                    <?php if ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($ks_item)) : ?>
+                                        
+                                            <span>
+                                                <?php foreach ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($ks_item) as $ksTax) : ?>
+                                                    <span class="nobr"><?= $block->escapeHtml($ksTax['title']) ?>:<?= $block->formatValue($ksTax['base_row_amount']) ?></span>
+                                                    <br>
+                                                    <?php if($ksShowStoreCurrency):?>
+                                                        <span><?= $block->formatToOrderCurrency($ksTax['row_amount'])?></span>
+                                                    <?php endif;?>                                                  
+                                                <?php endforeach; ?>
+                                            </span>
+                                        
+                                        <!-- displayFianlPrice below -->
+
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <span><?= $block->formatValue($ks_item->getBaseTaxAmount()) ?></span>
+                                    <?php if($ksShowStoreCurrency):?>
+                                        <span><?= $block->formatToOrderCurrency($ks_item->getTaxAmount())?></span>
+                                    <?php endif;?>
+                                </td>
+                                <td>
+                                    <span><?= sprintf('%s%%', $ks_item->getTaxPercent() + 0) ?></span>
+                                </td>
+                                <td>
+                                    <span><?= $block->formatValue($ks_item->getBaseDiscountAmount()) ?></span>
+                                    <?php if($ksShowStoreCurrency):?>
+                                        <span><?= $block->formatToOrderCurrency($ks_item->getDiscountAmount())?></span>
+                                    <?php endif;?>
+                                </td>
+                                <td>
+                                    <span><?= $block->formatValue($ks_item->getBaseRowTotal() - $ks_item->getBaseDiscountAmount() + $block->ksCalcItemBaseTaxAmt($ks_item) + $ks_item->getBaseWeeeTaxAppliedRowAmnt()) ?></span>
+                                    <?php if($ksShowStoreCurrency):?>
+                                        <span><?= $block->formatToOrderCurrency($ks_item->getRowTotal() - $ks_item->getDiscountAmount() + $block->ksCalcItemTaxAmt($ks_item) + $ks_item->getWeeeTaxAppliedRowAmount())?></span>
+                                    <?php endif;?>                                    
+                                </td>
+                            </tr>
+                        <?php elseif ($ks_item->getProductType()==\Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) : ?> 
+                            <?= $block->getLayout()->createBlock('Ksolves\MultivendorMarketplace\Block\Order\Items\KsItems')->setKsBundleItem($ks_item)->setTemplate('Ksolves_MultivendorMarketplace::order/items/bundle/items-renderer.phtml')->toHtml(); ?>
+                        <?php  endif; ?>
+                        <?php
+                        if($ks_item->getGiftMessageId()):  
+                        $giftMessage = $block->getGiftMessage($ks_order->getEntityId(),$ks_item->getItemId()) ?>
+                        <tr>
+                            <td colspan="10" class="last border-0">
+                                <a class="action-link ks-gift-box-modal" href="javascript:void(0)" data-value="<?= $ks_item->getItemId() ?>" id="gift_options_link_<?= $ks_item->getItemId() ?>">Gift Options</a>
+                                <?php $message_id = $ks_item->getGiftMessageId(); ?>
+                                <?php $item_id = $ks_item->getItemId(); ?>
+                                    <div id="gift_options_data_<?= $ks_item->getItemId() ?>">
+                                        <div id="gift-option-content_<?= $ks_item->getItemId() ?>">
+                                            <div id="gift-message-form-data-<?= $ks_item->getItemId() ?>" class="no-display">
+                                                <form id="giftmessage_<?= $ks_item->getItemId() ?>_form" action="<?= $block->getUrl('multivendor/order/savegiftmessage/save/entity/'.$message_id.'/type/order_item/')?>">
+                                                    <input type="hidden" id="giftmessage_<?= $ks_item->getItemId() ?>_name" name="item_name" value="<?= $ks_item->getName() ?>">
+                                                    <input type="hidden" id="giftmessage_<?= $ks_item->getItemId() ?>_type" name="giftmessage[<?= $item_id ?>][type]" value="order_item">
+                                                    <input type="hidden" id="giftmessage_<?= $ks_item->getItemId() ?>_sender" name="giftmessage[<?= $item_id ?>][sender]" value="<?= $giftMessage->getSender() ?>">
+                                                    <input type="hidden" id="giftmessage_<?= $ks_item->getItemId() ?>_recipient" name="giftmessage[<?= $item_id ?>][recipient]" value=" <?= $giftMessage->getRecipient() ?>">
+                                                    <input type="hidden" id="giftmessage_<?= $ks_item->getItemId() ?>_message" name="giftmessage[<?= $item_id ?>][message]" value="<?= $giftMessage->getMessage() ?>">
+                                                </form>
+                                            </div>
+                                            <div class="ks-gift-message-popup gift-options-tooltip-content_<?= $item_id ?>" style="display:none">
+                                                <div><strong>Gift Message</strong>: <?= $giftMessage->getMessage() ?></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    </tbody>
+                    <?php endif;?> 
+                <?php endforeach; ?>                
+            </table>
+        </div>
+    </div>
+    
+</section>
+ 
+<!-- Order Item table section end -->   
+
+<!-- gift option popup -->
+
+<div class="gift-option-item-popup pt-3" style="display: none">
+    <div class="gift-option-item-name">
+        <!-- <span>Gift Options for </span><span class="item-name"></span> -->
+        <a href="javascript:void(0)" class="close-popup"></a>
+    </div>
+    
+    <div id="gift_options_configure" class="gift-options-popup product-configure-popup">
+    <form action="#" id="gift_options_configuration_form" method="post">
+        <div id="gift_options_form_contents">
+            <div class="content">
+                <input type="hidden" name="item_id" value="">
+                <div id="gift_options_giftmessage" class="giftcard-form giftcard-send-form fieldset">
+                    <div class="field field">
+                        <label class="field-label font-weight-bold" for="current_item_giftmessage_sender">From</label>
+                        <div class="control field-control">
+                            <input type="text" class="input-text control-text" name="current_item_giftmessage_sender" id="current_item_giftmessage_sender" <?=$block->getKsCanEditGiftMessage() ? '' : 'readonly'  ?> >
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="field-label font-weight-bold" for="current_item_giftmessage_recipient">To</label>
+                        <div class="control field-control">
+                            <input type="text" class="input-text control-text p-0" name="current_item_giftmessage_recipient" id="current_item_giftmessage_recipient" <?=$block->getKsCanEditGiftMessage() ? '' : 'readonly'  ?>>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="field-label font-weight-bold" for="current_item_giftmessage_message">Message</label>
+                        <div class="control field-control">
+                            <textarea class="textarea control-textarea" cols="15" rows="2" name="current_item_giftmessage_message" id="current_item_giftmessage_message" <?=$block->getKsCanEditGiftMessage() ? '' : 'readonly'  ?>></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div> 
+<!-- gift option popup -->

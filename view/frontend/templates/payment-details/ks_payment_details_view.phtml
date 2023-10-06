@@ -1,0 +1,370 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var $block \Ksolves\MultivendorMarketplace\Block\Adminhtml\PaymentDetails\KsPaymentDetailsView
+ */
+?>
+<?php
+$ksSellerId = $block->getKsSellerId();
+$ksPaymentDetails=$block->getKsPaymentData($ksSellerId);
+?>
+<div class ="">
+    <form action="<?= $block->getBaseUrl().'multivendor/paymentdetails/save'; ?>" class="ks-form" id="ks-seller-payment-details-form" method="post" data-mage-init='{"validation":{}}'>
+        <div class="ks-form-wrapper-title">
+            <h3></h3>
+            <div class="ks-actions-toolbar">
+                <button title="Cancel" type="button" class="ks-action-btn reset ks-secondry" onclick="window.location.reload();">
+                        <span><?= $block->escapeHtml(__("Cancel")) ?></span>
+                    </button>
+                <button type="submit" title="submit" class="ks-action-btn ks-submit ks-primary">
+                    <span><?= $block->escapeHtml(__('Save'));?></span>
+                </button>
+            </div>
+        </div>
+        <div class="ks-hidden">
+            <!-- get seller id -->
+            <input class="ks_seller_id" type="hidden" id="ks_seller_id" name="ks_seller_id" value="<?= $block->getKsSellerId() ?>"/>
+            <!--  get store id -->
+            <input class="ks_store_id" type="hidden" id="ks_store_id" name="ks_store_id" value="<?= $block->getKsStoreId() ?>" data-form-part="ks_marketplace_seller_form" />
+
+            <input class="id" type="hidden" id="id" name="id" value="<?= $ksPaymentDetails ? $ksPaymentDetails['id'] : "" ?>"/>
+        </div>
+        <div class="ks-page-card">
+            <div class="ks-fieldset-wrapper-content">
+                <div class="ks-form-fieldset pb-0 pt-0">
+                    <fieldset class="ks-form-field mt-0">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field  required">                           
+                                <a role="button" class="ks-tab-heading" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-one-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab">
+                                    <?= $block->escapeHtml(__('Check/Money Order'));?>
+                                </a>
+                            </div>
+                            <div id="ks-collapse-one-tab" class="panel-collapse in collapse show" role="tabpanel" aria-labelledby="ks-diplay-setting">   
+                                <div class="ks-form-field">              
+                                    <div class="ks-form-field-label">                      
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Enable'));?></span>
+                                        </label>
+                                    </div>            
+                                    <div class="ks-field-control-select ks-field-control"> 
+                                        <select class="select ks-select-box" id="ks_check_money_status" name="ks_check_money_status"> 
+                                            <option value="1" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_check_money_status'] == '1' ? "selected" :"" ) : "" ?>> <?= $block->escapeHtml(__('Yes'));?> </option>
+                                            <option value="0" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_check_money_status'] == '0' ? "selected" :"" ) : "selected"?>><?= $block->escapeHtml(__('No'));?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ks-form-field">
+                                    <div class="ks-form-field-label">
+                                        <label for="ks-payee_name">
+                                            <span><?= $block->escapeHtml(__("Payee Name")) ?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">
+                                        <input type="text" id="ks-payee_name" name="ks_payee_name" title="Payee Name" class="ks-control-feild" aria-required="true"  value="<?= $ksPaymentDetails ? $ksPaymentDetails['ks_payee_name'] : "" ?>">  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="ks-form-field mt-0 ks-form-collapsible-block">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field  required">                 
+                                <a role="button" class="ks-tab-heading collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-two-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab">
+                                    <?= $block->escapeHtml(__('Paypal'));?>
+                                </a>    
+                            </div>
+                            <div id="ks-collapse-two-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-diplay-setting">      
+                                <div class="ks-form-field">              
+                                    <div class="ks-form-field-label">                      
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Enable'));?></span>
+                                        </label>
+                                    </div>            
+                                    <div class="ks-field-control-select ks-field-control"> 
+                                        <select class="select ks-select-box" id="ks_paypal_status" name="ks_paypal_status"> 
+                                            <option value="1" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_paypal_status'] == '1' ? "selected" : "" ) :"" ?>> <?= $block->escapeHtml(__('Yes'));?> </option>
+                                            <option value="0" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_paypal_status'] == '0' ? "selected" :"" ) : "selected"?>> <?= $block->escapeHtml(__('No'));?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ks-form-field">           
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Associated Email'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">    
+                                        <input type="email" id="ks_paypal_associated_email" data-validate='{"email":true}' class="ks-control-feild" aria-required="true" name="ks_paypal_associated_email" value="<?= $ksPaymentDetails ? $ksPaymentDetails['ks_paypal_associated_email'] : "" ?>" />
+                                    </div>          
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="ks-form-field mt-0 ks-form-collapsible-block">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field required">           
+                                <a role="button" class="ks-tab-heading collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-three-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab">
+                                    <?= $block->escapeHtml(__('Bank Transfer/Wire Transfer'));?>
+                                </a>                                     
+                            </div>
+                            <div id="ks-collapse-three-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-diplay-setting"> 
+                                <div class="ks-form-field">              
+                                    
+                                        <div class="ks-form-field-label">                      
+                                            <label>
+                                                <span><?= $block->escapeHtml(__('Enable'));?></span>
+                                            </label>
+                                        </div>            
+                                        <div class="ks-field-control-select ks-field-control"> 
+                                            <select class="select ks-select-box" id="ks_bank_transfer_status" name="ks_bank_transfer_status"> 
+                                                <option value="1" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_bank_transfer_status'] == '1' ? "selected" : "" ) : "" ?>> <?= $block->escapeHtml(__('Yes'));?> </option>
+                                                <option value="0" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_bank_transfer_status'] == '0' ? "selected" :"" ) :"selected" ?>> <?= $block->escapeHtml(__('No'));?> </option>
+                                            </select>
+                                        </div>
+                                        <?php
+                                        if ($ksPaymentDetails) {
+                                            $ksPriAccount = $block->getKsDecodeData($ksPaymentDetails['ks_primary_account_details']);
+                                            $ksSecAccount = $block->getKsDecodeData($ksPaymentDetails['ks_secondary_account_details']);
+                                            $ksAddOneData =  $block->getKsDecodeData($ksPaymentDetails['ks_additional_payment_method_one_details']);
+                                            $ksAddTwoData =  $block->getKsDecodeData($ksPaymentDetails['ks_additional_payment_method_two_details']);
+                                        } else {
+                                            $ksPriAccount = "";
+                                            $ksSecAccount = "";
+                                            $ksAddOneData = "";
+                                            $ksAddTwoData = "";
+                                        }
+                                        ?>
+                                    
+                                </div>
+                                <div class="ks-form-field  required">           
+                                    <div>                        
+                                        <div class="ks-form-field-label">              
+                                            <label class="ks-payment-heading">
+                                                <?= $block->escapeHtml(__('Primary Account Details'));?>
+                                            </label>
+                                        </div>                            
+                                    </div>
+                                </div>
+                                <div class="ks-form-field ">           
+                                                          
+                                        <div class="ks-form-field-label">              
+                                            <label>
+                                                <span><?= $block->escapeHtml(__('Account Holder Name'));?></span>
+                                            </label>
+                                        </div>
+                                        <div class="ks-field-control">    
+                                            <input type="text"  id="ks_pri_acc_holder_name" class="ks-control-feild" name="ks_pri_acc_holder_name" value="<?= $ksPriAccount ? $ksPriAccount['ks_pri_acc_holder_name'] : "" ?>" />
+                                        </div>              
+                                    
+                                </div>
+                                <div class="ks-form-field ">                       
+                                        <div class="ks-form-field-label">              
+                                            <label>
+                                                <span><?= $block->escapeHtml(__('Bank Account Number'));?></span>
+                                            </label>
+                                        </div>
+                                        <div class="ks-field-control">    
+                                            <input type="text"  class="ks-control-feild" id="ks_pri_bank_acc_no" name="ks_pri_bank_acc_no" value="<?= $ksPriAccount ? $ksPriAccount['ks_pri_bank_acc_no'] : "" ?>" />
+                                        </div>  
+                                </div>
+                                <div class="ks-form-field ">                     
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Bank Name'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">    
+                                        <input type="text"  class="ks-control-feild" name="ks_pri_bank_name" value="<?= $ksPriAccount ? $ksPriAccount['ks_pri_bank_name'] : "" ?>" />
+                                    </div>
+                                </div>
+                                <div class="ks-form-field ">                    
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Bank Address'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">
+                                        <textarea class="ks-control-feild" name="ks_pri_bank_address"><?= $ksPriAccount ? $ksPriAccount['ks_pri_bank_address'] : "" ?></textarea>
+                                    </div>              
+                                </div>
+                                <div class="ks-form-field ">                  
+                                        <div class="ks-form-field-label">              
+                                            <label>
+                                                <span><?= $block->escapeHtml(__('Additional Details'));?></span>
+                                            </label>
+                                        </div>
+                                        <div class="ks-field-control">    
+                                            <textarea class="ks-control-feild" name="ks_pri_additional_details"><?= $ksPriAccount ? $ksPriAccount['ks_pri_additional_details'] : "" ?></textarea>
+                                        </div>                    
+                                </div>
+                                <div class="ks-form-field  required">           
+                                    <div>                        
+                                        <div class="ks-form-field-label">              
+                                            <label class="ks-payment-heading">
+                                                <?= $block->escapeHtml(__('Secondary Account Details'));?>
+                                            </label>
+                                        </div>                              
+                                    </div>
+                                </div>
+                                <div class="ks-form-field ">         
+                                                           
+                                        <div class="ks-form-field-label">              
+                                            <label>
+                                                <span><?= $block->escapeHtml(__('Account Holder Name'));?></span>
+                                            </label>
+                                        </div>
+                                        <div class="ks-field-control">    
+                                            <input type="text" id="ks_sec_acc_holder_name" class="ks-control-feild" name="ks_sec_acc_holder_name" value="<?= $ksSecAccount ? $ksSecAccount['ks_sec_acc_holder_name'] : "" ?>" />
+                                        </div>    
+                                    
+                                </div>
+                                <div class="ks-form-field ">                        
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Bank Account Number'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">    
+                                        <input type="text"  class="ks-control-feild" id="ks_sec_bank_acc_no" name="ks_sec_bank_acc_no" value="<?= $ksSecAccount ? $ksSecAccount['ks_sec_bank_acc_no'] : "" ?>" />
+                                    </div>              
+                                </div>
+                                <div class="ks-form-field">                          
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Bank Name'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">    
+                                        <input type="text"  class="ks-control-feild"  name="ks_sec_bank_name" value="<?= $ksSecAccount ? $ksSecAccount['ks_sec_bank_name'] : "" ?>" />
+                                    </div>                  
+                                </div>
+                                <div class="ks-form-field">                      
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Bank Address'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">                                           
+                                        <textarea class="ks-control-feild" name="ks_sec_bank_address"><?= $ksSecAccount ? $ksSecAccount['ks_sec_bank_address'] : "" ?></textarea>
+                                    </div>                  
+                                </div>
+                                <div class="ks-form-field">                     
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Additional Details'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">    
+                                        <textarea class="ks-control-feild" name="ks_sec_additional_details"><?= $ksSecAccount ? $ksSecAccount['ks_sec_additional_details'] : ""?></textarea> 
+                                    </div>                  
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="ks-form-field mt-0 ks-form-collapsible-block">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field  required">                 
+                                <a role="button" class="ks-tab-heading collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-four-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab">
+                                    <?= $block->escapeHtml(__('Additional Payment Method 1'));?>
+                                </a>    
+                            </div>
+                            <div id="ks-collapse-four-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-diplay-setting">      
+                                <div class="ks-form-field">              
+                                    <div class="ks-form-field-label">                      
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Enable'));?></span>
+                                        </label>
+                                    </div>            
+                                    <div class="ks-field-control-select ks-field-control"> 
+                                        <select class="select ks-select-box" id="ks_additional_payment_method_one_status" name="ks_additional_payment_method_one_status"> 
+                                            <option value="1" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_additional_payment_method_one_status'] == '1' ? "selected" : "" ) :"" ?>> <?= $block->escapeHtml(__('Yes'));?> </option>
+                                            <option value="0" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_additional_payment_method_one_status'] == '0' ? "selected" :"" ) : "selected"?>> <?= $block->escapeHtml(__('No'));?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ks-form-field">                        
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Name'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">    
+                                        <input type="text" id="ks_additional_payment_method_one_name"  class="ks-control-feild" name="ks_additional_payment_method_one_name" value="<?= $ksAddOneData ? $ksAddOneData['ks_additional_payment_method_one_name'] : "" ?>" />
+                                    </div>                  
+                                </div>
+                                <div class="ks-form-field"> 
+                                    <div class="ks-form-field-label">     
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Details'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">
+                                        <textarea class="ks-control-feild" name="ks_additional_payment_method_one_details"><?= $ksAddOneData ? $ksAddOneData['ks_additional_payment_method_one_details'] : "" ?></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="ks-form-field mt-0 ks-form-collapsible-block">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field  required">                 
+                                <a role="button" class="ks-tab-heading collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-five-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab">
+                                    <?= $block->escapeHtml(__('Additional Payment Method 2'));?>
+                                </a>    
+                            </div>
+                            <div id="ks-collapse-five-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-diplay-setting">      
+                                <div class="ks-form-field">
+                                    <div class="ks-form-field-label">                      
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Enable'));?></span>
+                                        </label>
+                                    </div>            
+                                    <div class="ks-field-control-select ks-field-control"> 
+                                        <select class="select ks-select-box" id="ks_additional_payment_method_two_status" name="ks_additional_payment_method_two_status"> 
+                                            <option value="1" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_additional_payment_method_two_status'] == '1' ? "selected" : "" ) :"" ?>> <?= $block->escapeHtml(__('Yes'));?> </option>
+                                            <option value="0" <?= $ksPaymentDetails ? ($ksPaymentDetails['ks_additional_payment_method_two_status'] == '0' ? "selected" :"" ) : "selected"?>> <?= $block->escapeHtml(__('No'));?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ks-form-field">                         
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Name'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">    
+                                        <input type="text"  class="ks-control-feild" id="ks_additional_payment_method_two_name" name="ks_additional_payment_method_two_name"  class="ks-control-feild" value="<?= $ksAddTwoData ? $ksAddTwoData['ks_additional_payment_method_two_name'] : "" ?>" />
+                                    </div>
+                                </div>
+                                <div class="ks-form-field">
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <span><?= $block->escapeHtml(__('Details'));?></span>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">
+                                        <textarea class="ks-control-feild" name="ks_additional_payment_method_two_details"><?= $ksAddTwoData ? $ksAddTwoData['ks_additional_payment_method_two_details'] : "" ?></textarea>
+                                    </div>           
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

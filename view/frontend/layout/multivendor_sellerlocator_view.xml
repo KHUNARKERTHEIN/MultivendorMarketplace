@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright(c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+	<head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-frontend-style.css"/>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-frontend-calculate-style.css" />
+    </head>
+	<body>
+		<!-- Render Locate Seller Page in Footer Link(SellerLocator)-->
+        <referenceContainer name="content" >
+        	<block class="Ksolves\MultivendorMarketplace\Block\Frontend\SellerLocator\KsSellerLocatorView" name="ks_seller_locator_view" template="Ksolves_MultivendorMarketplace::seller-locator/ks_seller_locator_view.phtml" />
+        </referenceContainer>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument name="label" xsi:type="helper" helper="Ksolves\MultivendorMarketplace\Helper\KsSellerLocatorHelper::getKsSLTitle" />
+            </action>
+        </referenceBlock>
+    </body>
+</page>

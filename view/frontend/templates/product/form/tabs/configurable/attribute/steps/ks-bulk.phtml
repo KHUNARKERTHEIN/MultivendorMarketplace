@@ -1,0 +1,737 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\Multivendor\Block\Catalog\Product\Steps\KsBulk */
+?>
+<div data-bind="scope: 'ks-variation-steps-wizard_ks-step3'" data-role="bulk-step">
+    <h2 class="steps-wizard-title"><?= /* @escapeNotVerified */  __('Step 3: Bulk Images, Price, and Quantity') ?></h2>
+    <div class="steps-wizard-info mb-4">
+        <?= /* @escapeNotVerified */  __('Based on your selections <span class="new-products-count" data-bind="text:countVariations"></span>
+        new products will be created. Use this step to customize images and price for your new products.') ?>
+    </div>
+
+    <div data-bind="with: sections().images" class="steps-wizard-section mb-4 ks-steps-3-section-block">
+        <div data-role="section">
+        <div class="steps-wizard-section-title ks-steps-section-title">
+            <span><?= /* @escapeNotVerified */  __('Images') ?></span>
+        </div>
+
+        <ul class="steps-wizard-section-list">
+            <li>
+                <div class="admin__field admin__field-option">
+                    <input type="radio"
+                           id="apply-single-set-radio"
+                           class="admin__control-radio"
+                           value="single"
+                           data-bind="checked:type">
+                    <label for="apply-single-set-radio" class="admin__field-label">
+                        <span><?= /* @escapeNotVerified */  __('Apply single set of images to all SKUs') ?></span>
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="admin__field admin__field-option">
+                    <input type="radio"
+                           id="apply-unique-images-radio"
+                           class="admin__control-radio"
+                           value="each"
+                           data-bind="checked:type">
+                    <label for="apply-unique-images-radio" class="admin__field-label">
+                        <span><?= /* @escapeNotVerified */  __('Apply unique images by attribute to each SKU') ?></span>
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="admin__field admin__field-option">
+                    <input type="radio"
+                           id="skip-images-uploading-radio"
+                           class="admin__control-radio"
+                           value="none"
+                           checked
+                           data-bind="checked:type">
+                    <label for="skip-images-uploading-radio" class="admin__field-label">
+                        <span><?= /* @escapeNotVerified */  __('Skip image uploading at this time') ?></span>
+                    </label>
+                </div>
+            </li>
+        </ul>
+
+        <div data-role="step-gallery-single" class="attribute-image-selector" data-bind="visible: type() == 'single'">
+            <div data-role="gallery"
+                 class="gallery"
+                 data-images="[]"
+                 data-types="<?= /* @noEscape */ $block->escapeHtml($this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->getAttributeImageTypes())) ?>">
+                <div class="ks-form-image ks-image-placeholder">
+                    <div class="ks-fileinput-button ks-form-buttons ks-button">
+                        <input type="file" name="image" data-url="<?= /* @escapeNotVerified */ $block->getUrl('multivendor/product_gallery/upload', ['_secure' => $this->getRequest()->isSecure()]) ?>" multiple="multiple">
+                    </div>
+                    <div class="clear"></div>
+                    <div class="ks-product-image-wrapper">
+                        <p class="ks-image-placeholder-text"><?= /* @escapeNotVerified */  __('Browse to find or drag image here') ?></p>
+                    </div>
+                </div>
+                <script data-template="uploader" type="text/x-magento-template">
+                    <div id="<%- data.id %>" class="file-row">
+                        <span class="file-info"><%- data.name %> (<%- data.size %>)</span>
+                        <div class="progressbar-container">
+                            <div class="progressbar upload-progress" style="width: 0%;"></div>
+                        </div>
+                        <div class="spinner">
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </script>
+
+                <script data-template="gallery-content" type="text/x-magento-template">
+                    <div class="ks-form-image ks-item <% if (data.disabled == 1) { %>hidden-for-front<% } %>"
+                         data-role="image">
+                        <input type="hidden"
+                               name="product[media_gallery][images][<%- data.file_id %>][position]"
+                               value="<%- data.position %>"/>
+                        <input type="hidden"
+                               name="product[media_gallery][images][<%- data.file_id %>][file]"
+                               value="<%- data.file %>"/>
+                        <input type="hidden"
+                               name="product[media_gallery][images][<%- data.file_id %>][value_id]"
+                               value="<%- data.value_id %>"/>
+                        <input type="hidden"
+                               name="product[media_gallery][images][<%- data.file_id %>][label]"
+                               value="<%- data.label %>"/>
+                        <input type="hidden"
+                               name="product[media_gallery][images][<%- data.file_id %>][disabled]"
+                               value="<%- data.disabled %>"/>
+                        <input type="hidden"
+                               name="product[media_gallery][images][<%- data.file_id %>][removed]"/>
+                        
+                        <div class="ks-product-image-wrapper">
+                            <img class="ks-product-image" data-role="image-element" src="<%- data.url %>" alt="<%- data.label %>"/>
+                            <div class="ks-actions" >
+                                <button type="button" class="ks-action-remove" data-role="delete-button" title="<?= /* @escapeNotVerified */ __('Delete image') ?>">
+                                    <span> <?= /* @escapeNotVerified */ __('Delete image') ?></span >
+                                </button>
+                                <div class="ks-draggable-handle" ></div>
+                            </div>
+                            <div class="ks-image-fade"><span><?= /* @escapeNotVerified */ __('Hidden') ?></span></div>
+                        </div>
+
+                        <div class="ks-item-description">
+                            <div class="ks-item-title" data-role="img-title"><%- data.label %></div>
+                            <div class="ks-item-size">
+                                <span data-role="image-dimens"></span>, <span data-role="image-size"><%- data.sizeLabel %></span>
+                            </div>
+                        </div>
+
+                        <ul class="item-roles" data-role="roles-labels">
+                            <?php
+                            foreach ($block->getKsImageTypes() as $KsTypeData) {
+                                ?>
+                                <li data-role-code="<?= $block->escapeHtmlAttr($KsTypeData['code']) ?>"
+                                    class="item-role item-role-<?= $block->escapeHtmlAttr($KsTypeData['code']) ?>">
+                                    <?= $block->escapeHtml($KsTypeData['label']) ?>
+                                </li>
+                                <?php
+                            }
+                            ?>
+                        </ul>
+                        
+                    </div>
+                </script>
+
+                <script data-template="image" type="text/x-magento-template">
+                    <div class="image">
+                        <img
+                            class="product-image"
+                            src="<%- data.url %>"
+                            data-position="<%- data.position %>"
+                            alt="<%- data.label %>" />
+                        <button type="button"
+                                class="action-remove"
+                                data-role="delete-button"
+                                title="<?= $block->escapeHtml(__('Remove image')) ?>">
+                            <span><?= /* @escapeNotVerified */  __('Remove image') ?></span>
+                        </button>
+                        <div class="draggable-handle"></div>
+                        <div class="image-label" title="<?= $block->escapeHtml(__('Edit role')) ?>"></div>
+                        <div class="image-fade"><span><?= /* @escapeNotVerified */  __('Hidden') ?></span></div>
+                    </div>
+                </script>
+
+                <script class="ks-dialog-template" type="text/x-magento-template" data-title="Image Options">
+                    <div class="ks-image-panel" data-role="dialog">
+                        <div class="ks-image-panel-preview">
+                            <img src="<%- data.url %>" alt="<%- data.label %>" />
+                        </div>
+                        <div class="ks-image-panel-controls">
+                            <strong class="ks-image-name"><%- data.label %></strong>
+
+                            <fieldset class="ks-fieldset ks-fieldset-image-panel">
+                                <div class="ks-field ks-field-image-description">
+                                    <label class="ks-label" for="image-description">
+                                        <span><?php /* @escapeNotVerified */ echo __('Alt Text')?></span>
+                                    </label>
+                                    <div class="ks-control">
+                                        <textarea id="image-description"
+                                                  rows="3"
+                                                  name="product[media_gallery][images][<%- data.file_id %>][label]"><%- data.label %></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="ks-field ks-field-image-role">
+                                    <label class="ks-label">
+                                        <span><?= /* @escapeNotVerified */  __('Role') ?></span>
+                                    </label>
+                                    <div class="ks-control">
+                                        <ul class="ks-multiselect-alt">
+                                            <?php
+                                            foreach ($block->getConfMediaAttributes() as $attribute) : ?>
+                                                <li class="ks-item">
+                                                    <label>
+                                                        <input class="ks-image-type"
+                                                               data-role="type-selector"
+                                                               type="checkbox"
+                                                               value="<?= /* @noEscape */ $block->escapeHtml($attribute->getAttributeCode()) ?>"
+                                                            />
+                                                        <?= /* @noEscape */ $block->escapeHtml(
+                                                                   $attribute->getFrontendLabel()
+                                                               ) ?>
+                                                    </label>
+                                                </li>
+                                                <?php
+                                            endforeach;
+                                            ?>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="ks-field ks-image-size" data-role="size">
+                                    <label class="label ks-label">
+                                        <span><?= $block->escapeHtml(__('Image Size')) ?></span>
+                                    </label>
+                                    <div class="ks-field-value" data-message="<?= $block->escapeHtmlAttr(__('{size}')) ?>">a</div>
+                                </div>
+
+                                <div class="ks-field ks-image-resolution" data-role="resolution">
+                                    <label class="label ks-label">
+                                        <span><?= $block->escapeHtml(__('Image Resolution')) ?></span>
+                                    </label>
+                                    <div class="ks-field-value" data-message="<?= $block->escapeHtmlAttr(__('{width}^{height} px'))
+                                    ?>"></div>
+                                </div>
+
+                                <div class="ks-field ks-field-image-hide">
+                                    <label class="label">
+                                        <input type="checkbox"
+                                               data-role="visibility-trigger"
+                                               value="1"
+                                               name="product[media_gallery][images][<%- data.file_id %>][disabled]"
+                                        <% if (data.disabled == 1) { %>checked="checked"<% } %> />
+                                        <span><?= /* @escapeNotVerified */ __('Hide from Product Page')?></span>
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </script>
+
+            </div>
+        </div>
+        <div data-role="step-gallery-each" class="attribute-image-selector" data-bind="visible: type() == 'each'">
+            <fieldset class="admin__fieldset bulk-attribute-values ks-form-field">
+                <div class="ks-control-grouped">
+                    <div class="ks-form-field ks-config-modal-img-upload d-grid">
+                        <div class="admin__field _required ks-form-field">
+                            <div class="ks-form-field-label">
+                                <label class="admin__field-label" for="apply-images-attributes">
+                                    <span><?= /* @escapeNotVerified */  __('Select attribute')?></span>
+                                </label>
+                            </div>
+                            <div class="admin__field-control ks-field-control">
+                                <div class="ks-field-custom">
+                                    <select
+                                        id="apply-images-attributes"
+                                        class="form-control"
+                                        data-bind="
+                                            options: $parent.attributes,
+                                            optionsText: 'label',
+                                            value: attribute,
+                                            optionsCaption: '<?= /* @escapeNotVerified */  __("Select")?>'
+                                            ">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <ul class="items attributes-selector-list ks-config-pro-attr-opt" data-bind="if:attribute, visible: attribute">
+                <!-- ko foreach: {data: attribute().chosen, afterRender: $parent.bindGalleries} -->
+                <li class="item" data-bind="attr:{'data-role':'step-gallery-option-' + id}">
+                    <label class="attribute-label">
+                        <span data-bind="text:label"></span>
+                    </label>
+
+                    <div data-role="gallery"
+                         class="gallery"
+                         data-images="[]"
+                         data-types="<?= /* @noEscape */ $block->escapeHtml(
+                                        $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->getAttributeImageTypes())) ?>"
+                        >
+                        
+                       <div class="ks-form-image ks-image-placeholder">
+                            <div class="ks-fileinput-button ks-form-buttons ks-button">
+                                <input type="file" name="image" data-url="<?= /* @escapeNotVerified */ $block->getUrl('multivendor/product_gallery/upload', ['_secure' => $this->getRequest()->isSecure()]) ?>" multiple="multiple">
+                            </div>
+                            <div class="clear"></div>
+                            <div class="ks-product-image-wrapper">
+                                <p class="ks-image-placeholder-text"><?= /* @escapeNotVerified */  __('Browse to find or drag image here') ?></p>
+                            </div>
+                        </div>
+                        <script data-template="uploader" type="text/x-magento-template">
+                            <div id="<%- data.id %>" class="file-row">
+                                <span class="file-info"><%- data.name %> (<%- data.size %>)</span>
+                                <div class="progressbar-container">
+                                    <div class="progressbar upload-progress" style="width: 0%;"></div>
+                                </div>
+                                <div class="spinner">
+                                    <span></span><span></span><span></span><span></span>
+                                    <span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                        </script>
+
+                        <script data-template="gallery-content" type="text/x-magento-template">
+                            <div class="ks-form-image ks-item <% if (data.disabled == 1) { %>hidden-for-front<% } %>"
+                                 data-role="image">
+                                <input type="hidden"
+                                       name="product[media_gallery][images][<%- data.file_id %>][position]"
+                                       value="<%- data.position %>" class="position"/>
+                                <input type="hidden"
+                                       name="product[media_gallery][images][<%- data.file_id %>][file]"
+                                       value="<%- data.file %>"/>
+                                <input type="hidden"
+                                       name="product[media_gallery][images][<%- data.file_id %>][value_id]"
+                                       value="<%- data.value_id %>"/>
+                                <input type="hidden"
+                                       name="product[media_gallery][images][<%- data.file_id %>][label]"
+                                       value="<%- data.label %>"/>
+                                <input type="hidden"
+                                       name="product[media_gallery][images][<%- data.file_id %>][disabled]"
+                                       value="<%- data.disabled %>"/>
+                                <input type="hidden"
+                                       name="product[media_gallery][images][<%- data.file_id %>][removed]"
+                                       value=""
+                                       class="is-removed"/>
+
+                                <div class="ks-product-image-wrapper">
+                                    <img class="ks-product-image" data-role="image-element" src="<%- data.url %>" alt="<%- data.label %>"/>
+                                    <div class="ks-actions" >
+                                        <button type="button" class="ks-action-remove" data-role="delete-button" title="<?php /* @escapeNotVerified */ echo __('Delete image') ?>">
+                                            <span> <?php /* @escapeNotVerified */ echo __('Delete image') ?></span >
+                                        </button>
+                                        <div class="ks-draggable-handle" ></div>
+                                    </div>
+                                    <div class="ks-image-fade"><span><?php /* @escapeNotVerified */ echo __('Hidden') ?></span></div>
+                                </div>
+
+                                <div class="ks-item-description">
+                                    <div class="ks-item-title" data-role="img-title"><%- data.label %></div>
+                                    <div class="ks-item-size">
+                                        <span data-role="image-dimens"></span>, <span data-role="image-size"><%- data.sizeLabel %></span>
+                                    </div>
+                                </div>
+
+                                <ul class="item-roles" data-role="roles-labels">
+                                    <?php
+                                    foreach ($block->getKsImageTypes() as $KsTypeData) {
+                                        ?>
+                                        <li data-role-code="<?= $block->escapeHtmlAttr($KsTypeData['code']) ?>"
+                                            class="item-role item-role-<?= $block->escapeHtmlAttr($KsTypeData['code']) ?>">
+                                            <?= $block->escapeHtml($KsTypeData['label']) ?>
+                                        </li>
+                                        <?php
+                                    }
+                                    ?>
+                                </ul>
+                                
+                            </div>
+                        </script>
+
+                        <script data-template="image" type="text/x-magento-template">
+                            <div class="image">
+                                <img
+                                    class="product-image"
+                                    src="<%- data.url %>"
+                                    data-position="<%- data.position %>"
+                                    alt="<%- data.label %>" />
+
+                                <button type="button"
+                                        class="action-remove"
+                                        data-role="delete-button"
+                                        title="<?= $block->escapeHtml(__('Remove image')) ?>">
+                                    <span><?= /* @escapeNotVerified */  __('Remove image') ?></span>
+                                </button>
+                                <div class="draggable-handle"></div>
+                                <div class="image-label" title="<?= $block->escapeHtml(__('Edit role')) ?>"></div>
+                                <div class="image-fade"><span><?= /* @escapeNotVerified */  __('Hidden') ?></span></div>
+                            </div>
+                        </script>
+
+                        <script class="ks-dialog-template" type="text/x-magento-template" data-title="Image Options">
+                            <div class="ks-image-panel" data-role="dialog">
+                                <div class="ks-image-panel-preview">
+                                    <img src="<%- data.url %>" alt="<%- data.label %>" />
+                                </div>
+                                <div class="ks-image-panel-controls">
+                                    <strong class="ks-image-name"><%- data.label %></strong>
+
+                                    <fieldset class="ks-fieldset ks-fieldset-image-panel">
+                                        <div class="ks-field ks-field-image-description">
+                                            <label class="ks-label" for="image-description">
+                                                <span><?php /* @escapeNotVerified */ echo __('Alt Text')?></span>
+                                            </label>
+                                            <div class="ks-control">
+                                                <textarea id="image-description"
+                                                          rows="3"
+                                                          name="product[media_gallery][images][<%- data.file_id %>][label]"><%- data.label %></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="ks-field ks-field-image-role">
+                                            <label class="ks-label">
+                                                <span><?= /* @escapeNotVerified */  __('Role') ?></span>
+                                            </label>
+                                            <div class="ks-control">
+                                                <ul class="ks-multiselect-alt">
+                                                    <?php
+                                                    foreach ($block->getConfMediaAttributes() as $attribute) : ?>
+                                                        <li class="ks-item">
+                                                            <label>
+                                                                <input class="ks-image-type"
+                                                                       data-role="type-selector"
+                                                                       type="checkbox"
+                                                                       value="<?php /* @noEscape */ echo $block->escapeHtml($attribute->getAttributeCode()) ?>"
+                                                                    />
+                                                                <?= /* @noEscape */ $block->escapeHtml(
+                                                                           $attribute->getFrontendLabel()
+                                                                       ) ?>
+                                                            </label>
+                                                        </li>
+                                                        <?php
+                                                    endforeach;
+                                                    ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="ks-field ks-image-size" data-role="size">
+                                            <label class="label ks-label">
+                                                <span><?= $block->escapeHtml(__('Image Size')) ?></span>
+                                            </label>
+                                            <div class="ks-field-value" data-message="<?= $block->escapeHtmlAttr(__('{size}')) ?>">a</div>
+                                        </div>
+
+                                        <div class="ks-field ks-image-resolution" data-role="resolution">
+                                            <label class="label ks-label">
+                                                <span><?= $block->escapeHtml(__('Image Resolution')) ?></span>
+                                            </label>
+                                            <div class="ks-field-value" data-message="<?= $block->escapeHtmlAttr(__('{width}^{height} px'))
+                                            ?>"></div>
+                                        </div>
+
+                                        <div class="ks-field ks-field-image-hide">
+                                            <label class="label">
+                                                <input type="checkbox"
+                                                       data-role="visibility-trigger"
+                                                       value="1"
+                                                       name="product[media_gallery][images][<%- data.file_id %>][disabled]"
+                                                <% if (data.disabled == 1) { %>checked="checked"<% } %> />
+                                                <span><?= /* @escapeNotVerified */ __('Hide from Product Page')?></span>
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </script>
+
+                    </div>
+                </li>
+                <!-- /ko -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div data-bind="with: sections().price" class="steps-wizard-section mb-4 ks-steps-3-section-block">
+        <div data-role="section">
+            <div class="steps-wizard-section-title ks-steps-section-title">
+                <span><?= /* @escapeNotVerified */  __('Price') ?></span>
+            </div>
+            <ul class="steps-wizard-section-list">
+                <li>
+                    <div class="admin__field admin__field-option">
+                        <input type="radio"
+                               id="apply-single-price-radio"
+                               class="admin__control-radio"
+                               value="single"
+                               data-bind="checked:type" />
+                        <label for="apply-single-price-radio"
+                               class="admin__field-label">
+                            <span><?= /* @escapeNotVerified */  __('Apply single price to all SKUs') ?></span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="admin__field admin__field-option">
+                        <input type="radio"
+                               id="apply-unique-prices-radio"
+                               class="admin__control-radio"
+                               value="each"
+                               data-bind="checked:type" />
+                        <label for="apply-unique-prices-radio"
+                               class="admin__field-label">
+                            <span><?= /* @escapeNotVerified */  __('Apply unique prices by attribute to each SKU') ?></span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="admin__field admin__field-option">
+                        <input type="radio"
+                               id="skip-pricing-radio"
+                               class="admin__control-radio"
+                               value="none"
+                               checked
+                               data-bind="checked:type" />
+                        <label for="skip-pricing-radio" class="admin__field-label">
+                            <span><?= /* @escapeNotVerified */  __('Skip price at this time') ?></span>
+                        </label>
+                    </div>
+                </li>
+            </ul>
+            <form data-role="attributes-values-form">
+                <fieldset class="admin__fieldset bulk-attribute-values ks-form-field" data-bind="visible: type() == 'single'">
+                    <div class="ks-control-grouped">
+                        <div class="ks-form-field ks-config-modal-img-upload d-grid">
+                            <div class="admin__field _required ks-form-field">
+                                <div class="ks-form-field-label">
+                                    <label for="apply-single-price-input" class="admin__field-label">
+                                        <span><?= /* @escapeNotVerified */  __('Price') ?></span>
+                                    </label>
+                                </div>
+                                <div class="admin__field-control ks-field-control">
+                                    <div class="ks-dollor-sign ks-field-custom">
+                                        <span data-bind="text:currencySymbol"></span>
+                                        <input class="admin__control-text required-entry validate-zero-or-greater" type="text"
+                                            data-bind="value:value, uniqueName: true" id="apply-single-price-input"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+            <div data-bind="visible: type() == 'each'">
+                <fieldset class="admin__fieldset bulk-attribute-values ks-form-field">
+                    <div class="ks-control-grouped">
+                        <div class="ks-form-field ks-config-modal-img-upload d-grid">
+                            <div class="admin__field _required ks-form-field">
+                                <div class="ks-form-field-label">
+                                    <label for="select-each-price" class="admin__field-label">
+                                        <span><?= /* @escapeNotVerified */  __('Select attribute') ?></span>
+                                    </label>
+                                </div>
+                                <div class="admin__field-control ks-field-control">
+                                    <div class="ks-field-custom">
+                                        <select id="select-each-price" class="form-control" data-bind="
+                                                options: $parent.attributes,
+                                                optionsText: 'label',
+                                                value: attribute,
+                                                optionsCaption: 'Select'">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <form data-role="attributes-values-form">
+                    <fieldset class="admin__fieldset bulk-attribute-values ks-form-field mt-0" data-bind="if:attribute">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field ks-config-modal-img-upload d-grid mt-0">       
+                                <!-- ko foreach: attribute().chosen -->
+                                <div class="admin__field _required ks-form-field">
+                                    <div class="ks-form-field-label">
+                                        <label data-bind="attr: {for: 'apply-single-price-input-' + $index()}" class="admin__field-label">
+                                            <span data-bind="text:label"></span>
+                                        </label>
+                                    </div>
+                                    <div class="admin__field-control ks-field-control">
+                                        <div class="ks-dollor-sign ks-field-custom">
+                                            <span data-bind="text:$parent.currencySymbol"></span>
+                                            <input class="admin__control-text required-entry validate-zero-or-greater"
+                                                type="text"
+                                                data-bind="value:sections()[$parent.label], uniqueName: true,
+                                                attr: {id: 'apply-single-price-input-' + $index()}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div data-bind="with: sections().quantity" class="steps-wizard-section ks-steps-3-section-block mb-4">
+        <div data-role="section">
+            <div class="steps-wizard-section-title ks-steps-section-title">
+                <span><?= /* @escapeNotVerified */  __('Quantity') ?></span>
+            </div>
+            <ul class="steps-wizard-section-list">
+                <li>
+                    <div class="admin__field admin__field-option">
+                        <input type="radio"
+                               id="apply-single-inventory-radio"
+                               class="admin__control-radio"
+                               value="single"
+                               data-bind="checked: type" />
+                        <label for="apply-single-inventory-radio" class="admin__field-label">
+                            <span><?= /* @escapeNotVerified */  __('Apply single quantity to each SKUs') ?></span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="admin__field admin__field-option">
+                        <input type="radio"
+                               id="apply-unique-inventory-radio"
+                               class="admin__control-radio"
+                               value="each"
+                               data-bind="checked: type" />
+                        <label for="apply-unique-inventory-radio" class="admin__field-label">
+                            <span><?= /* @escapeNotVerified */  __('Apply unique quantity by attribute to each SKU') ?></span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="admin__field admin__field-option">
+                        <input type="radio"
+                               id="skip-inventory-radio"
+                               class="admin__control-radio"
+                               value="none"
+                               checked
+                               data-bind="checked: type" />
+                        <label for="skip-inventory-radio" class="admin__field-label">
+                            <span><?= /* @escapeNotVerified */  __('Skip quantity at this time') ?></span>
+                        </label>
+                    </div>
+                </li>
+            </ul>
+
+            <form data-role="attributes-values-form">
+                <fieldset class="admin__fieldset bulk-attribute-values ks-form-field" data-bind="visible: type() == 'single'">
+                    <div class="ks-control-grouped">
+                        <div class="ks-form-field ks-config-modal-img-upload d-grid">
+                            <div class="admin__field _required ks-form-field">
+                                <div class="ks-form-field-label">
+                                    <label for="apply-single-inventory-input" class="admin__field-label">
+                                        <span><?= /* @escapeNotVerified */  __('Quantity') ?></span>
+                                    </label>
+                                </div>
+                                <div class="admin__field-control ks-field-control">
+                                    <div class="ks-field-custom">
+                                        <input type="text"
+                                            id="apply-single-inventory-input"
+                                            class="admin__control-text required-entry validate-zero-or-greater"
+                                            data-bind="value: value, uniqueName: true" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+            <div data-bind="visible: type() == 'each'">
+                <fieldset class="admin__fieldset bulk-attribute-values ks-form-field">
+                    <div class="ks-control-grouped">
+                        <div class="ks-form-field ks-config-modal-img-upload d-grid">
+                            <div class="admin__field _required ks-form-field">
+                                <div class="ks-form-field-label">
+                                    <label for="apply-single-price-input-qty" class="admin__field-label">
+                                        <span><?= /* @escapeNotVerified */  __('Select attribute') ?></span>
+                                    </label>
+                                </div>
+                                <div class="admin__field-control ks-field-control">
+                                    <div class="ks-field-custom">
+                                        <select id="apply-single-price-input-qty" class="form-control" data-bind="
+                                            options: $parent.attributes,
+                                            optionsText: 'label',
+                                            value: attribute,
+                                            optionsCaption: 'Select'">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <form data-role="attributes-values-form">
+                    <fieldset class="admin__fieldset bulk-attribute-values ks-form-field mt-0" data-bind="if:attribute">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field ks-config-modal-img-upload d-grid mt-0">
+                                <!-- ko foreach: attribute().chosen -->
+                                <div class="admin__field _required ks-form-field">
+                                    <div class="ks-form-field-label">
+                                        <label data-bind="attr: {for: 'apply-qty-input-' + $index()}" class="admin__field-label">
+                                            <span data-bind="text:label"></span>
+                                        </label>
+                                    </div>
+                                    <div class="admin__field-control ks-field-control">
+                                        <div class="ks-field-custom">
+                                            <input id="apply-single-price-input-value"
+                                                class="admin__control-text required-entry validate-zero-or-greater" type="text"
+                                                data-bind="value:sections()[$parent.label], uniqueName: true,
+                                                attr: {id: 'apply-qty-input-' + $index()}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "ks-variation-steps-wizard_ks-step3": {
+                    "component": "Ksolves_MultivendorMarketplace/js/product/variations/steps/ks-bulk",
+                    "appendTo": "ks-variation-steps-wizard",
+                    "noImage": "<?= /* @escapeNotVerified */  $block->getPlaceholderImageUrl() ?>",
+                    "variationsComponent": "configurableVariations"
+                }
+            }
+        }
+    }
+}
+</script>

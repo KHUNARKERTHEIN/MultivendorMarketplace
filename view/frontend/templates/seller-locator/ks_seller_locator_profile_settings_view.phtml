@@ -1,0 +1,263 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var $block \Ksolves\MultivendorMarketplace\Block\Frontend\SellerLocator\KsSellerLocatorProfileSettings
+ */
+?>
+<?php
+$ksSellerId=$block->getKsSellerId();
+$ksLocationDetails=$block->getKsLocationData($ksSellerId);
+$ksId = (!empty($ksLocationDetails)) ? $ksLocationDetails['id'] : "";
+$ksLocation = (!empty($ksLocationDetails)) ? $ksLocationDetails['ks_location'] : "";
+$ksLatitude = (!empty($ksLocationDetails)) ? $ksLocationDetails['ks_latitude'] : "";
+$ksLongitude = (!empty($ksLocationDetails)) ? $ksLocationDetails['ks_longitude'] : "";
+?> 
+<div class ="ks-seller-location-details">
+        <form action="<?= $block->getBaseUrl().'multivendor/sellerlocator/save'; ?>" class="ks-form" id="ks-seller-location-details-form" method="post" data-mage-init='{"validation":{"rules": {"field-4": {"required":true}}}}' enctype="multipart/form-data">
+            <!-- Save Button -->
+            <div class="ks-form-wrapper-title">
+                <h3></h3>
+                <div class="ks-actions-toolbar">
+                    <button type="submit" title="submit" class="ks-action-btn ks-submit ks-primary">
+                        <span><?= $block->escapeHtml(__('Save'));?></span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="ks-hidden">
+                <input class="ks_seller_id" type="hidden" id="ks_seller_id" name="ks_seller_id" value="<?= $block->getKsSellerId() ?>"/>
+                <input class="id" type="hidden" id="id" name="id" value="<?= $ksId ?>" />
+            </div>
+            <div class="ks-page-card">
+                <!-- Section to show Map -->
+                <div class="ks_google_map">
+                    <div class="ks-map-canvas" id="ks-map-canvas"
+                        style="height: 350px;width: 100%;margin: 15px 0;">
+                    </div>
+                </div>
+                <div class="ks-form-fieldset">
+                    <fieldset class="ks-form-field-right">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field  required"> 
+                                <!-- Field to enter Location  -->  
+                                <div class="ks-locate-me-button">
+                                    <input type="button" name="ks-locate-me" id="ks-locate-me" class="ks-seller-location-icon" title="Locate Me" value="Locate Me">  
+                                </div>  
+                                <div class="d-flex align-items-center mb-4 mt-4" >
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                        <?= $block->escapeHtml(__('Location'));?>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">  
+                                        <input type="text"  class="ks-control-feild" name="ks_location" id="ks_location" placeholder=" " value="<?= $ksLocation ?>" />
+                                    </div>  
+                                </div> 
+                                <!-- Field to Latitude -->
+                                <div class="d-flex align-items-center mb-4" >
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <?= $block->escapeHtml(__('Latitude'));?>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">  
+                                        <input type="number" step="any" class="ks-control-feild" name="ks_latitude" id="ks_latitude"  value="<?= $ksLatitude ?>" />
+                                    </div>
+                                </div>
+
+                                <!-- Field to Longitude-->
+                                <div class="d-flex align-items-center mb-4" >
+                                    <div class="ks-form-field-label">              
+                                        <label>
+                                            <?= $block->escapeHtml(__('Longitude'));?>
+                                        </label>
+                                    </div>
+                                    <div class="ks-field-control">  
+                                        <input type="number" step="any" class="ks-control-feild" name="ks_longitude" id="ks_longitude" value="<?= $ksLongitude ?>"/>
+                                    </div>                        
+                                </div>  
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </form>
+</div>
+<script>
+    require(["jquery","https://maps.googleapis.com/maps/api/js?libraries=places&key=<?= $block->getKsGoogleApiKey();?>"
+            ], function ($) {
+                // Varible used for map
+                var ksMapOptions, ksMap, ksMarker, ksSearchBox,
+                ksInfowindow = new google.maps.InfoWindow(),
+                ksGeocoder = new google.maps.Geocoder(),
+
+                ksInputLocation = document.getElementById( 'ks_location' ), //To get input of Address field
+                ksInputLatitude = document.getElementById( 'ks_latitude' ), //To get input of Latitude field
+                ksInputLongitude = document.getElementById( 'ks_longitude' ), //To get input of Longitude field
+                ksElement = document.getElementById( 'ks-map-canvas'); //To make map in the div field
+
+                // Code for making map in the div
+                ksMapOptions = {
+                    zoom: 12, // How much zoom
+                    center: new google.maps.LatLng(ksInputLatitude.value, ksInputLongitude.value ), // Position in the map
+                    disableDefaultUI: false, // Make the UI like maginfer glass
+                    scrollWheel: true, // scrollable
+                    draggable: true, // draggable
+                };
+                // Map Visibility map div 
+                ksMap = new google.maps.Map( ksElement, ksMapOptions ); 
+
+                // Code to show ksMarker on that particular lat and long
+                ksMarker = new google.maps.Marker({
+                    position: ksMapOptions.center, // It is the position where we want ksMarker
+                    map: ksMap, // Map is the map object
+                    draggable: true // Make the ksMarker draggable
+                });
+
+                // For giving suggestion and autocomplete in the address box
+                ksSearchBox = new google.maps.places.SearchBox(ksInputLocation);
+
+                ksInfowindowCenter();
+
+                // Event Listener to change the ksMarker, Lat and Long when place change
+                google.maps.event.addListener(ksSearchBox, 'places_changed', function () {
+                    var ksPlaces = ksSearchBox.getPlaces(),
+                    ksBounds = new google.maps.LatLngBounds(),
+                    i, ksPlace, ksLat, ksLng, 
+                    ksAddress = ksPlaces[0].formatted_address;
+
+                    for( i = 0; ksPlace = ksPlaces[i]; i++ ) {
+                        ksBounds.extend( ksPlace.geometry.location );
+                        ksMarker.setPosition( ksPlace.geometry.location );
+                    }
+
+                    ksMap.fitBounds( ksBounds );  
+                    ksMap.setZoom(12); 
+
+                    ksLat = ksMarker.getPosition().lat();
+                    ksLng = ksMarker.getPosition().lng();
+                    ksInputLatitude.value = ksLat;
+                    ksInputLongitude.value = ksLng;
+                });
+
+               // for current location
+               $('#ks-locate-me').on('click',function(){
+                 navigator.geolocation.getCurrentPosition(function(position) {
+                    var ksLatLng = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            ksMap.setCenter(ksLatLng);
+                            ksMarker.setPosition(ksLatLng);
+                            var ksGeocoder = new google.maps.Geocoder(); 
+                             ksGeocoder.geocode( { latLng:ksLatLng}, function ( result, status ) {
+                                if ( 'OK' === status ) {  
+                                    kslocation = result[0].formatted_address;
+                                    ksInputLocation.value = kslocation;
+                                     }
+                                else {
+                                    console.log( 'Geocode was not successful for the following reason: ' + status );
+                                    }
+                            });
+                            ksInputLatitude.value = position.coords.latitude;
+                            ksInputLongitude.value =  position.coords.longitude;
+                    });
+                });
+      
+                // Event Listener to change place, lat and long when ksMarker change
+                google.maps.event.addListener( ksMarker, "dragend", function ( event ) {
+                    var ksLat, ksLng, ksAddress;
+                    ksLat = ksMarker.getPosition().lat();
+                    ksLng = ksMarker.getPosition().lng();
+                    ksGeocoder.geocode( { latLng: ksMarker.getPosition() }, function ( ksResult, ksStatus ) {
+                        if ( 'OK' === ksStatus ) {  
+                            ksAddress = ksResult[0].formatted_address;
+                            ksInputLocation.value = ksAddress;
+                            ksInputLatitude.value = ksLat;
+                            ksInputLongitude.value = ksLng;
+                        } else {
+                            console.log( 'Geocode was not successful for the following reason: ' + ksStatus);
+                        }
+                    });
+                });
+                
+                // when clear location auto clear lat and long
+                $("#ks_location").keyup(function(){
+                    if(this.value == "")
+                    {
+                        $("#ks_latitude").val("");
+                        $("#ks_longitude").val(""); 
+                    }
+                });
+
+                $('#ks_latitude,#ks_longitude').bind("change keyup input",function() { 
+                        ksSetLocation();
+                }); 
+                
+                // when clear lat and long auto clear location
+                $('#ks_latitude').keyup(function(){
+                    if(this.value == "")
+                    {
+                        $("#ks_location").val("");
+                        $("#ks_longitude").val(""); 
+                    }
+                });
+                $('#ks_longitude').keyup(function(){
+                    if(this.value == "")
+                    {
+                        $("#ks_location").val("");
+                        $("#ks_latitude").val("");
+                    }
+                });
+                
+                // set location on the basis of latitude and longitude
+                function ksSetLocation(){
+                    if(ksInputLatitude.value!=null && ksInputLongitude.value!=null){
+                        var ksLatLng = {
+                            lat: parseFloat(ksInputLatitude.value),
+                            lng: parseFloat(ksInputLongitude.value)
+                        };
+                        ksMap.setCenter(ksLatLng);
+                        ksMarker.setPosition(ksLatLng);
+                        ksGeocoder.geocode({ location: ksLatLng },function (ksResults, ksStatus) {
+                            if (ksStatus === "OK") {
+                                if (ksResults[0]) {
+                                  ksAddress = ksResults[0].formatted_address;
+                                  ksInputLocation.value = ksAddress;
+                              
+                                } else {
+                                console.log("No results found");
+                                }
+                            } else {
+                              console.log("Geocoder failed due to: " + ksStatus);
+                            }
+                        });
+                    }
+                }
+
+                //Set Info window for marker
+                function ksInfowindowCenter(){
+                       
+                    google.maps.event.addListener(ksMarker, 'mouseover',function(ksMarker) {
+                        this.setAnimation(google.maps.Animation.BOUNCE);
+                        ksInfowindow.setContent($("#ks_location").val());
+                        ksInfowindow.open(ksMap,this);
+                    });
+
+                    google.maps.event.addListener(ksMarker, 'mouseout',function(ksMarker) {
+                        this.setAnimation(null);
+                        ksInfowindow.setContent(null);
+                        ksInfowindow.close(ksMap,this);
+                    });
+                }    
+});
+</script>

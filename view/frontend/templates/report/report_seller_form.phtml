@@ -1,0 +1,90 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ /** @var \Ksolves\MultivendorMarketplace\Block\Report\KsReportSeller $block */
+
+ $reasons=$block->getKsReasons();
+?>
+<?php if($block->isEnabled()):?>
+    <?php $ksSellerId = $block->getKsCurrentSellerId();
+        $ksStoreUrl = $block->getKsSellerProfileUrl($ksSellerId);
+        if ($ksStoreUrl) {
+            $ksActionUrl= $block->getUrl($ksStoreUrl);
+        } else {
+            $ksActionUrl = $block->getUrl('multivendor/sellerprofile/sellerprofile', ['seller_id' => $ksSellerId]);
+        } 
+    ?>
+    <div id="ks-report-seller-container" data-bind="mageInit: {
+        'Magento_Ui/js/modal/modal':{
+            'type': 'popup',
+            'trigger': '[data-trigger=trigger]',
+            'responsive': true
+        }}">
+        <form data-mage-init='{"validation":{}}' method="post" action="multivendor/reportseller/kssendreport" id="ks-report-seller-form">
+            <input type="hidden" name="ks-report-seller-name" value="">
+            <input type="hidden" name="ks-report-seller-name" value="<?= $block->getKsCurrentSellerName();?>">
+            <input type="hidden" name="ks-report-seller-id" value="<?= $block->getKsCurrentSellerId();?>">
+            <input type="hidden" name="ks-seller-url" value="<?= $ksActionUrl ?>">
+            <fieldset class="fieldset">
+                <?php if(!$block->getKsCurrentCustomerId()):?>
+                    <div class="field required">
+                        <label class="label"><?= /* @noEscape */ __("Name");?></label>
+                            <input type="text" name="ks-report-seller-customer-name" data-validate="{required:true}" placeholder="<?= /* @noEscape */ __("Please enter your name");?>">
+                    </div>
+                    <div class="field required">
+                        <label class="label"><?= /* @noEscape */ __("Email");?></label>
+                        <input type="text" name="ks-report-seller-customer-email" data-validate="{required:true,'validate-email':true}" placeholder="<?= /* @noEscape */ __("Please enter your email");?>">
+                    </div>
+                <?php endif;?>
+                <?php if($block->getKsIsReasonEnabled()):?>
+                    <div class="field <?= $block->getKsIsReasonEnabled()==2 || $block->getKsIsSubReasonEnabled() == 2 ? 'required"':''; ?>">
+                        <label class="label"><?= /* @noEscape */ $block->getKsReasonText();?></label>
+                        <select name="ks-report-seller-reason" id="ks-report-seller-reason" form="ks-report-seller-form" <?= $block->getKsIsReasonEnabled()==2 || $block->getKsIsSubReasonEnabled() == 2 ? 'data-validate="{required:true}"':''; ?> >
+                            <option value=""><?= /* @noEscape */ $block->getKsReasonPlaceholder();?></option>
+                            <?php foreach($reasons as $reason):?>
+                                <option value="<?= /* @noEscape */ $reason['ks_reason'];?>"><?= /* @noEscape */ $reason['ks_reason'];?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <?php if($block->getKsIsSubReasonEnabled()):?>
+                        <div class="field <?= $block->getKsIsSubReasonEnabled()==2 ? 'required"':''; ?>">
+                            <label class="label"><?= /* @noEscape */ $block->getKsSubReasonText();?></label>
+                            <select name="ks-report-seller-sub-reason" id="ks-report-seller-sub-reason" form="ks-report-seller-form" <?= $block->getKsIsSubReasonEnabled()==2 ? 'data-validate="{required:true}"':''; ?> >
+                                <option value=""><?= /* @noEscape */ $block->getKsSubReasonPlaceholder();?></option>
+                            </select>
+                        </div>
+                    <?php endif;?>
+                <?php endif;?>
+                <?php if($block->getKsIsCommentsEnabled()):?>
+                    <div class="field <?= $block->getKsIsCommentsEnabled()==2 ? 'required"':''; ?>">
+                        <label class="label"><?= /* @noEscape */ $block->getKsCommentsText();?></label>
+                        <textarea name="ks-report-seller-comment" <?= $block->getKsIsCommentsEnabled()==2 ? 'data-validate="{required:true}"':''; ?> form="ks-report-seller-form" placeholder="<?= /* @noEscape */ $block->getKsCommentsPlaceholder();?>"></textarea>
+                    </div>
+                <?php endif;?>
+            </fieldset>
+        </form>
+    </div>
+<?php
+
+    $ksAdditionalData = [
+        'ksCustomerId'    => $block->getKsCurrentCustomerId(),
+        'ksAllowGuests'   => $block->getKsIsGuestAllowed(),
+        'ksReportHeading' => $block->getKsHeadingText()
+    ];
+    $ksSerializedFormData = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($ksAdditionalData);
+?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "ksReportSeller": <?=  /* @noEscape */ $ksSerializedFormData; ?>
+        }
+    }
+</script>
+<?php endif;?>

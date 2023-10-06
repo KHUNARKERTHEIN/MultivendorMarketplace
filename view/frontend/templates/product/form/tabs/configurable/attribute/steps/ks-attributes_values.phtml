@@ -1,0 +1,112 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\Multivendor\Block\Catalog\Product\Steps\KsAttributeValues */
+?>
+<div data-bind="scope: 'ks-variation-steps-wizard_ks-step2'">
+    <h2 class="steps-wizard-title"><?= /* @escapeNotVerified */  __('Step 2: Attribute Values') ?></h2>
+    <div class="steps-wizard-info mb-4">
+        <span><?= /* @escapeNotVerified */  __('Select values from each attribute to include in this product. Each unique combination of values creates a unigue product SKU.') ?></span>
+    </div>
+    <div data-bind="foreach: attributes, sortableList: attributes">
+
+        <div class="attribute-entity ks-attribute-value-section" data-bind="attr:{'data-attribute-title':label}">
+            <div class="attribute-entity-top ks-attribute-entity-top">
+                <div class="attribute-entity-title-block">
+                    <span class="ks-draggable-handle"
+                          data-role="draggable"
+                          title="<?= $block->escapeHtml(__('Sort Variations')) ?>">
+                    </span>
+                    <div class="ks-attribute-entity-title" data-bind="text: label"></div>
+                    <div class="ks-attribute-options-block">
+                        (<span class="attribute-length" data-bind="text: $data.options().length"></span>
+                        <?= /* @escapeNotVerified */  __('Options') ?>)
+                    </div>
+                </div>
+
+                <div class="attribute-entity-actions ks-attribute-entity-actions">
+                    <button type="button"
+                            class="action-select-all action-tertiary ks-action-button"
+                            data-bind="click: $parent.selectAllAttributes"
+                            title="<?= $block->escapeHtml(__('Select All')) ?>">
+                        <span><?= /* @escapeNotVerified */  __('Select All') ?></span>
+                    </button>
+                    <button type="button"
+                            class="action-deselect-all action-tertiary ks-action-button"
+                            data-bind="click: $parent.deSelectAllAttributes"
+                            title="<?= $block->escapeHtml(__('Deselect All')) ?>">
+                        <span><?= /* @escapeNotVerified */  __('Deselect All') ?></span>
+                    </button>
+                    <button type="button"
+                            class="action-remove-all ks-del-action action-tertiary"
+                            data-bind="click: $parent.removeAttribute.bind($parent)"
+                            title="<?= $block->escapeHtml(__('Remove Attribute')) ?>">
+                        <span><?= /* @escapeNotVerified */  __('Remove Attribute') ?></span>
+                    </button>
+                </div>
+            </div>
+
+            <fieldset class="admin__fieldset admin__fieldset-options ks-attribute-value-option">
+                <ul class="attribute-options" data-bind="foreach: options">
+                    <li class="attribute-option" data-bind="attr:{'data-attribute-option-title':label}">
+                        <div class="admin__field admin__field-option">
+                            <input
+                                type="checkbox"
+                                class="admin__control-checkbox"
+                                data-bind="checkedValue: id, checked: $parent.chosenOptions, attr:{id:id}" />
+                            <label data-bind="text: label, visible: label, attr:{for:id}"
+                                   class="admin__field-label"></label>
+                        </div>
+                        <div class="admin__field admin__field-create-new" data-bind="visible: !label">
+                            <div class="admin__field-control">
+                                <input class="admin__control-text"
+                                       name="label"
+                                       data-bind="value: label, valueUpdate: 'keyup'"
+                                       type="text" />
+                            </div>
+                            <button type="button"
+                                    class="action-save"
+                                    title="<?= $block->escapeHtml(__('Save Option')) ?>"
+                                    data-action="save"
+                                    data-bind="click: $parents[1].saveOption.bind($parent)">
+                                <span><?= /* @escapeNotVerified */  __('Save Option') ?></span>
+                            </button>
+                            <button type="button"
+                                    class="action-remove"
+                                    title="<?= $block->escapeHtml(__('Remove Option')) ?>"
+                                    data-action="remove"
+                                    data-bind="click: $parents[1].removeOption.bind($parent)">
+                                <span><?= /* @escapeNotVerified */  __('Remove Option') ?></span>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "ks-variation-steps-wizard_ks-step2": {
+                        "component": "Ksolves_MultivendorMarketplace/js/product/variations/steps/ks-attributes_values",
+                        "appendTo": "ks-variation-steps-wizard",
+                        "optionsUrl": "<?= /* @escapeNotVerified */  $block->getUrl('multivendor/product_attribute/getAttributes', ['_secure' => $this->getRequest()->isSecure()])?>",
+                        "createOptionsUrl": "<?= /* @escapeNotVerified */  $block->getUrl('multivendor/product_attribute/kscreateOptions', ['_secure' => $this->getRequest()->isSecure()])?>"
+                    }
+                }
+            }
+        }
+    }
+</script>

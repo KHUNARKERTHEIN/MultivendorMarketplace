@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_sales_order_grid.ks_sales_orders_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>sales_order_columns</spinner>
+        <deps>
+            <dep>ks_marketplace_sales_order_grid.ks_sales_orders_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ks_sales_orders_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\KsOrderList</argument>
+            <argument name="name" xsi:type="string">ks_sales_orders_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters">
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <settings>
+                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    <caption translate="true">All Store Views</caption>
+                    <label translate="true">Purchase Point</label>
+                    <dataScope>store_id</dataScope>
+                    <imports>
+                        <link name="visible">ns = ${ $.ns }, componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <action name="cancel">
+                <settings>
+                    <url path="multivendor/order/massCancel"/>
+                    <type>cancel</type>
+                    <label translate="true">Cancel</label>
+                </settings>
+            </action>
+            <action name="hold_order">
+                <settings>
+                    <url path="multivendor/order/massHold"/>
+                    <type>hold_order</type>
+                    <label translate="true">Hold</label>
+                </settings>
+            </action>
+            <action name="unhold_order">
+                <settings>
+                    <url path="multivendor/order/massUnhold"/>
+                    <type>unhold_order</type>
+                    <label translate="true">Unhold</label>
+                </settings>
+            </action>
+            <action name="pdfinvoices_order">
+                <settings>
+                    <url path="multivendor/order/pdfinvoices"/>
+                    <type>pdfinvoices_order</type>
+                    <label translate="true">Print Invoices</label>
+                </settings>
+            </action>
+            <action name="pdfshipments_order">
+                <settings>
+                    <url path="multivendor/order/pdfshipments"/>
+                    <type>pdfshipments_order</type>
+                    <label translate="true">Print Packing Slips</label>
+                </settings>
+            </action>
+            <action name="pdfcreditmemos_order">
+                <settings>
+                    <url path="multivendor/order/pdfcreditmemos"/>
+                    <type>pdfcreditmemos_order</type>
+                    <label translate="true">Print Credit Memos</label>
+                </settings>
+            </action>
+            <action name="pdfdocs_order">
+                <settings>
+                    <url path="multivendor/order/pdfdocs"/>
+                    <type>pdfdocs_order</type>
+                    <label translate="true">Print All</label>
+                </settings>
+            </action>
+            <action name="print_shipping_label">
+                <settings>
+                    <url path="multivendor/order/massPrintShippingLabel"/>
+                    <type>print_shipping_label</type>
+                    <label translate="true">Print Shipping Labels</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+        <filterSearch name="fulltext"/>
+    </listingToolbar>
+    <columns name="sales_order_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">ks_marketplace_sales_order_grid.ks_marketplace_sales_order_grid.sales_order_columns.actions</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">edit</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="ks_order_increment_id">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- <item name="indexField" xsi:type="string">id</item> -->
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </column>
+        <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
+            <settings>
+                <label translate="true">Purchase Point</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="ks_order_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="label" xsi:type="string" translate="true">Purchase Date</item>
+                    <item name="sorting" xsi:type="string" translate="true">desc</item>
+                </item>
+            </argument>
+        </column>
+        <column name="billing_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Bill-to Name</label>
+            </settings>
+        </column>
+        <column name="shipping_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Ship-to Name</label>
+            </settings>
+        </column>
+        <column name="base_grand_total" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Grand Total (Base)</label>
+            </settings>
+        </column>
+        <column name="grand_total" class="Magento\Sales\Ui\Component\Listing\Column\PurchasedPrice">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Grand Total (Purchased)</label>
+            </settings>
+        </column>
+        <column name="billing_address" class="Magento\Sales\Ui\Component\Listing\Column\Address">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Billing Address</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
+        <column name="shipping_address" class="Magento\Sales\Ui\Component\Listing\Column\Address">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Shipping Address</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
+        <column name="status" component="Magento_Ui/js/grid/columns/select" sortOrder="180">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Sales\Ui\Component\Listing\Column\Status\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\KsOrdersListing\KsOrdersView">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="viewUrlPath" xsi:type="string">multivendor/order/view</item>
+                    <item name="urlEntityParamName" xsi:type="string">order_id</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

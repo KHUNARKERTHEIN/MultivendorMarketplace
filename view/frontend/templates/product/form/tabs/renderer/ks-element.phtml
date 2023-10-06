@@ -1,0 +1,232 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+<?php $ksElement = $block->getKsElement();
+$ksType = $ksElement->getType(); ?>
+
+<?php if ($ksType === 'hidden'): ?>
+    <input type="<?= $block->escapeHtmlAttr($ksElement->getType()) ?>"
+           name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+           value="<?= $block->escapeHtmlAttr($ksElement->getValue()) ?>">
+<?php elseif ($ksType === 'text'): ?>
+    <div class="ks-field-custom">
+        <input type="<?= $block->escapeHtmlAttr($ksElement->getType()) ?>"
+               name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+               value="<?= $block->escapeHtmlAttr($ksElement->getValue()) ?>"
+               class="ks-control-feild<?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+               title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"/>
+    </div>
+<?php elseif ($ksType === 'toggle'): ?>
+    <div class="ks-field-custom">
+
+        <?php
+        $ksArray = ["sku_type","price_type","weight_type"];
+
+        if (in_array($ksElement->getAttributeCode(), $ksArray)) {
+            $ksChecked = ($ksElement->getValue() == 0) ? 'checked="checked"' : '';
+            $ksHiddenValue = 1;
+        } else {
+            $ksChecked = ($ksElement->getValue() == 1) ? 'checked="checked"' : '';
+            $ksHiddenValue = 0;
+        }
+
+        if ($ksElement->getAttributeCode() == "status") {
+            $ksHiddenValue = 2;
+        }
+        ?>
+
+        <input type="hidden" name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>" value="<?= $ksHiddenValue; ?>">
+        <div class="ks-field-switch">
+            <?php if (in_array($ksElement->getAttributeCode(), $ksArray)) {?>
+                <input type="checkbox"
+                   name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+                   value="<?= $block->escapeHtmlAttr($ksElement->getValue()) ?>"
+                   class="input-text ks-switch-checkbox <?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+                   title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"
+                   id="<?= $ksElement->getId() ?>"
+                   onclick= "this.value = this.checked ? 0 : 1"
+                <?= $ksChecked; ?> />
+            <?php } else { ?>
+                <input type="checkbox"
+                   name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+                   value="<?= $block->escapeHtmlAttr($ksElement->getValue()) ?>"
+                   class="input-text ks-switch-checkbox <?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+                   title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"
+                   id="<?= $ksElement->getId() ?>"
+                   onclick= "this.value = this.checked ? 1 : 0"
+                <?= $ksChecked; ?> />
+            <?php } ?>
+
+
+            <label class="ks-switch-label" for="<?= $ksElement->getId() ?>"></label>
+        </div>
+    </div>
+<?php elseif ($ksType === 'date'): ?>
+    <div class="ks-field-custom ks-datepicker-field">
+        <input type="text"
+               name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+               value="<?= $block->escapeHtmlAttr($ksElement->getValue()) ?>"
+               class="input-text ks-datepicker <?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+               title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"
+               id="<?= $ksElement->getId() ?>"/>
+    </div>
+<?php elseif ($ksType === 'select'): ?>
+    <div class="ks-field-custom ks-field-control-select">
+        <select name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+                class="select<?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+                title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>">
+            <?php foreach ($ksElement->getOptions() as $ksValue): ?>
+                <option
+                    value="<?= $ksValue['value']; ?>" <?php if ($block->escapeHtmlAttr($ksElement->getValue()) == $ksValue['value']) {
+                        echo "selected='selected'";
+                           } ?>>
+                    <?= $block->escapeHtml($ksValue['label']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+<?php elseif ($ksType === 'multiselect'): ?>
+    <?php $ksMultiselectValue = explode(',', $ksElement->getValue()); ?>
+
+    <div class="ks-field-custom ks-field-control-select">
+        <select name="<?= $block->escapeHtmlAttr($ksElement->getName()) . '[]' ?>" multiple
+                class="select<?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+                title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>">
+            <?php foreach ($ksElement->getOptions() as $ksValue):
+                if ($ksValue['value'] == "") {
+                    continue;
+                }
+                ?>
+                <option value="<?= $ksValue['value']; ?>"
+                  <?php if (in_array($ksValue['value'], $ksMultiselectValue)) {
+                        echo "selected='selected'";
+                  } ?>>
+                    <?= $block->escapeHtml($ksValue['label']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+<?php elseif ($ksType === 'weight'): ?>
+    <div class="ks-field-custom ks-control-grouped ks-weight-form-group">
+        <?php $ksHasWeight = (int)$block->getKsProduct()->getTypeInstance()->hasWeight();
+              $ksDisabledWeight = (!$ksHasWeight) ? 'disabled' : '';
+        ?>
+
+        <div class="ks-field-control ks-weight-field-control">
+            <span class="ks-weight-unit"><?= $block->escapeHtmlAttr($block->getKsWeightUnit()) ?></span>
+            <input type="text"
+                   name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+                   value="<?= $ksElement->getValue()? number_format((float)$block->escapeHtmlAttr($ksElement->getValue()),2,'.',''):"" ?>"
+                   class="ks-control-feild<?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+                   title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"
+                   id="weight"
+                   <?= $ksDisabledWeight;?>
+                   />
+        </div>
+        <?php $ksDisabledHasWeight = ($ksHasWeight) && $this->getRequest()->getParam('parent_id') ? 'hidden' : ''; ?>
+        <div id="ks_product_has_weight" class="ks-field-control">
+            <select data-role="weight-switcher" name="product[product_has_weight]" class="ks-select-box" >
+                <option value="1" <?php if ($ksHasWeight == 1) {
+                    echo 'selected="selected"';
+                                  } ?>>
+                    <?= $block->escapeHtml(__('This item has weight')) ?></option>
+                <option value="0" <?php if ($ksHasWeight == 0) { echo 'selected="selected"';} ?> <?= $ksDisabledHasWeight ?>>
+                    <?= $block->escapeHtml(__('This item has no weight')) ?></option>
+            </select>
+        </div>
+    </div>
+<?php elseif ($ksType === 'price'): ?> 
+    <div class="ks-field-custom ks-form-feild-small ks-dollor-sign  <?php if ($ksElement->getName()=='product[price]') { echo "ks-commission-price-div";}?>">
+        <?php if($ksElement->getAttributeCode() =="special_price" 
+        && $block->getKsProduct()->getTypeId()=="bundle"):?>
+            <span>%</span>
+        <?php else: ?>
+            <span><?= $block->getPriceSymbol() ?></span>
+        <?php endif;?>
+        
+        <input type="text"
+               name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+               value="<?= $ksElement->getValue()?number_format((float)$block->escapeHtmlAttr($ksElement->getValue()),2,'.',''):"" ?>"
+               class="ks-control-feild<?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+               title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"/>
+
+        <?php if ($ksElement->getName()=='product[price]'):?>
+            <?php if ($block->getKsProduct()->getTypeId()!="configurable"):?>
+                <a href="#" id="ks_advanced_pricing_link">
+                    <?= $block->escapeHtml(__('Advanced Pricing')) ?>
+                </a>
+                <div id="ks_advanced_pricing_modal" data-mage-init='{"ksAdvancedPriceDialog":{}}'>
+                    <?= $block->getLayout()
+                        ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsAdvancePrice')
+                        ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/ks-advanced-pricing.phtml')->toHtml(); ?>
+                </div>
+            <?php endif; ?>    
+        <?= $block->getLayout()
+            ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsEarningCalculator')
+            ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/ks-earning-calculator-link.phtml')->toHtml(); ?>
+        <?php endif; ?>
+    </div>
+
+<?php elseif ($ksType === 'wysiwyg'): ?>
+    <div class="ks-field-custom">
+            <textarea name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+                title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"
+                class="textarea <?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+                id="<?= $ksElement->getId() ?>"><?= $block->escapeHtml($ksElement->getValue()) ?></textarea>
+        <script>
+            require([
+                "jquery",
+                "mage/adminhtml/wysiwyg/tiny_mce/setup"
+            ], function (jQuery) {
+                kswysiwyg = new wysiwygSetup('<?= $ksElement->getId() ?>', {
+                    "width": "100%", // defined width of editor
+                    "height": "200px", // height of editor
+                    "plugins": [{
+                        "name": "image"
+                    }], // for image
+                    "tinymce": {
+                        "toolbar": "formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link table charmap",
+                        "plugins": "advlist autolink lists link charmap media noneditable table contextmenu paste code help table",
+                    }
+                });
+                kswysiwyg.setup("exact");
+            });
+        </script>
+    </div>
+    <?php elseif ($ksType === 'textarea'): ?>
+        <div class="ks-field-custom">
+            <textarea name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+                      title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"
+                      class="textarea <?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+                      cols="15"
+                      rows="2"><?= $block->escapeHtml($ksElement->getValue()) ?></textarea>
+        </div>
+    <?php elseif ($ksType === 'datetime'): ?>
+        <div class="ks-field-custom ks-datepicker-field">
+        <input type="text"
+               name="<?= $block->escapeHtmlAttr($ksElement->getName()) ?>"
+               value="<?= $block->escapeHtmlAttr($ksElement->getValue()) ?>"
+               class="input-text ks-datetimepicker <?= $block->escapeHtmlAttr($ksElement->getClass()) ?>"
+               title="<?= $block->escapeHtmlAttr($ksElement->getTitle()) ?>"
+               id="<?= $ksElement->getId() ?>"/>
+        </div>
+    <?php elseif ($ksType === 'weee'): ?>
+        <?= $block->getLayout()
+            ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsFixedPrice')
+            ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/ks-product-fixed-price.phtml')
+            ->setAttributeName($block->escapeHtmlAttr($ksElement->getName()))
+            ->setAttributeClass($block->escapeHtmlAttr($ksElement->getClass()))
+            ->setAttributeId($ksElement->getId())
+            ->setAttributeCode($block->escapeHtmlAttr($ksElement->getAttributeCode()))
+            ->toHtml(); ?>
+    <?php endif; ?>

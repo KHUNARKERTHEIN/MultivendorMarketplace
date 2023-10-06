@@ -1,0 +1,106 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Magento\Customer\Block\Form\Register $block */
+$ksStoreDetails = $block->ksGetStoreDetails();
+?>
+
+<!--Seller  Register Start -->
+
+<div id="ks-become-seller" class="ks-become-seller-page">
+    <form class="ks-become-seller-form" action="<?= $block->getUrl('multivendor/account/becomesellersave') ?>" method="post" id="ks-request-seller-form" enctype="multipart/form-data" autocomplete="off" data-mage-init='{"validation":{}}'>
+        <div class="ks-become-seller-header">    
+            <div class="ks-become-seller-title">
+                <h1 class="page-title">Become Seller</h1>
+            </div>
+        </div>
+        <fieldset class="fieldset ks-form-feildset">
+
+            <?php if ($block->ksCheckSellerState() != 0) : ?>
+             <div class="ks-become-seller-button">
+                <button type="button" title="Reset" class="reset primary ks_reset" onclick="window.location.reload();" ><?= __("Reset");?>
+                </button>
+                <button type="submit" title="Save" class="action save primary ks_primary"><?= __("Save");?>
+                </button>
+            </div>
+            <?php endif; ?>
+            <?php if ($block->ksCheckSellerState() == 0) : ?>
+            <div class="messages">
+                <div class="message-notice notice message" data-ui-id="message-notice">
+                    <div>
+                        <?= $block->escapeHtml(__('Approval Status : Pending')) ?>
+                        <br>
+                        <?= $block->escapeHtml(__('If you need any further assistance, please contact to admin.')) ?>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            <?php if ($block->ksCheckSellerState() == 2) : ?>
+            <div class="messages">
+                <div class="message-error error message" data-ui-id="message-error">
+                    <div>
+                        <?= $block->escapeHtml(__('Approval Status : Rejected')) ?>
+                        <br>
+                        <?= $block->escapeHtml(__('Rejection Reason : ')) ?><?= $block->escapeHtml(__($ksStoreDetails ? $ksStoreDetails['reason'] : "")) ?>
+                        <br>
+                        <?= $block->escapeHtml(__('If you need any further assistance, please contact to admin.')) ?>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            <div class="control fieldset ks-seller-store">
+                <div class="field required">
+                    <label for="ks-store-name" class="label">
+                        <span><?= $block->escapeHtml(__('Store Name')) ?></span>
+                    </label>
+                    <div class="control ks-become-seller-field">
+                        <input type="text" name="ks_seller_store_name" title="<?= $block->escapeHtmlAttr(__('Please Enter Store Name')) ?>" id="ks_seller_store_name" class="input-text required-entry" data-validate="{required:true}"  value="<?= $ksStoreDetails ? $ksStoreDetails['store-name'] : "" ?>"/>
+                    </div>
+                    <div id="ks-load" class="no-display">
+                        <img height="18px" width="18px" src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/loader.gif'); ?>" />
+                    </div>
+                </div>
+                <div class="field required">
+                    <label for="ks-store-url" class="label">
+                        <span><?= $block->escapeHtml(__('Store Url')) ?></span>
+                    </label>
+                    <div class="control ks-become-seller-field">
+                        <input type="text" name="ks_seller_store_url" class="ks-seller-store-url required-entry check-store-url validate-store-url" placeholder="Please enter your store url" id="ks_seller_store_url" data-validate="{required:true}" value="<?= $ksStoreDetails ? $ksStoreDetails['store-url'] : "" ?>" />
+                        <input type="hidden" class="ks_check_store_url" value="0" />
+                        <div>
+                            <span>(This will be used to display your public profile)</span>
+                            <a href="javascript:void(0);" class="ks-check-store-available"><?= $block->escapeHtmlAttr(__('Check Availability')) ?></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>          
+    </form>
+</div>
+
+<?php
+
+    $ksSellerFormData = [
+        'ksAjaxVerifyStoreUrl'   => $block->getUrl("multivendor/seller/storeurlverify", ["_secure" => $this->getRequest()->isSecure()]),
+        'ksSuccessMessage' => __("Congratulations! Your Store URL is available."),
+        'ksErrorMessage'   => __("Sorry! This Store URL is already in use."),
+        'button'           => 'button.submit'
+    ];
+    $ksSerializedFormData = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($ksSellerFormData);
+    ?>
+
+<script type="text/x-magento-init">
+    {
+        "#ks-request-seller-form": {
+            "ksVerifySellerStore": <?=  /* @noEscape */ $ksSerializedFormData; ?>
+        }
+    }
+</script>

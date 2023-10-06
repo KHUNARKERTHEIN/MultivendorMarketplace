@@ -1,0 +1,28 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Appreciate Your Feedback  @-->
+<!--@vars {
+"var ks-report-product-customer-name":"Product name"
+} @-->
+<table>
+    <tr class="email-intro">
+        <td>
+            <p> {{trans "Dear %ks_customer_name," ks_customer_name=$ks-report-product-customer-name}}</p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+        	<p>{{trans "Thank you for reporting the issue, we really appreciate your feedback. Our team will be resolving the issue very soon." }} </p>
+        </td>
+    </tr>
+    <p>{{trans "Thank You"}}</p>
+</table>

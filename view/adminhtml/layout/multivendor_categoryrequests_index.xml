@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-backend.css"/>
+        <script src="Ksolves_MultivendorMarketplace::js/category/ks-category-rejection.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/category/ks-category.js"/>
+    </head>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">Ksolves_Multivendor::categoryrequests</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="page.title">
+            <action method="setTitleClass">
+                <argument name="class" xsi:type="string">complex</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <uiComponent name="ks_marketplace_categoryrequests_listing"/>
+            <block class="Magento\Framework\View\Element\Template" name="ks_backend_url" 
+                template="Ksolves_MultivendorMarketplace::ks-script.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::seller/rejection/ks_rejection.phtml" name="ks_seller_rejection"/>
+        </referenceContainer>
+    </body>
+</page>

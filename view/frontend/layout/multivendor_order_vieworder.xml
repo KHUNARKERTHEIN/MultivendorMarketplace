@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <body>
+        <referenceContainer name="content">
+            <container name="main.container" as="mainContainer" label="Main Container" htmlTag="div" htmlClass="ks-order-main-container" htmlId="ks-order-main-container">
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="multivendor_view_increment_id" template="Ksolves_MultivendorMarketplace::order/view/view_increment_id.phtml" cacheable="false">
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="multivendor_order_view_buttons" template="Ksolves_MultivendorMarketplace::order/view/order_view_buttons.phtml" cacheable="false">
+                </block>
+                <container name="page.card" as="pageCard" label="Page Card" htmlTag="div" htmlClass="ks-page-card ks-order-view" htmlId="ks-page-card">
+                    <block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="marketplace_order_view" template="Ksolves_MultivendorMarketplace::order/view/order_info.phtml">                
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="multivendor_order_account_address_info" template="Ksolves_MultivendorMarketplace::order/order_account_address_info.phtml" cacheable="false">
+                        </block>
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="multivendor_order_payment_shipping_info" template="Ksolves_MultivendorMarketplace::order/order_payment_shipping_info.phtml" cacheable="false">
+                        </block>
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="multivendor_order_view" template="Ksolves_MultivendorMarketplace::order/view_order.phtml" cacheable="false">
+                            <container name="extra_customer_info"/>
+                            <block class="Magento\Framework\View\Element\Template" name="gift_options" template="Ksolves_MultivendorMarketplace::order/giftoptions.phtml">
+                                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsGiftMessage" name="order_giftmessage" template="Ksolves_MultivendorMarketplace::order/view/giftmessage.phtml"/>
+                            </block>
+                        </block>
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\Items\KsItems" name="order_items" template="Ksolves_MultivendorMarketplace::order/items/ordered_items.phtml">
+                            <block class="Ksolves\MultivendorMarketplace\Block\Order\Items\KsItems" name="bundle_items" template="Ksolves_MultivendorMarketplace::order/items/bundle/items-renderer.phtml" />
+                        </block>
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\View\KsHistory" name="order_history" template="Ksolves_MultivendorMarketplace::order/view/history.phtml"/>
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\Items\KsItems" name="order_totals" template="Ksolves_MultivendorMarketplace::order/view/totals.phtml"></block>
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\KsPayment" name="order_payment"/>
+                    </block>
+                    <container name="invoice.container" as="invoiceContainer" label="Invoice Container" htmlTag="div" htmlClass="ks-invoice-container col-md-9 pl-5 ks-page-container-pagination" htmlId="ks-invoice-container" >
+                        <uiComponent name="ks_marketplace_seller_sales_order_view_invoice_grid"/>
+                    </container>
+                    <container name="shipment.container" as="shipmentContainer" label="Shipment Container" htmlTag="div" htmlClass="ks-shipment-container col-md-9 pl-5 ks-page-container-pagination" htmlId="ks-shipment-container" >
+                        <uiComponent name="ks_marketplace_seller_sales_order_view_shipment_grid"/>
+                    </container>
+                    <container name="creditmemo.container" as="creditmemoContainer" label="Creditmemo Container" htmlTag="div" htmlClass="ks-creditmemo-container col-md-9 pl-5 ks-page-container-pagination" htmlId="ks-creditmemo-container" >
+                        <uiComponent name="ks_marketplace_seller_sales_order_view_creditmemo_grid"/>
+                    </container>
+                    <container name="commenthistory.container" as="commenthistoryContainer" label="Comment History Container" htmlTag="div" htmlClass="ks-commenthistory-container col-md-9 pl-5 ks-page-container-pagination" htmlId="ks-commenthistory-container" >
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\View\Tab\History" name="order_commenthistory" template="Ksolves_MultivendorMarketplace::order/view/tab/history.phtml"/>
+                    </container>
+                </container>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

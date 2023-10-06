@@ -1,0 +1,144 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Gallery\KsContent $block */
+?>
+
+    <form id="ks_new_video_form"  enctype="multipart/form-data">
+        
+        <fieldset class="fieldset" id="ks_new_video_form_fieldset">
+            <div class="messages"></div>
+            <input name="form_key" value="<?= /* @noEscape */ $block->getFormKey() ?>" type="hidden"/>
+            <input id="ks_item_id" name="" value="" type="hidden"/>
+            <input id="ks_file_name" name="" value="" type="hidden"/>
+            <input id="video_provider" name="video_provider" value="" type="hidden"/>
+            
+            <div class="ks-field required">
+                <label class="label">
+                    <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Url')) ?></span>
+                </label>
+                <div class="ks-field-control">
+                    <input id="ks_video_url" name="video_url" class="edited-data validate-url input-text  required-entry" title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Url')) ?>" type="text"/>
+                    <div class="ks-note">
+                        <?= /* @noEscape */ $block->getKsNoteVideoUrl();?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ks-field required">
+                <label class="label">
+                    <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Title')) ?></span>
+                </label>
+                <div class="ks-field-control">
+                    <input name="video_title" value="" class="edited-data input-text required-entry" title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Title')) ?>" type="text"/>
+                </div>
+            </div>
+
+            <div class="ks-field">
+                <label class="label">
+                    <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Description')) ?></span>
+                </label>
+                <div class="ks-field-control">
+                    <textarea name="video_description" class="edited-data textarea" title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Description')) ?>" rows="2" cols="15" data-ui-id="product-tabs-tab-google-experiment-fieldset-element-textarea-video-description" ></textarea>
+                </div>
+            </div>
+
+            <div class="ks-field">
+                <label class="label">
+                    <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Preview Image')) ?></span>
+                </label>
+                <div class="ks-field-control">
+                    <input id="ks_video_screenshot" name="image" value="" title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Preview Image')) ?>" type="file"/>
+                </div>
+            </div>
+
+            <div class="ks-field ks_video_screenshot_preview ">
+                <label class="label"><span></span></label>
+                <div class="ks-field-control">
+                    <input id="ks_video_screenshot_preview" name="_preview" value="" class="preview_hidden_image_input_button" type="button"/>
+                </div>
+            </div>
+
+            <div class="ks-field ks-video-model-info-btn">
+                <label class="label"><span></span></label>
+                <div class="admin__field-control control">
+                    <input id="ks_video_get" name="ks_video_get" value="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Get Video Information')) ?>" title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Get Video Information')) ?>" class="ks-action-btn ks-action-default" type="button"/>
+                </div>
+            </div>
+
+            <div class="ks-field no-label ks-field-role">
+                <div class="ks-field-control">
+                    <div class="ks-field-role-value">
+                        <?= /* @escapeNotVerified */ $block->escapeHtml(__('Role')) ?>
+                    </div>
+                </div>
+            </div>
+
+            <?php
+            foreach ($block->getKsProductMediaAttributes() as $ksAttribute) :
+                ?>
+                <div class="ks-field ks-feild-video-check">
+                    <label class="label">
+                        <span><?= $block->escapeHtml($ksAttribute->getFrontendLabel()) ?></span>
+                    </label>
+                    <div class="ks-field-control">
+                        <input id="video_<?= $block->escapeHtml($ksAttribute->getAttributeCode()) ?>"
+                            value="<?= $block->escapeHtml(
+                                $ksAttribute->getAttributeCode()
+                                   ) ?>"
+                            class="ks_video_image_role"
+                            title="<?= $block->escapeHtml($ksAttribute->getFrontendLabel()) ?>"
+                            data-role="role-type-selector"
+                            type="checkbox"
+                        />
+                    </div>
+                </div>
+                <?php
+            endforeach;
+            ?>
+
+            <div class="ks-field ks-feild-video-check">
+                <label class="label">
+                    <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Hide from Product Page')) ?></span>
+                </label>
+                <div class="ks-field-control">
+                  <input id="new_video_disabled" name="disabled" title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Hide from Product Page')) ?>" type="checkbox"/>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <div id="ks-video-player-preview-location" class="ks-video-player-sidebar">
+        <div class="ks-video-player-container"></div>
+        <div class="ks-video-information title">
+          <label><?= /* @escapeNotVerified */ $block->escapeHtml(__('Title:')) ?> </label><span></span>
+        </div>
+        <div class="ks-video-information uploaded">
+          <label><?= /* @escapeNotVerified */ $block->escapeHtml(__('Uploaded:')) ?> </label><span></span>
+        </div>
+        <div class="ks-video-information uploader">
+          <label><?= /* @escapeNotVerified */ $block->escapeHtml(__('Uploader:')) ?> </label><span></span>
+        </div>
+        <div class="ks-video-information duration">
+          <label><?= /* @escapeNotVerified */ $block->escapeHtml(__('Duration:')) ?> </label><span></span>
+        </div>
+    </div>
+
+    <script>
+        require(["jquery","mage/mage"],function($) {
+            $(function(){
+                $('#ks_video_popup').mage(
+                    'ksNewVideoDialog',
+                    <?= /* @noEscape */ $block->getKsVideoEncodedOptions();?>
+                );
+            });
+        });
+    </script>

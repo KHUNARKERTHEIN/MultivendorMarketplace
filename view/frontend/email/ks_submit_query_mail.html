@@ -1,0 +1,57 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Query Submitted Notification @-->
+<!--@vars {
+"var ks_customer_name":"Customer Name",
+"var ks_customer_email":"Customer Email",
+"var ks_customer_message":"Customer Message"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+    <tr class="email-intro">
+        <td colspan="2">
+            <p class="greeting">{{trans "Dear %ks_admin_name," ks_admin_name=$ksAdminName}}</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td colspan="2">
+          <p>{{trans "I have submitted query, and requesting for your confirmation for the same."}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+          <p>{{trans "Here is the summary of the same: "}}</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td><strong>{{trans "Name"}}</strong></td>
+        <td>{{var ks_customer_name}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{trans "Email"}}</strong></td>
+        <td>{{var ks_customer_email}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{trans "Message"}}</strong></td>
+        <td>{{var ks_customer_message}}</td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <p>{{trans "Thank You"}}</p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_seller_banners_form.ks_marketplace_seller_banners_form_data_source</item>
+            <item name="deps" xsi:type="string">ks_marketplace_seller_banners_form.ks_marketplace_seller_banners_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Banners</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+        <item name="buttons" xsi:type="array">
+            <item name="save" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\Banners\Buttons\KsSaveButton</item>
+            <item name="reset" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\Banners\Buttons\KsResetButton</item>
+            <item name="delete" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\Banners\Buttons\KsDeleteButton</item>
+            <item name="back" xsi:type="string">Ksolves\MultivendorMarketplace\Block\Adminhtml\Banners\Buttons\KsBackButton</item>
+        </item>
+    </argument>
+    <dataSource name="ks_marketplace_seller_banners_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Model\Banners\KsBannersDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_marketplace_seller_banners_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="multivendor/banners/save"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <fieldset name="banners">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Add Banners</item>
+            </item>
+        </argument>
+        <field name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">id</item>
+                    <item name="source" xsi:type="string">banners</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_picture">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" translate="true" xsi:type="string">Picture</item>
+                    <item name="formElement" xsi:type="string">imageUploader</item>
+                    <item name="componentType" xsi:type="string">imageUploader</item>
+                    <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="allowedExtensions" xsi:type="string">jpg jpeg gif png </item>
+                    <item name="maxFileSize" xsi:type="number">1572864</item>
+                    <item name="dataScope" xsi:type="string">ks_picture</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="multivendor/banners/upload"/>
+                        </item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_title">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Title</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">20</item>
+                    </item>
+                    <item name="notice" xsi:type="string" translate="true">Allowed Characters: Maximum: 20 characters</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">banners</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ks_text">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">25</item>
+                    </item>
+                    <item name="notice" xsi:type="string" translate="true">Allowed Characters: Maximum: 25 characters</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">banners</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

@@ -1,0 +1,124 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+$invoice = $block->getInvoice();
+$ksComments = $block->getKsComments();
+?>
+<form class="entry-edit form-inline" id="invoice_history_section">
+<div class="invoice_history_block" id="invoice_history_block">
+    <div class="order-history-block">
+        <div><input type="hidden" name="id" value="<?= $invoice->getId()?>"></div>
+        <div id="comments_block" class="edit-order-comments">
+            <div class="order-history-block">
+                <div class="admin__field field-row">
+                    <label class="admin__field-label"
+                           for="history_comment"><?= $block->escapeHtml(__('Comment Text')) ?></label>
+                    <div class="admin__field-control">
+                        <textarea name="comment[comment]"
+                                  class="admin__control-textarea"
+                                  rows="3"
+                                  cols="5"
+                                  id="history_comment"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="order-history-comments-options">
+            <?php if ($block->canSendCommentEmail()): ?>
+                <div class="admin__field admin__field-option">
+                    <input name="comment[is_customer_notified]"
+                           type="checkbox"
+                           class="admin__control-checkbox"
+                           id="history_notify"
+                           value="1" />
+                    <label class="admin__field-label"
+                           for="history_notify"><?= $block->escapeHtml(__('Notify Customer by Email')) ?></label>
+                </div>
+            <?php endif; ?>
+            <div class="admin__field admin__field-option">
+                <input name="comment[is_visible_on_front]"
+                       type="checkbox"
+                       id="history_visible"
+                       class="admin__control-checkbox"
+                       value="1" />
+                <label class="admin__field-label"
+                       for="history_visible"> <?= $block->escapeHtml(__('Visible on Storefront')) ?></label>
+            </div>
+        </div>
+    </div>
+    <?php  if($invoice->getKsApprovalStatus()): ?>
+        <ul class="note-list">
+            <?php foreach ($ksComments as  $ksComment): ?>
+                <li>
+                    <span class="note-list-date">
+                        <?= /* @noEscape */ $block->formatDate($ksComment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                    </span>
+                    <span class="note-list-time">
+                        <?= /* @noEscape */ $block->formatTime($ksComment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                    </span>
+                    <span class="note-list-customer">
+                        <?= $block->escapeHtml(__('Customer')) ?>
+                        <?php if ($ksComment->getIsCustomerNotified()): ?>
+                            <span class="note-list-customer-notified"><?= $block->escapeHtml(__('Notified')) ?></span>
+                        <?php else: ?>
+                            <span class="note-list-customer-not-notified">
+                                <?= $block->escapeHtml(__('Not Notified')) ?>
+                            </span>
+                        <?php endif; ?>
+                    </span>
+                    <div class="note-list-comment">
+                        <?= $block->escapeHtml($ksComment->getComment(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php else:?>
+            <?php if($ksComments->getKsCustomerNote()):?>
+                <ul class="note-list">                                                          
+                    <li>
+                        <span class="note-list-date">
+                            <?= /* @noEscape */ $block->formatDate($ksComments->getKsCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                        </span>
+                        <span class="note-list-time">
+                            <?= /* @noEscape */ $block->formatTime($ksComments->getKsCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                        </span>
+                        <span class="note-list-customer">
+                            <?= $block->escapeHtml(__('Customer')) ?>
+                            <?php if ($ksComments->getKsCustomerNoteNotify()): ?>
+                                <span class="note-list-customer-notified"><?= $block->escapeHtml(__('Notified')) ?></span>
+                            <?php else: ?>
+                                <span class="note-list-customer-not-notified">
+                                    <?= $block->escapeHtml(__('Not Notified')) ?>
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                        <div class="note-list-comment">
+                            <?= $block->escapeHtml($ksComments->getKsCustomerNote(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+                        </div>
+                    </li>                           
+                </ul>
+            <?php endif;?>                     
+        <?php endif; ?>
+    <div class="order-history-comments-actions">
+         <button class="comment-button btn-lg" id="comment-invoice">Submit Comment</button>
+    </div>
+</div>
+</form>
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Ksolves_MultivendorMarketplace/js/orderviewajax": {
+                    "InvoiceAjaxUrl": "<?php echo $block->getUrl('multivendor/order_invoice/addcomment'); ?>"
+                }
+            }
+        }
+</script>

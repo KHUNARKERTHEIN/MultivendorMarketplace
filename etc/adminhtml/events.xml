@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- after invoice save -->
+    <event name="sales_order_invoice_save_after">
+        <observer name="Ksolves_MultivendorMarketplace::sales_order_invoice_save_after" instance="Ksolves\MultivendorMarketplace\Observer\KsAfterInvoiceSave" />
+    </event>
+    <!-- after creditmemo save -->
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="Ksolves_MultivendorMarketplace::sales_order_creditmemo_save_after" instance="Ksolves\MultivendorMarketplace\Observer\KsAfterMemoSave" />
+    </event>
+    <!-- after shipment save -->
+    <event name="sales_order_shipment_save_after">
+        <observer name="Ksolves_MultivendorMarketplace::sales_order_shipment_save_after" instance="Ksolves\MultivendorMarketplace\Observer\KsAfterShipmentSave" />
+    </event>
+    <!-- after product save   -->
+    <event name="catalog_product_save_after">
+        <observer name="Ksolves_MultivendorMarketplace::save_product_data" instance="Ksolves\MultivendorMarketplace\Observer\KsAfterProductSave"/>
+    </event>
+    <!-- before product save   -->
+    <event name="catalog_product_save_before">
+        <observer name="Ksolves_MultivendorMarketplace::save_product_data_before" instance="Ksolves\MultivendorMarketplace\Observer\KsBeforeProductSave"/>
+    </event>
+    <!-- before product save   -->
+    <event name="customer_delete_before">
+        <observer name="Ksolves_MultivendorMarketplace::save_product_data_of_seller" instance="Ksolves\MultivendorMarketplace\Observer\KsBeforeCustomerDelete"/>
+    </event>
+</config>

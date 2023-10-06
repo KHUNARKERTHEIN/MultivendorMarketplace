@@ -1,0 +1,263 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+?>
+
+<?php 
+    $ksObjectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $ksFormKey = $ksObjectManager->get('Magento\Framework\Data\Form\FormKey');
+
+    if ($block->getData('ks_product_collection')) {
+        $ksProductData = $block->getData('ks_product_collection');
+    } else {
+
+        $ksProductData = array();
+    } ?>
+<?php if (count($ksProductData)): ?> 
+
+    <div class="table-wrapper ks-assign-prod-list">
+        <div class="ks_assign">
+            <div class="ks_number_of_seller ks-seller-sold-count">
+                <p>
+                   <span>Sold by</span> 
+                   <span class="ks_seller"><?= $ksProductData->getSize(); ?></span> 
+                   <span>more Seller</span>
+                </p>
+            </div>
+        </div>
+        <div class="ks-assign-product-table-list">
+            <table class="data table ks-assign-product-list" id="ks_price_comparsion_list">
+                <div class="toolbar-sorter sorter ks_sort">
+                    <label class="sorter-label" for="sorter"><?= $block->escapeHtml(__('Sort By')) ?></label>
+                    <span id="sorter" data-role="sorter" class="sorter-options"><?= $block->escapeHtml(__('Price')) ?></span>
+                    <select id="sorter" data-role="sorter" class="sorter-options">
+                        <option value="price">
+                            <?= $block->escapeHtml(__('Price')) ?>
+                        </option>
+                    </select>
+                    <?php if ($block->getKsDirection() == 'desc'):?>
+                        <a title="<?= $block->escapeHtmlAttr(__('Set Ascending Direction')) ?>" href="#" class="action sorter-action sort-desc ks-sort-direction" data-role="direction-switcher" data-value="asc">
+                            <span><?= $block->escapeHtml(__('Set Ascending Direction')) ?></span>
+                        </a>
+                    <?php else:?>
+                        <a title="<?= $block->escapeHtmlAttr(__('Set Descending Direction')) ?>" href="#" class="action sorter-action sort-asc ks-sort-direction" data-role="direction-switcher" data-value="desc">
+                            <span><?= $block->escapeHtml(__('Set Descending Direction')) ?></span>
+                        </a>
+                    <?php endif; ?>
+                </div>
+                <thead>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Sellers')) ?></th>
+                        <?php if ($block->getKsProductImageAllowed()): ?>
+                            <th><?= $block->escapeHtml(__('Products')) ?></th>
+                        <?php endif; ?>
+                        <?php if ($block->getKsProductDescriptionAllowed()): ?>
+                            <th><?= $block->escapeHtml(__('Description')) ?></th>
+                        <?php endif; ?>
+                        <?php if ($block->getKsProductConditionAllowed()): ?>
+                            <th><?= $block->escapeHtml(__('Condition')) ?></th>
+                        <?php endif; ?>
+                        <th><?= $block->escapeHtml(__('Availablity')) ?></th>
+                        <th id="ks-price"><?= $block->escapeHtml(__('Price')) ?></th>
+                        <!-- check for downloadabe product -->
+                        <?php if ($block->getData('ks_product_type') == "downloadable") : ?>
+                            <th><?= $block->escapeHtml(__('Sample')) ?></th>
+                            <th><?= $block->escapeHtml(__('Links')) ?></th>
+                        <?php endif; ?>
+                        <th><!--?= $block->escapeHtml(__('Quantity  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add to Cart')) ?--><div class="ks-assign-table-custom-head"><div class="ks-assign-custom-head-child ks-assign-quant"><?= $block->escapeHtml(__('Quantity')) ?></div><div class="ks-assign-custom-head-child ks-assign-add-prod"><?= $block->escapeHtml(__('Add to Cart')) ?></div></div></th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($ksProductData as $ksProduct): ?>
+                        <tr class="ks_price_comparsion_row">
+                            <td>
+                                <div class="ks-price-seller-name">
+                                    <?php if ($ksProduct->getKsSellerId()) : ?>
+                                    <a href="<?= $block->escapeUrl($block->getUrl('multivendor/sellerprofile/sellerprofile',['seller_id'=> $ksProduct->getKsSellerId() ], ['_secure' => $this->getRequest()->isSecure()])) ?>">
+                                        <?php if ($block->getKsSellerLogoAllowed()):
+                                            $ksLogo = $block->getKsSellerStoreLogo($ksProduct->getKsSellerId()); ?>
+                                            <?php if ($ksLogo):?>
+                                            <img class="ks-seller-product-icon" src="<?= $ksLogo; ?>"/>
+                                            <?php else: ?>
+                                                <img class="ks-seller-product-icon" src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/store-logo.png') ?> "/>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        <br></a>
+                                        <a href="<?= $block->escapeUrl($block->getUrl('multivendor/sellerprofile/sellerprofile',['seller_id'=> $ksProduct->getKsSellerId() ], ['_secure' => $this->getRequest()->isSecure()])) ?>" class="ks-seller-name"><?= $block->getKsSellerStoreName($ksProduct->getKsSellerId()) ?></a>
+                                        <?= $block->getChildHtml('ks_price_comparsion_report_seller'); ?>
+                                    <?php else : ?>
+                                            <span class="ks-seller-product-icon"><?= $this->getLayout()->createBlock("Magento\Theme\Block\Html\Header\Logo")->setTemplate("Magento_Theme::html/header/logo.phtml")->toHtml(); ?></span>
+                                    <?php endif; ?>
+                                    </div>
+                            </td>
+                            <?php if ($block->getKsProductImageAllowed()): ?>
+                            <td>
+                                <div class="ks_text-center">
+                                    <!--img width="75px" height="75px" src="<//?= $this->helper('Magento\Catalog\Helper\Image')
+                                        ->init($ksProduct, 'product_base_image')
+                                        ->getUrl();
+                                    ?>"/-->
+                                    <a href="#" class="ks-price-table-view-img"><span>View Images</span><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/view-img.png') ?>"/></a>
+                                    <div id="ks-product-report-seller" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/report-flag-icon.svg') ?>"/></div>
+                                </div>
+                            </td>
+                            <?php endif; ?>
+                            <?php if ($block->getKsProductDescriptionAllowed()): ?>
+                                <td>
+                                    <div>
+                                        <?= substr($ksProduct->getDescription(), 0, 20); ?>
+                                    </div>
+                                </td>
+                            <?php endif; ?>
+                            <?php if ($block->getKsProductConditionAllowed()): ?>
+                                <?php if ($ksProduct->getKsProductStage()): ?>
+                                    <td>
+                                        <div class="ks_product_condition_new">NEW</div>
+                                    </td>
+                                <?php else: ?>
+                                    <td>
+                                        <div class="ks_product_condition_used">USED</div>
+                                    </td>
+                                <?php endif ; ?>
+                            <?php endif ; ?>
+                            <td>
+                                <?php if ($ksProduct->isAvailable()): ?>
+                                    <div>
+                                        IN STOCK
+                                    </div>
+                                <?php else: ?>
+                                    <div>
+                                        OUT OF STOCK
+                                    </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <div class="ks_assign_product_price">
+
+                                    <?=$block->getKsCurrentCurrency().number_format((float)$ksProduct->getPrice(), 2); ?>
+                                <div>
+                            </td>
+                            <!-- check for downloadabe product -->
+                            <?php if ($ksProduct->getTypeId() == "downloadable") : ?>
+                                <td>
+                                    <div class="ks_downloadable_product_sample">
+                                        <?php $ksSamples = $block->getKsSampleData($ksProduct->getSku());
+                                        foreach ($ksSamples as $ksSample) : ?>
+                                            <span><a href="<?= $block->getUrl('downloadable/download/sample', ['sample_id' => $ksSample->getId()], ['_secure' => $this->getRequest()->isSecure()]) ?>" onclick="this.target='_blank'" class="item-link samples-item-link"><?= $ksSample->getTitle(); ?></a></span>
+                                        <?php endforeach; ?>
+                                    <div>
+                                </td>
+                                <td>
+                                    <div class="ks_downloadable_product_links">
+                                        <?php $ksLinks = $block->getKsLinksData($ksProduct->getSku());
+                                        foreach ($ksLinks as $ksLink) : ?>
+                                            <span><a href="<?= $block->getUrl('downloadable/download/linkSample', ['link_id' => $ksLink->getId()], ['_secure' => $this->getRequest()->isSecure()]) ?>" onclick="this.target='_blank'" class="sample link"><?= $ksLink->getTitle(); ?></a></span>
+                                        <?php endforeach; ?>
+                                    <div>
+                                </td>
+                            <?php endif; ?> 
+                            <?php if ($ksProduct->IsSalable()): ?>
+                                <td class="ks-assign-table-custom-body">
+                                    <form data-role="tocart-form" action="<?= $block->escapeUrl($this->helper(Magento\Catalog\Helper\Product\Compare::class)->getAddToCartUrl($ksProduct)) ?>" method="post" class="product_addtocart_form ks-assign-pro-count-form">
+                                        <div class="ks-add-to-cart">
+                                            <input type="hidden" name="product" value="<?= $ksProduct->getId(); ?>" />
+                                            <input name="form_key" type="hidden" value="<?php echo $ksFormKey->getFormKey();?>" />
+                                            <input type="hidden" name="item" value="<?= $ksProduct->getId(); ?>"/>
+                                            <div class="ks-assign-custom-table-body">
+                                                <div class="ks-assign-pro-table-count">
+                                                    <button class="ks-subtract-Qty style-button">-</button>
+                                                    <input type="number" name="qty" class="ks-qty" min="0" value="<?= $block->getKsProductDefaultQty($ksProduct); /*1*/ ?>" title="<?= __('Qty') ?>" class="input-text qty" data-validate="<?= $block->escapeHtml(json_encode($block->getKsQuantityValidators())) ?>"/>
+                                                    <button class="ks-add-Qty style-button">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="ks-assign-custom-table-body ks-assign-add-prod-button">
+                                                <button type="submit" class="action tocart primary ks-add-to-cart-button product-updatecart-button">
+                                                    <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                </button>
+                                            </div>                                         
+                                        </div>
+                                    </form>
+                                </td>
+                            <?php endif; ?>
+                            <div id="ks-product-images-slider" style="display: none;">
+                                <div class="ks-aaign--pro-slider">
+                                    <ol class="ks-aaign-product-img-slider">
+                                        <li>
+                                            <div class="ks-product-image"> 
+                                                <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-profile-product.png') ?>"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ks-product-image"> 
+                                                <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-profile-product.png') ?>"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ks-product-image"> 
+                                                <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-profile-product.png') ?>"/>
+                                            </div>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </tr>
+                        
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+<?php endif; ?>
+
+<script>
+require([
+    'jquery', 'owl_carousel'
+    ], function ($) {
+        $(document).ready(function() {
+            $('.ks-aaign-product-img-slider').owlCarousel({
+                loop:true,
+                nav:true,
+                responsiveClass: true,
+                center:false,
+                items:1,
+                // autoplay:true,
+                autoplayHoverPause: true,
+                autoplayTimeout:3000,
+                responsive : {
+                    //breakpoint from 0 and up
+                    0 : {
+                        items : 1,
+                    },
+                    // add as many breakpoints as desired , breakpoint from 480 up
+                    480 : {
+                        items:1,
+                    },
+                    // breakpoint from 768 up
+                    768 : {
+                        items:1,
+                    },
+                    992 :{
+                        items:1,
+                    },
+                }
+            });
+
+            $('.ks-price-table-view-img').click(function(){
+                var $ksBannerOwl = $('.ks-aaign-product-img-slider');
+                if ($ksBannerOwl.data('owlCarousel')) {
+                    $ksBannerOwl.data('owlCarousel').onThrottledResize();
+                }
+            })
+        });
+    });
+</script>

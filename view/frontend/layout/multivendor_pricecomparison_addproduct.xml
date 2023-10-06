@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <body>
+        <referenceContainer name="content">
+			<block class="Ksolves\MultivendorMarketplace\Block\PriceComparison\KsForm" name="ks_price_comparison_product_form" template="Ksolves_MultivendorMarketplace::product/form/ks-product-form.phtml">
+			</block>
+		</referenceContainer>
+
+        <referenceContainer name="ks_price_comparison_product_form">
+            <block class="Ksolves\MultivendorMarketplace\Block\PriceComparison\KsPriceComparisonProductTabs" name="ks_price_comparison_product_tabs">
+
+                <block class="Ksolves\MultivendorMarketplace\Block\PriceComparison\KsConfigurableProductTab" name="ks_product_configurable" template="Ksolves_MultivendorMarketplace::price-comparison/ks_configurable_tab.phtml">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Configurations</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">ks-product-configurable</argument>
+                    <argument name="block" xsi:type="string">ks_product_configurable</argument>
+                    <argument name="aftertab" xsi:type="string">content</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Downloadable\KsDownloadable" name="ks.downloadable.product" template="Ksolves_MultivendorMarketplace::product/form/tabs/downloadable/ks-downloadable-product.phtml">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Downloadable Information</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">downloadable-product</argument>
+                    <argument name="block" xsi:type="string">ks.downloadable.product</argument>
+                    <argument name="aftertab" xsi:type="string">content</argument>
+                </action>
+            </block>
+        </referenceContainer>
+
+        <!-- downloadable product -->
+        <referenceBlock name="ks.downloadable.product">
+            <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Downloadable\KsLinks" name="ks-add-downloadable-links" template="Ksolves_MultivendorMarketplace::product/form/tabs/downloadable/ks-links.phtml" cacheable="false"/>
+            <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Downloadable\KsSamples" name="ks-add-downloadable-samples" template="Ksolves_MultivendorMarketplace::product/form/tabs/downloadable/ks-samples.phtml" cacheable="false"/>
+        </referenceBlock>
+    </body>
+</page>

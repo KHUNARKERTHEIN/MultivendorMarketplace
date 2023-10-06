@@ -1,0 +1,114 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var $blockKsolves\MultivendorMarketplace\Block\Order\Shipment\View\KsTracking
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+
+/** @var \Magento\Shipping\Helper\Data $shippingHelper */
+$shippingHelper = $block->getData('shippingHelper');
+$ksShipmentId = $block->getKsShipmentId();
+?>
+
+<!-- Shipping and Tracking Information table start-->
+
+<form id="tracking-shipping-form" data-mage-init='{"validation": {}}'>
+    <div id="ks-tracking-section">
+        <div id="ks-shipment-track">
+            <input type="hidden" name="form_key" value="<?php $block->getFormKey();?>"/>
+            <div class="ks-advance-table mt-4">
+                <table class="data-table ks-tiers_table table" id="shipment_tracking_info">
+                    <thead>
+                        <tr class="headings">
+                            <!-- Carrier -->
+                            <th class="col-title"><?= $block->escapeHtml(__('Title')) ?></th>
+                            <th class="col-number"><?= $block->escapeHtml(__('Number')) ?></th>
+                            <th class="col-delete ks-col-delete last"><?= $block->escapeHtml(__('Action')) ?></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <input type="hidden" id="carrier" name="carrier" value="custom" class="select ks-control-feild "/>
+                            <!-- <td class="col-carrier">
+                                
+                            </td> -->
+                            <td class="col-title">
+                                <input class="input-text ks-control-feild "
+                                type="text"
+                                id="tracking_title"
+                                name="title"
+                                value="" />
+                            </td>
+                            <td class="col-number">
+                                <input class="input-text required-entry ks-control-feild "
+                                type="text"
+                                id="tracking_number"
+                                name="number"
+                                value="" />
+                            </td>
+                            <td class="col-delete last ks-col-actions-add"><button id="ks-add-track" class="primary"><span><?= $block->escapeHtml('Add')?></span></button></td>
+                        </tr>
+                    </tfoot>
+                    <?php if ($_tracks = $block->getKsTracks($ksShipmentId)): ?>
+                        <?php if($block->isKsShipmentApproved()) :?>
+                            <tbody>
+                                <?php $i = 0; foreach ($_tracks as $_track): $i++ ?>
+                                    <tr class="<?= /* @noEscape */ ($i%2 == 0) ? 'even' : 'odd' ?>">
+                                        <!-- carrier -->
+                                        <td class="col-title"><?= $block->escapeHtml($_track->getTitle()) ?></td>
+                                        <td class="col-number">
+                                            <?= $block->escapeHtml($_track->getTrackNumber()) ?>
+                                        </td>
+                                        <td class="col-delete ks-col-delete last ks-col-delete">
+                                            <button class="action-delete" type="button" id="del-track-<?= (int) $_track->getId() ?>" track-id="<?=$_track->getId();?>">
+                                                <span><?= $block->escapeHtml(__('Delete')) ?></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        <?php else:?>
+                            <tbody>
+                                <?php $i = 0; foreach ($_tracks as $_track): $i++ ?>
+                                    <tr class="<?= /* @noEscape */ ($i%2 == 0) ? 'even' : 'odd' ?>">
+                                        <!-- carrier -->
+                                        <td class="col-title"><?= $block->escapeHtml($_track->getKsTitle()) ?></td>
+                                        <td class="col-number">
+                                            <?= $block->escapeHtml($_track->getKsTrackNumber()) ?>
+                                        </td>
+                                        <td class="col-delete ks-col-delete last ks-col-delete">
+                                            <button class="action-delete" type="button" id="del-track-<?= (int) $_track->getId() ?>" track-id="<?=$_track->getId();?>">
+                                                <span><?= $block->escapeHtml(__('Delete')) ?></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Shipping and Tracking Information table end-->
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Ksolves_MultivendorMarketplace/js/sales/shipment/shipmenttracking": {
+            "shipment_id": "<?= $ksShipmentId ?>"
+        }
+    }
+}
+</script>

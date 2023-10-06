@@ -1,0 +1,112 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<div data-mage-init='{"ksUpsellDialog":{}}'>
+    <div class="ks-fieldset-wrapper-title">
+        <strong class="ks-product-title"><?= $block->escapeHtml(__('Up-Sell Products')) ?></strong>
+        <div class="ks-fieldset ks-product-content">
+            <a href="#" class="ks-add-upsell-product ks-action-btn ks-secondry ks-secondry-child ks-btn-padding" data-title="<?= $block->escapeHtml(__("Add Up-Sell Products")) ?>">
+                <span><?= $block->escapeHtml(__("Add Up-Sell Products")) ?></span>
+            </a>
+            <p>
+                <?= $block->escapeHtml(__('An up-sell item is offered to the customer as a pricier or higher-quality alternative to the product the customer is looking at.')) ?>
+            </p>
+        </div>
+        <div id="ks_upsell_product_modal" class="ks-product-model-table-style"></div>
+
+        <script type="text/x-magento-template" id="ks_upsell_product_template">
+        <tr class="ks-gridrow pointer" data-role="row">
+            <td data-column="info" class="col-draggable col-info">
+                <span class="ks-draggable-handle"></span>
+                <input
+                    type="hidden"
+                    name="links[upsell][<%- data.id %>][id]"
+                    value="<%- data.id %>"
+                    data-role="id" />
+                <input
+                    type="hidden"
+                    name="links[upsell][<%- data.id %>][position]"
+                    value="<%- data.position %>"
+                    data-role="position" />
+            </td>
+            <td data-column="id" class="col-id">
+                <%- data.id %>
+            </td>
+            <td data-column="thumbnail" class="col-thumbnail data-grid-thumbnail-cell">
+                <img src="<%- data.thumbnail %>" />
+            </td>
+            <td data-column="name" class="editable col-name">
+                <%- data.name %>
+            </td>
+            <td data-column="status" class="col-status">
+                <%- data.status %>
+            </td>
+            <td data-column="attributeset" class="col-attributeset">
+                <%- data.attributeset %>
+            </td>
+            <td data-column="sku" class="col-sku">
+                <%- data.sku %>
+            </td>
+            <td data-column="price" class="col-price">
+                <%- data.price %>
+            </td>
+            <td data-column="actions" class="col-actions">
+                <button
+                    type="button"
+                    class="action-delete"
+                    data-role="delete">Remove</button>
+            </td>
+        </tr>
+        </script>
+        <div class="table-wrapper grid-container no-display ks-product-table-details">
+            <!--add custom paging-->
+            <?= $block->getLayout()
+                ->createBlock('Magento\Framework\View\Element\Template')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/link-item/ks-custom-paging.phtml')
+                ->toHtml();?>
+            <table class="data table data-grid" data-role="upsell-product-grid" data-products="<?= $block->escapeHtml($this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->getKsLinkProducts('upsell'))); ?>">
+                <thead>
+                    <tr class="headings">
+                        <th data-column="info" class="col-draggable no-link col-info">
+                            <span></span>
+                        </th>
+                        <th data-column="id" class="no-link col-id">
+                            <span><?= __('ID') ?></span>
+                        </th>
+                        <th data-column="thumbnail" class="no-link col-thumbnail">
+                            <span><?= $block->escapeHtml(__('Thumbnail')) ?></span>
+                        </th>
+                        <th data-column="name" class="no-link col-name">
+                            <span><?= $block->escapeHtml(__('Name')) ?></span>
+                            </th>
+                        <th data-column="status" class="no-link col-status">
+                            <span><?= $block->escapeHtml(__('Status')) ?></span>
+                        </th>
+                        <th data-column="attributeset" class="no-link col-attributeset">
+                            <span><?= $block->escapeHtml(__('Attribute set')) ?></span>
+                        </th>
+                        <th data-column="sku" class="no-link col-sku">
+                            <span><?= $block->escapeHtml(__('SKU')) ?></span>
+                        </th>
+                        <th data-column="price" class="no-link col-price">
+                            <span><?= $block->escapeHtml(__('Price')) ?></span>
+                        </th>
+                        <th data-column="actions" class="last no-link col-actions">
+                            <span><?= $block->escapeHtml(__('Actions')) ?></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

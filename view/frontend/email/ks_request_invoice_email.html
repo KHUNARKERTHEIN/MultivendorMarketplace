@@ -1,0 +1,43 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Invoice Request  @-->
+<!--@vars {
+"var ks-request-id":"Invoice",
+"var ks-invoice-date":"Invoice Date",
+"var ks-invoice-name":"Bill-to Name",
+"var ks-invoice-status": "Status",
+"var ks-total-amount":"Total Amount"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+  <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_admin_name," ks_admin_name=$ksAdminName}}</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+      <td>
+        <p>{{trans "I have submitted invoice and requesting for your approval for the same."}}</p>
+        <p>{{trans "Here is the invoice summary of the same: "}}</p>
+        <ul>
+          <li><strong>{{trans "Invoice:"}}</strong> {{var ks-request-id}}</li>
+          <li><strong>{{trans "Invoice Date:"}}</strong> {{var ks-invoice-date}}</li>
+          <li><strong>{{trans "Bill-to Name:"}}</strong> {{var ks-invoice-name}}</li>
+          <li><strong>{{trans "Amount:"}}</strong> {{var ks-total-amount}}</li>
+        </ul>
+      </td>
+    </tr>
+    <p>{{trans "Thank You"}}</p>
+</table>
+
+{{template config_path="design/email/footer_template"}}

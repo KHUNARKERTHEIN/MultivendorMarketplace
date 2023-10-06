@@ -1,0 +1,29 @@
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+.customer-account-create .ks-seller-store .field {
+  margin-top: 15px;
+}
+.ks-check-store-available {
+  float: right;
+  font-size: 13px;
+}
+.ks-choose-become-seller .label {
+  margin-bottom: 8px;
+  display: block;
+}
+.ks-mt-1 {
+  margin-top: 0.5rem;
+}
+.ks-choose-become-seller {
+  margin-bottom: 20px !important;
+  border-bottom: none !important;
+  padding-bottom: 0px !important;
+}

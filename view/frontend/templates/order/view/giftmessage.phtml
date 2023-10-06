@@ -1,0 +1,158 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+<!-- Gifts section child div start -->
+<?php if ($block->canDisplayGiftmessage()) : ?>
+  <?php $_required = $block->getMessage()->getMessage() != '' ?>
+    <?php if($block->checkGiftMessageEditAllowed()):?>
+    <div id="<?= $block->escapeHtmlAttr($block->getHtmlId()) ?>" >
+      <form class="entry-edit" id="<?= $block->escapeHtmlAttr($block->getFieldId('form')) ?>" action="<?= $block->escapeUrl($block->getSaveUrl()) ?>">
+
+        <!-- Order tab div title start -->
+        <div class="ks-order-information">
+            <div class="ks-div-title">
+              <span><?= $block->escapeHtml(__('Gift Message for the Entire Order')) ?></span>
+            </div>
+        </div>
+        <!-- Order tab div title end -->
+
+        <fieldset class="mt-4 ml-5">
+          <input type="hidden" id="<?= $block->escapeHtmlAttr($block->getFieldId('type')) ?>"
+          name="<?= $block->escapeHtmlAttr($block->getFieldName('type')) ?>"
+          value="order"/>
+
+          <div class="<?= $_required ? ' required' : '' ?> ks-field-full-width mt-4 mb-4">
+            <label for="<?= $block->escapeHtmlAttr($block->getFieldId('sender')) ?>">
+              <span><?= $block->escapeHtml(__('From Name')) ?></span>
+            </label>
+
+            <div>
+              <input class="ks-control-feild <?= $_required ? 'required-entry' : '' ?>" type="text"
+              id="<?= $block->escapeHtmlAttr($block->getFieldId('sender')) ?>"
+              name="<?= $block->escapeHtmlAttr($block->getFieldName('sender')) ?>"
+              value="<?= $block->escapeHtml($block->getMessage()->getSender()) ?>"/>
+            </div>
+          </div>
+
+          <div class="<?= $_required ? ' required' : '' ?> ks-field-full-width mt-4 mb-4">
+            <label for="<?= $block->escapeHtmlAttr($block->getFieldId('recipient')) ?>">
+              <span><?= $block->escapeHtml(__('To Name')) ?></span>
+            </label>
+
+            <div>
+              <input class="<?= $_required ? 'required-entry' : '' ?> ks-control-feild" type="text"
+              id="<?= $block->escapeHtmlAttr($block->getFieldId('recipient')) ?>"
+              name="<?= $block->escapeHtmlAttr($block->getFieldName('recipient')) ?>"
+              value="<?= $block->escapeHtml($block->getMessage()->getRecipient()) ?>"/>
+            </div>
+          </div>
+
+          <div class="ks-field-full-width mt-4 mb-4">
+            <label for="<?= $block->escapeHtmlAttr($block->getFieldId('message')) ?>">
+              <span><?= $block->escapeHtml(__('Gift Message')) ?></span>
+            </label>
+
+            <div>
+              <textarea id="<?= $block->escapeHtmlAttr($block->getFieldId('message')) ?>"
+                name="<?= $block->escapeHtmlAttr($block->getFieldName('message')) ?>"
+                class="ks-control-feild"
+                rows="2"
+                cols="15"><?= $block->escapeHtml($block->getMessage()->getMessage()) ?></textarea>
+              </div>
+          </div>
+        </fieldset>  
+
+        <div>
+          <button type="button" id="giftmessage-btn" class="ks-action-btn ks-btn-grey">Save Gift Message</button>
+        </div>
+      </form>
+    </div>
+
+  <?php else: ?>
+    <div id="<?= $block->escapeHtmlAttr($block->getHtmlId()) ?>" >
+      <form class="entry-edit" id="<?= $block->escapeHtmlAttr($block->getFieldId('form')) ?>" action="<?= $block->escapeUrl($block->getSaveUrl()) ?>">
+        
+        <!-- Order tab div title start -->
+        <div class="ks-order-information">
+            <div class="ks-div-title">
+              <span><?= $block->escapeHtml(__('Gift Message for the Entire Order')) ?></span>
+            </div>
+        </div>
+        <!-- Order tab div title end -->
+        
+        <fieldset class="mt-4 ml-5">
+          <input type="hidden" id="<?= $block->escapeHtmlAttr($block->getFieldId('type')) ?>"
+          name="<?= $block->escapeHtmlAttr($block->getFieldName('type')) ?>"
+          value="order"/>
+
+          <div class="<?= $_required ? ' required' : '' ?> ks-field-full-width mt-4 mb-4">
+            <label for="<?= $block->escapeHtmlAttr($block->getFieldId('sender')) ?>">
+              <span><?= $block->escapeHtml(__('From Name')) ?></span>
+            </label>
+
+            <div>
+              <input class="ks-control-feild <?= $_required ? 'required-entry' : '' ?>" readonly type="text"
+              id="<?= $block->escapeHtmlAttr($block->getFieldId('sender')) ?>"
+              name="<?= $block->escapeHtmlAttr($block->getFieldName('sender')) ?>"
+              value="<?= $block->escapeHtml($block->getMessage()->getSender()) ?>"/>
+            </div>
+          </div>
+
+          <div class="<?= $_required ? ' required' : '' ?> ks-field-full-width mt-4 mb-4">
+            <label for="<?= $block->escapeHtmlAttr($block->getFieldId('recipient')) ?>">
+              <span><?= $block->escapeHtml(__('To Name')) ?></span>
+            </label>
+
+            <div>
+              <input class="<?= $_required ? 'required-entry' : '' ?> ks-control-feild" readonly type="text"
+              id="<?= $block->escapeHtmlAttr($block->getFieldId('recipient')) ?>"
+              name="<?= $block->escapeHtmlAttr($block->getFieldName('recipient')) ?>"
+              value="<?= $block->escapeHtml($block->getMessage()->getRecipient()) ?>"/>
+            </div>
+          </div>
+
+          <div class="ks-field-full-width mt-4 mb-4">
+            <label for="<?= $block->escapeHtmlAttr($block->getFieldId('message')) ?>">
+              <span><?= $block->escapeHtml(__('Gift Message')) ?></span>
+            </label>
+
+            <div>
+              <textarea readonly id="<?= $block->escapeHtmlAttr($block->getFieldId('message')) ?>"
+                name="<?= $block->escapeHtmlAttr($block->getFieldName('message')) ?>"
+                class="ks-control-feild"
+                rows="2"
+                cols="15"><?= $block->escapeHtml($block->getMessage()->getMessage()) ?></textarea>
+              </div>
+          </div>
+        </fieldset> 
+
+        <div>
+          <button type="button" id="giftmessage-btn" class="ks-action-btn ks-btn-grey" disabled>Save Gift Message</button>
+        </div>     
+      </form>
+    </div>
+  <?php endif ?>
+<?php endif ?>
+<!-- Gifts section child div end -->
+
+<script type="text/x-magento-init">
+{
+  "*": {
+    "Ksolves_MultivendorMarketplace/js/sales/order/orderviewajax": {
+    "AjaxUrl": "<?php echo $block->getSaveUrl(); ?>",
+    "FormId": "<?php echo $block->getHtmlId(); ?>",
+    "EditAllowed" : "<?php echo $block->checkGiftMessageEditAllowed(); ?>",
+    "AjaxCommentUrl" : "<?php echo $block->getKsCommentAjaxUrl(); ?>"
+    }
+  }
+}
+</script>

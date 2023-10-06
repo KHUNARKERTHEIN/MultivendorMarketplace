@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+	<update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+
+	<body>
+		<referenceContainer name="content">
+            <block class="Magento\Backend\Block\Store\Switcher" name="ks_switcher"
+                   template="Ksolves_MultivendorMarketplace::store/ks_product_switcher.phtml">
+                <action method="setUseConfirm">
+                    <argument name="params" xsi:type="string">1</argument>
+                </action>
+            </block>
+            <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\KsForm" name="ks_product_form" template="Ksolves_MultivendorMarketplace::product/form/ks-product-form.phtml" />
+            <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsAttributeSet" template="Ksolves_MultivendorMarketplace::product/form/tabs/configurable/ks-attribute-set-pop-up.phtml" name="ks-attribute-set-pop-up"/>
+		</referenceContainer>
+
+	    <referenceContainer name="ks_product_form">
+	        <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\KsProductTabs" name="ks_product_tabs">
+
+                <uiComponent name="ks_product_review_listing"/>
+
+	        	<block class="Magento\Framework\View\Element\Template" name="ks.product.reviews">
+	        		<arguments>
+	                    <argument name="label" xsi:type="string" translate="true">Product Reviews</argument>
+                        <argument name="uicomponent" xsi:type="string">ks_product_review_listing</argument>
+	                </arguments>
+	        	</block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">product-reviews</argument>
+                    <argument name="block" xsi:type="string">ks.product.reviews</argument>
+                    <argument name="aftertab" xsi:type="string">content</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsConfigurable" name="ks.product.configurable" template="Ksolves_MultivendorMarketplace::product/form/tabs/configurable/ks-configurable.phtml">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Configurations</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">product-configurable</argument>
+                    <argument name="block" xsi:type="string">ks.product.configurable</argument>
+                    <argument name="aftertab" xsi:type="string">content</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsWebsites" name="ks.product.websites">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Product in Websites</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">product-websites</argument>
+                    <argument name="block" xsi:type="string">ks.product.websites</argument>
+                    <argument name="aftertab" xsi:type="string">search-engine-optimization</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsRelated" name="ks.product.related" template="Ksolves_MultivendorMarketplace::product/form/tabs/ks-link-products.phtml" cacheable="false">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Related Products, Up-Sells, and Cross-Sells </argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">product-related</argument>
+                    <argument name="block" xsi:type="string">ks.product.related</argument>
+                    <argument name="aftertab" xsi:type="string">search-engine-optimization</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Group\KsGroupedProduct" name="ks.product.grouped" template="Ksolves_MultivendorMarketplace::product/form/tabs/ks-grouped-products.phtml" cacheable="false">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Grouped Products</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">product-grouped</argument>
+                    <argument name="block" xsi:type="string">ks.product.grouped</argument>
+                    <argument name="aftertab" xsi:type="string">content</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsProductAlert" name="ks.product.alert" template="Ksolves_MultivendorMarketplace::product/form/tabs/ks-product-alert.phtml">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Product Alerts</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">product-alert</argument>
+                    <argument name="block" xsi:type="string">ks.product.alert</argument>
+                    <argument name="aftertab" xsi:type="string">product-related</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsOptions" name="ks.product.custom.options"
+                    template="Ksolves_MultivendorMarketplace::product/form/tabs/ks-custom-options.phtml">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Customizable Options</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">product-custom-options</argument>
+                    <argument name="block" xsi:type="string">ks.product.custom.options</argument>
+                    <argument name="aftertab" xsi:type="string">product-alert</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsAttribute" name="ks.product.scalable.quantity" template="Ksolves_MultivendorMarketplace::product/form/tabs/ks-product-scalable-quantity.phtml">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Product Salable Quantity</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">product-scalable-quantity</argument>
+                    <argument name="block" xsi:type="string">ks.product.scalable.quantity</argument>
+                    <argument name="aftertab" xsi:type="string">product-websites</argument>
+                </action>
+
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Downloadable\KsDownloadable" name="ks.downloadable.product"
+                       template="Ksolves_MultivendorMarketplace::product/form/tabs/downloadable/ks-downloadable-product.phtml">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Downloadable Information</argument>
+                    </arguments>
+                </block>
+                <action method="addKsTabAfter">
+                    <argument name="name" xsi:type="string">downloadable-product</argument>
+                    <argument name="block" xsi:type="string">ks.downloadable.product</argument>
+                    <argument name="aftertab" xsi:type="string">gift-options</argument>
+                </action>
+
+	        </block>
+
+	    </referenceContainer>
+
+        <!-- configurable product -->
+        <referenceBlock name="ks.product.configurable">
+            <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Configurable\Variations\Config\KsMatrix" name="ks.product.matrix" template="Ksolves_MultivendorMarketplace::product/form/tabs/configurable/ks-matrix.phtml" cacheable="false"/>
+        </referenceBlock>
+        <referenceBlock name="ks.product.matrix">
+            <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Component\KsStepsWizard" name="ks-variation-steps-wizard">
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Configurable\Steps\KsSelectAttributes" name="ks-step1" template="Ksolves_MultivendorMarketplace::product/form/tabs/configurable/attribute/steps/ks-select_attributes.phtml">
+                    <uiComponent name="ks_product_attributes_listing"/>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Configurable\Steps\KsAttributeValues" name="ks-step2" template="Ksolves_MultivendorMarketplace::product/form/tabs/configurable/attribute/steps/ks-attributes_values.phtml"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Configurable\Steps\KsBulk" name="ks-step3" template="Ksolves_MultivendorMarketplace::product/form/tabs/configurable/attribute/steps/ks-bulk.phtml"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Configurable\Steps\KsSummary" name="ks-step4" template="Ksolves_MultivendorMarketplace::product/form/tabs/configurable/attribute/steps/ks-summary.phtml"/>
+            </block>
+        </referenceBlock>
+
+        <!-- downloadable product -->
+        <referenceBlock name="ks.downloadable.product">
+            <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Downloadable\KsLinks" name="ks-add-downloadable-links" template="Ksolves_MultivendorMarketplace::product/form/tabs/downloadable/ks-links.phtml" cacheable="false"/>
+            <block class="Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Downloadable\KsSamples" name="ks-add-downloadable-samples" template="Ksolves_MultivendorMarketplace::product/form/tabs/downloadable/ks-samples.phtml" cacheable="false"/>
+        </referenceBlock>
+	</body>
+</page>

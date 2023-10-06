@@ -1,0 +1,85 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+$ksStockCollection = $block->getKsStockCollection();
+$ksPriceCollection = $block->getKsPriceCollection();
+?>
+<h4><?= $block->escapeHtml(__('Alert Stock'));?></h4>
+     <div class="table-wrapper ks-product-table-details">
+        <table class="data table data-grid">
+            <thead>
+                <tr class="headings">
+                    <th><?= $block->escapeHtml(__('First Name')) ?></th>
+                    <th><?= $block->escapeHtml(__('Last Name')) ?></th>
+                    <th><?= $block->escapeHtml(__('Email')) ?></th>
+                    <th><?= $block->escapeHtml(__('Subscribe Date')) ?></th>
+                    <th><?= $block->escapeHtml(__('Last Notified')) ?></th>
+                    <th><?= $block->escapeHtml(__('Send Count')) ?></th>
+                    <th><?= $block->escapeHtml(__('Website')) ?></th>
+                    <th><?= $block->escapeHtml(__('Stock')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (count($ksStockCollection) > 0):?>
+                    <?php foreach ($ksStockCollection as $ksStock):?>
+                        <tr>
+                            <td><?= $ksStock->getFirstname();?></td>
+                            <td><?= $ksStock->getLastname();?></td>
+                            <td><?= $ksStock->getEmail();?></td>
+                            <td><?= $ksStock->getAddDate()?date('jS F Y', strtotime($ksStock->getAddDate())):"";?></td>
+                            <td><?= $ksStock->getSendDate()?date('jS F Y', strtotime($ksStock->getSendDate())):"";?></td>
+                            <td><?= $ksStock->getSendCount();?></td>
+                            <td><?= $ksStock->getWebsiteId();?></td>
+                            <td><?= $ksStock->getStockName();?></td>
+                        </tr>
+                    <?php endforeach;?>
+                <?php else:?>
+                    <tr>
+                        <td colspan="8"><?= $block->escapeHtml(__('There are no customers for this alert.'));?></td>
+                    </tr>
+                <?php endif;?>
+            </tbody>
+        </table>
+    </div>
+
+<h4><?= $block->escapeHtml(__('Alert Price'));?></h4>
+    <div class="table-wrapper ks-product-table-details">
+        <table class="data table data-grid">
+            <thead>
+                <tr class="headings">
+                    <th><?= $block->escapeHtml(__('First Name')) ?></th>
+                    <th><?= $block->escapeHtml(__('Last Name')) ?></th>
+                    <th><?= $block->escapeHtml(__('Email')) ?></th>
+                    <th><?= $block->escapeHtml(__('Price')) ?></th>
+                    <th><?= $block->escapeHtml(__('Subscribe Date')) ?></th>
+                    <th><?= $block->escapeHtml(__('Last Notified')) ?></th>
+                    <th><?= $block->escapeHtml(__('Send Count')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (count($ksPriceCollection) > 0):?>
+                    <?php foreach ($ksPriceCollection as $ksPrice):?>
+                        <tr>
+                            <td><?= $ksPrice->getFirstname();?></td>
+                            <td><?= $ksPrice->getLastname();?></td>
+                            <td><?= $ksPrice->getEmail();?></td>
+                            <td><?= $ksPrice->getPrice();?></td>
+                            <td><?= $ksPrice->getAddDate()?date('jS F Y', strtotime($ksPrice->getAddDate())):"";?></td>
+                            <td><?= $ksPrice->getSendDate()?date('jS F Y', strtotime($ksPrice->getSendDate())):"";?></td>
+                            <td><?= $ksPrice->getSendCount();?></td>
+                        </tr>
+                    <?php endforeach;?>
+                <?php else:?>
+                    <tr><td colspan="8"><?= $block->escapeHtml(__('There are no customers for this alert.'));?></td></tr>
+                <?php endif;?>
+            </tbody>
+        </table>
+    </div>

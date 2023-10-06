@@ -1,0 +1,65 @@
+<?php 
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+$ksCategoryHelper = $this->helper(\Ksolves\MultivendorMarketplace\Helper\ksCategoryRequests::class);
+
+$ksCatIds = $this->getKsCatIds();
+$ksSellerId = $this->getKsSellerId();
+?>
+
+<table>
+  <tr style="background-color: #e0e0e0;">
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);"><p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px; font-weight: 600;">Category Name</p></td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);"><p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px; font-weight: 600;">Category Image</p></td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);"><p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px; font-weight: 600;">Category Description</p></td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);"><p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px;font-weight: 600;">Product Count</p></td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);"><p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px;font-weight: 600;">Global Product Count</p></td>
+  </tr>
+
+  <?php foreach ($ksCatIds as $ksId): ?>
+    <?php 
+    $ksCategoryName = $ksCategoryHelper->getKsCategoryNameWithParent($ksId,$ksCategoryHelper->getKsCurrentStoreId());  
+    $ksCategoryDetails = $ksCategoryHelper->getKsCategoryDetails($ksId,$ksSellerId);
+    $ksGlobalProductCount = $ksCategoryDetails['ks_global_product_count'];
+    $ksSellerCount = $ksCategoryDetails['ks_seller_product_count'];
+    $ksCatDesc = $ksCategoryDetails['ks_category_description'];
+
+    if($ksCategoryDetails['ks_category_image'] == ""){
+        $ksCatImage = "";
+    } else {
+        $ksCatImage = $ksCategoryHelper->getKsCategoryImageUrl(substr($ksCategoryDetails['ks_category_image'], 1));
+    }
+
+    ?>
+
+    <tr style="background: #fff;">
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px;"><?= $ksCategoryName ?></p>
+      </td>
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4); ">
+        <?php if($ksCatImage): ?>
+          <img width="100" height="80" src="<?= $ksCatImage ?>"/>
+        <?php else: ?>
+          <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px;">N/A</p>
+        <?php endif; ?>
+      </td>
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 2);">
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px;"><?= $ksCatDesc ?></p>
+      </td>
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px;"><?= $ksSellerCount ?></p>
+      </td>
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px; margin-bottom: 10px;"><?= $ksGlobalProductCount ?></p>
+      </td>
+    </tr>
+
+  <?php endforeach; ?>
+</table>

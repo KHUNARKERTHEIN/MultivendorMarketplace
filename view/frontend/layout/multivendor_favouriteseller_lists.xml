@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<update handle="customer_account"/>
+	<head>
+		<title>My Favourite Sellers</title>
+		<css src="Ksolves_MultivendorMarketplace::css/ks-frontend-style.css"/>
+		<script src="Ksolves_MultivendorMarketplace::js/favouriteseller/ks-favourite-seller.js"/>
+	</head>
+	<body>
+		<referenceBlock name="page.main.title">
+			<action method="setPageTitle">
+				<argument translate="true" name="title" xsi:type="string">My Favourite Sellers</argument>
+			</action>
+		</referenceBlock>
+		<referenceContainer name="content">
+			<block class="Ksolves\MultivendorMarketplace\Block\FavouriteSeller\KsShowData" name="ks_seller" template="Ksolves_MultivendorMarketplace::favouriteseller/seller/ks_favourite_seller.phtml" />
+		</referenceContainer>
+	</body>
+</page>

@@ -1,0 +1,137 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\Multivendor\Block\FavouriteSeller\FavouriteSeller\KsShowData $block */
+
+$ksHelperData = $this->helper(\Ksolves\MultivendorMarketplace\Helper\KsFavouriteSellerHelper::class);
+$ksDataHelper = $this->helper(\Ksolves\MultivendorMarketplace\Helper\ksDataHelper::class);
+$ksCustomerId = $ksHelperData->getKsCustomerId();
+$ksFavSellerCollection = $block->getKsFavSellerPaginationData($ksCustomerId);
+$ksStoreId = $ksDataHelper->getKsCurrentStoreView();
+$ksCount = 0;
+?>
+
+<?php if ($ksFavSellerCollection->getSize()): ?>
+    <div class="fav-seller-header-action">
+        <div class="ks-fav-eye-action">
+            <button type="button" class="ks-fav-seller-btn ks-action-eye ks-fav-open-eye" id="ks-collapse"></button>
+        </div>
+        <?php if ($block->getKsPagerHtml()): ?>
+            <div class="ks-fav-pagination"><?= $block->getKsPagerHtml(); ?></div>
+        <?php endif; ?>
+        <div class="ks-fav-seller-action">
+            <button type="button" class="ks-fav-seller-btn ks-fav-delete"><?= $block->escapeHtml(__('Delete')) ?></button>
+        </div>
+    </div> 
+
+    <?php foreach($ksFavSellerCollection as $ksCollection): ?>
+        <?php $ksSellerId = $ksCollection->getKsSellerId(); 
+            $ksStoreUrl = $block->getKsSellerProfileUrl($ksSellerId);
+            if ($ksStoreUrl) {
+                $ksActionUrl= $block->getBaseUrl().$ksStoreUrl;
+            } else {
+                $ksActionUrl = $block->getBaseUrl().'multivendor/sellerprofile/sellerprofile/seller_id/'.$ksSellerId;
+            }
+            $ksStoreInfo = $ksHelperData->getKsStoreInfo($ksSellerId, $ksStoreId); 
+        ?>
+        <div class="table-wrapper ks-fav-table-list ks-fav-table-body-list">
+            <table>
+                <?php if($ksCount == 0): ?>  
+                    <thead>
+                        <tr>
+                            <td class="col checkbox">
+                                <label class="ks-fav-checkbox-header">
+                                    <input type="checkbox" id="ks-select-all">
+                                    <span class="ks-fav-checkbox-span"></span>
+                                </label>
+                            </td>
+                            <td class="col" colspan="2"><?= $block->escapeHtml(__('Sellers')) ?></td>
+                            <td class="col "><?= $block->escapeHtml(__('New Product Alert')) ?></td>
+                            <td class="col "><?= $block->escapeHtml(__('Price Change Alert')) ?></td>
+                            <td><?= $block->escapeHtml(__('Action')) ?></td>
+                        </tr>       
+                    </thead>
+                <?php endif; ?>
+
+                <tbody class="ks-fav-tbody-data">
+                    <tr>
+                        <td class="col checkbox ks-individual">
+                            <label class="ks-fav-checkbox-body">
+                                <input type="checkbox" class="ks-select" data-id="<?= $ksCollection->getId(); ?>">
+                                <span class="ks-fav-checkbox-span"></span>
+                            </label>
+                        </td>
+                        <td class="col">
+                            <a href="<?= $ksActionUrl ?>" class="ks-fav-table-info">
+                                <div class="ks-fav-logo"><img src="<?= $block->getKsStoreManagerData($ksStoreInfo['logo']); ?>" alt="ks-fav-pro-img" class="img-fluid"></div>
+                            </a>
+                        </td>
+                        <td class="col">
+                            <a href="<?= $ksActionUrl ?>" class="ks-fav-table-info">
+                                <p><?= $ksHelperData->getKsStoreName($ksSellerId); ?></p>
+                            </a>
+                        </td>
+                        <td class="col">
+                            <label class="ks-fav-checkbox-body">
+                                <?php if($ksCollection->getKsCustomerNewProductAlert() == 1): ?>
+                                    <input type="checkbox" class="ks-product" data-value="<?= $ksCollection->getId()?>" checked>
+                                <?php else: ?>
+                                    <input type="checkbox" class="ks-product" data-value="<?= $ksCollection->getId()?>">
+                                <?php endif; ?>
+                                <span class="ks-fav-checkbox-span"></span>
+                            </label>
+                        </td>
+                        <td class="col">
+                            <label class="ks-fav-checkbox-body">
+                                <?php if($ksCollection->getKsCustomerPriceAlert() == 1): ?>
+                                    <input type="checkbox" class="ks-price" data-value="<?= $ksCollection->getId() ?>" checked>
+                                <?php else: ?>
+                                    <input type="checkbox" class="ks-price" data-value="<?= $ksCollection->getId() ?>">
+                                <?php endif; ?>
+                                <span class="ks-fav-checkbox-span"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <div class="ks-fav-table-actions">
+                                <a href="<?= $block->getKsDeleteAction().'id/'.$ksCollection->getId(); ?>" class="ks-action-del"></a>
+                                <label for="ks-fav-seller-action-del-<?= $ksCollection->getId() ?>" class="ks-up-arrow"></label>
+                                <input type="checkbox" name="ks-fav-seller-action-del" id="ks-fav-seller-action-del-<?= $ksCollection->getId() ?>" class="ks-individual-collapse">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tbody class="ks-fav-table-data-hide ks-fav-table-data" >
+                    <tr>
+                        <td colspan="6" class="ks-p-0">
+                            <div class="ks-fav-product-body">
+                                <div class="ks-fav-pro-table-heading">
+                                    <p><?= $block->escapeHtml(__('Latest Products')) ?></p>
+                                    <a href="<?= $ksActionUrl.'?tab_id=tab-2' ?>" class=""><?= $block->escapeHtml(__('View All')) ?></a>
+                                </div>
+                                <div class="ks-fav-all-product ks-product-view">
+                                    <?= $block->getLayout()->createBlock('Ksolves\MultivendorMarketplace\Block\FavouriteSeller\KsSellerProduct')->setKsSellerId($ksSellerId)->setTemplate('Ksolves_MultivendorMarketplace::favouriteseller/seller/ks_favourite_seller_product.phtml')->toHtml(); ?>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tbody class="ks-spacer"></tbody>
+
+            </table>
+        </div>
+    <?php $ksCount++; endforeach; ?>
+
+<?php else: ?>
+    <!-- Warning message if no favourite sellers found -->
+    <div class="message info empty"><span><?= $block->escapeHtml(__('You have no favourite sellers.')) ?></span></div>
+<?php endif; ?>

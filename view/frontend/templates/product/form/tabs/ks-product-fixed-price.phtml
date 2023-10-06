@@ -1,0 +1,123 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php
+
+$data = ['ksFixProductTax' => [
+    'region' => json_decode($block->getKsStateValue()),
+    'itemsData' => $block->getKsFixedProductValue($block->getAttributeCode()),
+    'bundlePriceType' => '#price_type',
+]];
+
+?>
+<div class="field ks-fix-product-tax-div ks-product-table-parent"
+     id="ks-attribute-<?= /* @noEscape */ $block->getAttributeCode() ?>-container">
+
+    <div class="control ks-product-table">
+
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th class="ks-col-website"  <?php if (!$block->isKsMultiWebsites()): ?> style="display: none;" <?php endif;?>><?= $block->escapeHtml(__('Website')) ?></th>
+                <th class="ks-col-country required"><?= $block->escapeHtml(__('Country/State')) ?></th>
+                <th class="ks-col-tax required"><?= $block->escapeHtml(__('Tax')) ?></th>
+                <th class="ks-col-action"><?= $block->escapeHtml(__('Action')) ?></th>
+            </tr>
+            </thead>
+            <tbody data-role="ks-fix-product-tax-item-container" class="ks-fix-product-tax-item-container">
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" class="col-actions-add ks-col-actions-add">
+                    <button type="button" data-action="add-fpt-item" id="ks-product-fix-tax" class="action-add primary">ADD</a>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script id="ks-product-fixed-tax" data-role="ks-row-template" type="text/x-magento-template">
+        <?php
+        $ksElementName = $block->getAttributeName();
+        $ksElementClass = $block->getAttributeClass();
+        $ksElementId = $block->getAttributeId();
+        ?>
+        <tr id="<%- data.index %>"
+            data-role="ks-fix-product-tax-item-row">
+            <td class="ks-col-website" <?php if (!$block->isKsMultiWebsites()): ?> style="display: none;" <?php endif;?>>
+                <select
+                    id="<?= /* @noEscape */
+                    $ksElementId ?>_row_<%- data.index %>_website"
+                    name="<?= /* @noEscape */
+                    $ksElementName ?>[<%- data.index %>][website_id]"
+                    class="<?= /* @noEscape */
+                    $ksElementClass ?> website required-entry"
+                    data-role="select-website">
+                    <?php foreach ($block->getKsWebsites($block->getAttributeCode()) as $ksWebsiteId => $ksInfo): ?>
+                        <option value="<?= /* @noEscape */
+                        $ksWebsiteId ?>"><?= $block->escapeHtml($ksInfo['name']) ?>
+                            <?php if (!empty($ksInfo['currency'])): ?>
+                                [<?= /* @noEscape */
+                                $ksInfo['currency'] ?>]
+                            <?php endif; ?>
+                        </option>
+                    <?php endforeach ?>
+                </select>
+            </td>
+            <td class="ks-col-country">
+                <select
+                    id="<?= /* @noEscape */
+                    $ksElementId ?>_<%- data.index %>_country"
+                    name="<?= /* @noEscape */
+                    $ksElementName ?>[<%- data.index %>][country]"
+                    class="<?= /* @noEscape */
+                    $ksElementClass ?> country required-entry" data-role="select-country">
+                    <?php foreach ($block->getKsCountries() as $ksCountry): ?>
+                        <option value="<?= $block->escapeHtmlAttr($ksCountry['value']) ?>">
+                            <?= $block->escapeHtml($ksCountry['label']) ?>
+                        </option>
+                    <?php endforeach ?>
+                </select>
+                <select
+                    id="<?= /* @noEscape */ $ksElementId ?>_<%- data.index %>_state"
+                    name="<?= /* @noEscape */ $ksElementName ?>[<%- data.index %>][state]"
+                    class="<?= /* @noEscape */$ksElementClass ?> state" data-role="select-state">
+                    <option value="0">*</option>
+                </select>
+
+                <input type="hidden" class="validate-ks-fpt-group" name="<?= /* @noEscape */
+                    $ksElementName ?>[<%- data.index %>][val]"/>
+            </td>
+            <td class="ks-col-tax">
+                <input type="text"
+                       name="<?= /* @noEscape */
+                        $ksElementName ?>[<%- data.index %>][price]"
+                       class="<?= /* @noEscape */
+                        $ksElementClass ?> required-entry validate-greater-than-zero"
+                       value="<%- data.value %>"/>
+            </td>
+            <td class="ks-col-action ks-col-delete">
+                <input name="<?= /* @noEscape */
+                $ksElementName ?>[<%- data.index %>][delete]" class="delete"
+                       type="hidden" value="" data-role="delete-fpt-item"/>
+                <button type="button" data-action="delete-fpt-item"></button>
+            </td>
+        </tr>
+    </script>
+
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#ks-attribute-<?= /* @noEscape */ $block->getAttributeCode() ?>-container": <?= json_encode($data) ?>
+    }
+
+</script>

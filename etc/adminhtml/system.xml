@@ -1,0 +1,1293 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ksolves" translate="label" sortOrder="1" class="ks-tab-image">
+            <label>Ksolves Multi-Vendor Marketplace</label>
+        </tab>
+        <!-- General Tab -->
+        <section id="ks_marketplace_general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>General</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- General Settings Management -->
+            <group id="ks_general_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General</label>
+                <field id="ks_admin_name" translate="label comment" sortOrder="10" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Admin Name</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_admin_email" translate="label comment" sortOrder="10" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Admin Email</label>
+                    <validate>required-entry validate-email</validate>
+                </field>
+            </group>
+        </section>
+        <!-- Login & Registration Tab -->
+        <section id="ks_marketplace_login_and_registration" translate="label" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Login &amp; Registration</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- Login & Registration Settings Management -->
+            <group id="ks_marketplace_login_and_registration_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Login &amp; Registration</label>
+                <field id="ks_enable_seller_login" translate="label comment" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Seller Login</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_seller_login_title" translate="label comment" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Seller Login Title</label>
+                    <validate>required-entry validate-length maximum-length-20</validate>
+                    <comment>Allowed characters: Maximum-20</comment>
+                </field>
+                <field id="ks_seller_login_footer_title" translate="label comment" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Login as Seller Footer Title</label>
+                    <validate>required-entry validate-length maximum-length-20</validate>
+                    <comment>Allowed characters: Maximum-20</comment>
+                </field>
+                <field id="ks_allow_seller_registration" translate="label comment" sortOrder="30" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller Registration</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+        <!-- Promotion Tab -->
+        <section id="ks_marketplace_promotion" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Sell Page</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!--Sell Page Settings Management -->
+            <group id="ks_marketplace_promotion_page" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Sell Page</label>
+                <field id="ks_show_sell_page" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Show Sell Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_open_marketplace_shop_text" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Sell Page Title</label>
+                    <validate>validate-length maximum-length-25</validate>
+                    <comment>Allowed characters: Maximum-25</comment>
+                </field>
+                <field id="ks_start_selling_button_text" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Start Selling Button Label</label>
+                    <validate>validate-length maximum-length-15</validate>
+                    <comment>Allowed characters: Maximum-15</comment>
+                    <frontend_model>Ksolves\MultivendorMarketplace\Block\Adminhtml\System\Form\Field\KsHideField</frontend_model>
+                </field>
+                <field id="ks_banner" translate="label comment" type="image" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Banner</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <base_url type="media" scope_info="1">ksolves/multivendor/banner</base_url>
+                    <upload_dir config="system" scope_info="1">ksolves/multivendor/banner</upload_dir>
+                    <comment>Allowed files - 'jpg', 'jpeg', 'gif', 'png'.</comment>
+                </field>
+                <field id="ks_why_to_sell_text" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Title (Why to Sell with us?)</label>
+                    <validate>validate-length maximum-length-25</validate>
+                    <comment>Allowed characters- Maximum: 25</comment>
+                </field>
+                <field id="ks_why_to_sell" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Content (Why to Sell with us?)</label>
+                    <frontend_model>Ksolves\MultivendorMarketplace\Block\Adminhtml\System\Form\Field\KsWhyToSell</frontend_model>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsWhyToSell</backend_model>
+                    <comment>Add a minimum of 2 and a maximum of 5 points. The maximum allowed number of characters is 35.</comment>
+                </field>
+                <field id="ks_benefits" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Benefits</label>
+                    <frontend_model>Ksolves\MultivendorMarketplace\Block\Adminhtml\System\Form\Field\KsBenefits</frontend_model>
+                </field>
+                <field id="ks_how_it_works" translate="label" type="label" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>How it Works?</label>
+                    <frontend_model>Ksolves\MultivendorMarketplace\Block\Adminhtml\System\Form\Field\KsHowItWorks</frontend_model>
+                </field>
+                <field id="ks_faq" translate="label" sortOrder="90" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>FAQs</label>
+                    <frontend_model>Ksolves\MultivendorMarketplace\Block\Adminhtml\System\Form\Field\KsFaq</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+                <field id="ks_submit_query" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Submit Your Query</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_submit_query_text" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Submit Your Query Title</label>
+                    <depends>
+                        <field id="ks_submit_query">1</field>
+                    </depends>
+                </field>
+                <field id="ks_submit_query_email" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Submit Your Query Email</label>
+                    <depends>
+                        <field id="ks_submit_query">1</field>
+                    </depends>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                    <comment>Email will be sent to admin, when customer or seller Submit Query Form on sell page.</comment>
+                </field>
+                <field id="ks_email_sender" translate="label comment" sortOrder="130" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <depends>
+                        <field id="ks_submit_query">1</field>
+                    </depends>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+            </group>
+        </section>
+        <!-- Seller Tab -->
+        <section id="ks_marketplace_seller" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Seller</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- Seller Settings Management -->
+            <group id="ks_seller_settings" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Seller</label>
+                <field id="ks_seller_approval" translate="label comment" sortOrder="10" type="select" showInDefault="1">
+                    <label>Seller Admin Approval Required</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_store_approval" translate="label comment" sortOrder="20" type="select" showInDefault="1">
+                    <label>Seller's Store Status Approval Required</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_seller_group" translate="label comment" sortOrder="30" type="select" showInDefault="1">
+                    <label>Default Seller Group</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsSellerGroup</source_model>
+                </field>
+                <field id="ks_new_seller_templates" translate="label comment" sortOrder="40" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>New Seller Email</label>
+                    <comment>Email will be sent to admin when a customer requests for the seller account</comment>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_seller_approved_templates" translate="label comment" sortOrder="50" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Seller Approval Email</label>
+                    <comment>Email will be sent to customer when an admin approves the seller account request</comment>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_seller_rejection_templates" translate="label comment" sortOrder="60" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Seller Rejection Email</label>
+                    <comment>Email will be sent to customer when an admin rejects the seller account request</comment>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_email_sender" translate="label comment" sortOrder="70" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="ks_seller_admin_email_option" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_seller_admin_email" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_seller_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+            </group>
+        </section>
+        <!-- Seller Portal & Profile Tab -->
+        <section id="ks_marketplace_seller_portal_profile" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Seller Portal &amp; Profile</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- Seller Portal Settings Management -->
+            <group id="ks_marketplace_sellerpanel" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Seller Portal</label>
+                <field id="ks_sellerpanel_enabled" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="10" translate="label" type="select">
+                    <label>Default Logo</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_sellerpanel_logo" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="20" translate="label" type="image">
+                    <label>Logo Image</label>
+                    <comment>
+                        <![CDATA[Allowed file types: jpg, jpeg, gif, png.]]>
+                    </comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <base_url type="media" scope_info="1">marketplace/sellerpanel</base_url>
+                    <upload_dir config="system/filesystem/media" scope_info="1">marketplace/sellerpanel</upload_dir>
+                    <depends>
+                        <field id="ks_sellerpanel_enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            <!-- Profile Page Settings Management -->
+            <group id="ks_seller_profile_page" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Profile Page</label>
+                <field id="ks_seller_since" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Seller Since</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_homepage" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Homepage</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_social_media" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Social Media</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_refund_policy" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Refund Policy</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_privacy_policy" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Privacy Policy</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_terms_of_service" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Terms of Service</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_shipping_policy" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Shipping Policy</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_legal_notice" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Legal Policy</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_show_contact_us_details" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Show Contact Us Details</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_show_contact_us_form" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Show Contact Us Form</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_contact_seller_email" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Contact Seller Email</label>
+                    <depends>
+                        <field id="ks_show_contact_us_form">1</field>
+                    </depends>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                    <comment>Email will be sent to seller, when customer or seller Submit Contact Seller Form on seller profile page.</comment>
+                </field>
+                <field id="ks_email_sender" translate="label comment" sortOrder="120" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <depends>
+                        <field id="ks_show_contact_us_form">1</field>
+                    </depends>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+            </group>
+        </section>
+        <!-- Catalog Tab -->
+        <section id="ks_marketplace_catalog" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Catalog</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- Product Type Settings Management -->
+            <group id="ks_product_type_settings" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Types</label>
+                <field id="ks_product_type" translate="label comment" sortOrder="10" type="multiselect" showInDefault="1">
+                    <label>Allowed Product Types</label>
+                    <validate>required-entry</validate>
+                    <source_model>Magento\Catalog\Model\Product\Type</source_model>
+                </field>
+                <field id="ks_admin_approval_type_status" translate="label" type="select" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="20">
+                    <label>Requires Admin Approval</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsProductTypeRequiredSave</backend_model>
+                </field>
+                <field id="ks_admin_product_type_request_email" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Product Type Request Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_seller_product_type_request_approval_email" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Product Type Request Approval Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_seller_product_type_request_rejection_email" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Product Type Request Rejection Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_seller_product_type_assign_email" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Product Type Assigned Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_seller_product_type_unassign_email" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Product Type Unassigned Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_email_sender" translate="label comment" sortOrder="80" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="ks_product_type_admin_email_option" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_product_type_admin_email" translate="label comment" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_product_type_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+            </group>
+            <!-- Product Categories Settings Management -->
+            <group id="ks_product_categories" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Category</label>
+                <field id="ks_allowed_categories" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Allowed Product Categories</label>
+                    <options>
+                        <option label="All Categories">0</option>
+                        <option label="Manual Selection">1</option>
+                    </options>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsUpdateCategory</backend_model>
+                </field>
+                <field id="ks_select_categories" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Select your Categories</label>
+                    <validate>required-entry</validate>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsCategoryList</source_model>
+                    <depends>
+                        <field id="ks_allowed_categories">1</field>
+                    </depends>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsSelectCategoryChangeAfter</backend_model>
+                </field>
+                <field id="ks_requires_admin_approval" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Requires Admin Approval</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsCategoryRequiredapprovalSave</backend_model>
+                </field>
+                <field id="ks_category_request_email" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Category Request Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_category_request_approval_email" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Category Request Approval Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_category_request_rejection_email" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Category Request Rejection Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_category_assign_email" translate="label comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Category Assign Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_category_unassign_email" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Category Unassign Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_email_sender" translate="label comment" sortOrder="90" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="ks_category_admin_email_option" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_category_admin_email" translate="label comment" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_category_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+            </group>
+            <!-- Product Attribute Settings Management -->
+            <group id="ks_product_attribute_settings" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Attribute</label>
+                <field id="ks_product_attribute_set" translate="label comment" sortOrder="10" type="multiselect" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Allowed Default Product Attribute Set</label>
+                    <can_be_empty>1</can_be_empty>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\ProductAttribute\KsOptions</source_model>
+                </field>
+                <field id="ks_seller_enable_custom_attribute_status" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1">
+                    <label>Enable Seller Custom Attribute</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsEnableProductAttribute</backend_model>
+                </field>
+                <field id="ks_admin_approval_attribute_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1">
+                    <label>Requires Admin Approval</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsAutoApprovalAttribute</backend_model>
+                    <depends>
+                        <field id="ks_seller_enable_custom_attribute_status">1</field>
+                    </depends>
+                </field>
+                <field id="ks_admin_approval_update_attribute_status" translate="label" type="select" sortOrder="35" showInDefault="1" showInWebsite="1">
+                    <label>Requires Update Admin Approval</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="ks_seller_enable_custom_attribute_status">1</field>
+                        <field id="ks_admin_approval_attribute_status">1</field>
+                    </depends>
+                </field>
+                <field id="ks_product_attribute_sender_email" translate="label comment" sortOrder="40" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="ks_product_attribute_admin_email_option" translate="label comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_product_attribute_admin_email" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_product_attribute_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <field id="ks_product_attribute_request_email_template" translate="label comment" sortOrder="55" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Attribute Request Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_product_attribute_approval_email_template" translate="label comment" sortOrder="60" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Attribute Request Approval Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_product_attribute_rejection_email_template" translate="label comment" sortOrder="70" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Attribute Request Rejection Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_product_attribute_assign_email_template" translate="label comment" sortOrder="80" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Default Attribute Assigned Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_product_attribute_unassign_email_template" translate="label comment" sortOrder="90" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Default Attribute Unassigned Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+            </group>
+            <!-- Product Settings Management -->
+            <group id="ks_product_settings" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product</label>
+                <field id="ks_admin_approval" translate="label comment" sortOrder="10" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Required Admin Approval</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsProductRequiredSave</backend_model>
+                </field>
+                <field id="ks_update_approval" translate="label comment" sortOrder="20" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Update Product Approval</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="ks_admin_approval">1</field>
+                    </depends>
+                </field>
+                <field id="ks_seller_product_limit" translate="label comment" sortOrder="30" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Seller Product Limit</label>
+                    <validate>validate-digits validate-greater-than-zero</validate>
+                </field>
+                <field id="ks_request_email" translate="label comment" sortOrder="40" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Admin Product Request Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_approval_email" translate="label comment" sortOrder="50" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Seller Product Request Approval Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_rejection_email" translate="label comment" sortOrder="60" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Seller Product Request Rejection Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_email_sender" translate="label comment" sortOrder="70" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="ks_product_admin_email_option" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_product_admin_email" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_product_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <field id="ks_related_product" translate="label comment" sortOrder="100" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Related Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_up_sell_product" translate="label comment" sortOrder="110" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Up-Sell Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_cross_sell_product" translate="label comment" sortOrder="120" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cross-Sell Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <!--  Assign Product Settings Management -->
+            <group id="ks_assign_product_settings" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Assign Product</label>
+                <field id="ks_seller_product_assign_mail_template" translate="label comment" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Product Assign Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>  
+                </field>
+                <field id="ks_seller_product_unassign_mail_template" translate="label comment" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Product Unassign Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model> 
+                </field>
+                <field id="ks_email_sender" translate="label comment" sortOrder="20" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+            </group>
+        </section>
+        <!-- Sales Tab -->
+        <section id="ks_marketplace_sales" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Sales</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- Order Settings Configurations -->
+            <group id="ks_order_settings" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Orders</label>
+                <field id="ks_seller_new_order_email_template" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller New Order Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_email_sender" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_edit_gift_messages" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller To Edit Gift Messages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_allow_comments" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller To Add Comments</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsSalesAllowComments</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_send_order_mail" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller To Send Order Email To Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <!-- Invoice Settings Configurations -->
+            <group id="ks_invoice_settings" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Invoices</label>
+                <field id="ks_create_invoice" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Generate Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_request_invoice_approval" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Invoice Approval Required</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_request_invoice_email_template" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Invoice Request Email </label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_invoice_approval_notification_template" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Invoice Approval Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_invoice_rejection_notification_template" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Invoice Rejection Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_sender_of_email" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_invoice_admin_email_option" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_invoice_admin_email" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_invoice_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <field id="ks_allow_comments" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Sellers To Add Comments</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsSalesAllowComments</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_send_invoice_copy" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller to Send Email Copy of Invoice to customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <!-- Shipment Settings Configurations -->
+            <group id="ks_shipment_settings" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Shipments</label>
+                <field id="ks_create_shipment" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Generate Shipment</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_request_shipment_approval" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Seller Shipment Approval Required</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_request_shipment_email_template" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Shipment Request Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_shipment_approval_notification_template" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Shipment Approval Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_shipment_rejection_notification_template" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Shipment Rejection Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_sender_of_email" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_shipment_admin_email_option" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_shipment_admin_email" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_shipment_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <field id="ks_allow_comments" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Sellers To Add Comments</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsSalesAllowComments</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_send_shipment_tracking_information" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller to Send Tracking Information to Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <!-- Credit Memo Settings Configurations -->
+            <group id="ks_creditmemo_settings" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Credit Memos</label>
+                <field id="ks_create_creditmemo" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Generate Credit Memo</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_request_creditmemo_approval" sortOrder="3" type="hidden">
+                    <label>Credit Memo Approval Required</label>
+                </field>
+                <field id="ks_request_creditmemo_email_template" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Credit Memo Request Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_creditmemo_approval_notification_template" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Credit Memo Approval Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_creditmemo_rejection_notification_template" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Credit Memo Rejection Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_sender_of_email_template" translate="label comment" sortOrder="7" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_creditmemo_admin_email_option" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_creditmemo_admin_email" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_creditmemo_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <field id="ks_allow_comments" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller To Add Comments</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsSalesAllowComments</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_send_creditmemo_copy" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller to Send Email Copy of Credit Memo to Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <!-- Minimum Order Amount Settings Configurations -->
+            <group id="ks_minimum_order_amount_settings" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Minimum Order Amount</label>
+                <field id="ks_minimum_order_amount_settings_enable" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_default_minimum_order_amount" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Default Minimum Amount</label>
+                    <validate>validate-digits validate-zero-or-greater</validate>
+                </field>
+                <field id="ks_allow_seller_set_minimum_order_amount" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Seller to Set Minimum Order Amount</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+        <!-- Favourite Seller Tab -->
+        <section id="ks_marketplace_favourite_seller" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Favourite Seller</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- Favourite Seller Settings Management -->
+            <group id="ks_favourite_seller_settings" translate="label" type="text" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Favourite Seller</label>
+                <field id="ks_favourite_seller_enable" translate="label comment" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_welcome_email_notification_followers_templates" translate="label comment" sortOrder="20" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Welcome Email Notification to Followers</label>
+                    <comment>Admin to customer once customer has marked a seller as favourite and email will be send to them.</comment>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_new_product_alert_followers_templates" translate="label comment" sortOrder="30" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>New Product Alert to Followers</label>
+                    <comment>Admin to customer whevever customer's favourite seller has created a new product, all the customers of that seller will be notified.</comment>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_price_alerts_followers_templates" translate="label comment" sortOrder="40" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Price Change Alert to Followers</label>
+                    <comment>Admin to customer whevever customer's favourite seller has updated the special price on the product, all the customers of that seller will be notified.</comment>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\KsEmailTemplateOptions</source_model>
+                </field>
+                <field id="ks_email_templates" translate="label comment" sortOrder="50" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Notification of Newly Added Followers</label>
+                    <comment></comment>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Favourite\Adminhtml\KsEmailNotificationofNewlyAddedFollowers</source_model>
+                </field>
+                <field id="ks_email_notification_newly_added_followers_templates" translate="label comment" sortOrder="60" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="ks_email_templates" separator=",">seller,admin,both</field>
+                    </depends>
+                </field>
+                <field id="ks_email_sender" translate="label comment" sortOrder="70" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                 <field id="ks_favourite_seller_admin_email_option" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <depends>
+                        <field id="ks_email_templates" separator=",">admin,both</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_favourite_seller_admin_email" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_email_templates" separator=",">admin,both</field>
+                        <field id="ks_favourite_seller_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <field id="ks_followers_mail" translate="label comment" sortOrder="100" type="hidden">
+                </field>
+            </group>
+        </section>
+        <!-- Seller Locator Tab -->
+        <section id="ks_marketplace_seller_locator" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Seller Locator</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- Seller Locator Settings Management -->
+            <group id="ks_seller_locator" translate="label" type="text" sortOrder="180" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Seller Locator</label>
+                <field id="ks_seller_locator_enable" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Seller Locator</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ks_seller_locator_title_footer" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Store Locator Title</label>
+                    <comment>The title for the store locator page</comment>
+                    <validate>required-entry validate-alpha-spac validate-length maximum-length-30</validate>
+                </field>
+                <field id="ks_seller_locator_title_product_page" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Locate Stores Title</label>
+                    <comment>The title for locate store on product's detail page</comment>
+                    <validate>required-entry validate-alpha-spac validate-length maximum-length-30</validate>
+                </field>
+                <field id="ks_seller_locator_google_map_key" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Google Map Api Key</label>
+                    <comment>
+                        <![CDATA[Click <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">here</a> to get Google API Key]]>
+                    </comment>
+                    <validate>required-entry</validate>
+                    <backend_model>Ksolves\MultivendorMarketplace\Model\System\Config\Backend\KsMapApiKeySave</backend_model>
+                    <depends>
+                        <field id="ks_seller_locator_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_seller_locator_location" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Default Location</label>
+                    <frontend_model>Ksolves\MultivendorMarketplace\Block\Adminhtml\SellerLocator\KsLocations</frontend_model>
+                    <depends>
+                        <field id="ks_seller_locator_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_seller_locator_latitude" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Latitude</label>
+                    <depends>
+                        <field id="ks_seller_locator_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_seller_locator_longitude" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Longitude</label>
+                    <depends>
+                        <field id="ks_seller_locator_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_seller_locator_distance" translate="label comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Default Distance</label>
+                    <validate>validate-greater-than-zero validate-digits</validate>
+                    <depends>
+                        <field id="ks_seller_locator_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_seller_locator_distance_unit" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Default Distance Unit</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\SellerLocator\KsDefaultUnit</source_model>
+                    <depends>
+                        <field id="ks_seller_locator_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_seller_locator_map_style" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Map Style</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\SellerLocator\KsMapStyles</source_model>
+                    <depends>
+                        <field id="ks_seller_locator_enable">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <!-- Report Product & Seller Tab   -->
+        <section id="ks_marketplace_report" translate="label" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Report Product &amp; Seller </label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- Report Product Settings Management -->
+            <group id="ks_report_product" translate="label" type="text" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Report Product</label>
+                <field id="ks_report_product_enable" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_report_product_text" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Report Product Text</label>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                </field>
+                <field id="ks_allow_guests" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Guests To Report</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_reason" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Reason</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\ProductReason\KsAllowReasons</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_reason_text" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reason Text</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_reason_placeholder" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reason Placeholder</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_sub_reason" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Sub Reason</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\ProductReason\KsAllowSubReasons</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_sub_reason_text" translate="label comment" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sub Reason Text</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_sub_reason_placeholder" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sub Reason Placeholder</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_comments" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Comments</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\ProductReason\KsAllowComments</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_comments_text" translate="label comment" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Comments Text</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_comments_placeholder" translate="label comment" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Comments Placeholder</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_admin_alert" translate="label" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Alert For Report Product</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_sender_mail" translate="label" type="select" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Alert Email Sender</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\ProductReason\KsSenderMails</source_model>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_admin_alert_mail_template" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Alert Email Template </label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_mail_copy_receiver_emails" translate="label comment" sortOrder="16" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Admin Alert Email Copy to</label>
+                    <validate>validate-emails</validate>
+                    <comment>Comma-separated.</comment>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_mail_copy_method" translate="label" type="select" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Admin Alert Email Copy Method</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\ProductReason\KsCopyMethod</source_model>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                 <field id="ks_report_product_admin_email_option" translate="label comment" type="select" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_report_product_admin_email" translate="label comment" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                        <field id="ks_report_product_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <!-- Acknowledgement For Customers -->
+                <field id="ks_customer_report_product_acknowledgement_mail" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Acknowledgement </label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_report_product_acknowledgement_mail_sender" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Acknowledgement Email Sender</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\ProductReason\KsAcknowledgementSenderMails</source_model>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_acknowledgement_mail_template" translate="label comment" type="select" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Acknowledgement Email Template </label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="ks_report_product_enable">1</field>
+                    </depends>
+                </field>
+            </group>
+            <!-- Report Seller Settings Management -->
+            <group id="ks_report_seller" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Report Seller</label>
+                <field id="ks_report_seller_enable" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_report_seller_text" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Report Seller Text</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_guests" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Guests To Report</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_reason" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Reason</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\SellerReason\KsAllowReasons</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_reason_text" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reason Text</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_reason_placeholder" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reason Placeholder</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_sub_reason" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Sub Reason</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\SellerReason\KsAllowSubReasons</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_sub_reason_text" translate="label comment" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sub Reason Text</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_sub_reason_placeholder" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sub Reason Placeholder</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_comments" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Comments</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\SellerReason\KsAllowComments</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_comments_text" translate="label comment" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Comments Text</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_comments_placeholder" translate="label comment" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Comments Placeholder</label>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_allow_admin_alert" translate="label" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Alert For Report Seller</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_sender_mail" translate="label" type="select" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Alert Email Sender</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\SellerReason\KsSenderMails</source_model>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_admin_alert_mail_template" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Alert Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_mail_copy_receiver_emails" translate="label comment" sortOrder="16" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Admin Alert Email Copy to</label>
+                    <validate>validate-emails</validate>
+                    <comment>Comma-separated.</comment>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_mail_copy_method" translate="label" type="select" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Admin Alert Email Copy Method</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\SellerReason\KsCopyMethod</source_model>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                 <field id="ks_report_seller_admin_email_option" translate="label comment" type="select" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin's Email</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\KsAdminEmailOptions</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_report_seller_admin_email" translate="label comment" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secondary Admin's Email</label>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                        <field id="ks_report_seller_admin_email_option" separator=",">1,2</field>
+                    </depends>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <!-- Acknowledgement For Customers -->
+                <field id="ks_customer_report_seller_acknowledgement_mail" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Acknowledgement</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_report_seller_acknowledgement_mail_sender" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Acknowledgement Email Sender</label>
+                    <source_model>Ksolves\MultivendorMarketplace\Model\Source\Config\Adminhtml\SellerReason\KsAcknowledgementSenderMails</source_model>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+                <field id="ks_acknowledgement_mail_template" translate="label comment" type="select" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Acknowledgement Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="ks_report_seller_enable">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <!-- Sitemap Tab -->
+        <section id="ks_marketplace_sitemap" translate="label" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Sitemap</label>
+            <tab>ksolves</tab>
+            <resource>Ksolves_MultivendorMarketplace::config_multivendor</resource>
+            <!-- configuration for Sitemap -->
+            <group id="ks_sitemap" translate="label" type="text" sortOrder="221" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Sitemap</label>
+                <field id="ks_enable_marketplace" translate="label" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Include Promotion Page in Sitemap</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_profile_frequency_marketplace" translate="label" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Frequency</label>
+                    <source_model>Magento\Sitemap\Model\Config\Source\Frequency</source_model>
+                    <depends>
+                        <field id="ks_enable_marketplace">1</field>
+                    </depends>
+                </field>
+                <field id="ks_profile_priority_marketplace" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Priority</label>
+                    <backend_model>Magento\Sitemap\Model\Config\Backend\Priority</backend_model>
+                    <comment>Valid values range from 0.0 to 1.0.</comment>
+                    <depends>
+                        <field id="ks_enable_marketplace">1</field>
+                    </depends>
+                </field>
+                <field id="ks_enable_sitemap" translate="label" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Sitemap for Seller</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ks_include_seller_profile_url" translate="label" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Include Seller Profile Url in Sitemap</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="ks_enable_sitemap">1</field>
+                    </depends>
+                </field>
+                <field id="ks_profile_frequency" translate="label" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Frequency</label>
+                    <source_model>Magento\Sitemap\Model\Config\Source\Frequency</source_model>
+                    <depends>
+                        <field id="ks_enable_sitemap">1</field>
+                        <field id="ks_include_seller_profile_url">1</field>
+                    </depends>
+                </field>
+                <field id="ks_profile_priority" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Priority</label>
+                    <backend_model>Magento\Sitemap\Model\Config\Backend\Priority</backend_model>
+                    <comment>Valid values range from 0.0 to 1.0.</comment>
+                    <depends>
+                        <field id="ks_enable_sitemap">1</field>
+                        <field id="ks_include_seller_profile_url">1</field>
+                    </depends>
+                </field>
+                <field id="ks_include_seller_product_url" translate="label" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Include Seller Products' Url in Sitemap</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="ks_enable_sitemap">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

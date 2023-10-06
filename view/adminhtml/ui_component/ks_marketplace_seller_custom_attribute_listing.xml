@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    /**
+    * Ksolves
+    *
+    * @category  Ksolves
+    * @package   Ksolves_MultivendorMarketplace
+    * @author    Ksolves Team
+    * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+    * @license   https://store.ksolves.com/magento-license
+    */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>ks_marketplace_seller_custom_attribute_listing_columns</spinner>
+        <deps>
+            <dep>ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ks_marketplace_seller_custom_attribute_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="cacheRequests" xsi:type="boolean">false</param>
+                <param name="indexField" xsi:type="string">attribute_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Ksolves_MultivendorMarketplace::manage_product_attribute</aclResource>
+        <dataProvider class="Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\ProductAttribute\KsSellerProductAttributeDataProvider" name="ks_marketplace_seller_custom_attribute_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>main_table.attribute_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <container name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/toolbar</item>
+            </item>
+        </argument>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">
+                        ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing_columns.ids
+                    </item>
+                    <item name="indexField" xsi:type="string">main_table.attribute_id</item>
+                </item>
+            </argument>
+            <action name="approve">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">approve</item>
+                        <item name="label" xsi:type="string" translate="true">Approve</item>
+                        <item name="url" xsi:type="url" path="multivendor/productattribute/massApprove"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Approve Product Attribute</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure want to approve selected product attribute(s)?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="reject">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">reject</item>
+                        <item name="label" xsi:type="string" translate="true">Reject</item>
+                        <item name="url" xsi:type="url" path="multivendor/productattribute/massReject"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Reject Product Attribute</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure want to reject selected product attribute(s)?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="namespace" xsi:type="string">ks_marketplace_seller_custom_attribute_listing</item>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">
+                            ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing_columns
+                        </item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">
+                            ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing.listing_top.bookmarks
+                        </item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">
+                        ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing_columns.ids
+                    </item>
+                </item>
+            </argument>
+        </paging>
+    </container>
+    <columns name="ks_marketplace_seller_custom_attribute_listing_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">
+                        ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing.listing_top.bookmarks
+                    </item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing.ks_marketplace_seller_custom_attribute_listing_columns.actions</item>
+                        <item name="target" xsi:type="string">applyAction</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">edit</item>
+                            <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <selectionsColumn name="ids" sortOrder="0">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">attribute_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="attribute_code" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Attribute Code</item>
+                </item>
+            </argument>
+        </column>
+        <column name="frontend_label" sortOrder="30">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Default Label</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_required" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Required</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_user_defined" sortOrder="50">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">System</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_visible" sortOrder="60">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Visible</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_global" sortOrder="70">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Catalog\Model\Attribute\Source\Scopes</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Scope</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_searchable" sortOrder="80">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Searchable</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_filterable" sortOrder="90">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\LayeredNavigation\Model\Attribute\Source\FilterableOptions</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Use in Layered Navigation</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_comparable" sortOrder="100">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Comparable</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_attribute_approval_status" sortOrder="110">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\ProductAttribute\KsProductAttributeStatusOptions</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Approval Status</item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/grid/columns/ks-product-status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_attribute_rejection_reason" sortOrder="120">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- <item name="filter" xsi:type="string">text</item> -->
+                    <item name="label" xsi:type="string" translate="true">Last Rejection Reason</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="ks_product_attribute_actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\ProductAttribute\KsProductAttributeActions" sortOrder="130">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="fieldClass" xsi:type="string">ks-seller-approval-action</item>
+                    <item name="indexField" xsi:type="string">ks_attribute_id</item>
+                    <item name="viewUrlPath" xsi:type="string">catalog/product_attribute/edit</item>
+                    <item name="label" xsi:type="string" translate="true">Action</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\ProductAttribute\KsProductAttributeEditActions" sortOrder="150">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">attribute_id</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="controlVisibility" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-backend.css"/>
+        <css src="Ksolves_MultivendorMarketplace::css/commission/ks-analyser.css"/>
+        <css src="Ksolves_MultivendorMarketplace::css/commission/ks-calculator.css"/>
+        <script src="Ksolves_MultivendorMarketplace::js/commission/ks-show-analyser.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/commission/ks-calculator.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/commission/ks-view-products.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="ks_marketplace_commission_listing"/>
+            <block class="Magento\Framework\View\Element\Template" name="ks_backend_url" template="Ksolves_MultivendorMarketplace::ks-script.phtml"/>
+            <container name="content.container" htmlTag="div" htmlClass="product-container" htmlId="product-container">
+                <block class="Magento\Framework\View\Element\Text">
+                    <arguments>
+                        <argument name="text" xsi:type="string">
+                            <![CDATA[&nbsp;]]>
+                        </argument>
+                    </arguments>
+                </block>
+            </container>
+            <container name="content.analyser-container" htmlTag="div" htmlClass="ks-analyser-form" htmlId="ks-analyser-form">
+                <uiComponent name="ks_marketplace_commission_analyzer" />
+                <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\KsCommissionData" name="ks_backend_currency" template="Ksolves_MultivendorMarketplace::commission/ks-price-currency.phtml"/>
+                <container name="content.analyser-container.container" htmlTag="div" htmlClass="rules-container" htmlId="rules-container">
+                    <block class="Magento\Framework\View\Element\Text">
+                        <arguments>
+                            <argument name="text" xsi:type="string">
+                                <![CDATA[&nbsp;]]>
+                            </argument>
+                        </arguments>
+                    </block>
+                </container>
+            </container>
+            <container name="content.calculator-container" htmlTag="div" htmlClass="ks-calculator-form" htmlId="ks-calculator-form">
+                <uiComponent name="ks_marketplace_commission_calculator" />
+                <block class="Magento\Framework\View\Element\Template" name="pie-chart">
+                    <arguments>
+                        <argument name="template" xsi:type="string">Ksolves_MultivendorMarketplace::commission/ks-pie-chart.phtml</argument>
+                        <argument name="class" xsi:type="string">ks-calculator-chart</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

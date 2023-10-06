@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Ksolves\MultivendorMarketplace\Block\Order\CreditMemo\Create\KsForm" name="multivendor_creditmemo_buttons" template="Ksolves_MultivendorMarketplace::order/buttons.phtml" cacheable="false"/>
+            <block class="Ksolves\MultivendorMarketplace\Block\Order\CreditMemo\Create\KsForm" name="multivendor_creditmemo_form" template="Ksolves_MultivendorMarketplace::order/creditmemo/create/form.phtml" cacheable="false">    
+            	<block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="multivendor_order_account_address_info" template="Ksolves_MultivendorMarketplace::order/order_account_address_info.phtml" cacheable="false"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\CreditMemo\Create\KsItems" template="Ksolves_MultivendorMarketplace::order/creditmemo/create/items.phtml" name="creditmemo_items" cacheable="false">
+                    <block class="Ksolves\MultivendorMarketplace\Block\Order\CreditMemo\Create\KsItems" template="Ksolves_MultivendorMarketplace::order/creditmemo/create/bundle/items-renderer.phtml" name="bundle_items" cacheable="false"/>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsPayment" name="order_payment"/>
+            </block>    
+        </referenceContainer>
+    </body>
+</page>

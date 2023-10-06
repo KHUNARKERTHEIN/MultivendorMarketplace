@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <body>
+        <referenceContainer name="content">
+            <container name="main.container" as="mainContainer" label="Main Container" htmlTag="div" htmlClass="ks-order-main-container" htmlId="ks-order-main-container">
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\Shipment\View\KsForm" name="multivendor_view_increment_id" template="Ksolves_MultivendorMarketplace::order/shipment/view/view_increment_id.phtml" cacheable="false"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\Shipment\View\KsForm" name="multivendor_shipment_view_buttons" template="Ksolves_MultivendorMarketplace::order/shipment/view/shipment_view_buttons.phtml" cacheable="false">
+                </block>
+            <block class="Ksolves\MultivendorMarketplace\Block\Order\Shipment\View\KsForm" name="multivendor_invoice_form" template="Ksolves_MultivendorMarketplace::order/shipment/view/form.phtml" cacheable="false">
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="multivendor_order_account_address_info" template="Ksolves_MultivendorMarketplace::order/order_account_address_info.phtml" cacheable="false"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsItems" name="shipment_items" template="Ksolves_MultivendorMarketplace::order/shipment/view/items.phtml">
+                    <block class="Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsItems" name="bundle_items" template="Ksolves_MultivendorMarketplace::order/shipment/view/bundle/items-renderer.phtml">
+                        <block class="Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsItems" name="bundle_request_items" template="Ksolves_MultivendorMarketplace::order/shipment/view/bundle/request-item-renderer.phtml" />
+                    </block>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsPayment" name="order_payment"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\Shipment\View\KsTracking" name="shipment_tracking" template="Ksolves_MultivendorMarketplace::order/shipment/view/tracking.phtml" />
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\Shipment\View\CommentsHistory" name="shipment_comments" template="Ksolves_MultivendorMarketplace::order/shipment/view/comments.phtml" />
+            </block>
+        </container>
+        </referenceContainer>
+    </body>
+</page>

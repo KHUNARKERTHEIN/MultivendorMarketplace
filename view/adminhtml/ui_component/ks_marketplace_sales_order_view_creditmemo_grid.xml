@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_sales_order_view_creditmemo_grid.ks_sales_orders_creditmemo_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>sales_order_creditmemo_columns</spinner>
+        <deps>
+            <dep>ks_marketplace_sales_order_view_creditmemo_grid.ks_sales_orders_creditmemo_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ks_sales_orders_creditmemo_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <filterUrlParams>
+                <param name="ks_order_id">*</param>
+            </filterUrlParams>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="KsolvesMultivendorMarketplaceMemoGridDataProvider" name="ks_sales_orders_creditmemo_listing_data_source">
+            <settings>
+                <requestFieldName>ks_request_increment_id</requestFieldName>
+                <primaryFieldName>ks_request_increment_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters">
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <settings>
+                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    <caption translate="true">All Store Views</caption>
+                    <label translate="true">Purchased From</label>
+                    <dataScope>store_id</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="pdfcreditmemos_order" class="Ksolves\MultivendorMarketplace\Ui\Component\Control\PdfAction">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="pdfAction" xsi:type="string">multivendor/order_creditmemo/pdfcreditmemos</item>
+                    </item>
+                </argument>
+                <settings>
+                    <type>pdfcreditmemos_order</type>
+                    <label translate="true">PDF Creditmemos</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="sales_order_creditmemo_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">ks_marketplace_sales_order_view_creditmemo_grid.ks_marketplace_sales_order_view_creditmemo_grid.sales_order_creditmemo_columns.ks_view_action</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">edit</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>ks_request_increment_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="ks_seller" sortOrder="10">
+            <settings>
+                <label translate="true">Seller</label>
+            </settings>
+        </column>
+        <column name="ks_creditmemo_increment_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Credit Memo</label>
+            </settings>
+        </column>
+        <column name="ks_created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="ks_order_increment_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Order #</label>
+            </settings>
+        </column>
+        <column name="ks_order_created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Order Date</label>
+            </settings>
+        </column>
+        <column name="billing_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Bill-to Name</label>
+            </settings>
+        </column>
+        <column name="ks_state" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Sales\Ui\Component\Listing\Column\Creditmemo\State\Options"/>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="ks_base_grand_total" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Refunded</label>
+            </settings>
+        </column>
+        <column name="ks_approval_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Seller\KsSellerStatusOptions</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Approval Status</item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/grid/columns/ks-seller-status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_rejection_reason">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Last Rejection Reason</label>
+            </settings>
+        </column>
+        <actionsColumn name="ks_creditmemo_approval_actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\Sales\KsApprovalActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="fieldClass" xsi:type="string">ks-creditmemo-approval-action</item>
+                    <item name="indexField" xsi:type="string">ks_approval_status</item>
+                    <item name="label" xsi:type="string" translate="true">Approval</item>
+                    <item name="urlEntityParamName" xsi:type="string">entity_id</item>
+                    <item name="approveUrlPath" xsi:type="string">multivendor/order_creditmemo/approve</item>
+                    <item name="rejectUrlPath" xsi:type="string">multivendor/order_creditmemo/reject</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="ks_view_action" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\Sales\KsViewAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="viewUrlPath" xsi:type="string">multivendor/order_creditmemo/view</item>
+                    <item name="urlEntityParamName" xsi:type="string">creditmemo_id</item>
+                    <item name="viewUrlPathDelete" xsi:type="string">multivendor/order_creditmemo/delete</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>increment_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

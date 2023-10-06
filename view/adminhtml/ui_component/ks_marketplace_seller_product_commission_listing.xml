@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_seller_product_commission_listing.ks_marketplace_seller_product_commission_listing_data_source</item>
+            <item name="deps" xsi:type="string">ks_marketplace_seller_product_commission_listing.ks_marketplace_seller_product_commission_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">commission_columns</item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add Commission</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
+    </argument>
+    <dataSource name="ks_marketplace_seller_product_commission_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\KsSellerProductCommissionProvider</argument>
+            <argument name="name" xsi:type="string">ks_marketplace_seller_product_commission_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <columns name="commission_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">ks_marketplace_seller_product_commission_listing.multivendor_kscommission_listing.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+            </item>
+        </argument>
+        <column name="ks_rule_name" sortOrder="20">
+            <settings>
+                <filter>text</filter>
+                <sortable>false</sortable>
+                <label translate="true">Rule Name</label>
+            </settings>
+        </column>
+        <column name="ks_calculation_baseon" component="Magento_Ui/js/grid/columns/select" sortOrder="30">
+            <settings>
+                <options class="Ksolves\MultivendorMarketplace\Model\Source\CommissionRule\KsCalculationBaseOption"/>
+                <filter>select</filter>
+                <sortable>false</sortable>
+                <dataType>select</dataType>
+                <label translate="true">Calculation Based On</label>
+            </settings>
+        </column>
+        <column name="ks_applied_price" sortOrder="40">
+            <settings>
+                <filter>text</filter>
+                <sortable>false</sortable>
+                <label translate="true">Applied Price</label>
+            </settings>
+        </column>
+        <column name="ks_commission_value"  class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\CommissionRule\KsCommission" sortOrder="50">
+            <settings>
+                <filter>text</filter>
+                <sortable>false</sortable>
+                <label translate="true">Commission Value</label>
+            </settings>
+        </column>
+        <column name="ks_commission_cost" sortOrder="60">
+            <settings>
+                <filter>text</filter>
+                <sortable>false</sortable>
+                <label translate="true">Commission Cost</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

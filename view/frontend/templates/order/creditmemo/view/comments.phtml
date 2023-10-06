@@ -1,0 +1,125 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+$ksCreditmemo = $block->getKsCreditMemo();
+$ksComments = $block->getKsComments();
+?>
+
+<!-- Credit memo history start -->
+<form class="entry-edit form-inline" id="creditmemo_history_section">
+    <div class="creditmemo_history_block w-100" id="creditmemo_history_block">
+        <div><input type="hidden" name="id" value="<?= $ksCreditmemo->getId()?>"></div>
+        <div id="comments_block" class="edit-order-comments">
+            <div class="ks-field-full-width">
+                <label for="history_comment"><?= $block->escapeHtml(__('Comment Text')) ?></label>
+                <div>
+                    <textarea name="comment[comment]"
+                    rows="3"
+                    class="ks-control-feild"
+                    cols="5"
+                    id="history_comment"></textarea>
+                </div>
+            </div>
+        </div>
+        <?php if($block->ksCheckNotesAndNotifyCreditMemo() && $ksCreditmemo->getKsApprovalStatus()!=2): ?>
+            <div class="order-history-comments-options mt-4">
+                <?php if ($block->canSendKsCommentEmail()): ?>
+                    <div>
+                        <input name="comment[is_customer_notified]"
+                        type="checkbox"
+                        id="history_notify"
+                        value="1" />
+                        <span for="history_notify"><?= $block->escapeHtml(__('Notify Customer by Email')) ?></span>
+                    </div>
+                <?php endif; ?>
+                <div>
+                    <input name="comment[is_visible_on_front]"
+                    type="checkbox"
+                    id="history_visible"
+                    value="1" />
+                    <span for="history_visible"> <?= $block->escapeHtml(__('Visible on Storefront')) ?></span>
+                </div>
+            </div>
+        <?php else:?>
+
+        <?php endif; ?>
+        <?php if($ksCreditmemo->getKsApprovalStatus()!=2): ?>
+            <div class="order-history-comments-actions mt-4">
+                    <button class="ks-action-btn ks-secondry" id="creditmemo-comment"><?= $block->escapeHtml(__('Submit Comment')) ?></button>
+            </div>
+        <?php endif; ?>
+    <?php  if($ksCreditmemo->getKsApprovalStatus()): ?>
+        <ul class="ks-order-status-list mt-5">
+            <?php foreach ($ksComments as  $ksComment): ?>
+                <li>
+                    <span class="note-list-date pr-3">
+                        <?= /* @noEscape */ $block->formatDate($ksComment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                    </span>
+                    <span class="note-list-time pr-3">
+                        <?= /* @noEscape */ $block->formatTime($ksComment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                    </span>
+                    <span class="note-list-customer pl-3">
+                        <?= $block->escapeHtml(__('Customer')) ?>
+                        <?php if ($ksComment->getIsCustomerNotified()): ?>
+                            <span class="font-weight-bold note-list-customer-notified"><?= $block->escapeHtml(__('Notified')) ?></span>
+                            <?php else: ?>
+                                <span class="note-list-customer-not-notified font-weight-bold">
+                                    <?= $block->escapeHtml(__('Not Notified')) ?>
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                        <div class="note-list-comment font-12">
+                            <?= $block->escapeHtml($ksComment->getComment(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            <?php else:?>
+                <?php if($ksComments->getKsCustomerNote()):?>
+                    <ul class="ks-order-status-list mt-5">                                                      
+                        <li>
+                            <span class="note-list-date pr-3">
+                                <?= /* @noEscape */ $block->formatDate($ksComments->getKsCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                            </span>
+                            <span class="note-list-time pr-3">
+                                <?= /* @noEscape */ $block->formatTime($ksComments->getKsCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                            </span>
+                            <span class="note-list-customer pl-3">
+                                <?= $block->escapeHtml(__('Customer')) ?>
+                                <?php if ($ksComments->getKsCommentCustomerNotify()): ?>
+                                    <span class="font-weight-bold note-list-customer-notified"><?= $block->escapeHtml(__('Notified')) ?></span>
+                                <?php else: ?>
+                                    <span class="note-list-customer-not-notified font-weight-bold">
+                                        <?= $block->escapeHtml(__('Not Notified')) ?>
+                                    </span>
+                                <?php endif; ?>
+                            </span>
+                            <div class="note-list-comment font-12">
+                                <?= $block->escapeHtml($ksComments->getKsCustomerNote(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+                            </div>
+                        </li>                           
+                    </ul>                    
+                <?php endif; ?>                    
+            <?php endif; ?>
+        </div>       
+</form>  
+<!-- Credit memo history end -->
+
+<script type="text/x-magento-init">
+            {
+                "*": {
+                "Ksolves_MultivendorMarketplace/js/sales/creditmemo/creditmemoComment": {
+                "creditmemo_id": "<?php echo $ksCreditmemo->getId(); ?>"
+            }
+        }
+    }
+</script>

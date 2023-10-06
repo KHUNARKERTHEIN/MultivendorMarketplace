@@ -1,0 +1,43 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+    <div class="ks-control-grouped ks-product-category-set">
+        <div class="ks-action-multiselect-wrap">
+            
+            <div data-bind="scope: 'ksCategory'">
+            <!-- ko template: getTemplate() -->
+            <!-- /ko -->
+            </div>
+            <script type="text/x-magento-init">
+            {
+                "*": {
+                    "Magento_Ui/js/core/app": {
+                                "components": {
+                                "ksCategory": {
+                                "component": "Ksolves_MultivendorMarketplace/js/product/category/ks-ui-select",
+                                "template" : "Ksolves_MultivendorMarketplace/product/category/ui-select",
+                                "filterOptions": true,
+                                "levelsVisibility": "1",
+                                "multiple": true,
+                                "showCheckbox": true,
+                                "options": <?= $block->getKsCategoriesTree()?>,
+                                "value": <?= $block->getKsCategoryValue()?>
+                            }
+                        }
+                    }
+                }
+            }
+            </script>
+        </div>
+    </div>
+<!--/fieldset-->
+    

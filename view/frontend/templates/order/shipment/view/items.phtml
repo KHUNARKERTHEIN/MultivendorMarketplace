@@ -1,0 +1,58 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsItems*/
+$ksOrderHelper = $block->getData('ksOrderHelper');
+?>
+
+<!-- Item shipped table start -->
+<div class="ks-simple-table">
+    <table class="data-table order-shipment-table table">
+        <thead>
+            <tr class="headings">
+                <th class="col-product"><span><?= $block->escapeHtml(__('Product')) ?></span></th>
+                <th class="col-qty last"><span><?= $block->escapeHtml(__('Qty Shipped')) ?></span></th>
+            </tr>
+        </thead>
+        <?php $_items = $block->getKsShipmentItems() ?>
+        <?php $_i = 0; foreach ($_items as $_item) :?>
+        <?php if($block->KsIsSellerProduct($_item->getKsProductId())) : ?>
+            <?php if ($ksOrderHelper->getKsParentItemId($_item->getKsOrderItemId()) ):;
+
+            continue;?>
+            <?php else:?>
+            <?php if($block->getKsOrderItem($_item->getKsOrderItemId())->getProductType()==\Magento\Catalog\Model\Product\Type::TYPE_BUNDLE):
+                ?>
+                <?= $block->getLayout()->createBlock('Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsItems')->setKsShipmentIncId($block->getKsShipment()->getKsShipmentIncrementId())->setKsOrderItemId($_item->getKsOrderItemId())->setKsBundleItem($_item)->setKsShipmentRequest($block->getKsShipment())->setTemplate('Ksolves_MultivendorMarketplace::order/shipment/view/bundle/items-renderer.phtml')->toHtml(); ?>
+
+                <?php else:?>
+        <tbody class="<?= /* @noEscape */ $_i%2 ? 'odd' : 'even' ?>">
+            <tr>
+                <td>
+                    <span><?= $block->escapeHtml(__($_item->getKsName())) ?></span></br>
+                    <span class="ks-order-item-sku"><?= $block->escapeHtml("SKU: ".__($_item->getKsSku())) ?></span>
+                    <!-- get ordered product attributes -->
+                    </br>  
+                        <span><?= $block->escapeHtml($block->getKsShipmentItemAttrValue($_item->getKsOrderItemId())) ?></span>
+                </td>
+                <td class="col-qty last">
+                    <?= /* @noEscape */ $_item->getKsQty()*1 ?>
+                </td>
+            </tr>
+        </tbody>
+        <?php endif;?>
+
+        <?php endif;?>
+        <?php endif;?>
+        <?php endforeach; ?>
+    </table>
+</div>
+<!-- Item shipped table end -->

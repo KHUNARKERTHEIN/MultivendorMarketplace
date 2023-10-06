@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <container name="content" label="Root">
+        <block class="Ksolves\MultivendorMarketplace\Block\CategoryType\KsCategoryProductDetails" name="ks_multivendormarketplace_product_category" template="Ksolves_MultivendorMarketplace::category/ks_category_product.phtml">
+        </block>
+    </container>
+</layout>

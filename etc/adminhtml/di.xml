@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    /**
+    * Ksolves
+    *
+    * @category  Ksolves
+    * @package   Ksolves_MultivendorMarketplace
+    * @author    Ksolves Team
+    * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+    * @license   https://store.ksolves.com/magento-license
+    */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--    Override Product Form Field-->
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="customTab" xsi:type="array">
+                    <item name="class" xsi:type="string">
+                        Ksolves\MultivendorMarketplace\Ui\Component\Form\Backend\Product\KsProductForm
+                    </item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Ksolves\MultivendorMarketplace\Controller\Adminhtml\ProductAttribute\Save">
+        <plugin name="ks_save_swatches_frontend_input" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\ProductAttribute\Plugin\Save"/>
+    </type>
+    <!-- To Override the Magento Catalog Product Edit -->
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\Edit" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\Product\Edit" />
+    <!-- To Override the Magento store save -->
+    <preference for="Magento\Backend\Controller\Adminhtml\System\Store\Save" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\System\Store\Save" />
+    <!-- To Override the Magento store DeleteStorePost -->
+    <preference for="Magento\Backend\Controller\Adminhtml\System\Store\DeleteStorePost" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\System\Store\DeleteStorePost" />
+    
+    <!-- To Override the product save Controller -->
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\Save" type="Ksolves\MultivendorMarketplace\Controller\Adminhtml\Product\KsProductOverride" />
+</config>

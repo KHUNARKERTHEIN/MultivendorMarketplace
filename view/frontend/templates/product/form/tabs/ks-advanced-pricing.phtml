@@ -1,0 +1,62 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsAdvancePrice */
+?>
+<?php $ksAttributes = $block->getKsAdvancePriceAttribute();?>
+<div class="ks-product-model-field">
+    <?php foreach ($ksAttributes as $ksAttribute):?>
+        <?php
+            $ksAttributeLabel = $ksAttribute->getDefaultFrontendLabel();
+            $ksAttributeScope = $block->getKsScopeLabel($ksAttribute);
+            $ksAttributeFormElement = $block->getKsAttributeElementHtml($ksAttribute);
+
+        if ($ksAttribute->getAttributeCode()=="tier_price"):
+            $ksAttributeLabel = "Customer Group Price";
+            $ksAttributeScope= '';
+            $ksAttributeFormElement = $block->getLayout()
+                ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsAdvancePrice')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/price/ks-tier.phtml')->toHtml();
+            endif;
+        ?>
+        <div class="ks-form-field <?php if ($block->ksCanDisplayUseDefault($ksAttribute)):?> ks-use-default <?php endif;?> <?php if ($ksAttribute->getAttributeCode()=='special_to_date') {
+            echo "col-xl-6 col-lg-6 col-md-6 col-sm-12 ks-special-date-from"; }?> <?php if ($ksAttribute->getAttributeCode()=='special_from_date') {
+            echo "col-xl-6 col-lg-6 col-md-6 col-sm-12 ks-special-date-to";}?>">
+            <div class="ks-form-field-label">
+                <label>
+                    <?php if ($ksAttribute->getAttributeCode()=='special_to_date'):?>
+                        <span><?= $block->escapeHtml(__("To")) ?></span>
+                    <?php else: ?>
+                        <span data-config-scope="<?= $ksAttributeScope;?>">
+                            <?= $block->escapeHtml(__($ksAttributeLabel)) ?>
+                        </span>
+                    <?php endif;?>
+                </label>
+            </div>
+            <div class="ks-field-control" form='ks_product_form'>
+                <?= $ksAttributeFormElement;?>
+                <?php if ($block->ksCanDisplayUseDefault($ksAttribute) && $ksAttribute->getAttributeCode()!="tier_price"):?>
+                    <label class="ks-use-checkbox-container">
+                        <input type="hidden"
+                                name="use_default[<?= $ksAttribute->getAttributeCode();?>]"
+                                value="0"/>
+                        <input type="checkbox"
+                                name="use_default[<?= $ksAttribute->getAttributeCode();?>]"
+                                class="ks-use-default-control"
+                                <?php if ($block->ksUsedDefault($ksAttribute)):?> checked="checked"<?php endif; ?>
+                                value="1"/>
+
+                        <span class="ks-use-default-label"><?= $block->escapeHtml(__('Use Default Value')) ?></span>
+                    </label>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endforeach;?>
+</div>

@@ -1,0 +1,20 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<div id="ks_product_rejection_popup" style="display:none;">
+    <form method="post" id="ks_product_reject_form">
+        <textarea maxlength="200" class="form-control required-entry" name="ks_reject_message" rows="4" cols="98" placeholder="Add message for seller"></textarea>
+        <br/>
+        <input type="checkbox" name="ks_notify_seller" class="ks_rejection_email" value="1" checked>
+        <span>Notify the Seller</span>
+        <input type="hidden" id="ks_id" name="id" value=""/>
+    </form>
+</div>

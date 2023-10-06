@@ -1,0 +1,31 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+?>
+<?php
+$ksHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerHelper');
+$ksSellerId = $ksHelper->getKsCustomerIdFromSessionFactory();
+if ($ksHelper->getksProductAttributeRequestAllowed($ksSellerId)):
+    ?>
+<div class="w-fit-content ml-auto">
+    <a href="<?= $block->getUrl('multivendor/productattribute/new') ?>">
+        <button type="button" title="Add New Attribute" class="ks-action-btn ks-primary">
+            <span><?= $block->escapeHtml(__("Add New Attribute")) ?></span>
+        </button>
+    </a>
+</div>
+<?php else: ?>
+    <div class="w-fit-content ml-auto">
+        <button type="button" title="Add New Attribute" class="ks-action-btn ks-primary" disabled>
+            <span><?= $block->escapeHtml(__("Add New Attribute")) ?></span>
+        </button>
+    </div>
+<?php endif; ?>

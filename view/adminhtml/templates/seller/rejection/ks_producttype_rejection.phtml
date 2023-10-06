@@ -1,0 +1,20 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+ <div id="ks_producttype_rejection_popup" style="display:none;">
+    <form method="post" id="ks_producttype_reject_form" data-mage-init='{ "validation":{}}'>
+        <textarea maxlength="200" class="required-entry form-control" data-validate="{required:true}" name="ks_reject_message" rows="4" cols="98"  placeholder="Add a message for seller"></textarea>
+        <br>
+        <input type="checkbox" class="ks_product_type_rejection_email" name="ks_rejection_email" value="1" checked>
+  		<label for="ks_rejection_email"> Notify the Seller</label><br>
+        <input type="hidden" id="ks_producttype_id" name="id" value="">
+    </form>
+</div>

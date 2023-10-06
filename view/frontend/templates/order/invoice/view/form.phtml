@@ -1,0 +1,123 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var \Ksolves\MultivendorMarketplace\Block\Order\Invoice\View\KsForm */
+if(!$block->getKsInvoiceItems()){
+    $ksInvoice = $block->getKsInvoice();
+    $ksOrder = $ksInvoice->getKsOrder(); 
+} else{
+    $ksInvoice = $block->getKsInvoice();
+    $ksOrder = $block->getKsOrder();
+}
+?>
+
+<!-- Invoice view page start --> 
+<div class="ks-invoice-create-page">
+    <div class="ks-page-card">
+        <?= $block->getChildHtml('multivendor_order_account_address_info') ?>
+
+        <!-- Billing Address start-->
+        <section class="order-view-billing-shipping mb-5">
+
+            <!-- Order tab section title start -->
+            <div class="ks-tab-content-title">
+                <span><?= $block->escapeHtml(__('Payment &amp; Shipping Method')) ?></span>
+            </div>
+            <!-- Order tab section title end -->
+
+            <div>
+                <div class="order-payment-method <?php if ($ksOrder->getIsVirtual()) : ?> order-payment-method-virtual<?php endif; ?> ">
+                    <?php /*Billing Address */ ?>
+
+                    <!-- Order tab div title start -->
+                    <div class="ks-div-title mb-3">
+                        <span><?= $block->escapeHtml(__('Payment Information')) ?></span>
+                    </div>
+                    <!-- Order tab div title end -->
+
+                    <div>
+                        <div class="order-payment-method-title"><?= $block->getChildHtml('order_payment') ?></div>
+                        <div class="order-payment-currency">
+                            <?= $block->escapeHtml(__('The order was placed using %1.', $ksOrder->getOrderCurrencyCode())) ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Billing Address end-->
+
+        <!-- Item Invoice table start -->
+        <section class="mb-5">
+            
+            <!-- Order tab section title start -->
+            <div class="ks-tab-content-title">
+                <span><?= $block->escapeHtml(__('Items Invoiced')) ?></span>
+            </div>
+            <!-- Order tab section title end -->
+
+            <div id="invoice_item_container">
+                <?= $block->getChildHtml('invoice_items') ?>
+            </div>
+        </section>
+        <!-- Item Invoice table end -->
+
+        <!-- Order total start -->
+        <section>
+
+            <!-- Order tab section title start -->
+            <div class="ks-tab-content-title">
+                <span><?= $block->escapeHtml(__('Order Total')) ?></span>
+            </div>
+            <!-- Order tab section title end -->
+            
+            <div class="order-comments-history col-md-12">
+                <?php if($ksInvoice->getKsApprovalStatus()==2):?>
+                    <form name="ks-invoice-re-submit" method="post" action="<?=$block->getKsReSubmitUrl();?>">
+                <?php endif;?>    
+                    <div class="row">
+
+                        <!-- Invoice history start -->
+                        <div class="col-md-6 pl-0"> 
+                            
+                            <!-- Order tab div title start -->
+                            <div class="ks-div-title mb-3">
+                                <span><?= $block->escapeHtml(__('Invoice History')) ?></span>
+                            </div>
+                            <!-- Order tab div title end -->
+
+                            <div><?= $block->getChildHtml('invoice_comments'); ?></div>
+                        </div>
+                        <!-- Invoice history end -->
+
+                        <!-- Invoice tools start -->
+                        <div class="col-md-6 pr-0" id="history_form">
+                            
+                            <!-- Order tab div title start -->
+                            <div class="ks-div-title mb-3">
+                                <span><?= $block->escapeHtml(__('Invoice Totals')) ?></span>
+                            </div>
+                            <!-- Order tab div title end -->
+
+                            <div class="ks-sales-table"><?= $block->getChildHtml('invoice_totals'); ?></div>
+                        </div>
+                        <!-- Invoice tools end -->
+
+                    <div>
+                <?php if($ksInvoice->getKsApprovalStatus()==2):?>
+                    </form>
+                <?php endif;?>     
+            </div>
+        </section>
+        <!-- Order total end -->
+
+    </div>
+</div>
+<!-- Invoice view page end --> 

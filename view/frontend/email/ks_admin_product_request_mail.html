@@ -1,0 +1,53 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Product Request @-->
+<!--@vars {
+"var ksAdminName":"Admin Name",
+"var ksProductName":"Product Name",
+"var ksSellerName":"Seller Name",
+"var ksCategory":"Category",
+"var ksSku":"SKU",
+"var ksPrice":"Price",
+"var ksDescription":"Description"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+  <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_admin_name," ks_admin_name=$ksAdminName}}</p>
+        </td>
+    </tr>
+
+    <tr class="email-summary">
+        <td>
+            <p>
+               {{var ksSellerName}}, {{trans "have created/updated the product details, and requesting for your approval for the same."}}
+            </p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <p>{{trans "Here is the summary of the same:}}</p>
+            <ul>
+                <li><strong>{{trans "Product Name:"}}</strong> {{var ksProductName}}</li>
+                <li><strong>{{trans "Category:"}}</strong> {{trans "%ks_category " ks_category=$ksCategory}}</li>
+                <li><strong>{{trans "SKU:"}}</strong> {{trans "%ks_sku " ks_sku=$ksSku}}</li>
+                <li><strong>{{trans "Price:"}}</strong> {{trans "%ks_price " ks_price=$ksPrice}}</li>
+                <li><strong>{{trans "Description:"}}</strong> {{trans "%ks_description " ks_description=$ksDescription}}</li>
+            </ul>
+        </td>
+    </tr>
+    <p>{{trans "Thank You"}}</p>
+</table>
+
+{{template config_path="design/email/footer_template"}}

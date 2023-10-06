@@ -1,0 +1,202 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\MultivendorMarketplace\Block\Order\Invoice\Create\KsItems $block */
+
+/** @var \Magento\Catalog\Helper\Data $ksCatalogHelper */
+$ksCatalogHelper = $block->getData('ksCatalogHelper');
+
+$ksOrderItem = $block->getKsBundleItem();
+$ksItems = array_merge([$ksOrderItem], $ksOrderItem->getChildrenItems());
+$ksShowStoreCurrency = $block->canKsShowOrderCurrencyValue();
+?>
+
+<?php $ksPrevOptionId = '' ?>
+
+<?php foreach ($ksItems as $ksItem): ?>
+    <?php $attributes = $block->getKsSelectionAttributes($ksItem,$ksOrderItem) ?>
+    <?php if ($ksItem->getParentItem()): ?>
+        <?php if ($ksPrevOptionId != $attributes['option_id']): ?>
+        <tr class="ks-bundle-item">
+            <td class="col-product">
+                <div class="option-label"><?= $block->escapeHtml($attributes['option_label']) ?></div>
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td class="last">&nbsp;</td>
+        </tr>
+            <?php $ksPrevOptionId = $attributes['option_id'] ?>
+        <?php endif; ?>
+    <?php endif; ?>
+    <tr class="ks-bundle-item">
+        <?php if (!$ksItem->getParentItem()): ?>
+        <td>
+            <span>
+                <?= $block->escapeHtml($ksItem->getName()) ?>
+            </span>
+            <span class="ks-order-item-sku"><?= $block->escapeHtml(__('SKU')) ?> : <?= /* @noEscape */ implode('<br />', $ksCatalogHelper->splitSku($ksItem->getSku())) ?></span>
+        </td>
+        <?php else: ?>
+        <td>
+            <span><?= $block->getKsValueHtml($ksItem,$ksOrderItem) ?></span>
+        </td>
+        <?php endif; ?>
+        <td>
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <span><?= $block->escapeHtml($ksItem->getStatus()) ?></span>
+            <?php else: ?>
+                &nbsp;
+            <?php endif;?>
+        </td>
+        <td>
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <span><?= $block->formatValue($ksItem->getBaseOriginalPrice()) ?></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <span><?= $block->formatToOrderCurrency($ksItem->getOriginalPrice())?></span>
+                <?php endif;?>
+             <?php else: ?>
+                &nbsp;
+            <?php endif;?>
+        </td>
+        <td>
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <span><?= $block->formatValue($ksItem->getBasePrice()) ?></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <span><?= $block->formatToOrderCurrency($ksItem->getPrice())?></span>
+                <?php endif;?>
+                <?php if ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($ksItem)) : ?>
+                                        
+                    <span>
+                        <?php foreach ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($ksItem) as $ksTax) : ?>
+                            <span class="nobr"><?= $block->escapeHtml($ksTax['title']) ?>:<?= $block->formatValue($ksTax['base_amount']) ?></span>
+                            <br>
+                            <?php if($ksShowStoreCurrency):?>
+                                <span><?= $block->formatToOrderCurrency($ksTax['amount'])?></span>
+                            <?php endif;?>                                                  
+                        <?php endforeach; ?>
+                    </span>
+                <?php endif; ?>
+             <?php else: ?>
+                &nbsp;
+            <?php endif;?>
+        </td>
+        <td class="ks-order-quantity">
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <!-- get qty of ordered product -->
+                <p>
+                    <span><?= $block->escapeHtml(__('Ordered '.(float) $ksItem->getQtyOrdered())) ?></span>
+                </p> 
+                <!-- check qty of invoiced product -->
+                <?php if ($ksItem->getQtyInvoiced() != 0) : ?>
+                    <p>
+                        <span><?= $block->escapeHtml(__('Invoiced '.(float) $ksItem->getQtyInvoiced())) ?></span>
+                    </p>
+                <?php endif; ?>
+                <!-- check qty of shipped product -->
+                <?php if ($ksItem->getQtyShipped()!=0 && $block->isKsShipmentSeparately($ksItem,$ksOrderItem)) : ?>
+                    <p>
+                        <span><?= $block->escapeHtml(__('Shipped '.(float) $ksItem->getQtyShipped())) ?></span>
+                    </p>
+                <?php endif; ?>
+                <!-- check qty of refunded product -->
+                <?php if ($ksItem->getQtyRefunded() != 0) : ?>
+                    <p>
+                        <span><?= $block->escapeHtml(__('Refunded '.(float) $ksItem->getQtyRefunded())) ?></span>
+                    </p>
+                <?php endif; ?>
+                <!-- check qty of canceled product -->
+                <?php if ($ksItem->getQtyCanceled() != 0) : ?>
+                    <p>
+                        <span><?= $block->escapeHtml(__('Canceled '.(float) $ksItem->getQtyCanceled())) ?></span>
+                    </p>
+                <?php endif; ?>
+            <?php elseif ($block->isKsShipmentSeparately($ksItem,$ksOrderItem)): ?>
+                <!-- get qty of ordered product -->
+                <p>
+                    <span><?= $block->escapeHtml(__('Ordered '.(float) $ksItem->getQtyOrdered())) ?></span>
+                </p>
+                <?php if ((float) $ksItem->getQtyShipped()): ?>
+                <!-- get qty of ordered product -->
+                <p>
+                    <span><?= $block->escapeHtml(__('Shipped '.(float) $ksItem->getQtyShipped())) ?></span>
+                </p>
+                <?php endif; ?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <span><?= $block->formatValue($ksItem->getBaseRowTotal() + $ksItem->getBaseWeeeTaxAppliedRowAmnt()) ?></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <span><?= $block->formatToOrderCurrency($ksItem->getRowTotal() + $ksItem->getWeeeTaxAppliedRowAmount())?></span>
+                <?php endif;?>
+                <?php if ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($ksItem)) : ?>
+                                        
+                    <span>
+                        <?php foreach ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($ksItem) as $ksTax) : ?>
+                            <span class="nobr"><?= $block->escapeHtml($ksTax['title']) ?>:<?= $block->formatValue($ksTax['base_row_amount']) ?></span>
+                            <br>
+                            <?php if($ksShowStoreCurrency):?>
+                                <span><?= $block->formatToOrderCurrency($ksTax['row_amount'])?></span>
+                            <?php endif;?>                                                  
+                        <?php endforeach; ?>
+                    </span>
+                <?php endif; ?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif;?>
+        </td>
+        <td>
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <span><?= $block->formatValue($ksItem->getBaseTaxAmount()) ?></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <span><?= $block->formatToOrderCurrency($ksItem->getTaxAmount())?></span>
+                <?php endif;?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif;?>
+        </td>
+        <td>
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <span><?= sprintf('%s%%', $ksItem->getTaxPercent() + 0) ?></span>
+            <?php else: ?>
+                &nbsp;
+            <?php endif;?>
+        </td>
+        <td>
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <span><?= $block->formatValue($ksItem->getBaseDiscountAmount()) ?></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <span><?= $block->formatToOrderCurrency($ksItem->getDiscountAmount())?></span>
+                <?php endif;?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif;?>
+        </td>
+        <td>
+            <?php if ($block->canShowPriceInfo($ksItem)): ?>
+                <span><?= $block->formatValue($ksItem->getBaseRowTotal()-$ksItem->getBaseDiscountAmount()+$block->ksCalcItemBaseTaxAmt($ksItem)+$ksItem->getBaseWeeeTaxAppliedRowAmnt()) ?></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <span><?= $block->formatToOrderCurrency($ksItem->getRowTotal()-$ksItem->getDiscountAmount()+$block->ksCalcItemTaxAmt($ksItem)+$ksItem->getWeeeTaxAppliedRowAmount())?></span>
+                <?php endif;?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif;?>                                    
+        </td>          
+    </tr>
+<?php endforeach; ?>

@@ -1,0 +1,143 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Magento\Bundle\Block\Adminhtml\Sales\Order\Items\Renderer */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+
+<?php
+/** @var \Magento\Catalog\Helper\Data $catalogHelper */
+$catalogHelper = $block->getData('ksCatalogHelper');
+?>
+<?php $_item = $block->getKsBundleItem() ?>
+<?php $items = $block->getChildren($_item); ?>
+<?php $_count = count($items) ?>
+<?php $_index = 0 ?>
+
+<?php $_prevOptionId = '' ?>
+
+<?php if ($block->getOrderOptions($_item) || $_item->getDescription()): ?>
+    <?php $_showlastRow = true ?>
+<?php else: ?>
+    <?php $_showlastRow = false ?>
+<?php endif; ?>
+
+<?php foreach ($items as $_item): ?>
+    <?php if ($_item->getOrderItem()->getParentItem()): ?>
+        <?php $attributes = $block->getSelectionAttributes($_item) ?>
+        <?php if ($_prevOptionId != $attributes['option_id']): ?>
+        <tr class="ks-bundle-item">
+            <td class="col-product">
+                <div class="option-label"><?= $block->escapeHtml($attributes['option_label']) ?></div>
+            </td>
+            <td class="col-product">&nbsp;</td>
+            <td class="col-qty last">&nbsp;</td>
+        </tr>
+            <?php $_prevOptionId = $attributes['option_id'] ?>
+        <?php endif; ?>
+    <?php endif; ?>
+    <tr <?php if($_item->getOrderItem()->getParentItem()):?> class="ks-bundle-item" <?php endif;?>>
+        <?php if (!$_item->getOrderItem()->getParentItem()): ?>
+        <td class="col-product">
+            <div class="product-title"><?= $block->escapeHtml($_item->getName()) ?></div>
+            <div class="product-sku-block">
+                <span class="ks-order-item-sku"><?= $block->escapeHtml(__('SKU')) ?>:</span>
+                <?= /* @noEscape */ implode('<br />', $catalogHelper->splitSku($_item->getSku())) ?>
+            </div>
+        </td>
+        <?php else: ?>
+        <td class="col-product"><div class="option-value"><?= $block->getValueHtml($_item) ?></div></td>
+        <?php endif; ?>
+        <td>
+            <?php if ($block->isShipmentSeparately($_item)): ?>
+                <p>
+                    <span><?= $block->escapeHtml(__('Ordered: '.(float) $_item->getOrderItem()->getQtyOrdered())) ?></span>
+                </p> 
+                <!-- check qty of invoiced product -->
+                <?php if ($_item->getOrderItem()->getQtyInvoiced() != 0) : ?>
+                <p>
+                    <span><?= $block->escapeHtml(__('Invoiced: '.(float) $_item->getOrderItem()->getQtyInvoiced())) ?></span>
+                </p>
+                <?php endif; ?>
+                <!-- check qty of shipped product -->
+                <?php if ($_item->getOrderItem()->getQtyShipped() != 0) : ?>
+                <p>
+                    <span><?= $block->escapeHtml(__('Shipped: '.(float) $_item->getOrderItem()->getQtyShipped())) ?></span>
+                </p>
+                <?php endif; ?>
+                <!-- check qty of refunded product -->
+                <?php if ($_item->getOrderItem()->getQtyRefunded() != 0) : ?>
+                <p>
+                    <span><?= $block->escapeHtml(__('Refunded: '.(float) $_item->getOrderItem()->getQtyRefunded())) ?></span>
+                </p>
+                <?php endif; ?>
+                <!-- check qty of canceled product -->
+                <?php if ($_item->getOrderItem()->getQtyCanceled() != 0) : ?>
+                <p>
+                    <span><?= $block->escapeHtml(__('Canceled: '.(float) $_item->getOrderItem()->getQtyCanceled())) ?></span>
+                </p>
+                <?php endif; ?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="col-qty last">
+            <?php if ($block->isShipmentSeparately($_item)): ?>
+                <input type="text"
+                       class="ks-shipment-item-qty ks-max-w-60"
+                       name="shipment[items][<?= $block->escapeHtmlAttr($_item->getOrderItemId()) ?>]"
+                       value="<?= (float)$_item->getQty() * 1 ?>" />
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+    </tr>
+<?php endforeach; ?>
+<?php if ($_showlastRow): ?>
+    <tr class="ks-bundle-item">
+        <td class="col-product">
+            <?php if ($block->getOrderOptions($_item->getOrderItem())): ?>
+                <dl class="item-options">
+                <?php foreach ($block->getOrderOptions($_item->getOrderItem()) as $option): ?>
+                    <dt><?= $block->escapeHtml($option['label']) ?></dt>
+                    <dd>
+                    <?php if (isset($option['custom_view']) && $option['custom_view']): ?>
+                        <?= $block->escapeHtml($option['value']) ?>
+                    <?php else: ?>
+                        <?= $block->escapeHtml($block->truncateString($option['value'], 55, '', $_remainder)) ?>
+                        <?php if ($_remainder):?>
+                            ... <span id="<?= $block->escapeHtmlAttr($_id = 'id' . uniqid()) ?>">
+                                <?= $block->escapeHtml($_remainder) ?>
+                            </span>
+                            <?php $escapedId = /* @noEscape */ $block->escapeJs($_id);
+                            $scriptString = <<<script
+                                require(['prototype'], function(){
+                                    $('{$escapedId}').hide();
+                                    $('{$escapedId}').up().observe('mouseover', function(){\$('{$escapedId}').show();});
+                                    $('{$escapedId}').up().observe('mouseout',  function(){\$('{$escapedId}').hide();});
+                                });
+script;
+                            ?>
+                            <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+                        <?php endif;?>
+                    <?php endif;?>
+                    </dd>
+                <?php endforeach; ?>
+                </dl>
+                        <?php else: ?>
+                &nbsp;
+                        <?php endif; ?>
+            <?= $block->escapeHtml($_item->getDescription()) ?>
+        </td>
+        <td class="col-ordered-qty">&nbsp;</td>
+        <td class="col-qty last">&nbsp;</td>
+    </tr>
+<?php endif; ?>

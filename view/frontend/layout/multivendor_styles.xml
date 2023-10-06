@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-seller-dashboard-style.css" />
+        <css src="Ksolves_MultivendorMarketplace::css/fonts/stylesheet.css" />
+        <css src="Ksolves_MultivendorMarketplace::css/ks-dashboard-calculate-style.css" />
+        <script src="Ksolves_MultivendorMarketplace::js/sidebar/ks-sidebar-active.js" />
+        <script src="Ksolves_MultivendorMarketplace::js/dashboard/ks-dashboard.js"/>
+    </head>
+    <referenceBlock name="head.additional">
+            <block template="ks_rtl_theme.phtml" class="Ksolves\MultivendorMarketplace\Block\Account\KsAddCss" name="ksolves_multivendormarketplace_block_ks_rtl_theme" />
+    </referenceBlock>
+    <referenceContainer name="header.container" remove="true" />
+    <referenceContainer name="footer" remove="true" />
+    <referenceBlock name="page.main.title" remove="true"/>
+    <referenceBlock name="navigation.sections" remove="true"/>
+    <referenceContainer name="sidebar.additional" remove="true"/>
+</page>

@@ -1,0 +1,100 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+?>
+<?php $ksAttribute = $block->getKsField();
+$ksBundleArray = ["sku_type","price_type","weight_type"];
+$ksRequiredClass = $ksAttribute->getIsRequired() && !in_array($ksAttribute->getAttributeCode(), $ksBundleArray) ? ' required' : '';
+$ksProduct = $block->getKsProduct();
+$ksCustomDateFieldArr = ["news_to_date","custom_design_to"];
+$ksUseConfigValue = Magento\Catalog\Model\Product\Attribute\Source\Boolean::VALUE_USE_CONFIG;
+?>
+
+<fieldset class="ks-form-field  <?php if ($ksAttribute->getAttributeCode()=='news_to_date') {
+    echo "col-xl-4 col-lg-5 col-md-12 col-sm-12 ks-form-datepicker-from";}?> <?php if ($ksAttribute->getAttributeCode()=='news_from_date') { echo "col-xl-6 col-lg-6 col-md-12 col-sm-12 ks-form-datepicker-to"; }?>">
+    <div class="ks-control-grouped <?php if ($block->ksCanDisplayUseDefault($ksAttribute) || $ksAttribute->getAttributeCode()=='gift_message_available'):?> ks-use-default <?php endif;?>">
+        <div class="ks-form-field <?= $ksRequiredClass;?>">
+            <div class="ks-form-field-label" >
+                <label>
+                    <?php if (in_array($ksAttribute->getAttributeCode(), $ksCustomDateFieldArr)):?>
+                        <span><?= $block->escapeHtml(__("To")) ?></span>
+                    <?php elseif ($ksAttribute->getAttributeCode()=="news_from_date"):?>
+                        <span data-config-scope="<?= $block->getKsScopeLabel($ksAttribute)?>"><?= $block->escapeHtml(__("Set Product as New from")) ?></span>
+                    <?php else: ?>
+                        <span data-config-scope="<?= $block->getKsScopeLabel($ksAttribute)?>">
+                            <?= $block->escapeHtml(__($ksAttribute->getDefaultFrontendLabel())) ?>
+                        </span>
+                    <?php endif;?>
+                </label>
+            </div>
+            <div class="ks-field-control">
+                <?= $block->getKsAttributeElementHtml($ksAttribute)?>
+                <div>
+                    <div class="ks-field-default-checkbox">
+                        <?php if ($ksAttribute->getAttributeCode()=='gift_message_available'):?>
+                            <?php $ksChecked = ($ksProduct->getData('gift_message_available')==$ksUseConfigValue || !$ksProduct->getId()) ? 'checked="checked"' : '';
+                            ?>
+                            <label class="ks-use-checkbox-container">
+                                <input type="checkbox"
+                                    name="product[use_config_gift_message_available]"
+                                    class="ks-use-default-control"
+                                    value="1" <?= $ksChecked;?>/>
+
+                                <span class="ks-use-default-label"><?= $block->escapeHtml(__('Use Config Settings')) ?></span>
+                            </label>
+                        <?php endif;?>
+
+                        <?php if ($block->ksCanDisplayUseDefault($ksAttribute)):?>
+                            <label class="ks-use-checkbox-container">
+                                <input type="hidden"
+                                        name="use_default[<?= $ksAttribute->getAttributeCode();?>]"
+                                        value="0"/>
+                                <input type="checkbox"
+                                        name="use_default[<?= $ksAttribute->getAttributeCode();?>]"
+                                        class="ks-use-default-control"
+                                        <?php if ($block->ksUsedDefault($ksAttribute)):?> checked="checked"<?php endif; ?>
+                                        value="1"/>
+
+                                <span class="ks-use-default-label"><?= $block->escapeHtml(__('Use Default Value')) ?></span>
+                            </label>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if ($ksAttribute->getAttributeCode()=='url_key'):?>
+                        <?php if ($block->getKsProductId()):?>
+                            <label class="ks-url-create ks-field-disabled">
+                                <input type="checkbox"
+                                       name="product[url_key_create_redirect]"
+                                       value="1" checked="checked" disabled="disabled"/>
+                                <span><?= $block->escapeHtml(__('Create Permanent Redirect for old URL')) ?></span>
+                            </label>
+                            <?php endif;?>
+                    <?php endif;?>
+
+                    <?php if ($ksAttribute->getNote()):?>
+                        <div class="ks-form-field-note">
+                            <span><?= $block->escapeHtml(__($ksAttribute->getNote())) ?></span>
+                        </div>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php if ($ksAttribute->getAttributeCode()=='shipment_type'):?>
+        <div class="ks-fieldset ks-product-content">
+            <?php echo $block->getLayout()
+                ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Bundle\KsBundleProduct')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/bundle/ks-product-bundle.phtml')
+                ->toHtml(); ?>
+        </div>
+    <?php endif;?>
+</fieldset>

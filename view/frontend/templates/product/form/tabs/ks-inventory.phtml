@@ -1,0 +1,116 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php $ksAttribute = $block->getKsField();
+$ksOptions = $ksAttribute->usesSource() ? $ksAttribute->getSource()->getAllOptions() : [];
+
+if ($ksStockData = $block->getKsProduct()->getExtensionAttributes()->getStockItem()) {
+    $ksQty = $ksStockData->getQty();
+    $ksInStock = (int)$ksStockData->getIsInStock();
+    $ksManageStock = $ksStockData->getManageStock();
+} else {
+    $ksQty = '';
+    $ksInStock = null;
+    $ksDataHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsDataHelper');
+    $ksManageStock = $ksDataHelper->getKsConfigValue('cataloginventory/item_options/manage_stock');
+}
+
+if(!$block->ksIsSingleSourceMode())
+{
+    $ksGetSource = $block->ksGetSourceData();
+    $ksGetSourceData = count($ksGetSource) > 0 ? $ksGetSource[0] : '';
+
+    $ksDefaultNotifyQty = $block->getDefaultConfigValue('notify_stock_qty');
+    $ksDefaultQty = isset($ksGetSourceData['qty']) ? $ksGetSourceData['qty'] : '';
+    $ksNotifyQty = isset($ksGetSourceData['notify_stock_qty']) ? $ksGetSourceData['notify_stock_qty'] : $ksDefaultNotifyQty;
+    $ksDefaultStock = isset($ksGetSourceData['sources_item_status']) ? $ksGetSourceData['sources_item_status'] : 1;
+} ?>
+<fieldset class="ks-form-field">
+    <div class="ks-control-grouped">
+        <div class="ks-form-field ">
+            <div class="ks-form-field-label">
+                <label>
+                    <span data-config-scope="<?= $block->getKsScopeLabel($ksAttribute) ?>">
+                        <?= $block->escapeHtml(__($ksAttribute->getDefaultFrontendLabel())) ?>
+                    </span>
+                </label>
+            </div>
+            <div class="ks-field-control">
+                <div class="ks-field-custom  ks-form-feild-small">
+                    <?php if ($block->ksIsSingleSourceMode()): ?>
+                        <input class="ks-form-control-text ks-qty validate-digits" type="text"
+                           name="product[quantity_and_stock_status][qty]" maxlength="255"
+                           value="<?= $ksQty; ?>"
+                           id="ks-qty"/>
+                    <?php else: ?>
+                        <input type="hidden" name="sources[assigned_sources][0][source_code]" value="default">
+                        <input type="hidden" name="sources[assigned_sources][0][notify_stock_qty]"
+                        value="<?= $ksNotifyQty; ?>">
+                        <input type="hidden" name="sources[assigned_sources][0][notify_stock_qty_use_default]"
+                        value="1">
+                        <input class="ks-form-control-text ks-qty validate-digits" type="text" name="sources[assigned_sources][0][quantity]" maxlength="255" value="<?= $ksDefaultQty; ?>"
+                               id="ks-qty">
+                    <?php endif; ?>
+                    <a href="#" id="ks_advanced_inventory_link"><?= $block->escapeHtml(__('Advanced Inventory')) ?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<?php if ($ksManageStock): ?>
+    <fieldset class="ks-form-field ks-out-stock-field">
+        <div class="ks-control-grouped">
+            <div class="ks-form-field ">
+                <div class="ks-form-field-label">
+                    <label>
+                        <span data-config-scope="[global]">
+                            <?= $block->escapeHtml(__('Stock Status')) ?>
+                        </span>
+                    </label>
+                </div>
+                <div class="ks-form-control-select ks-form-feild-medium">
+                    <?php if($block->ksIsSingleSourceMode()):?>
+                        <select name="product[quantity_and_stock_status][is_in_stock]"
+                                class="ks-select-box"
+                                title="Stock Status">
+                            <?php foreach ($ksOptions as $ksValue): ?>
+                                <option
+                                    value="<?= $ksValue['value']; ?>" <?php if (!is_null($ksInStock) && $ksValue['value'] == $ksInStock) {
+                                    echo "selected='selected'";
+                                } ?>>
+                                    <?= $block->escapeHtml($ksValue['label']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    <?php else:?>
+                        <select name="sources[assigned_sources][0][source_status]"
+                                class="ks-select-box"
+                                title="Stock Status">
+                                <?php foreach ($ksOptions as $ksValue): ?>
+                                    <option
+                                        value="<?= $ksValue['value']; ?>" <?php if (!is_null($ksDefaultStock) && $ksValue['value'] == $ksDefaultStock) {
+                                        echo "selected='selected'";
+                                    } ?>>
+                                        <?= $block->escapeHtml($ksValue['label']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                        </select>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+<?php endif; ?>
+<div id="ks_advanced_inventory_modal" data-mage-init='{"ksInventoryDialog":{}}'>
+    <?php echo $block->getLayout()
+        ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsInventory')
+        ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/ks-advanced-inventory.phtml')->toHtml(); ?>
+</div>

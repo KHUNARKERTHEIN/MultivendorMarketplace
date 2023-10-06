@@ -1,0 +1,102 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsForm
+ */
+
+/** @var \Magento\Tax\Helper\Data $taxHelper */
+$taxHelper = $block->getData('taxHelper');
+$shipment = $block->getKsShipment();
+?>
+
+<div class="ks-ship-create-page">
+    <div class="ks-page-card">
+        <form id="ks-sales-new-shipment-form" method="post" action="<?=$block->getKsSaveUrl()?>" data-mage-init='{"validation":{}}'>
+            <?= $block->getBlockHtml('formkey') ?>
+            <?php  $_order = $block->getKsShipment()->getOrder() ?>
+            <?= $block->getChildHtml('multivendor_order_account_address_info') ?>
+            
+            <!-- payment shiping section start -->
+            <section class="ks-payment-ship-section mb-5">
+
+                <!-- Order tab section title start -->
+                <div class="ks-tab-content-title">
+                    <span><?= $block->escapeHtml(__('Payment &amp; Shipping Method')) ?></span>
+                </div>
+                <!-- Order tab section title end -->
+
+                <div class="ks-payment-shipping-div col-md-12">
+                    <div class="row">
+                        <div class="col-md-6 pl-0">
+                            <div class="ks-order-payment-method">
+                                <?php /* Billing Address */ ?>
+
+                                <!-- Order tab div title start -->
+                                <div class="ks-div-title mb-3">
+                                    <span><?=$block->escapeHtml(__('Payment Information')) ?></span>
+                                </div>
+                                <!-- Order tab div title end -->
+
+                                <div class="admin__page-section-item-content ks-pay-info">
+                                    <div><?= $block->getPaymentHtml() ?></div>
+                                    <div class="order-payment-currency">
+                                        <?= $block->escapeHtml(__('The order was placed using %1.', $_order->getOrderCurrencyCode())) ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pr-0">
+                            <div class="ks-order-shipping-address">
+                                <?php /* Shipping Address */ ?>
+
+                                <!-- Order tab div title start -->
+                                <div class="ks-div-title">
+                                    <span><?= $block->escapeHtml(__('Shipping Information')) ?></span>
+                                </div>
+                                <!-- Order tab div title end -->
+                                
+                                <div><?= $block->getChildHtml('shipment_tracking') ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- payment shiping section end -->
+
+            <!-- Item to ship section start -->
+            <section id="ship_items_container" class="mb-5">
+                <?= $block->getChildHtml('shipment_items') ?>
+            </section>
+            <!-- Item to ship section end -->
+
+            <!-- total shipment section start -->
+            <section id="ship_items_container" class="mb-5">
+                <?= $block->getChildHtml('shipment_comments') ?>
+            </section>
+            <!-- total shipment section end -->
+
+        </form>
+    </div>
+</div>
+
+<?php $scriptString = <<<script
+require([
+    "jquery",
+    "mage/mage",
+    "prototype"
+], function(jQuery){
+    jQuery('#edit_form').mage('form').mage('validation');
+});
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+<?= $block->getChildHtml('shipment_packaging');

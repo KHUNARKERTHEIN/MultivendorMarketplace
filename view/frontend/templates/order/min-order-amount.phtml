@@ -1,0 +1,75 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ * @var $block \Ksolves\MultivendorMarketplace\Block\Order\KsMinimumOrderAmount
+ */
+$ksSellerId = $block->getKsSellerId();
+if ($ksSellerId) {
+    $ksMinAmount = $block->getKsMinimumOrderAmt();
+}
+?>
+<div class ="">
+    <form action="<?= $block->getBaseUrl().'multivendor/minorderamount/save'; ?>" class="ks-form" id="ks-seller-payment-details-form" method="post" data-mage-init='{"validation":{}}'>
+        <div class="ks-form-wrapper-title">
+            <h3></h3>
+            <?php if($block->ksCanEditAmt()):?>
+                <div class="ks-actions-toolbar">
+                    <button type="submit" title="submit" class="ks-action-btn ks-submit ks-primary">
+                        <span><?= $block->escapeHtml(__('Save'));?></span>
+                    </button>
+                </div>
+            <?php endif;?>
+        </div>
+        <div class="ks-page-card">
+            <div class="ks-fieldset-wrapper-content">
+                <div class="ks-form-fieldset pb-0 pt-0">
+                    <fieldset class="ks-form-field mt-0">
+                        <div class="ks-control-grouped">
+                            <div class="ks-form-field ">                           
+                                    <a role="button" class="ks-tab-heading" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-collapse-one-tab" aria-expanded="true" aria-controls="ks-collapse-one-tab">
+                                            <?= $block->escapeHtml(__('Minimum Order Amount'));?>
+                                    </a>
+                            </div>
+                            <div id="ks-collapse-one-tab" class="panel-collapse in collapse show" role="tabpanel" aria-labelledby="ks-diplay-setting">   
+                                <div class="ks-form-field ">           
+                                    <div>                                    
+                                        <div class="ks-form-field-label">              
+                                            <label>
+                                                <?= $block->escapeHtml(__('Minimum Order Value'));?>
+                                            </label>
+                                        </div>
+                                        <div class="ks-field-control ks-dollor-sign d-flex">
+                                            <span class="disabled"><?= $block->getKsCurrencySymbol();?></span>    
+                                            <input type="text" class="ks-control-feild"data-validate="{'validate-number':true}" <?= $block->ksCanEditAmt() ? '' : 'disabled' ?> name="ks_min_order_amt" value="<?= $ksMinAmount;?>" />
+                                        </div>                          
+
+                                    </div>
+                                </div>
+
+                                <div class="ks-form-field ">           
+                                    <div>                                    
+                                        <div class="ks-form-field-label">              
+                                            <label>
+                                                <?= $block->escapeHtml(__('Minimum Order Error Message'));?>
+                                            </label>
+                                        </div>
+                                        <div class="ks-field-control">    
+                                            <input type="text" class="ks-control-feild" name="ks_min_order_message" value="<?= $block->getKsMinimumOrderMessage();?>" />
+                                        </div>                          
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

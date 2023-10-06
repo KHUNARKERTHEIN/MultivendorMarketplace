@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+	<update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <head>
+    	<css src="extjs/resources/css/ext-all.css"/>
+        <css src="extjs/resources/css/ytheme-magento.css"/>
+    </head>
+	<body>
+    <referenceContainer name="content" >
+        <block class="Magento\Backend\Block\Store\Switcher" name="ks_switcher" template="Ksolves_MultivendorMarketplace::store/ks_switcher.phtml">
+                <action method="setUseConfirm">
+                    <argument name="params" xsi:type="string">0</argument>
+                </action>
+        </block>
+        <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\CategoryRequests\KsCategoryTreeView" name="ks_seller_categories_tree_view" cacheable="false"/>
+    </referenceContainer>
+    </body>
+</page>

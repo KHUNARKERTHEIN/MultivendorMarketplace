@@ -1,0 +1,285 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * Seller Profile Product template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+
+<?php
+//intializing categories
+$block->ksSaveStoreCategories();
+$ksCategoryHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsCategoryRequests');
+$ksStoreId = $block->getKsStoreId();
+$ksCategoryId = $block->getRequest()->getParam('category_id');
+ // root category collection
+$ksCategories = $block->getKsRootCategoryCollection();
+$ksCatArray = $block->getKsCategoryArray($ksCategoryHelper);
+$ksCatDataArray = $block->ksRenderFlatNav($ksCategories, $ksCatArray, $block->getKsRootCategoryId());
+
+$ksCatLevel = array();
+if(isset($ksCatDataArray[0])){
+    $ksCatLevel = $ksCatDataArray[0];
+}
+$ksCatData = array();
+if(isset($ksCatDataArray[1])){
+    $ksCatData  = $ksCatDataArray[1];
+}
+$ksCatParentId = array();
+if(isset($ksCatDataArray[2])){
+    $ksCatParentId = $ksCatDataArray[2];
+}
+// get seller profile redirect url
+$ksStoreUrl = $block->getKsSellerProfileUrl($block->getKsSellerId());
+if ($ksStoreUrl) {
+    $ksActionUrl= $block->getBaseUrl().$ksStoreUrl;
+} else {
+    $ksActionUrl = $block->getBaseUrl().'multivendor/sellerprofile/sellerprofile/seller_id/'.$block->getKsSellerId();
+} 
+?>
+<div id="tab-2" class="tab-content">
+    <div class="ks_container">
+        <div class="ks_row">
+            <div class="ks_col-lg-9 ks_col-md-9 ks_offset-md-3">
+                <div class="ks_searchbar">
+                    <div class="ks_row">
+                        <div class="ks_col-lg-6  ks_col-md-4">
+                            <form class="ks-form ks-search-form" id="ks-search-form">
+                                <div class="ks_input-group">
+                                    <input type="text" id="ks-search-value" class="ks_form-control" placeholder="Search.." name="s" value="<?= $block->escapeHtml(__($block->getPostValue())) ?>" >
+                                    <div class="ks_input-group-append">
+                                        <button type="submit"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php if($ksCatLevel): ?>
+                <div class="ks_col-lg-3 ks_col-md-3 ks_sidebar ks-overflow-x ks-py-0">
+                    <h3><?= $block->escapeHtml(__('All Categories')) ?></h3>
+                    <?php echo $block->ksMultilevelMenu($ksCatParentId, $ksCatLevel, $ksCatData, $block);  ?>
+                </div>
+            <?php endif; ?>
+            <div class="ks_col-lg-9 ks_col-md-9 ks-ml-auto">
+                <div class="ks_related_product page-products">
+                    <div class="ks_container">
+                        <div class="ks_row">
+                            <?php if($block->getRequest()->getParam('category_id') || $block->getPostValue()): ?>
+                            <div class="ks-profile-serach-tags">
+                                <ul>
+                                    <?php if($block->getRequest()->getParam('category_id')): ?>
+                                        <li><?= $block->getKsCategoryName() ?><span class="ks-tags-close" data-tab="<?= $block->getPostValue() ? $ksActionUrl.'?tab_id=tab-2&s='.$block->getPostValue() : $ksActionUrl.'?tab_id=tab-2' ?>"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/close-gray-btn.svg') ?>" alt="ks-close" /></span></li>
+                                    <?php endif; ?>
+                                    <?php if($block->getPostValue()): ?>
+                                        <li><?= $block->getPostValue() ?><span class="ks-tags-close" data-tab="<?= $ksCategoryId ? $ksActionUrl.'?tab_id=tab-2&category_id='.$ksCategoryId : $ksActionUrl.'?tab_id=tab-2' ?>"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/close-gray-btn.svg') ?>" alt="ks-close" /></span></li>
+                                    <?php endif; ?>
+                                    <a href="<?= $ksActionUrl.'?tab_id=tab-2' ?>"><?= $block->escapeHtml(__('Clear All')) ?></a>
+                                </ul>
+                            </div>
+                            <?php endif; ?> 
+                        <?php if ($ksCategoryId): ?>
+                            <?php if (count($block->getSellerCategoriesCollection())!=0 && in_array($ksCategoryId, $block->getSellerCategoriesCollection()) && $ksCategoryId != $block->getKsRootCategoryId() && $ksCategoryHelper->getKsParentCategory($ksCategoryId, $ksStoreId) == $block->getKsRootCategoryId()): ?>
+                                <?php if ($block->getPagerHtml()): ?>
+                                    <div class="order-products-toolbar toolbar bottom ks-profile-pager">
+                                        <?php echo $block->getPagerHtml(); ?>
+                                        <div class="toolbar-sorter sorter ks-profile-sorter">
+                                            <label class="sorter-label ks-font-weight-600" for="sorter"><?= $block->escapeHtml(__('Sort By')) ?></label>
+                                            <select id="ks_sorter" data-role="sorter" class="sorter-options">
+                                                <?php foreach ($block->getKsSortBy() as $ksSort) :?>
+                                                    </option>
+                                                    <option <?php if ($block->getKsCurrentSortBy() == $ksSort['ks-value']) { ?>selected="true" <?php }; ?>value="<?= $block->escapeHtmlAttr($ksSort['ks-value']) ?>"> <?= $block->escapeHtml(__($ksSort['ks-label'])) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <?php if ($block->getKsCurrentDirection() == 'desc') :?>
+                                                <a title="<?= $block->escapeHtmlAttr(__('Set Ascending Direction')) ?>"
+                                                href="#"
+                                                class="action sorter-action sort-desc ks-direction"
+                                                data-role="direction-switcher"
+                                                data-value="asc">
+                                                    <span><?= $block->escapeHtml(__('Set Ascending Direction')) ?></span>
+                                                </a>
+                                            <?php else :?>
+                                                <a title="<?= $block->escapeHtmlAttr(__('Set Descending Direction')) ?>"
+                                                href="#"
+                                                class="action sorter-action sort-asc ks-direction"
+                                                data-role="direction-switcher"
+                                                data-value="desc">
+                                                    <span><?= $block->escapeHtml(__('Set Descending Direction')) ?></span>
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
+                                <?php echo $block->getChildHtml(); ?>
+                            <?php else: ?>
+                                <div class="message info empty ks-ml-2">
+                                    <div><?= $escaper->escapeHtml(__('We can\'t find products matching the selection.')) ?></div>
+                                </div>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php if (count($block->getLoadedProductCollection())!=0): ?>
+                                <?php if ($block->getPagerHtml()): ?>
+                                    <div class="order-products-toolbar toolbar bottom ks-profile-pager">
+                                        <?php echo $block->getPagerHtml(); ?>
+                                        <div class="toolbar-sorter sorter ks-profile-sorter">
+                                            <label class="sorter-label" for="sorter"><?= $block->escapeHtml(__('Sort By')) ?></label>
+                                            <select id="ks_sorter" data-role="sorter" class="sorter-options">
+                                                <?php foreach ($block->getKsSortBy() as $ksSort) :?>
+                                                    </option>
+                                                    <option <?php if ($block->getKsCurrentSortBy() == $ksSort['ks-value']) { ?>selected="true" <?php }; ?>value="<?= $block->escapeHtmlAttr($ksSort['ks-value']) ?>"> <?= $block->escapeHtml(__($ksSort['ks-label'])) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <?php if ($block->getKsCurrentDirection() == 'desc') :?>
+                                                <a title="<?= $block->escapeHtmlAttr(__('Set Ascending Direction')) ?>"
+                                                href="#"
+                                                class="action sorter-action sort-desc ks-direction"
+                                                data-role="direction-switcher"
+                                                data-value="asc">
+                                                    <span><?= $block->escapeHtml(__('Set Ascending Direction')) ?></span>
+                                                </a>
+                                            <?php else :?>
+                                                <a title="<?= $block->escapeHtmlAttr(__('Set Descending Direction')) ?>"
+                                                href="#"
+                                                class="action sorter-action sort-asc ks-direction"
+                                                data-role="direction-switcher"
+                                                data-value="desc">
+                                                    <span><?= $block->escapeHtml(__('Set Descending Direction')) ?></span>
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                                <?php echo $block->getChildHtml(); ?>
+                            <?php else: ?>
+                                <div class="message info empty ks-ml-2">
+                                    <div><?= $escaper->escapeHtml(__('We can\'t find products matching the selection.')) ?></div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var toggler = document.getElementsByClassName("ks-category-caret");
+    var i;
+
+    for (i = 0; i < toggler.length; i++) {
+    toggler[i].addEventListener("click", function() {
+        this.parentElement.querySelector("#ks-seller-product-catrgory ul").classList.toggle("active");
+        this.classList.toggle("ks-category-caret-down");
+    });
+    }
+</script>
+<script>
+    require(["jquery",
+             "mage/url"
+            ], 
+            function ($,url) {
+            //Sort By
+            $('#ks_sorter').on('change', function() {
+              var ksSortValue = this.value;
+              var ksUrl = window.location.href;   
+              if(ksUrl.includes('sortby')) { 
+                var ksIsParam = '<?= $this->getRequest()->getParam('sortby') ?>';
+                if(ksUrl.includes('?sortby')){
+                    var ksString = '?sortby='+ ksIsParam;
+                    var ksNewString = '?sortby='+ ksSortValue;
+                    ksUrl = ksUrl.replace(ksString,ksNewString);
+                } else {
+                    var ksString = '&sortby='+ ksIsParam;
+                    var ksNewString = '&sortby='+ ksSortValue;
+                    ksUrl = ksUrl.replace(ksString,ksNewString);
+                }
+              } else {
+                  if (ksUrl.indexOf('?') > -1) {
+                     ksUrl += '&sortby='+ksSortValue;
+                  } else {
+                     ksUrl += '?sortby='+ksSortValue;
+                  }
+              }
+              window.location.href = ksUrl;
+            });
+            //Direction By
+            $('.ks-direction').on('click', function() {
+              var ksSortValue = $(this).attr('data-value');
+              var ksUrl = window.location.href;   
+              if(ksUrl.includes('dirby')) { 
+                var ksIsParam = '<?= $this->getRequest()->getParam('dirby') ?>';
+                if(ksUrl.includes('?dirby')){
+                    var ksString = '?dirby='+ ksIsParam;
+                    var ksNewString = '?dirby='+ ksSortValue;
+                    ksUrl = ksUrl.replace(ksString,ksNewString);
+                } else {
+                    var ksString = '&dirby='+ ksIsParam;
+                    var ksNewString = '&dirby='+ ksSortValue;
+                    ksUrl = ksUrl.replace(ksString,ksNewString);
+                }
+              } else {
+                  if (ksUrl.indexOf('?') > -1) {
+                     ksUrl += '&dirby='+ksSortValue;
+                  } else {
+                     ksUrl += '?dirby='+ksSortValue;
+                  }
+              }
+              window.location.href = ksUrl;
+            });
+            //pagination click
+            $('.ks_related_product ul.pages-items li a').on('click', function() {
+                event.preventDefault();
+                var ksUrl = $(this).attr('href');
+                if(!ksUrl.includes('?p') && !ksUrl.includes('&p')) {
+                    if (ksUrl.indexOf('?') > -1) {
+                        ksUrl += '&p=1';
+                    } else {
+                        ksUrl += '?p=1';
+                    }
+                }
+                window.location.href = ksUrl;
+            });
+            $('.ks-tags-close').on('click',function(){
+                var ksUrl = $(this).attr('data-tab');
+                $(this).parent().css("display","none");
+                window.location.href = ksUrl;
+            });
+            $('#ks-search-form').submit(function(){
+                event.preventDefault();
+                var ksUrl =  '<?= $this->getUrl('//*', ['_current' => true, '_use_rewrite' => true , "tab_id" => "tab-2"]) ?>';
+                var ksSortValue = $('#ks-search-value').val(); 
+                var ksIsParam = '<?= $this->getRequest()->getParam('s') ?>';
+                if(ksUrl.includes('?s')){
+                    var ksString = '?s='+ ksIsParam;
+                    var ksNewString = '?s='+ ksSortValue;
+                    ksUrl = ksUrl.replace(ksString,ksNewString);
+                } else if(ksUrl.includes('&s')) {
+                    var ksString = '&s='+ ksIsParam;
+                    var ksNewString = '&s='+ ksSortValue;
+                    ksUrl = ksUrl.replace(ksString,ksNewString);
+                } else {
+                    if (ksUrl.indexOf('?') > -1) {
+                        ksUrl += '&s='+ksSortValue;
+                    } else {
+                        ksUrl += '?s='+ksSortValue;
+                    }
+                }
+                window.location.href = ksUrl;
+            });
+    });
+</script>

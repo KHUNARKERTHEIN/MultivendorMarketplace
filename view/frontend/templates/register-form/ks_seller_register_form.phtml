@@ -1,0 +1,97 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Customer\Block\Form\Register $block */
+
+?>
+<?php
+// Created Helper Object
+$ksHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsDataHelper');
+// Get the value for module is enable or not
+$ksEnable = $ksHelper->getKsConfigLoginAndRegistrationSetting('ks_allow_seller_registration');
+?>
+
+<!-- Check Allow Seller Registration Setting -->
+<?php if ($ksEnable) : ?>
+<!--Seller  Register Start -->
+
+    <div id="ks-become-seller">
+        <div class="field legend ks-choose-become-seller">
+            <label class="label"></label>
+            <div class="field required control">
+                <label for="ks-become-seller" class="label">
+                    <span><?= $block->escapeHtml(__('Do you want to become a seller?')) ?></span>
+                </label>
+
+                <div class="control">
+                    <input type="radio" class="ks-become-seller" name="ks_become_seller" value='1'/> <?= $block->escapeHtml(__("Yes")); ?>&nbsp;&nbsp;
+                    <input type="radio" class="ks-become-seller" name="ks_become_seller" value='0' checked /> <?= $block->escapeHtml(__("No")); ?>
+                </div>
+            </div>
+        </div>
+        <div class="field required">   
+            <div class="control ks-seller-store fieldset" style="display:none;">
+                <div class="field required">
+
+                    <label for="ks-store-name" class="label">
+                        <span><?= $block->escapeHtml(__('Store Name')) ?></span>
+                    </label>
+
+                    <div class="control">
+                        <input type="text" name="ks_seller_store_name" title="<?= $block->escapeHtmlAttr(__('Please Enter Store Name')) ?>" id="ks_seller_store_name" class="input-text required-entry" />
+                    </div>
+                    <div id="ks-load" class="no-display">
+                        <img height="18px" width="18px" src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/loader.gif'); ?>" />
+                    </div>
+                </div>
+
+                <div class="field required">
+                    <label for="ks-store-url" class="label">
+                        <span><?= $block->escapeHtml(__('Store Url')) ?></span>
+                    </label>
+                    <div class="control">
+
+                        <input type="text" name="ks_seller_store_url" class="ks-seller-store-url required-entry check-store-url validate-store-url" value="" placeholder="Please enter your store url" id="ks_seller_store_url" />
+
+                        <input type="hidden" class="ks_check_store_url" value="0" />
+                        <div class="ks-mt-1">
+                            <span>(This will be used to display your public profile)</span>
+                            <a href="javascript:void(0);" class="ks-check-store-available"><?= $block->escapeHtmlAttr(__('Check Availability')) ?></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php
+
+    $ksSellerFormData = [
+        'ksAjaxVerifyStoreUrl'   => $block->getUrl("multivendor/seller/storeurlverify", ["_secure" => $this->getRequest()->isSecure()]),
+        'ksSuccessMessage' => __("Congratulations! Your Store URL is available."),
+        'ksErrorMessage'   => __("Sorry! This Store URL is already in use."),
+        'button'           => 'button.submit'
+    ];
+    $ksSerializedFormData = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($ksSellerFormData);
+?>
+
+<script type="text/x-magento-init">
+    {
+        "#ks-become-seller": {
+            "ksVerifySellerStore": <?=  /* @noEscape */ $ksSerializedFormData; ?>
+        }
+    }
+</script>
+
+<!-- Seller Register end -->

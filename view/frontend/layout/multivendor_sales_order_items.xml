@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Email Order Items List" design_abstraction="custom">
+    <body>
+        <block class="Ksolves\MultivendorMarketplace\Block\Order\Items\KsItems" name="order_items" template="Ksolves_MultivendorMarketplace::order/email/items.phtml">
+            <block class="Ksolves\MultivendorMarketplace\Block\Order\Items\KsItems" name="order_totals" template="Ksolves_MultivendorMarketplace::order/email/totals.phtml"/>
+        </block>
+    </body>
+</page>

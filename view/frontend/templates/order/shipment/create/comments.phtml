@@ -1,0 +1,116 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var \Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsItems $block 
+ */
+$shipment = $block->getKsShipment();
+?>
+<!-- total shipment section start -->
+<section>
+
+    <!-- Order tab section title start -->
+    <div class="ks-tab-content-title">
+        <span><?= $block->escapeHtml(__('Shipment Total')) ?></span>
+    </div>
+    <!-- Order tab section title end -->
+
+    <div class="col-md-12">
+        <div class="row">
+            <div id="history_form" class="order-comments-history col-md-6 pl-0">
+
+                <!-- Order tab div title start -->
+                <div class="ks-div-title mb-3">
+                    <span><?= $block->escapeHtml(__('Shipment Comments')) ?></span>
+                </div>
+                <!-- Order tab div title end -->
+
+                <div class=" ks-field-full-width">
+                    <label for="shipment_comment_text">
+                        <span><?= $block->escapeHtml(__('Comment Text')) ?></span>
+                    </label>
+                    <div>
+                        <textarea id="shipment_comment_text"
+                        name="shipment[comment_text]"
+                        class="ks-control-feild ks-min-height-50"
+                        rows="3"
+                        cols="5"><?= $block->escapeHtml($block->getKsShipment()->getCommentText())?></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="shipment_totals" class="col-md-6 pr-0">
+                <?php if($block->ksCheckNotesAndNotifyShipment()): ?>
+                    <!-- Order tab div title start -->
+                    <div class="ks-div-title mb-3">
+                        <span><?= $block->escapeHtml(__('Shipment Options')) ?></span>
+                    </div>
+                    <!-- Order tab div title end -->
+                <?php endif;?>
+
+                <div class="order-totals-actions mt-5">
+                    <?php if($block->ksCheckNotesAndNotifyShipment()): ?>
+                        <div class="field-append">
+                            <input id="notify_customer" name="shipment[comment_customer_notify]" value="1" type="checkbox"
+                            disabled="true" />
+                            <label for="notify_customer">
+                                <?= $block->escapeHtml(__('Append Comments')) ?>
+                            </label>
+                        </div>
+                        <div class="field-email">
+                            <input id="send_email" name="shipment[send_email]" value="1" type="checkbox" />
+                            <label for="send_email">
+                                <?= $block->escapeHtml(__('Email Copy of Shipment')) ?>
+                            </label>
+                        </div>
+                    <?php endif; ?>
+                    <div class="float-right mt-5">
+                        <input type="button" class="ks-shipment-submit ks-action-btn ks-primary ks-padding-btn border-0" value="<?= $block->escapeHtml('Submit Shipment')?>">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- total shipment section end -->
+
+<script>
+    require([
+        'jquery'
+        ],
+        function($){
+            window.submitShipment = function(){
+                if (!validQtyItems()) {
+                    alert('Invalid value(s) for Qty to Ship');
+                    return;
+                }
+                $('#ks-sales-new-shipment-form').submit();
+            }
+
+            $('.ks-shipment-submit').on('click', function(e){
+                e.preventDefault();
+                submitShipment();
+            })
+
+            window.validQtyItems = function() {
+                var valid = true;
+                $('.ks-shipment-item-qty').each(function(item) {
+                    var val = parseFloat($(this).val());
+                    if (isNaN(val) || val < 0) {
+                        valid = false;
+                    }
+                });
+                return valid;
+            }
+
+        }
+    );
+</script>

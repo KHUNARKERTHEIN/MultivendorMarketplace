@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- **
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="ks_email">
+        <job name="ks_fav_seller_email" instance="Ksolves\MultivendorMarketplace\Cron\KsFavSellerEmail" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <container name="content" label="Root">
+        <block class="Ksolves\MultivendorMarketplace\Block\Adminhtml\CommissionRule\Edit\Analyzer\KsAttributesFields" name="ks-attribute" template="Ksolves_MultivendorMarketplace::commission/ks-attributes-fields.phtml"/>
+    </container>
+</layout>

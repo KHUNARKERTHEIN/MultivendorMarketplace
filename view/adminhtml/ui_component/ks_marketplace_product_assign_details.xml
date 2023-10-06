@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_product_assign_details.ks_marketplace_product_assign_details_data_source</item>
+            <item name="deps" xsi:type="string">ks_marketplace_product_assign_details.ks_marketplace_product_assign_details_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Employee Information</item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">ks_marketplace_product_assign_details</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <dataSource name="ks_marketplace_product_assign_details_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\AssignProduct\KsAssignProductDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_marketplace_product_assign_details_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <!-- Product to be Assigned FieldSet -->
+    <fieldset name="ks_product_to_be_assigned_tab">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Product to be Assigned</item>
+                <item name="sortOrder" xsi:type="number">10</item>
+            </item>
+        </argument>
+        <field name="ks_product_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">hidden</item>
+                    <item name="dataScope" xsi:type="string">ks_product_id</item>
+                </item>
+            </argument>
+        </field>
+        <insertListing name="ks_marketplace_product_tobe_assigned">
+            <settings>
+                <autoRender>true</autoRender>
+                <externalProvider>ks_marketplace_product_tobe_assigned.ks_marketplace_product_tobe_assigned</externalProvider>
+                <dataScope>ks_marketplace_product_tobe_assigned</dataScope>
+                <selectionsProvider>ks_marketplace_product_tobe_assigned.ks_marketplace_product_tobe_assigned.columns.ids</selectionsProvider>
+                <ns>ks_marketplace_product_tobe_assigned</ns>
+            </settings>
+        </insertListing>
+    </fieldset>
+
+    <!-- Child Product of Configurable, grouped and bundle product -->
+    <fieldset name="ks_marketplace_child_assign_product_tab">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Child Products</item>
+                <item name="sortOrder" xsi:type="number">20</item>
+            </item>
+        </argument>
+        <insertListing name="ks_marketplace_child_assign_product">
+            <settings>
+                <autoRender>true</autoRender>
+                <externalProvider>ks_marketplace_child_assign_product.ks_marketplace_child_assign_product</externalProvider>
+                <dataScope>ks_marketplace_child_assign_product</dataScope>
+                <selectionsProvider>ks_marketplace_child_assign_product.ks_marketplace_child_assign_product.columns.ids</selectionsProvider>
+                <ns>ks_marketplace_child_assign_product</ns>
+            </settings>
+        </insertListing>
+    </fieldset>
+
+    <!-- Associated Product of Simple, virtual and Downloadable Product -->
+    <fieldset name="ks_associated_assign_product_tab">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Associated Products</item>
+                <item name="sortOrder" xsi:type="number">30</item>
+            </item>
+        </argument>
+        <insertListing name="ks_marketplace_associated_assign_product">
+            <settings>
+                <autoRender>true</autoRender>
+                <externalProvider>ks_marketplace_associated_assign_product.ks_marketplace_associated_assign_product</externalProvider>
+                <dataScope>ks_marketplace_associated_assign_product</dataScope>
+                <selectionsProvider>ks_marketplace_associated_assign_product.ks_marketplace_associated_assign_product.columns.ids</selectionsProvider>
+                <ns>ks_marketplace_associated_assign_product</ns>
+            </settings>
+        </insertListing>
+    </fieldset>
+
+    <!-- Related, Upsell and CrossSell Product -->
+    <fieldset name="ks_linked_product_tab">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Related Products, Up-Sells, and Cross-Sells </item>
+                <item name="sortOrder" xsi:type="number">40</item>
+            </item>
+        </argument>
+        <fieldset name="ks_related_product_tab">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Related Products</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+            <insertListing name="ks_marketplace_related_assign_product">
+                <settings>
+                    <autoRender>true</autoRender>
+                    <externalProvider>ks_marketplace_related_assign_product.ks_marketplace_related_assign_product</externalProvider>
+                    <dataScope>ks_marketplace_related_assign_product</dataScope>
+                    <selectionsProvider>ks_marketplace_related_assign_product.ks_marketplace_related_assign_product.columns.ids</selectionsProvider>
+                    <ns>ks_marketplace_related_assign_product</ns>
+                </settings>
+            </insertListing>
+        </fieldset>
+        <fieldset name="ks_marketplace_upsell_assign_product_tab">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">UpSell Products</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+            <insertListing name="ks_marketplace_upsell_assign_product">
+                <settings>
+                    <autoRender>true</autoRender>
+                    <externalProvider>ks_marketplace_upsell_assign_product.ks_marketplace_upsell_assign_product</externalProvider>
+                    <dataScope>ks_marketplace_upsell_assign_product</dataScope>
+                    <selectionsProvider>ks_marketplace_upsell_assign_product.ks_marketplace_upsell_assign_product.columns.ids</selectionsProvider>
+                    <ns>ks_marketplace_upsell_assign_product</ns>
+                </settings>
+            </insertListing>
+        </fieldset>
+        <fieldset name="ks_marketplace_cross_sell_assign_product_tab">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Cross-Sell Products</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+            <insertListing name="ks_marketplace_cross_sell_assign_product_tab">
+                <settings>
+                    <autoRender>true</autoRender>
+                    <externalProvider>ks_marketplace_cross_sell_assign_product.ks_marketplace_cross_sell_assign_product</externalProvider>
+                    <dataScope>ks_marketplace_cross_sell_assign_product</dataScope>
+                    <selectionsProvider>ks_marketplace_cross_sell_assign_product.ks_marketplace_cross_sell_assign_product.columns.ids</selectionsProvider>
+                    <ns>ks_marketplace_cross_sell_assign_product</ns>
+                </settings>
+            </insertListing>
+        </fieldset>
+    </fieldset>
+</form>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+	<update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+	<body>
+    <referenceContainer name="content" >
+    	<block class="Magento\Framework\View\Element\Template" name="ks_product_attribute_button" template="Ksolves_MultivendorMarketplace::productattribute/set/ks_product_attribute_set_button.phtml" />
+        <uiComponent name="ks_productattribute_set_listing"/>
+    </referenceContainer>
+</body>
+</page>

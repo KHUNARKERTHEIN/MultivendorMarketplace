@@ -1,0 +1,222 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php $ksVideoContent = $block->getLayout()
+                            ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Gallery\KsContent')
+                            ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/gallery/ks-video.phtml')
+                            ->toHtml();?>
+<div><form></form></div>
+<div id="ks_video_popup" style="display:none">
+    <?= $ksVideoContent;?>
+</div>
+<div class="ks-row">
+    <div class="ks-add-video-button-container">
+        <button id="ks_add_video_button"
+                  title="<?= $block->escapeHtml(__('Add Video'));?>"
+                  data-role="ks-add-video-button"
+                  type="button"
+                  class="ks-action-btn ks-secondry ks-secondry-child"
+                  data-mage-init='{"ksOpenVideoModal" : {}}'
+                  >
+            <span><?= $block->escapeHtml(__('Add video')) ?></span>
+      </button>
+    </div>
+</div>
+
+<div id="media_gallery_content"
+     class='ks-form-gallery'
+     data-mage-init='{"ksProductGallery":{"template":"#media_gallery_content-template"}}'
+     data-images="<?= $block->escapeHtml($block->getKsProductImagesJson()) ?>"
+     data-types="<?= $block->escapeHtml(
+         $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->getKsProductImageTypes())
+     ) ?>"
+    >
+   
+        <div class="ks-form-image ks-image-placeholder">
+            <div class="ks-fileinput-button ks-form-buttons ks-button">
+                <span><?= $block->escapeHtml(__('Browse Files...')) ?></span>
+                <input id="ksfileupload" type="file" name="image"
+                    data-url="<?= $block->getUrl('multivendor/product_gallery/upload', ['_secure' => $this->getRequest()->isSecure()]) ?>" multiple="multiple" />
+            </div>
+            <div class="clear"></div>
+            <script id="media_gallery_content_Uploader-template" type="text/x-magento-template">
+                <div id="<%- data.id %>" class="ks-file-row">
+                    <span class="ks-file-info"><%- data.name %> (<%- data.size %>)</span>
+                    <div class="ks-progressbar-container">
+                        <div class="ks-progressbar ks-upload-progress" style="width: 0%;"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </script>
+            <div class="ks-product-image-wrapper">
+                <p class="ks-image-placeholder-text"><?php /* @escapeNotVerified */ echo __('Click here or drag and drop to add images.');?></p>
+            </div>
+        </div>
+    
+        <?php foreach ($block->getKsProductImageTypes() as $typeData) { ?>
+            <input name="<?= $block->escapeHtml($typeData['name']) ?>"
+                   class="ks-image-<?= $block->escapeHtml($typeData['code']) ?>"
+                   type="hidden"
+                   value="<?= $block->escapeHtml($typeData['value']) ?>"/>
+        <?php } ?>
+
+    <script id="media_gallery_content-template" type="text/x-magento-template">
+        <div class="ks-form-image ks-item <% if (data.disabled == 1) { %>hidden-for-front<% } %> <% if (data.video_url) { %>video-item<% } %>" data-role="image">
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][position]" value="<%- data.position %>" class="position"/>
+            <% if (data.media_type !== 'external-video') {%>
+            <input type="hidden"
+                   name="product[media_gallery][images][<%- data.file_id %>][media_type]"
+                   value="image"/>
+            <% } else { %>
+            <input type="hidden"
+                   name="product[media_gallery][images][<%- data.file_id %>][media_type]"
+                   value="<%- data.media_type %>"/>
+            <% } %>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][file]" value="<%- data.file %>"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][value_id]" value="<%- data.value_id %>"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][label]" value="<%- data.label %>"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][disabled]" value="<%- data.disabled %>"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][removed]" value="" class="is-removed"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][video_provider]" value="<%- data.video_provider %>"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][video_url]" value="<%- data.video_url %>"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][video_title]" value="<%- data.video_title %>"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][video_description]" value="<%- data.video_title %>"/>
+            <input type="hidden" name="product[media_gallery][images][<%- data.file_id %>][role]" value="<%- data.video_description %>"/>
+            <div class="ks-product-image-wrapper">
+                <img class="ks-product-image" data-role="image-element" src="<%- data.url %>" alt="<%- data.label %>"/>
+                <div class="ks-actions" >
+                    <button type="button" class="ks-action-remove" data-role="delete-button" 
+                    title="<% if (data.media_type == 'external-video') {%>
+                                <?= $block->escapeHtmlAttr(__('Delete video')); ?>
+                            <%} else {%>
+                                <?= $block->escapeHtmlAttr(__('Delete image')); ?>
+                            <%}%>">
+                        <span> <?= __('Delete image') ?></span>
+                    </button>
+                    <div class="ks-draggable-handle" ></div >
+                </div>
+                <div class="ks-image-fade"><span><?= __('Hidden') ?></span></div>
+            </div>
+            <div class="ks-item-description">
+                <% if (data.media_type !== 'external-video') {%>
+                    <div class="ks-item-title" data-role="img-title"><%- data.label %></div>
+                    <div class="ks-item-size">
+                        <span data-role="image-dimens"></span>, <span data-role="image-size"><%- data.sizeLabel %></span>
+                    </div>
+                <% } else { %>
+                    <div class="ks-item-title" data-role="img-title"><%- data.video_title %></div>
+                <% } %>
+            </div>
+
+            <ul class="item-roles" data-role="roles-labels">
+                <?php
+                foreach ($block->getKsProductImageTypes() as $KsTypeData) {
+                    ?>
+                    <li data-role-code="<?= $block->escapeHtmlAttr($KsTypeData['code']) ?>"
+                        class="item-role item-role-<?= $block->escapeHtmlAttr($KsTypeData['code']) ?>">
+                        <?= $block->escapeHtml($KsTypeData['label']) ?>
+                    </li>
+                    <?php
+                }
+                ?>
+            </ul>
+        </div>
+    </script>
+    <script class="ks-dialog-template" type="text/x-magento-template"  data-title="ks-form-image Options">
+        <div class="ks-image-panel" data-role="dialog">
+            <div class="ks-image-panel-preview">
+                <img src="<%- data.url %>" alt="<%- data.label %>" />
+            </div>
+            <div class="ks-image-panel-controls">
+                <strong class="ks-image-name"><%- data.label %></strong>
+
+                <fieldset class="ks-fieldset ks-fieldset-image-panel">
+                    <div class="ks-field ks-field-image-description">
+                        <label class="ks-label" for="image-description">
+                            <span><?= __('Alt Text')?></span>
+                        </label>
+                        <div class="ks-control">
+                            <textarea id="image-description"
+                                      rows="3"
+                                      name="product[media_gallery][images][<%- data.file_id %>][label]"><%- data.label %></textarea>
+                        </div>
+                    </div>
+
+                    <div class="ks-field ks-field-image-role">
+                        <label class="ks-label">
+                            <span><?= __('Role')?></span>
+                        </label>
+                        <div class="ks-control">
+                            <ul class="ks-multiselect-alt">
+                                <?php foreach ($block->getKsProductMediaAttributes() as $ksAttribute) {?>
+                                    <li class="ks-item">
+                                        <label>
+                                            <input class="ks-image-type"
+                                                   data-role="type-selector"
+                                                   type="checkbox"
+                                                   value="<?= $block->escapeHtml($ksAttribute->getAttributeCode()) ?>"
+                                                />
+                                            <?= $block->escapeHtml($ksAttribute->getFrontendLabel()) ?>
+                                        </label>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="ks-field ks-image-size" data-role="size">
+                        <label class="label ks-label">
+                            <span><?= $block->escapeHtml(__('Image Size')) ?></span>
+                        </label>
+                        <div class="ks-field-value" data-message="<?= $block->escapeHtmlAttr(__('{size}')) ?>">a</div>
+                    </div>
+
+                    <div class="ks-field ks-image-resolution" data-role="resolution">
+                        <label class="label ks-label">
+                            <span><?= $block->escapeHtml(__('Image Resolution')) ?></span>
+                        </label>
+                        <div class="ks-field-value" data-message="<?= $block->escapeHtmlAttr(__('{width}^{height} px'))
+                        ?>"></div>
+                    </div>
+
+                    <div class="ks-field ks-field-image-hide">
+                        <label class="label">
+                            <input type="checkbox"
+                                   data-role="visibility-trigger"
+                                   value="1"
+                                   name="product[media_gallery][images][<%- data.file_id %>][disabled]"
+                            <% if (data.disabled == 1) { %>checked="checked"<% } %> />
+                            <span><?= __('Hide from Product Page')?></span>
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ks-image-pointer"></div>
+        </div>
+    </script>
+</div>
+
+<?php
+    $ksFileuploadData = [
+        'ksMaxFileSize' =>$block->getKsFileSizeService()->getMaxFileSize(),
+        'ksMaxWidth'    => \Magento\Framework\File\Uploader::MAX_IMAGE_WIDTH,
+        'ksMaxHeight'   => \Magento\Framework\File\Uploader::MAX_IMAGE_HEIGHT
+    ];
+    $ksSerializedFormData = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($ksFileuploadData);
+    ?>
+
+<script type="text/x-magento-init">
+    {
+        "#ksfileupload": {
+            "ksProductImageUpload": <?=  /* @noEscape */ $ksSerializedFormData; ?>
+        }
+    }
+</script>

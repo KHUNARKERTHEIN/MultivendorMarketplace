@@ -1,0 +1,114 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Magento\Bundle\Block\Adminhtml\Sales\Order\Items\Renderer */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+<?php if($block->getKsShipmentRequest()->getKsApprovalStatus()!=\Ksolves\MultivendorMarketplace\Model\KsSalesShipment::KS_STATUS_APPROVED):?>
+    <?= $block->getLayout()->createBlock('Ksolves\MultivendorMarketplace\Block\Adminhtml\Order\Shipment\View\Items')->setKsOrderItemId($block->getKsOrderItemId())->setKsBundleItem($block->getKsBundleItem())->setKsShipmentRequest($block->getKsShipmentRequest())->setTemplate('Ksolves_MultivendorMarketplace::order/shipment/view/bundle/request-item-renderer.phtml')->toHtml(); ?>
+<?php else:?>
+<?php $_item = $block->getKsSalesShipmentItem($block->getKsShipmentIncId(),$block->getKsOrderItemId()); ?>
+<?php $items = array_merge([$_item->getOrderItem()], $_item->getOrderItem()->getChildrenItems()) ?>
+<?php $shipItems = $block->getChildren($_item) ?>
+<?php $_count = count($items) ?>
+<?php $_index = 0 ?>
+<?php
+/** @var \Magento\Catalog\Helper\Data $catalogHelper */
+$catalogHelper = $block->getData('ksCatalogHelper');
+?>
+
+<?php $_prevOptionId = '' ?>
+
+<?php if ($block->getOrderOptions($_item) || $_item->getDescription()): ?>
+    <?php $_showlastRow = true ?>
+<?php else: ?>
+    <?php $_showlastRow = false ?>
+<?php endif; ?>
+
+<?php foreach ($items as $_item): ?>
+    <?php if ($_item->getParentItem()): ?>
+        <?php $attributes = $block->getSelectionAttributes($_item) ?>
+        <?php if ($_prevOptionId != $attributes['option_id']): ?>
+        <tr class="ks-bundle-item">
+            <td class="col-product">
+                <div class="option-label"><?= $block->escapeHtml($attributes['option_label']) ?></div>
+            </td>
+            <td class="col-qty last">&nbsp;</td>
+        </tr>
+            <?php $_prevOptionId = $attributes['option_id'] ?>
+        <?php endif; ?>
+    <?php endif; ?>
+    <tr class="ks-bundle-item">
+        <?php if (!$_item->getParentItem()): ?>
+        <td class="col-product">
+            <div class="product-title"><?= $block->escapeHtml($_item->getName()) ?></div>
+            <div class="product-sku-block">
+                <span><?= $block->escapeHtml(__('SKU')) ?>:</span>
+                <?= /* @noEscape */ implode('<br />', $catalogHelper->splitSku($_item->getSku())) ?>
+            </div>
+        </td>
+        <?php else: ?>
+        <td class="col-product"><div class="option-value"><?= $block->getValueHtml($_item) ?></div></td>
+        <?php endif; ?>
+        <td class="col-qty last">
+            <?php if (($block->isShipmentSeparately($_item)) ||
+                (!$block->isShipmentSeparately($_item) && $_item->getParentItem())): ?>
+                <?php if (isset($shipItems[$_item->getId()])): ?>
+                    <?= (float)$shipItems[$_item->getId()]->getQty() * 1 ?>
+                <?php elseif ($_item->getIsVirtual() && $block->isShipmentSeparately($_item)): ?>
+                    <?= $block->escapeHtml(__('N/A')) ?>
+                <?php elseif($_item->getParentItem() && $block->isShipmentSeparately($_item)): ?>
+                    0
+                <?php else:?>
+                <?php endif; ?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+    </tr>
+<?php endforeach; ?>
+<?php if ($_showlastRow): ?>
+    <tr class="ks-bundle-item">
+        <td class="col-product">
+            <?php if ($block->getOrderOptions($_item->getOrderItem())): ?>
+                <dl class="item-options">
+                <?php foreach ($block->getOrderOptions($_item->getOrderItem()) as $option): ?>
+                    <dt><?= $block->escapeHtml($option['label']) ?></dt>
+                    <dd>
+                    <?php if (isset($option['custom_view']) && $option['custom_view']): ?>
+                        <?= $block->escapeHtml($option['value']) ?>
+                    <?php else: ?>
+                        <?= $block->escapeHtml($block->truncateString($option['value'], 55, '', $_remainder)) ?>
+                        <?php if ($_remainder):?>
+                            ... <span id="<?= $block->escapeHtmlAttr($_id = 'id' . uniqid())
+                            ?>"><?= $block->escapeHtml($_remainder) ?></span>
+                            <?php $escapedId = /* @noEscape */ $block->escapeJs($_id);
+                            $scriptString = <<<script
+                                require(['prototype'], function(){
+                                    $('{$escapedId}').hide();
+                                    $('{$escapedId}').up().observe('mouseover', function(){\$('{$escapedId}').show();});
+                                    $('{$escapedId}').up().observe('mouseout',  function(){\$('{$escapedId}').hide();});
+                                });
+script;
+                            ?>
+                            <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+                        <?php endif;?>
+                    <?php endif;?>
+                    </dd>
+                <?php endforeach; ?>
+                </dl>
+            <?php endif; ?>
+            <?= $block->escapeHtml($_item->getDescription()) ?>
+        </td>
+        <td class="last">&nbsp;</td>
+    </tr>
+<?php endif; ?>
+<?php endif;?>

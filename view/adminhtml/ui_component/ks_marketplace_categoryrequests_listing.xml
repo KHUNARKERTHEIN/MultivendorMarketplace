@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_categoryrequests_listing.ks_marketplace_categoryrequests_listing_data_source</item>
+            <item name="deps" xsi:type="string">ks_marketplace_categoryrequests_listing.ks_marketplace_categoryrequests_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">categoryrequests_columns</item>
+    </argument>
+    <dataSource name="ks_marketplace_categoryrequests_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ksolves\MultivendorMarketplace\Ui\DataProvider\Backend\KsCategoryRequestsDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_marketplace_categoryrequests_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters" component="Magento_Customer/js/grid/filters/filters">
+            <settings>
+                <storageConfig>
+                    <param name="provider" xsi:type="string">ks_marketplace_categoryrequests_listing.ks_marketplace_categoryrequests_listing.listing_top.bookmarks</param>
+                    <param name="namespace" xsi:type="string">current.filters</param>
+                </storageConfig>
+                <childDefaults>
+                    <param name="provider" xsi:type="string">ks_marketplace_categoryrequests_listing.categoryrequests_listing.listing_top.listing_filters</param>
+                    <param name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">ks_marketplace_categoryrequests_listing.ks_marketplace_categoryrequests_listing.listing_top.bookmarks:current.columns.${ $.index }.visible</item>
+                    </param>
+                </childDefaults>
+            </settings>
+            <filterSelect name="ks_store_id" provider="${ $.parentName }">
+                <settings>
+                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    <caption translate="true">All Store Views</caption>
+                    <label translate="true">Store View</label>
+                    <dataScope>ks_store_id</dataScope>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <action name="approve">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to approve selected Product Category?</message>
+                        <title translate="true">Approve items</title>
+                    </confirm>
+                    <url path="multivendor/categoryrequests/massapprove"/>
+                    <type>approve</type>
+                    <label translate="true">Approve</label>
+                </settings>
+            </action>
+            <action name="reject">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to reject selected Product Category?</message>
+                        <title translate="true">Reject items</title>
+                    </confirm>
+                    <url path="multivendor/categoryrequests/massreject"/>
+                    <type>reject</type>
+                    <label translate="true">Reject</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="categoryrequests_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">ks_marketplace_categoryrequests_listing.ks_marketplace_categoryrequests_listing.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+            </item>
+        </argument>
+        <selectionsColumn name="ids" sortOrder="10">
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="ks_category_id" sortOrder="20">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="ks_category_name" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\CategoryRequests\KsCategoryName" sortOrder="30">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Category</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_seller_name" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\Seller\KsSellerLinkup" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Seller Name</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_seller_product_count" sortOrder="60">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Seller Product Count</label>
+            </settings>
+        </column>
+        <column name="ks_global_product_count" sortOrder="70">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Global Product Count</label>
+            </settings>
+        </column>
+        <column name="ks_requested_on" sortOrder="80">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Requested On</label>
+            </settings>
+        </column>
+        <column name="ks_rejection_reason" sortOrder="90">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Last Rejection Reason</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="ks_category_requests_actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\CategoryRequests\KsCategoryRequestsActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="fieldClass" xsi:type="string">ks-seller-approval-action</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">100</item>
+                    <item name="indexField" xsi:type="string">ks_request_status</item>
+                    <item name="label" xsi:type="string" translate="true">Actions</item>
+                    <item name="urlEntityParamName" xsi:type="string">id</item>
+                    <item name="sortOrder" xsi:type="number">90</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

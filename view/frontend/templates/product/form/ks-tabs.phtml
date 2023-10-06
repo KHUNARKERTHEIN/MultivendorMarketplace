@@ -1,0 +1,65 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php $ksTabs = $block->getKsProductTabs();
+    $ksProduct = $block->getKsProduct();
+ ?>
+    <?php if (!empty($ksTabs)) { 
+        foreach ($ksTabs as $ksTab): ?>
+            <?php 
+            if($ksTab->getGroupCode()=='downloadable-product' && $ksProduct->getTypeId()=='downloadable'){
+                $ksActiveState = 'true';
+            }elseif($ksTab->getGroupCode()=='product-configurable' && $ksProduct->getTypeId()=='configurable'){
+                $ksActiveState = 'true';
+            }elseif($ksTab->getGroupCode()=='product-grouped' && $ksProduct->getTypeId()=='grouped'){
+                $ksActiveState = 'true';
+            }elseif($ksTab->getGroupCode()=='bundle-items' && $ksProduct->getTypeId()=='bundle'){
+                $ksActiveState = 'true';
+            }else{
+                $ksActiveState = 'false';
+            }?>
+           
+            <div class="ks-fieldset-wrapper ks-form-collapsible-block <?= $ksTab->getGroupCode();?>"
+                <?php if ($ksTab->getGroupCode() != 'product-details') { ?>
+                    data-mage-init='{"collapsible":{
+                        "openedState": "_show",
+                        "closedState": "_hide",
+                        "animate": 200,
+                        "collapsible": true,
+                        "active" : <?= $ksActiveState;?>
+                        }}'
+                <?php } ?>>
+
+                <?php if ($ksTab->getGroupCode() != 'product-details'):?>
+                    <div class="ks-fieldset-wrapper-title" data-role="title">
+                        <strong class="ks-form-collapsible-title" data-role="trigger" >
+                            <span><?= $block->escapeHtml(__($block->getKsTabLabel($ksTab))) ?></span>
+                        </strong>
+                    </div>
+                <?php endif;?>
+
+                <div class="ks-fieldset-wrapper-content" data-role="content">
+                    <?php if ($ksTab->getGroupCode() == 'product-configurable'):?>
+                        <?= $block->getLayout()->renderElement('ks.product.configurable');?>
+                    <?php else:?>
+                        <fieldset class="ks-form-fieldset">
+                            <?= /* @noEscape */ $block->getKsTabContent($ksTab) ?>
+                            <?php if ($ksuiComponent = $block->getKsUicomponent($ksTab)): ?>
+                                 <?= $block->getChildHtml($ksuiComponent); ?>
+                            <?php endif;?>
+                        </fieldset>
+                    <?php endif;?>
+                </div>
+
+            </div>
+        <?php endforeach;
+    }; ?>
+<?= $block->clearKsPersistorProductData();?>

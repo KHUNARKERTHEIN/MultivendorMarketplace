@@ -1,0 +1,43 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Shipment Request  @-->
+<!--@vars {
+"var ks-request-id":"Shipment",
+"var ks-shipment-date":"Shipment Date",
+"var ks-shipment-name":"Ship-to Name",
+"var ks-total-quantity":"Total Quantity"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+  <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_admin_name," ks_admin_name=$ksAdminName}}</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+      <td>
+        <p>{{trans "I have submitted shipment and requesting for your approval for the same."}}</p>
+      
+        <p>{{trans "Here is the shipment summary of the same: "}}</p>
+        <ul>
+          <li><strong>{{trans "Shipment:"}}</strong> {{var ks-request-id}}</li>
+          <li><strong>{{trans "Shipment Date:"}}</strong> {{var ks-shipment-date}}</li>
+          <li><strong>{{trans "Ship-to Name:"}}</strong> {{var ks-shipment-name}}</li>
+          <li><strong>{{trans "Total Quantity:"}}</strong> {{var ks-total-quantity}}</li>
+        </ul>
+      </td>
+    </tr>
+    <p>{{trans "Thank You"}}</p>
+</table>
+
+{{template config_path="design/email/footer_template"}}

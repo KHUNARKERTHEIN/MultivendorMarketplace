@@ -1,0 +1,110 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+?>
+<?php 
+    $ksReportBlock = $block->getKsReportBlock();
+    $reasons=$ksReportBlock->getKsReasons();
+?>
+    <span class ="ks-price-comparison-report-seller"><a class="modal-toggle ks_flags" title="Report Seller"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/report-flag-icon.svg') ?>"/></a></span>
+
+    <div class="ks_popup" id="ks-report-form-popup" style="display: none;">
+        <div class="wrapper">
+            <div class="modal">
+                <div class="modal-overlay modal-toggle"></div>
+                <div class="modal-wrapper modal-transition">
+                    <div class="modal-header">
+                        <button class="modal-close modal-toggle ks-flag-model-close ks-price-comparison-report-seller"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/close-btn.svg') ?>" class="" /><!--?= $block->escapeHtml(__('Close')) ?--></button>
+                        <h3><?= $block->escapeHtml(__($ksReportBlock->getKsHeadingText())) ?></h3>
+                        <h4><?= $block->escapeHtml(__('Your Reason')) ?></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-content">
+                            <div id="ks-price-comparison-report-seller-form" data-bind="mageInit: {
+                                'Magento_Ui/js/modal/modal':{
+                                    'type': 'popup',
+                                    'trigger': '[data-trigger=trigger]',
+                                    'responsive': true
+                                }}">
+                            <form data-mage-init='{"validation":{}}' method="post" action="<?= $block->getBaseUrl()."multivendor/reportseller/kssendreport";?>" id="ks-price-comparison-report-seller-form">
+                                <fieldset class="fieldset">
+                                    <div class="ks_row">
+                                        <?php if (!$ksReportBlock->getKsCurrentCustomerId()):?>
+                                            <div class="ks_col-12">
+                                                <div class="floating-label-group ks_form-group">
+                                                    <label for="ks-price-comparison-report-seller-customer-name" class="floating-label ks-required-star"><?= $block->escapeHtml(__('Name')) ?></label>
+                                                    <input type="text" name="ks-report-seller-customer-name" class="ks_form-control" data-validate="{required:true}" placeholder="<?= /* @noEscape */ __("Please enter your name");?>">
+                                                </div>
+                                            </div>
+                                             <div class="ks_col-12">
+                                                <div class="floating-label-group ks_form-group">
+                                                   <label for="ks-report-seller-customer-email" class="floating-label ks-required-star"><?= $block->escapeHtml(__('Email')) ?></label>
+                                                    <input type="text" name="ks-report-seller-customer-email" class="ks_form-control" data-validate="{required:true,'validate-email':true}" placeholder="<?= /* @noEscape */ __("Please enter your email");?>">
+                                                </div>
+                                            </div>
+                                        <?php endif;?>
+                                        <?php if ($ksReportBlock->getKsIsReasonEnabled()):?>
+                                            <div class="ks_col-12">
+                                                <div class="floating-label-group ks_form-group">
+                                                    <label for="ks-report-seller-reason" class="floating-label <?= $ksReportBlock->getKsIsReasonEnabled()==2 || $ksReportBlock->getKsIsSubReasonEnabled() == 2 ? 'ks-required-star"':''; ?>"><?= /* @noEscape */ $ksReportBlock->getKsReasonText();?></label>
+                                                    <select name="ks-report-seller-reason" id="ks-price-comparison-report-seller-reason" form="ks-report-seller-form" <?= $ksReportBlock->getKsIsReasonEnabled()==2 || $ksReportBlock->getKsIsSubReasonEnabled() == 2 ? 'data-validate="{required:true}"':''; ?> class="ks_form-control" >
+                                                        <option value=""><?= /* @noEscape */ $ksReportBlock->getKsReasonPlaceholder();?></option>
+                                                        <?php foreach ($reasons as $reason):?>
+                                                            <option value="<?= /* @noEscape */ $reason['ks_reason'];?>"><?= /* @noEscape */ $reason['ks_reason'];?></option>
+                                                        <?php endforeach;?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <?php if ($ksReportBlock->getKsIsSubReasonEnabled()):?>
+                                                <div class="ks_col-12">
+                                                    <div class="floating-label-group ks_form-group">
+                                                        <label for="ks-report-seller-sub-reason" class="floating-label <?= $ksReportBlock->getKsIsSubReasonEnabled()==2 ? 'ks-required-star"':''; ?>"><?= /* @noEscape */ $ksReportBlock->getKsSubReasonText();?></label>
+                                                        <select name="ks-report-seller-sub-reason" id="ks-price-comparison-report-seller-sub-reason" form="ks-price-comparison-report-seller-form" class="ks_form-control" <?= $ksReportBlock->getKsIsSubReasonEnabled()==2 ? 'data-validate="{required:true}"':''; ?> >
+                                                            <option value=""><?= /* @noEscape */ $ksReportBlock->getKsSubReasonPlaceholder();?></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            <?php endif;?>
+                                        <?php endif;?>
+                                        <?php if ($ksReportBlock->getKsIsCommentsEnabled()):?>
+                                            <div class="ks_col-12">
+                                                <div class="floating-label-group ks_form-group">
+                                                    <label for="ks-report-seller-comment" class="floating-label <?= $ksReportBlock->getKsIsCommentsEnabled()==2 ? 'ks-required-star"':''; ?>"><?= /* @noEscape */ $ksReportBlock->getKsCommentsText();?></label>
+                                                    <textarea name="ks-report-seller-comment" class="ks_form-control" <?= $ksReportBlock->getKsIsCommentsEnabled()==2 ? 'data-validate="{required:true}"':''; ?> form="ks-price-comparison-report-seller-form" placeholder="<?= /* @noEscape */ $ksReportBlock->getKsCommentsPlaceholder();?>"></textarea>
+                                                </div>
+                                            </div>
+                                        <?php endif;?>
+                                        <div class="ks_col-4">
+                                            <input type="submit" class="ks_btn" value="Submit">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="ks-report-seller-name" value="<?= $ksReportBlock->getKsCurrentSellerName();?>">
+                                    <input type="hidden" name="ks-report-seller-id" value="<?= $ksReportBlock->getKsCurrentSellerId();?>">
+                                    <input type="hidden" name="ks-seller-url" value="<?= $block->getUrl('multivendor/sellerprofile/sellerprofile', ['seller_id' => $ksReportBlock->getKsCurrentSellerId()]); ?>">
+                                </fieldset>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+
+            $ksAdditionalData = [
+                'ksCustomerId'    => $ksReportBlock->getKsCurrentCustomerId(),
+                'ksAllowGuests'   => $ksReportBlock->getKsIsGuestAllowed(),
+                'ksReportHeading' => $ksReportBlock->getKsHeadingText()
+            ];
+            $ksSerializedFormData = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($ksAdditionalData);
+            ?>
+        
+    </div> 

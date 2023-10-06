@@ -1,0 +1,400 @@
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+.grid-severity-pending {
+	color: #907904;
+	font-weight: bold;
+	background-color:#ffff99;
+	border: 1px solid #907904;
+	border-radius: 2px;
+	width: 100%;
+	text-align: center;
+	padding: 0 3px;
+	text-transform: uppercase;
+	display: block;
+}
+#ks_owner_fieldset .fieldset-wrapper-title {
+	border-bottom: none;
+}
+#ks_owner_fieldset .admin__table-secondary {
+	width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: none;
+    border: 1px solid #cccccc;
+	margin-bottom: 2rem;
+	margin-top: 1.5rem;
+}
+#ks_owner_fieldset .admin__table-secondary tbody tr th {
+    font-weight: 600;
+}
+.ks-seller-list .admin__field-control {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ks-seller-list .admin__field-control .admin__action-multiselect-wrap {
+	width: 70%;
+}
+.ks-seller-list .admin__field-control .admin__additional-info {
+	display: contents ;
+}
+.ks-reject-modal .modal-title {
+	text-align: center;
+	margin-right: 2rem;
+}
+.ks-seller-approval-action {
+	white-space: nowrap;
+}
+.multivendor-seller-index .admin__data-grid-wrap table tr,
+.multivendor-seller-sellerpendinglist .admin__data-grid-wrap table tr {
+	cursor: pointer;
+}
+.ks-reject-modal .modal-inner-wrap {
+	width: 50% !important;
+}
+.multivendor-seller-new .entry-edit.form-inline .fieldset-wrapper .fieldset-wrapper.customer-information{
+	width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.mce-edit-area iframe {
+	width: 99% !important;
+}
+div.mce-edit-area {
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-width: 1px;
+}
+.ks-commission-action.disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+/* notification icon admin menu */
+.ks-notifications-counter {
+	background-color: #e22626;
+    border-radius: 1em;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    right: 3%;
+    margin-left: .3em;
+    margin-top: -2.1em;
+    padding: .3em .5em;
+    position: absolute;
+    top: 60%;
+}
+.admin__menu .item-seller-pending > a::before, .admin__menu .item-price-comparison-product-pending > a::before, .admin__menu .item-product-pending > a::before {
+	content: '\e607';
+	font-size: 1.9rem;
+	float: right;
+	font-family: 'Admin Icons';
+}
+.admin__menu .item-seller-pending, .admin__menu .item-price-comparison-product-pending, 
+.admin__menu .item-product-pending, .admin__menu .item-categoryrequests {
+	position: relative;
+}
+.admin__menu .item-categoryrequests > a::before {
+	content: '\e607';
+	font-size: 1.9rem;
+	float: right;
+	font-family: 'Admin Icons';
+}
+.ks-available.admin__field-error p, .ks-check-email.admin__field-error p {
+	margin-bottom: 0px;
+}
+.ks-available.admin__field-error, .ks-check-email.admin__field-error {
+	margin-top: -0.8rem;
+}
+.ks-available.success {
+	margin-top: -1rem;
+	color: #006400;
+}
+.ks-check-customer.admin__field-error {
+    padding: .5rem 1rem .9rem;
+    position: absolute;
+    bottom: -30px;
+    width: 33.2%;
+    height: 30px;
+}
+
+/* assign admin button css start */
+.ks_admin_assign_product {
+    display: block !important;
+    position: relative;
+	margin-bottom: 20px;
+	margin-left: auto;
+}
+
+/* advance pricing/inventory modal link css start */
+.ks-advance-pricing-link, .ks-advance-inventory-link {
+    margin-left: calc( (93%) * 0.25 + 30px );
+    margin-bottom: 3rem;
+    color: #007bdb !important;
+}
+.ks-mb-5 {
+	margin-bottom: 5px !important;
+}
+.ks-analyser-form .ks-analyser-main-fieldset {
+	float: left;
+    width: 50%;
+}
+.ks-analyser-form .rules-container {
+	float: left;
+    width: 50%;
+    margin-top: 3.5rem;
+    padding-top: 1rem;
+}
+.ks-analyser-form .rules-container table tbody tr:first-child td {
+	background-color: #d0e5a9;
+}
+.ks-analyser-form .rules-container table tbody .data-grid-tr-no-data td {
+	background-color: #fff !important;
+}
+.ks-commission-calculator {
+	width: 60%;
+	float: left;
+}
+.ks-analyser-main-fieldset .ks-analyser-form-fieldset .fieldset-wrapper-title, .ks-commission-calculator .ks-calculator-fieldset .fieldset-wrapper-title {
+	text-align: right;
+	border-bottom: none;
+	padding-bottom: 0rem;
+}
+.ks-calculator-chart {
+	width: 40%;
+	float: left;
+	margin-top: 6.2rem;
+}
+.ks-calculator-chart .ks-calc-canvas {
+	border: 1px solid #ddd;
+	padding: 5px;
+}
+.multivendor-commissionrule-edit .modal-slide .modal-content {
+	overflow-y: auto;
+	height: inherit;
+}
+.ks-analyser-form .ks-product-attributes {
+	width: 100%;
+    float: none;
+}
+.ks-analyser-form #product-attributes {
+	padding-top: 0px !important;
+}
+.ks-analyser-form #product-attributes, .ks-analyser-form .admin__fieldset-wrapper-content .admin__fieldset {
+	padding-top: 0px;
+}
+.ks-field-control input, #ks_product_reject_form textarea, .ks-analyser-form .admin__control-select,
+#ks_reject_form textarea, #ks_product_reject_form textarea, #ks_producttype_reject_form textarea {
+    width: 100%;
+}
+.ks-commission-calculator .admin__fieldset-wrapper-content .admin__fieldset {
+	padding-top: 0px;
+}
+.ks-calculator-fieldset .admin__fieldset, .ks-analyser-form-fieldset .admin__fieldset {
+	padding-top: 6.5rem !important;
+}
+.ks-border-bottom-none {
+	border-bottom: none !important;
+}
+.ks-tab-default-open-heading {
+	color: #303030 !important;
+	text-decoration: none !important;
+	border-bottom: 1px solid #cac3b4;
+	margin-top: 30px;
+}
+.ks-fieldset-payment-wrapper-tabs {
+	font-size: 15px;
+	font-weight: 700;
+	display: block;
+	position: relative;
+	padding-bottom: 1.8rem;
+	display: block !important;
+	cursor: pointer;
+}
+.ks-fieldset-payment-wrapper-tabs::after {
+	content: "";
+	position: absolute;
+	width: 13px;
+	height: 8px;
+	background-repeat: no-repeat;
+	background-image: url(../images/down-small-arrow.svg);
+	background-color: transparent;
+	right: 10px;
+	top: 10px;
+	border: 1px solid #000;
+	border-radius: 50%;
+	padding: 8px;
+	align-items: center;
+	background-position: center;
+}
+.ks-fieldset-payment-wrapper-tabs.active::after {
+	background-image: url(../images/up-dark-arrow.svg);
+	background-repeat: no-repeat;
+}
+.fieldset-wrapper-title .title {
+	font-size: 20px;
+	font-weight: 400;
+}
+.ks-payment-details-content table th {
+	white-space: nowrap;
+	width: 50%;
+}
+.ks-payment-table-heading {
+	margin-top: 20px;
+    margin-left: -8px;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.ks-input {
+	height: 33px;
+}
+.ks-switch {
+  position: relative;
+  display: inline-block;
+  width: 37px;
+  height: 23px;
+}
+.ks-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.ks-checkbox:focus + .ks-slider.ks-round::before, .ks-checkbox:focus + .ks-slider.ks-round::after {
+	border-color: #007bdb;
+}
+.ks-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e3e3e3;
+  -webkit-transition: .4s;
+  transition: .4s;
+  height: 22px;
+  line-height: 22px;
+  width: 36px;
+  vertical-align: middle;
+}
+.ks-slider:focus {
+	border: 1px solid #007bdb;
+}
+.ks-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 1px;
+  bottom: 0px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border: 1px solid #aaa6a0;
+}
+input:checked + .ks-slider {
+  background-color: #79a22e;
+}
+input:focus + .ks-slider {
+  box-shadow: 0 0 1px #e3e3e3;
+}
+input:checked + .ks-slider:before {
+  -webkit-transform: translateX(14px);
+  -ms-transform: translateX(14px);
+  transform: translateX(14px);
+}
+
+/* Rounded sliders */
+.ks-slider.ks-round {
+  	border-radius: 50px;
+}
+.ks-slider.ks-round:before {
+    border-radius: 50%;
+}
+.ks-invoice-approval-action, .ks-creditmemo-approval-action {
+	white-space: nowrap;
+}
+.ks-seller-product-field {
+    pointer-events: none;
+}
+body .admin__scope-old .fieldset-wrapper>.fieldset-wrapper-title .title {
+	font-size: 20px;
+    font-weight: 400;
+    padding: 11px 0 16px 0;
+}
+.sld-unit {
+    display: flex;
+    margin-bottom: 30px;
+}
+.ks-form-field-label {
+    width: 80px;;
+    float: left;
+    font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 3.2rem;
+	text-align: right;
+}
+.ks-field-control {
+	width: calc( (100%) * .5 - 30px );
+    float: left;
+    margin-left: 30px;
+}
+.ks-disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+.ks-cursor-na {
+	cursor: not-allowed;
+}
+.ks_assign_product_grid_notes {
+	padding-top: 10px;
+	font-weight: bold;
+}
+strong.ks-assign-second-slider {
+    float: right;
+}
+.ks-related-products {
+	padding-top: 10px;
+}
+.admin__action-multiselect .admin__action-multiselect-crumb .action-close {
+	padding: 0px;
+}
+.admin__action-multiselect .admin__action-multiselect-crumb .action-close::before {
+	font-size: inherit;
+}
+.ks_assign_product_grid .modal-inner-wrap .action-close,
+.multivendor-commissionrule-edit .modal-slide .modal-header .page-main-actions,
+#ks_new_customer_fieldset,#ks_owner_fieldset,#ks_account_fieldset,
+.multivendor-seller-new .customer-information .fieldset-wrapper-title .title,
+.ks-analyser-form, .ks-calculator-form {
+	display: none;
+}
+.admin__menu .level-0.item-multivendor > a:before {
+	content: "";
+    margin: 0 auto;
+    position: relative;
+    display: block;
+    background-image: url(../images/ks_logo_white_2.svg);
+    object-fit: contain;
+	height: 19px;
+}
+.ks-tab-image .title {
+    background-image: url(../images/ks_logo_3.svg) !important;
+    background-size: 30px 40px !important;
+    background-repeat: no-repeat !important;
+    background-position-y: center !important;
+    background-position-x: 10px !important;
+	padding-left: 45px;
+    word-break: break-word;
+}

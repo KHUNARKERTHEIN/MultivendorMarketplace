@@ -1,0 +1,54 @@
+{
+    "name": "ksolves/multi-vendor-marketplace",
+    "description": "The best Multi-vendor Marketplace where one can manage multiple vendors, products, orders, compare prices & customize profile pages with ease!",
+    "keywords": [
+        "magento marketplace",
+        "best magento 2 multi vendor marketplace",
+        "marketplace multi-vendor manager extension for magento 2",
+        "magento marketplace multi vendor module",
+        "best magento multi vendor marketplace",
+        "magento marketplace extension",
+        "magento 2 marketplace",
+        "magento 2 multi-vendor module",
+        "magento multi-vendor store extension",
+        "best magento marketplace",
+        "magento marketplace module",
+        "create marketplace with magento"
+    ],
+
+    "config": {
+        "preferred-install": "dist",
+        "platform": {
+            "php": "~8.1.0"
+        }
+    },
+
+    "require": {
+        "php": "~8.1.0"
+    },
+
+    "type": "magento2-module",
+    "version": "1.1.2",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+
+    "authors": [
+        {
+          "name": "Ksolves India Ltd.",
+          "email": "magento@ksolves.com",
+          "homepage": "https://www.ksolves.com",
+          "role": "Developer"
+        }
+    ],
+
+    "autoload": {
+        "files": [
+          "registration.php"
+        ],
+        "psr-4": {
+          "Ksolves\\MultivendorMarketplace\\": ""
+        }
+    }
+}

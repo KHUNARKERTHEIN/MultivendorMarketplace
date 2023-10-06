@@ -1,0 +1,51 @@
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+[data-bind="attr: {class: inputName}"] {
+    display: flex;
+    border: 1px solid;
+    border-left: 0px;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    border-color: #878787;
+}
+[data-bind="attr: {class: inputName}"] input {
+    opacity: 0;
+    position: absolute;
+}
+[data-bind="attr: {class: inputName}"]:hover, [data-bind="attr: {class: inputName}"]:focus {
+    background-color: #ddd;
+}
+.ks-input {
+    display: flex;
+}
+.ks-label-calculate {
+    cursor: pointer;
+    padding: 10px;
+}
+.ks-selected-radio {
+    background-color: #ddd;
+}
+.ks-calculator-fieldset .fieldset-wrapper-title .title, .ks-analyser-main-fieldset .fieldset-wrapper-title .title{
+    font-size: 18px;
+}
+
+.ks-analyser-main-fieldset .fieldset-wrapper-title .title {
+    margin-right: -60px;
+}
+.ks-cm {
+    margin-bottom: 5px !important;
+}
+.ks-calculation-button {
+    margin-left: calc( (90%) * 0.25 + 30px );
+    margin-bottom: 3rem;
+    color: #007bdb !important;
+}

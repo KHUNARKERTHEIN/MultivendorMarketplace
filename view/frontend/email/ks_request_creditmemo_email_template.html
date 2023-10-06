@@ -1,0 +1,44 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Credit Memo Request  @-->
+<!--@vars {
+"var ks-request-id":"CreditMemo",
+"var ks-creditmemo-date":"Shipment Date",
+"var ks-creditmemo-name":"Bill-to Name",
+"var ks-creditmemo-status": "Status",
+"var ks-refunded-price":"Refunded"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+  <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_admin_name," ks_admin_name=$ksAdminName}}</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+      <td>
+        <p>{{trans "I have submitted creditmemo and requesting for your approval for the same."}}</p>
+      
+        <p>{{trans "Here is the creditmemo summary of the same: "}}</p>
+        <ul>
+          <li><strong>{{trans "CreditMemo:"}}</strong> {{var ks-request-id}}</li>
+          <li><strong>{{trans "Created:"}}</strong> {{var ks-creditmemo-date}}</li>
+          <li><strong>{{trans "Bill-to Name:"}}</strong> {{var ks-creditmemo-name}}</li>
+          <li><strong>{{trans "Refund:"}}</strong> {{var ks-refunded-price}}</li>
+        </ul>
+      </td>
+    </tr>
+    <p>{{trans "Thank You"}}</p>
+</table>
+
+{{template config_path="design/email/footer_template"}}

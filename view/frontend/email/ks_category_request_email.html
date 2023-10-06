@@ -1,0 +1,89 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Category Request  @-->
+<!--@vars {
+"var ksSellerName":"Seller Name",
+"var ks_category_name":"Category Name",
+"var ks_category_image":"Category Image",
+"var ks_category_desc":"Category Description",
+"var ks_seller_count":"Seller Product Count",
+"var ks_global_count": "Global Product Count"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+  <tr class="email-intro">
+    <td colspan="5">
+        <p class="greeting">{{trans "Dear %ks_admin_name," ks_admin_name=$ksAdminName}}</p>
+    </td>
+  </tr>
+
+  <tr class="email-summary">
+    <td colspan="5">
+      <p>{{trans "%ks_seller_name has requested for a existing category, and requesting for your approval for the same." ks_seller_name=$ksSellerName}}</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="5">
+      <p>{{trans "Here is the summary of the same: "}}</p>
+    </td>
+  </tr>
+
+  <tr style="background-color: #e0e0e0;">
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px; font-weight: 600;">Category Name</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px; font-weight: 600;">Category Image</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px; font-weight: 600;">Category Description</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px;font-weight: 600;">Product Count</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px;font-weight: 600;">Global Product Count</p>
+    </td>
+  </tr>
+
+  <tr style="background: #fff;">
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px;">{{var ks_category_name}}</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4); ">
+      {{if ks_category_image}}
+        <img width="100" height="80" src="{{var ks_category_image}}"/>
+      {{else}}
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px;">{{trans "N/A"}}</p>
+      {{/if}}
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 2);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px;">{{var ks_category_desc}}</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px;">{{var ks_seller_count}}</p>
+    </td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+      <p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px; margin-bottom: 10px;">{{var ks_global_count}}</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="5">
+      <p>{{trans "Thank You"}}</p>
+    </td>
+  </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

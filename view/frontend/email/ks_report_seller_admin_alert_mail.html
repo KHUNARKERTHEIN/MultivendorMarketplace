@@ -1,0 +1,41 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Alert: Report Against Seller  @-->
+<!--@vars {
+"var customer.email":"Customer Email",
+"var customer.name":"Customer Name"
+} @-->
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p> {{trans "Dear %ks_admin_name," ks_admin_name=$ks-admin-name}}</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <p>{{trans "There has been an issue reported against ' %ks_seller_name ' . The seller profile can be found using this given link - %ks_seller_url" ks_seller_name=$ks-report-seller-name ks_seller_url=$ks-seller-url}}</p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <ul>
+                <li><strong>{{trans "Reported By - "}}</strong> {{var ks-report-seller-customer-name}}</li>
+                <li><strong>{{trans "Reporter's Email - "}}</strong> {{var ks-report-seller-customer-email}}</li>
+                <li><strong>{{trans "Reason - "}}</strong> {{var ks-report-seller-reason}}</li>
+                <li><strong>{{trans "Sub-Reason - "}}</strong> {{var ks-report-seller-sub-reason}}</li>
+                <li><strong>{{trans "Comment - "}}</strong> {{var ks-report-seller-comment}}</li>
+            </ul>
+        </td>
+    </tr>
+    <p>{{trans "Thank You"}}</p>
+</table>

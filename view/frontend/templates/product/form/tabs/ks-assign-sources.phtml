@@ -1,0 +1,97 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+?>
+<div class="ks-sources-container" data-mage-init='{"ksAssignSourcesDialog":{}}'>
+    <div class="ks-sources-button-container">
+        <div class="ks-sources-button">
+            <a href="#" id="ks_advanced_inventory_link" class="ks-action-btn ks-secondry ks-btn-padding">
+                <?= $block->escapeHtml(__('Advanced Inventory')) ?>
+            </a>
+            <a href="#" id="ks_assign_sources_link" class="ks-action-btn ks-secondry ks-btn-padding">
+                <?= $block->escapeHtml(__('Assign Sources')) ?>
+            </a>
+        </div>
+    </div>
+
+    <div id="ks_advanced_inventory_modal" data-mage-init='{"ksInventoryDialog":{}}'>
+        <?= $block->getLayout()
+                ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsInventory')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/ks-advanced-inventory.phtml')->toHtml();?>
+    </div>
+
+    <div id="ks_assign_sources_modal" class="ks-product-model-table-style"></div>
+
+
+    <script type="text/x-magento-template" id="ks_sources_template">
+        <tr title="#" data-role="row">
+            <td data-column="name">
+                <input type="hidden" value="<%- data.source_code %>" name="sources[assigned_sources][<%- data.index %>][source_code]" data-role="source_code"/>
+
+                <%- data.name %>
+            </td>
+            <td data-column="sources_status">
+                <%- data.sources_status %>
+            </td>
+            <td data-column="sources_item_status">
+                <select name="sources[assigned_sources][<%- data.index %>][status]">
+                    <option value="1" <% if (data.sources_item_status == '1'){ %> selected="selected" <% } %>>In Stock</option>
+                    <option value="0" <% if (data.sources_item_status == '0'){ %> selected="selected" <% } %>>Out of Stock</option>
+                </select>
+            </td>
+            <td data-column="qty">
+                <input type="text" value="<%- data.qty %>" name="sources[assigned_sources][<%- data.index %>][quantity]"/>
+            </td>
+            <td data-column="notify_qty">
+                <input type="text" class="ks-notify-stock-qty" value="<%- data.notify_stock_qty %>" name="sources[assigned_sources][<%- data.index %>][notify_stock_qty]" <% if (data.notify_stock_qty_use_default == '1'){ %> disabled="disabled" <% } %>/>
+
+                <input type="hidden" value="0" name="sources[assigned_sources][<%- data.index %>][notify_stock_qty_use_default]" />
+                <input type="checkbox" class="ks-notify-use-default" value="<%- data.notify_stock_qty_use_default %>" name="sources[assigned_sources][<%- data.index %>][notify_stock_qty_use_default]" <% if (data.notify_stock_qty_use_default == '1'){ %> checked="checked" <% } %> onclick="this.value = this.checked ? 1 : 0"/>
+                <label>Use Default</label>
+            </td>
+            <td data-column="actions">
+                <button
+                    type="button"
+                    class="action-delete"
+                    data-role="delete">Unassign</button>
+            </td>
+        </tr>
+        </script>
+
+    <div class="table-wrapper grid-container no-display ks-product-table-details">
+        <input type="hidden" id="ks-default-notify" value="<?= $block->getDefaultConfigValue('notify_stock_qty') * 1 ?>">
+        <table class="data table data-grid" data-role="assign-source-grid" data-sources="<?= $block->escapeHtml($this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->ksGetSourceData())); ?>">
+            <thead>
+                <tr class="headings">
+                    <th data-column="name">
+                        <span><?= $block->escapeHtml(__('Name')) ?></span>
+                    </th>
+                    <th data-column="sources_status">
+                        <span><?= $block->escapeHtml(__('Source Status')) ?></span>
+                    </th>
+                    <th data-column="sources_item_status">
+                        <span><?= $block->escapeHtml(__('Source Item Status')) ?></span>
+                    </th>
+                    <th data-column="qty">
+                        <span><?= $block->escapeHtml(__('Qty')) ?></span>
+                    </th>
+                    <th data-column="notify_qty">
+                        <span><?= $block->escapeHtml(__('Notify Qty')) ?></span>
+                    </th>
+                    <th data-column="actions">
+                        <span><?= $block->escapeHtml(__('Actions')) ?></span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+<div id="ks_bundle_options_container">
+    <div class="ks-fieldset ks-product-content mb-5 pl-5">
+        <div class="ks-product-right-action">
+            <button type="button" onclick="event.preventDefault()" class="ks-action-btn ks-secondry ks-secondry-child ks-btn-padding" id="ks-bundle-options">
+                <span><?= $block->escapeHtml(__("Add Option")) ?></span>
+            </button>
+        </div>
+    </div>
+
+    <div id="ks_product_bundle_container" class="sortable-wrapper">
+        <div id="ks_product_bundle_container_top">
+            <!--add custom paging-->
+            <?php echo $block->getLayout()
+                ->createBlock('Magento\Framework\View\Element\Template')
+                ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/link-item/ks-custom-paging.phtml')
+                ->toHtml();?>
+        </div>
+        <?= $block->getKsOptionsBoxHtml() ?>
+    </div>
+</div>

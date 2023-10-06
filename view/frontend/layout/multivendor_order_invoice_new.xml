@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="multivendor_account"/>
+    <update handle="multivendor_styles"/>
+    <body>
+        <referenceContainer name="content">
+        	<block class="Ksolves\MultivendorMarketplace\Block\Order\Invoice\Create\KsForm" name="multivendor_invoice_buttons" template="Ksolves_MultivendorMarketplace::order/buttons.phtml" cacheable="false"/>
+            <block class="Ksolves\MultivendorMarketplace\Block\Order\Invoice\Create\KsForm" name="multivendor_invoice_form" template="Ksolves_MultivendorMarketplace::order/invoice/create/form.phtml" cacheable="false">
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsViewOrder" name="multivendor_order_account_address_info" template="Ksolves_MultivendorMarketplace::order/order_account_address_info.phtml" cacheable="false"/>
+	        	<block class="Ksolves\MultivendorMarketplace\Block\Order\Invoice\Create\KsItems" name="order_items" template="Ksolves_MultivendorMarketplace::order/invoice/create/items.phtml">
+                    <block class="Ksolves\MultivendorMarketplace\Block\Order\Invoice\Create\KsItems" name="bundle_items" template="Ksolves_MultivendorMarketplace::order/invoice/create/bundle/items-renderer.phtml"/>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsPayment" name="order_payment"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\Order\KsTracking" name="tracking" template="Ksolves_MultivendorMarketplace::order/tracking.phtml"/>
+	        </block>
+        </referenceContainer>
+    </body>
+</page>

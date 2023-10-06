@@ -1,0 +1,136 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var \Ksolves\MultivendorMarketplace\Block\Adminhtml\Seller\Tabs\KsOwnerDetails $block */
+?>
+<?php
+    $ksCustomer = $block->getKsOwnerData();
+    $ksWebsiteId = $ksCustomer->getWebsiteId();
+?>
+<div class="fieldset-wrapper customer-information">
+
+    <div class="fieldset-wrapper-title">
+        <span class="title"><?= $block->escapeHtml(__('Owner Details')) ?></span>
+    </div>
+
+    <table class="admin__table-secondary">
+        <tbody>
+            <!-- for link row-->
+            <tr>
+                <th><?= $block->escapeHtml(__('Owner :')) ?></th>
+                <td><a href="<?= $block->getUrl('customer/index/edit', ['id' => $block->getKsCurrentSellerId()]) ?>" target="blank" title="view customer account"><?= $block->escapeHtml($ksCustomer['firstname'].' '.$ksCustomer['lastname']) ?></a></td>
+            </tr>
+
+            <!-- for customer group row -->
+            <tr>
+                <th><?= $block->escapeHtml(__('Group :')) ?></th>
+                <td><?= $block->escapeHtml($block->getKsOwnerGroup($ksCustomer->getGroupId())) ?></td>
+            </tr>
+
+            <!-- for customer name prefix row -->
+            <?php if ($block->getKsCustomerConfig('prefix_show', $ksWebsiteId) && $ksCustomer->getPrefix() != ''): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Prefix :')) ?></th>
+                    <td><?= $block->escapeHtml($ksCustomer->getPrefix()) ?></td>
+                </tr>
+            <?php endif ?>
+
+            <!-- for customer first name row -->
+            <tr>
+                <th><?= $block->escapeHtml(__('First Name :')) ?></th>
+                <td><?= $block->escapeHtml($ksCustomer['firstname']) ?></td>
+            </tr>
+
+            <!-- for customer middle name row -->
+            <?php if ($block->getKsCustomerConfig('middlename_show', $ksWebsiteId) && $ksCustomer['middlename']): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Middle Name :')) ?></th>
+                    <td><?= $block->escapeHtml($ksCustomer['middlename']) ?></td>
+                </tr>
+            <?php endif ?>
+
+            <!-- for customer last name row -->
+            <tr>
+                <th><?= $block->escapeHtml(__('Last Name :')) ?></th>
+                <td><?= $block->escapeHtml($ksCustomer['lastname'])?></td>
+            </tr>
+
+            <!-- for customer name suffix row -->
+            <?php if ($block->getKsCustomerConfig('suffix_show', $ksWebsiteId) && $ksCustomer->getSuffix()): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Suffix :')) ?></th>
+                    <td><?= $block->escapeHtml($ksCustomer->getSuffix())?></td>
+                </tr>
+            <?php endif ?>
+
+            <!-- for customer email id row -->
+            <tr>
+                <th><?= $block->escapeHtml(__('Email Id :')) ?></th>
+                <td><?= $block->escapeHtml($ksCustomer->getEmail()) ?></td>
+            </tr>
+
+            <!-- for customer date of birth row -->
+            <?php if ($block->getKsCustomerConfig('dob_show', $ksWebsiteId) && $ksCustomer->getDob()): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Date of Birth :')) ?></th>
+                    <td><?= $block->escapeHtml($ksCustomer->getDob()) ?></td>
+                </tr>
+            <?php endif ?>
+
+            <!-- for customer tax/vat row -->
+            <?php if ($block->getKsCustomerConfig('taxvat_show', $ksWebsiteId) && $ksCustomer->getTaxvat()): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Tax/VAT Number :')) ?></th>
+                    <td><?= $block->escapeHtml($ksCustomer->getTaxvat()) ?></td>
+                </tr>
+            <?php endif ?>
+
+            <!-- for customer gender row -->
+            <?php if ($block->getKsCustomerConfig('gender_show', $ksWebsiteId) && $ksCustomer->getAttribute('gender')->getSource()->getOptionText($ksCustomer->getData('gender'))): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Gender :')) ?></th>
+                    <td><?= $block->escapeHtml($ksCustomer->getAttribute('gender')->getSource()->getOptionText($ksCustomer->getData('gender'))) ?></td>
+                </tr>
+            <?php endif ?>
+
+            <!-- for customer telephone row -->
+            <?php if ($block->getKsCustomerConfig('telephone_show', $ksWebsiteId) && $ksCustomer->getDefaultBilling()): ?>
+                <?php if ($block->getKsOwnerContactNumber($ksCustomer->getDefaultBilling())): ?>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Telephone :')) ?></th>
+                        <td><?= $block->escapeHtml($block->getKsOwnerContactNumber($ksCustomer->getDefaultBilling())) ?></td>
+                    </tr>
+                <?php endif ?>
+            <?php endif ?>
+
+            <!-- for customer company name row -->
+            <?php if ($block->getKsCustomerConfig('company_show', $ksWebsiteId) && $ksCustomer->getDefaultBilling()): ?>
+                <?php if ($block->getKsOwnerCompany($ksCustomer->getDefaultBilling())): ?>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Company :')) ?></th>
+                        <td><?= $block->escapeHtml($block->getKsOwnerCompany($ksCustomer->getDefaultBilling())) ?></td>
+                    </tr>
+                <?php endif ?>
+            <?php endif ?>
+
+            <!-- for customer fax row -->
+            <?php if ($block->getKsCustomerConfig('fax_show', $ksWebsiteId) && $ksCustomer->getDefaultBilling()): ?>
+                <?php if ($block->getKsOwnerFax($ksCustomer->getDefaultBilling())): ?>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Fax :')) ?></th>
+                        <td><?= $block->escapeHtml($block->getKsOwnerFax($ksCustomer->getDefaultBilling())) ?></td>
+                    </tr>
+                <?php endif ?>
+            <?php endif ?>
+            
+        </tbody>
+    </table>
+</div>

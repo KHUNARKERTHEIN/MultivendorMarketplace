@@ -1,0 +1,152 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_Multivendor
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\Multivendor\Block\FavouriteSeller\KsProductCollection $block  */
+?>    
+<?php 
+$ksSellerId = $block->getKsSellerId();
+$ksProductCollection = $block->getKsProductCollection($ksSellerId);
+?>
+<div class="page-products page-with-filter col-md-12 fieldset" 
+  <?php if ($ksProductCollection->count()) { echo 'style="padding: 0;"';}?>
+  >
+  <?php
+    $ksHelper = $this->helper(\Magento\Catalog\Helper\Output::class);
+  ?>
+  <?php if (!$ksProductCollection->getSize()): ?>
+      <div class="message info empty">
+          <div><?= /* @escapeNotVerified */ $block->escapeHtml(__('Currently there are no products available.')) ?>
+          </div>
+      </div>
+  <?php else: ?>
+  <?php
+      $ksViewMode = 'grid';
+      $ksImage = 'category_page_grid';
+      $ksShowDescription = false;
+      $ksTemplateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+      /**
+       * Position for actions regarding image size changing in vde if needed
+       */
+      $ksPos = $block->getPositioned();
+  ?>
+  <div class="products wrapper  <?= /* @noEscape */ $ksViewMode; ?> products-<?= /* @noEscape */ $ksViewMode; ?>">
+      <?php $ksIterator = 1; ?>
+      <ol class="products row list items product-items">
+
+        <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+
+          <?php foreach ($ksProductCollection as $ksProduct): ?>
+              <?= /* @escapeNotVerified */ ($ksIterator++ == 1) ? '<li class="item product product-item col-md-3">' : '</li><li class="item product product-item col-md-3">' ?>
+                <div class="product-item-info" data-container="product-grid">
+                  <?php
+                    $ksProductImage = $block->getImage($ksProduct, $ksImage);
+                    if ($ksPos !== null) {
+                        $ksPosition = ' style="left:' . $ksProductImage->getWidth() . 'px;'
+                        . 'top:' . $ksProductImage->getHeight() . 'px;"';
+                      }
+                  ?>
+                  <?php // Product Image ?>
+                    <a href="<?= $block->escapeUrl($ksProduct->getProductUrl()) ?>" class="product photo product-item-photo" tabindex="-1">
+                      <?= $ksProductImage->toHtml(); ?>
+                    </a>
+                    <div class="product details product-item-details">
+                      <?php
+                        $ksProductNameStripped = $block->stripTags($ksProduct->getName(), null, true);
+                      ?>
+                      <strong class="product name product-item-name">
+                        <a class="product-item-link"
+                        href="<?= $block->escapeUrl($ksProduct->getProductUrl()) ?>">
+                          <?= /* @noEscape */ $ksHelper->productAttribute($ksProduct, $ksProduct->getName(), 'name'); ?>
+                        </a>
+                      </strong>
+                      <?= $block->getReviewsSummaryHtml($ksProduct, $ksTemplateType); ?>
+                      <?= /* @noEscape */ $block->getProductPrice($ksProduct) ?>
+                      <?= $block->getProductDetailsHtml($ksProduct); ?>
+
+                      <!-- Product Inner Data -->
+                      <div class="product-item-inner">
+                          <div class="product actions product-item-actions"<?= $ksPos !== null && strpos($ksPos, $ksViewMode . '-actions') !== false ? $ksPosition : ''; ?>>
+                            <div class="actions-primary"<?= $ksPos !== null && strpos($ksPos, $ksViewMode . '-primary') !== false ? $ksPosition : ''; ?>>
+                              <?php if ($ksProduct->isSaleable()): ?>
+                                <?php $ksPostParams = $block->getAddToCartPostParams($ksProduct); ?>
+
+                                <!-- Add To Cart Form -->
+                                <form data-role="tocart-form" action="<?= /* @noEscape */  $ksPostParams['action']; ?>" method="post">
+                                    <input type="hidden" name="product" value="<?=/* @noEscape */  $ksPostParams['data']['product']; ?>">
+                                    <input type="hidden" name="uenc" value="<?= /* @noEscape */ $ksPostParams['data']['uenc']; ?>">
+                                    <?= $block->getBlockHtml('formkey')?>
+                                    <button type="submit"
+                                      title="<?= $block->escapeHtml(__('Add to Cart')); ?>"
+                                      class="add-cart-btn action tocart primary">
+                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                    </button>
+                                </form>
+
+                              <?php else: ?>
+                                <?php if ($ksProduct->getIsSalable()): ?>
+                                  <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
+                                  <?php else: ?>
+                                    <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
+                                  <?php endif; ?>
+                                <?php endif; ?>
+                              </div>
+                              <div data-role="add-to-links" class="actions-secondary"<?= $ksPos !== null && strpos($ksPos, $ksViewMode . '-secondary') !== false ? $ksPosition : ''; ?>>
+                                <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow()): ?>
+                                <a href="#"
+                                class="action towishlist"
+                                title="<?= $block->escapeHtml(__('Add to Wish List')); ?>"
+                                aria-label="<?= $block->escapeHtml(__('Add to Wish List')); ?>"
+                                data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($ksProduct); ?>'
+                                data-action="add-to-wishlist"
+                                role="button">
+                                <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+                              </a>
+                            <?php endif; ?>
+                            <?php
+                            $ksCompareHelper = $this->helper(\Magento\Catalog\Helper\Product\Compare::class);
+                            ?>
+                            <a href="#"
+                            class="action tocompare"
+                            title="<?= $block->escapeHtml(__('Add to Compare')); ?>"
+                            aria-label="<?= $block->escapeHtml(__('Add to Compare')); ?>"
+                            data-post='<?= /* @noEscape */ $ksCompareHelper->getPostDataParams($ksProduct); ?>'
+                            role="button">
+                            <span><?= $block->escapeHtml(__('Add to Compare')) ?></span>
+                          </a>
+                          </div>
+                          </div>
+                          <?php if ($ksShowDescription):?>
+                            <div class="product description product-item-description">
+                              <?= /* @noEscape */ $ksHelper->productAttribute($ksProduct, $ksProduct->getShortDescription(), 'short_description') ?>
+                              <a href="<?= $block->escapeUrl($ksProduct->getProductUrl()) ?>" title="<?= /* @noEscape */ $ksProductNameStripped ?>"
+                                class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
+                              </div>
+                            <?php endif; ?>
+                      </div>
+                    <!-- Inner Data Closing div -->
+            </div>
+          </div>
+          <?= ($ksIterator == count($ksProductCollection)+1) ? '</li>' : '' ?>
+        <?php endforeach; ?>
+      </ol>
+    </div>
+
+    <?php if (!$block->isRedirectToCartEnabled()): ?>
+      <script type="text/x-magento-init">
+        {
+          "[data-role=tocart-form], .form.map.checkout": {
+          "catalogAddToCart": {}
+        }
+      }
+    </script>
+  <?php endif; ?>
+<?php endif; ?>
+</div>

@@ -1,0 +1,30 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="ks-input" >
+    <input class="admin__control-text" type="text"
+       data-bind="
+        event: {change: userChanges},
+        value: value,
+        hasFocus: focused,
+        valueUpdate: valueUpdate,
+        attr: {
+            name: inputName ,
+            placeholder: placeholder,
+            'aria-describedby': noticeId,
+            id: uid,
+            disabled: disabled
+    }"/>
+    <div id="ks-doller-button" data-bind="attr: {class: inputName}">
+        <input type="radio" class="fixed" value="fixed" data-bind="attr: {name:label, id: inputName}" checked="checked">
+        <label class="ks-label-calculate" data-bind="attr: {for: inputName}">Fixed</label>
+    </div> 
+    <div id="ks-percent-button" class="ks-price-type-button" data-bind="attr: {class: inputName}">
+        <input type="radio" class="percentage"  value="percent" data-bind="attr: {name:label, id: label}" >
+        <label class="ks-label-calculate" data-bind="attr: {for: label}">Percent</label>
+    </div>
+</div>

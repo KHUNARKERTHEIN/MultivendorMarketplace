@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="formkey"/>
+    <update handle="catalog_product_set_block"/>
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-backend.css" />
+        <script src="Ksolves_MultivendorMarketplace::js/productattribute/ks-enable-disable.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="ks_backend_url"
+                template="Ksolves_MultivendorMarketplace::ks-script.phtml"/>
+            <uiComponent name="ks_marketplace_default_attribute_listing"/>
+        </referenceContainer>
+    </body>
+</page>

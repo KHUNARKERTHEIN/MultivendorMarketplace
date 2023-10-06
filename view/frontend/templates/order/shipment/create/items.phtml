@@ -1,0 +1,120 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var \Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsItems $block 
+ */
+$shipment = $block->getKsShipment();
+?>
+
+<!-- Item to ship section start -->
+<div class="shipment-container">
+
+    <!-- Order tab div title start -->
+    <div class="ks-tab-content-title">
+        <?php $_itemsGridLabel = $block->getForcedShipmentCreate() ? 'Items to Invoice and Ship' : 'Items to Ship';?>
+        <span><?= $block->escapeHtml(__('%1', $_itemsGridLabel)) ?></span>
+    </div>
+    <!-- Order tab div title end -->
+
+    <div class="ks-simple-table">
+        <table class="data-table  order-shipment-tables table" id="ks-invoice">
+            <?php //$invoice = $block->getInvoice(); ?>
+            <thead>
+                <tr class="headings">
+                    <th class="col-product"><span><?= $block->escapeHtml(__('Product')) ?></span></th>
+                    <th class="col-ordered-qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></th>
+                    <th class="col-qty-shipment"><span><?= $block->escapeHtml(__('Qty to Ship')) ?></span></th>
+                </tr>
+            </thead>
+            <?php $ks_items = $shipment->getAllItems() ?>
+            <?php foreach ($ks_items as $ks_item): ?>
+                <?php if ($ks_item->getOrderItem()->getParentItem()):
+
+                continue;?>
+                <?php else:?>
+                    <?php if($block->getKsOrderItem($ks_item->getOrderItemId())->getProductType()==\Magento\Catalog\Model\Product\Type::TYPE_BUNDLE):
+                    ?>
+                    <?= $block->getLayout()->createBlock('Ksolves\MultivendorMarketplace\Block\Order\Shipment\Create\KsItems')->setKsBundleItem($ks_item)->setTemplate('Ksolves_MultivendorMarketplace::order/shipment/create/bundle/items-renderer.phtml')->toHtml(); ?>
+
+                    <?php else:?>
+                        <tr id="order-item-row-4" >
+                        <td>
+                            <span><?= $block->escapeHtml(__($ks_item->getName())) ?></span></br>
+                            <span class="ks-order-item-sku"><?= $block->escapeHtml("SKU: ".__($ks_item->getSku())) ?></span>
+                            <!-- get ordered product attributes -->
+                            <span><?= $block->escapeHtml($block->getKsShipmentItemAttrValue($ks_item->getOrderItem()->getId())) ?></span> 
+                        </td>
+                        <td>
+                            <!-- get qty of ordered product -->
+                            <p>
+                                <span><?= $block->escapeHtml(__('Ordered: '.(float) $ks_item->getOrderItem()->getQtyOrdered())) ?></span>
+                            </p> 
+                            <!-- check qty of invoiced product -->
+                            <?php if ($ks_item->getOrderItem()->getQtyInvoiced() != 0) : ?>
+                            <p>
+                                <span><?= $block->escapeHtml(__('Invoiced: '.(float) $ks_item->getOrderItem()->getQtyInvoiced())) ?></span>
+                            </p>
+                            <?php endif; ?>
+                            <!-- check qty of shipped product -->
+                            <?php if ($ks_item->getOrderItem()->getQtyShipped() != 0) : ?>
+                            <p>
+                                <span><?= $block->escapeHtml(__('Shipped: '.(float) $ks_item->getOrderItem()->getQtyShipped())) ?></span>
+                            </p>
+                            <?php endif; ?>
+                            <!-- check qty of refunded product -->
+                            <?php if ($ks_item->getOrderItem()->getQtyRefunded() != 0) : ?>
+                            <p>
+                                <span><?= $block->escapeHtml(__('Refunded: '.(float) $ks_item->getOrderItem()->getQtyRefunded())) ?></span>
+                            </p>
+                            <?php endif; ?>
+                            <!-- check qty of canceled product -->
+                            <?php if ($ks_item->getOrderItem()->getQtyCanceled() != 0) : ?>
+                            <p>
+                                <span><?= $block->escapeHtml(__('Canceled: '.(float) $ks_item->getOrderItem()->getQtyCanceled())) ?></span>
+                            </p>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if($ks_item->getOrderItem()->getIsQtyDecimal()):?>
+                            <input type="text" class="ks-shipment-item-qty ks-max-w-60" name="shipment[items][<?=$ks_item->getOrderItem()->getId();?>]" item-id="shipment[items][<?=$ks_item->getOrderItem()->getId();?>]" value="<?= $ks_item->getQty(); ?>" >
+                            <?php else:?>
+                                <input type="text" class="ks-shipment-item-qty ks-max-w-60" name="shipment[items][<?=$ks_item->getOrderItem()->getId();?>]" item-id="<?=$ks_item->getOrderItem()->getId();?>" value="<?= floor($ks_item->getQty()); ?>" >                                
+                            <?php endif;?>
+                        </td>
+                    <?php endif;?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </table>  
+    </div>
+</div>
+<!-- Item to ship section end -->
+
+<script>
+    require([
+        'jquery'
+        ],
+        function($){
+            $(document).ready(function(){
+                $('#send_email').change(function(){
+                    //If the checkbox is checked.
+                    if($(this).is(':checked')){
+                        //Enable the append comments 
+                        $('#notify_customer').attr("disabled", false);
+                    } else{
+                        //If it is not checked, disable the checkbox of append comments.
+                        $('#notify_customer').attr("disabled", true);
+                    }
+                });
+            });
+        }
+    );
+</script>

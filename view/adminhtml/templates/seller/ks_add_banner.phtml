@@ -1,0 +1,38 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * Seller Banner template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\Adminhtml\Banners\KsAddBanner
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<h3 class="ks-admin-banner" style="margin-left:26%;margin-top:-1%;"><span><u><a href="<?= $block->getUrl('multivendor/banners/index') ?>"> Add Banner Images </a></u></span></h3>
+<script>
+    require(
+        [
+            'jquery'
+        ],
+        function(
+            $
+        ) {
+
+            ksStatus = "<?= (int)$block->getKsShowBannerImagesText(); ?>";
+            if(ksStatus == 1){
+                $('.ks-admin-banner').show();
+            }else{
+                $('.ks-admin-banner').hide();
+            }
+        }
+    );
+</script>

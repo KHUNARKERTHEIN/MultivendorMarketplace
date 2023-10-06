@@ -1,0 +1,140 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * Seller Profile template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$ksSellerProfileHelper  = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksBannerCollection     = $ksSellerProfileHelper->getKsSellerBannerCollection($block->getKsSellerId());
+$ksStoreId              = $block->getKsStoreId();
+$ksCustomerId           = $block->getKsSellerId();
+$ksSellerConfigData     = $block->getKsSellerConfigData();
+$ksStoreCollection      = $ksSellerProfileHelper->getKsSellerStoreCollection($ksCustomerId, $ksStoreId)->getFirstItem();
+$ksBannerUrl            = $ksStoreCollection->getKsStoreBanner();
+$ksIsPageEnabled = 1;
+if(!$ksSellerConfigData->getKsShowBanner() && !$ksSellerConfigData->getKsShowRecentlyProducts() && !$ksSellerConfigData->getKsShowBestProducts() && !$ksSellerConfigData->getKsShowDiscountProducts()){
+    $ksIsPageEnabled = 0;
+}
+?>
+<input type="hidden" name="ks-banner-collection-size" id="ks-banner-collection-size" value="<?= $ksBannerCollection->getSize() ?>" />
+<?php if ($block->getKsTabId() == "tab-1" && !$ksSellerProfileHelper->getKsSellerConfigData('ks_homepage')): ?>
+    <input type="hidden" id="ks-tab-id" name="ksTabId" value="tab-2">
+<?php else: ?>
+    <input type="hidden" id="ks-tab-id" name="ksTabId" value="<?= $block->getKsTabId() ?>">    
+<?php endif; ?> 
+<div class="ks-page-content">
+    
+    <div class="ks_banner_section">
+        <div class="ks_banner">
+            <?php if ($ksBannerUrl): ?>
+                <img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksBannerUrl ?>" alt="" class="ks_img-fluid ks-profile-top-banner-img">
+            <?php else: ?>
+                <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-store-banner.jpg') ?>" alt="" class="ks_img-fluid ks-profile-top-banner-img">
+            <?php endif; ?> 
+        </div>
+    </div>
+    <div class="ks_tabs_section">
+        <div class="ks-profile-tabs-header">
+            <?php echo $block->getLayout()
+                ->createBlock('Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile')
+                ->setTemplate('Ksolves_MultivendorMarketplace::profile/ks-seller-profile-top.phtml')
+                ->toHtml();
+            ?>
+        </div>
+        <div class="ks_tabs_content ks-profile-page-bg">
+            <?php if ($ksSellerProfileHelper->getKsSellerConfigData('ks_homepage') && $ksIsPageEnabled): ?>
+                <div id="tab-1" class="tab-content"> 
+                    <?php if ($ksSellerConfigData->getKsShowBanner()): ?>  
+                        <div class="ks-banner-slider">    
+                        <?php if ($ksBannerCollection->getSize() != 0): ?> 
+                            <?php foreach ($ksBannerCollection as $ksItem):?> 
+                                <div class="ks_content_tab_in ks-banner-div"> 
+                                    <div class="ks-profile-banner-img">
+                                        <img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksItem->getKsPicture() ?>" alt="" class="ks_img-fluid">    
+                                    </div>
+                                    <div class="ks_content_text">
+                                        <div class="ks_container">
+                                            <div class="ks_row">
+                                                <div class="ks_col-lg-5 ks_col-md-5 ks_col-xs-8">
+                                                    <h5><?= $block->escapeHtml(__($ksItem->getKsTitle())) ?></h5>
+                                                    <h3><span><?= $block->escapeHtml(__($ksItem->getKsText())) ?></span></h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            <?php endforeach; ?>  
+                        <?php else: ?>
+                            <div class="ks_content_tab_in"> 
+                                <div class="ks-profile-banner-img"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-banner.jpg') ?>" alt="" class="ks_img-fluid"></div>    
+                            </div>         
+                        <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="ks_pt-5">
+                        <?php if ($ksSellerConfigData->getKsShowRecentlyProducts()): ?>
+                            <div class="ks_related_product page-products">
+                            <div class="ks_container">
+                                <h3><?= $block->escapeHtml(__($ksSellerConfigData->getKsRecentlyProductsText())) ?></h3>
+                                <?= $block->getChildHtml('seller.recently.products'); ?>
+                            </div>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($ksSellerConfigData->getKsShowBestProducts()): ?>
+                            <div class="ks_related_product page-products">
+                            <div class="ks_container">
+                                <h3><?= $block->escapeHtml(__($ksSellerConfigData->getKsBestProductsText())) ?></h3>
+                                <?= $block->getChildHtml('seller.best.products'); ?>
+                            </div>
+                            </div>
+                        <?php endif; ?>   
+                        <?php if ($ksSellerConfigData->getKsShowDiscountProducts()): ?> 
+                            <div class="ks_related_product ks-pb-2 page-products">
+                            <div class="ks_container">
+                                <h3><?= $block->escapeHtml(__($ksSellerConfigData->getKsDiscountProductsText())) ?></h3>
+                                <?= $block->getChildHtml('seller.discount.products'); ?>
+                            </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>  
+            <?php endif; ?>      
+            <?= $block->getChildHtml('seller_product_list'); ?>
+            <?= $block->getLayout()
+                ->createBlock('Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile')
+                ->setTemplate('Ksolves_MultivendorMarketplace::profile/ks-seller-profile-profile.phtml')
+                ->toHtml();
+            ?>
+            <!-- get seller profile redirect url -->
+            <?php $ksStoreUrl = $block->getKsSellerProfileUrl($block->getKsSellerId());
+                if ($ksStoreUrl) {
+                    $ksActionUrl= $block->getUrl($ksStoreUrl);
+                } else {
+                    $ksActionUrl = $block->getUrl('multivendor/sellerprofile/sellerprofile', ['seller_id' => $block->getKsSellerId()]);
+                } 
+            ?>
+            <input type="hidden" id="ks-get-url" value="<?= $ksActionUrl ?>">
+            <?php if ($ksSellerProfileHelper->getKsSellerConfigData('ks_show_contact_us_details') || $ksSellerProfileHelper->getKsSellerConfigData('ks_show_contact_us_form')): ?>
+                <?= $block->getLayout()
+                    ->createBlock('Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile')
+                    ->setTemplate('Ksolves_MultivendorMarketplace::profile/ks-seller-profile-contact-us.phtml')
+                    ->toHtml();
+                ?>
+            <?php endif; ?>    
+        </div>
+    </div>  
+</div>

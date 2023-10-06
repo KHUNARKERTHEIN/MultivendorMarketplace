@@ -1,0 +1,17 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+$KsUrl = $block->getKsRTLThemeCss();
+// Get Url from block class
+if ($KsUrl):
+    echo '<link rel="stylesheet" type="text/css" media="all" href="'.$block->getKsRTLThemeCss().'" />' ;
+endif;
+?>

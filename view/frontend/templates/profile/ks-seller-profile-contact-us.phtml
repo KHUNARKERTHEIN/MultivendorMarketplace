@@ -1,0 +1,104 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+  
+/**
+ * Seller Profile Contact Us template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$ksHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksCustomerId = $block->getKsSellerId();
+$ksCustomerCollection   = $ksHelper->getCustomerCollection($ksCustomerId);
+$ksSellerName           = $ksCustomerCollection->getName();
+$ksSellerCollection     = $ksHelper->getKsSellerCollection($ksCustomerId)->getFirstItem();
+$ksStoreName            = $ksSellerCollection->getKsStoreName();
+$ksSellerEmail          = $ksCustomerCollection->getEmail();
+$ksSellerPhone          = "";
+$ksSellerAddress        = $ksHelper->getKsSellerPhone($ksCustomerId);
+if ($ksSellerAddress) {
+    $ksSellerPhone      = $ksSellerAddress->getTelephone();
+}
+$ksSellerCountryName = $ksHelper->getKsCountryName($ksCustomerId);
+?>
+<div id="tab-4" class="tab-content">
+    <div class="ks_contact">
+        <div class="ks_container">
+            <div class="ks_row ks-align">
+                <?php if ($ksHelper->getKsSellerConfigData('ks_show_contact_us_details')): ?>
+                <div class="ks_col-lg-4 ks_col-md-4 ">
+                    <div class="ks_address">
+                        <h3>
+                            <?= $block->escapeHtml(__($ksStoreName)) ?>
+                        </h3>
+                        <?php if($ksSellerAddress): ?>
+                            <p><span><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/location-dark.svg') ?>" alt="" class="ks-conatct-icon"></span><span><?= $block->escapeHtml(__($ksSellerAddress->getData('street').",".$ksSellerAddress->getCity().",".$ksSellerAddress->getRegion().",".$ksSellerAddress->getData('postcode').",".$ksSellerCountryName)) ?></span></p>
+                        <?php endif; ?>
+                        <?php if($ksSellerEmail): ?>
+                            <p><span><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/mail.svg') ?>" alt="" class="ks-conatct-icon"></span><a href="mailto:<?= $block->escapeHtml(__($ksSellerEmail)) ?>"><?= $block->escapeHtml(__($ksSellerEmail)) ?></a></p>
+                        <?php endif; ?>
+                        <?php if($ksSellerPhone): ?>
+                            <p><span><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/contact.svg') ?>" alt="" class="ks-conatct-icon"></span><a href="tel:<?= $block->escapeHtml(__($ksSellerPhone)) ?>"><?= $block->escapeHtml(__($ksSellerPhone)) ?></a></p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <?php if ($ksHelper->getKsSellerConfigData('ks_show_contact_us_form')): ?>
+                <div class="ks_col-lg-6 ks_offset-lg-2 ks_col-md-8 ">
+                    <div class="ks_contact_form">
+                        <form action="<?= $block->escapeUrl($block->getUrl('multivendor/sellerprofile/contactsellerpost')) ?>" method="post" class="ks-contact-seller-form" id="ks-contact-seller-form">
+                            <div class="ks_row">
+                                <h3 class="ks_col-md-12">
+                                    <?= $block->escapeHtml(__('Contact Us')) ?>
+                                </h3>
+                                <input type="hidden" name="ks-seller-id" value="<?= $ksCustomerId ?>"/>
+                                <div class="ks_col-md-12">
+                                    <div class="floating-label-group ks_form-group">
+                                        <label class="floating-label ks-required-star"><?= $block->escapeHtml(__('Full Name')) ?></label>
+                                        <input type="text" name="ks-name" id="username" class="ks_form-control" autocomplete="images/shop1.png" autofocus required />
+                                    </div>
+                                </div>
+                                <div class="ks_col-md-12">
+                                    <div class="floating-label-group ks_form-group">
+                                        <label class="floating-label ks-required-star"><?= $block->escapeHtml(__('Email')) ?></label>
+                                        <input type="email" name="ks-email" id="username" class="ks_form-control" autocomplete="images/shop1.png" autofocus required />
+                                    </div>
+                                </div>
+                                <div class="ks_col-md-12">
+                                    <div class="floating-label-group ks_form-group">
+                                        <label class="floating-label ks-required-star"><?= $block->escapeHtml(__('Subject')) ?></label>
+                                        <input type="text" name="ks-subject" id="username" class="ks_form-control" autocomplete="images/shop1.png" autofocus required />
+                                    </div>
+                                </div>
+                                <div class="ks_col-md-12">
+                                    <div class="floating-label-group ks_form-group">
+                                        <label class="floating-label ks-required-star"><?= $block->escapeHtml(__('Message')) ?></label>
+                                        <textarea  name="ks-message" form="ks-contact-seller-form" class="ks_form-control" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="ks_col-md-4 ks_col-6">
+                                    <input type="submit" id="ks-contact-seller-submit" class="ks_btn" value="Submit">
+                                </div>
+                                <div class="ks_col-md-4 ks_col-6">
+                                    <input type="reset" class="ks_btn" value="Reset">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject Seller Approval Pending  @-->
+<!--@vars {
+"var ksAdminName":"Admin Name",
+"var ks_customer_name":"Seller Name",
+"var ks_dob":"Customer DOB",
+"var ks_customer_email":"Customer Email",
+"var ks_store_name":"Store Name",
+"var ks_store_url":"Store Url"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_admin_name," ks_admin_name=$ksAdminName}}</p>
+        </td>
+    </tr>
+
+    <tr class="email-summary">
+        <td>
+            <p>{{trans "A new seller request is pending in your account, waiting for your approval. Here are the details of the applicant -"}}</p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <ul>
+                <li><strong>{{trans "Name:"}}</strong> {{var ks_customer_name}}</li>
+                <li><strong>{{trans "Date of Birth:"}}</strong> {{var ks_dob}}</li>
+                <li><strong>{{trans "Email:"}}</strong> {{var ks_customer_email}}</li>
+                <li><strong>{{trans "Store Name:"}}</strong> {{var ks_store_name}}</li>
+                <li><strong>{{trans "Store Url:"}}</strong> {{var ks_store_url}}</li>
+            </ul>
+        </td>
+    </tr>
+    <p>{{trans "Thank You"}}</p>
+</table>
+
+{{template config_path="design/email/footer_template"}}

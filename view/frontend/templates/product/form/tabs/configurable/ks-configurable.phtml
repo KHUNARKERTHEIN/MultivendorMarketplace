@@ -1,0 +1,78 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsConfigurable */
+?>
+<script>
+    var BASE_URL = '';
+    var FORM_KEY = "";
+</script>
+
+<fieldset data-panel="product-variations" class="ks-form-fieldset">
+    <div data-bind="scope: 'ks-variation-steps-wizard'" class="product-create-configuration mb-5 pl-5">
+        <div class="product-create-configuration-actions ks-custom-option-action" data-action="product-create-configuration-buttons">
+            <div class="product-create-configuration-action d-inline-block" data-bind="scope: 'configurableProductGrid'">
+                <button class="action-tertiary action-menu-item text-primary" type="button" data-action="choose"
+                        data-bind="click: showManuallyGrid, visible: button">
+                    <?= $block->escapeHtml(__('Add Products Manually')) ?>
+                </button>
+            </div>
+            <div class="product-create-configuration-action d-inline-block">
+                <button type="button" data-action="open-steps-wizard" title="Create Product Configurations"
+                        class="action-secondary ks-action-btn ks-secondry ks-secondry-child ks-btn-padding" data-bind="click: open">
+                <span data-role="button-label" data-edit-label="<?= $block->escapeHtmlAttr(__('Edit Configurations')) ?>">
+                    <?php echo $block->escapeHtml($block->isHasVariations()
+                        ? __('Edit Configurations')
+                        : __('Create Configurations'))?>
+                </span>
+                </button>
+            </div>
+        </div>
+        <div class="product-create-configuration-info ks-custom-option-text">
+            <div class="note" data-role="product-create-configuration-info">
+                <?= $block->escapeHtml(__('Configurable products allow customers to choose options (Ex: shirt color). You need to create a simple product for each configuration (Ex: a product for each color).'));?>
+            </div>
+        </div>
+    </div>
+
+    <div class="fieldset pl-4">
+        <?php echo $block->getKsVariationsMatrix();?>
+
+        <!-- Select Associated Product popup -->
+        <div data-grid-id="associated-products-container"></div>
+
+        <input type="hidden" name="affect_configurable_product_attributes" value="1" />
+    </div>
+</fieldset>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "configurableProductGrid": {
+                        "component": "Ksolves_MultivendorMarketplace/js/product/variations/ks-product-grid",
+                        "productsFilter": "ks_configurable_associated_product_listing.ks_configurable_associated_product_listing.listing_top.listing_filters",
+                        "productsProvider": "ks_configurable_associated_product_listing.data_source",
+                        "productsMassAction": "ks_configurable_associated_product_listing.ks_configurable_associated_product_listing.product_columns.ids",
+                        "productsColumns": "ks_configurable_associated_product_listing.ks_configurable_associated_product_listing.product_columns",
+                        "productsGridUrl": "<?= /* @noEscape */ $block->getUrl('multivendor/product_ajax/ksassociatedgrid', ['componentJson' => true]) ?>",
+                        "configurableVariations": "configurableVariations"
+                    }
+                }
+            },
+            "Ksolves_MultivendorMarketplace/js/product/ks-configurable-type-handler": {
+                "hasVariations": <?= /* @noEscape */ $block->isHasVariations() ? 'true' : 'false' ?>
+            }
+
+        }
+    }
+</script>

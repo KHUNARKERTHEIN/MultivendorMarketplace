@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_report_product_reasons_listing.ks_marketplace_report_product_reasons_listing_data_source</item>
+            <item name="deps" xsi:type="string">ks_marketplace_report_product_reasons_listing.ks_marketplace_report_product_reasons_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">report_product_columns</item>
+        <item name="buttons" xsi:type="array">
+            <item name="add_reason" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add Reason</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+            <item name="add_subreason" xsi:type="array">
+                <item name="name" xsi:type="string">add_subreason</item>
+                <item name="label" xsi:type="string" translate="true">Add Sub-reason</item>
+                <item name="url" xsi:type="string">*/*/newsubreason</item>
+            </item>
+        </item>
+    </argument>
+    <dataSource name="ks_marketplace_report_product_reasons_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">KsolvesMultivendorMarketplaceReportProductReasonsGridDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_marketplace_report_product_reasons_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters" component="Magento_Customer/js/grid/filters/filters">
+            <settings>
+                <storageConfig>
+                    <param name="provider" xsi:type="string">ks_marketplace_report_product_reasons_listing.ks_marketplace_report_product_reasons_listing.listing_top.bookmarks</param>
+                    <param name="namespace" xsi:type="string">current.filters</param>
+                </storageConfig>
+                <childDefaults>
+                    <param name="provider" xsi:type="string">ks_marketplace_report_product_reasons_listing.ks_marketplace_report_product_reasons_listing.listing_top.listing_filters</param>
+                    <param name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">ks_marketplace_report_product_reasons_listing.ks_marketplace_report_product_reasons_listing.listing_top.bookmarks:current.columns.${ $.index }.visible</item>
+                    </param>
+                </childDefaults>
+            </settings>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="report_product_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">ks_marketplace_report_product_reasons_listing.ks_marketplace_report_product_reasons_listing.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+                <item name="resizeConfig" xsi:type="array">
+                    <item name="enabled" xsi:type="boolean">true</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/resize</item>
+                    <item name="rootSelector" xsi:type="string">${ $.columnsProvider }:.admin__data-grid-wrap</item>
+                    <item name="columnsProvider" xsi:type="string">${ $.name }</item>
+                </item>
+            </item>
+        </argument>
+        <column name="ks_reason" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\ProductReportReason\KsProductReportReason">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Reason</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_subreason" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\ProductReportReason\KsProductReportSubReason">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Sub-reason</item>
+                    <item name="resizeEnabled" xsi:type="boolean">true</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">50</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="actions" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Backend\ProductReportReason\KsDeleteSubReason">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Delete(Subreason)</item>
+                    <item name="indexField" xsi:type="string">id</item>
+                    <item name="urlEntityParamName" xsi:type="string">id</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                    <item name="resizeEnabled" xsi:type="boolean">true</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">400</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

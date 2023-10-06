@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- process source items -->
+    <event name="controller_action_catalog_product_save_entity_after">
+        <observer name="process_source_items" instance="Magento\InventoryCatalogAdminUi\Observer\ProcessSourceItemsObserver"/>
+        <observer name="process_source_items_for_configurable" instance="Magento\InventoryConfigurableProductAdminUi\Observer\ProcessSourceItemsObserver"/>
+        <observer name="process_source_item_configurations" instance="Magento\InventoryLowQuantityNotificationAdminUi\Observer\ProcessSourceItemConfigurationsObserver" />
+    </event>
+    <!-- For forgot password -->
+    <event name="controller_action_predispatch_multivendor_forgotpassword_forgotpasswordpost">
+        <observer name="captcha" instance="Ksolves\MultivendorMarketplace\Observer\KsCheckForgotPasswordObserver"/>
+    </event>
+    <!-- after product save   -->
+    <event name="catalog_product_save_after">
+        <observer name="Ksolves_MultivendorMarketplace::save_product_data" instance="Ksolves\MultivendorMarketplace\Observer\Frontend\KsAfterProductSave"/>
+    </event>
+    <!-- after product save   -->
+    <event name="catalog_product_save_before">
+        <observer name="Ksolves_MultivendorMarketplace::save_before_product_data" instance="Ksolves\MultivendorMarketplace\Observer\Frontend\KsBeforeProductSave"/>
+    </event>
+</config>

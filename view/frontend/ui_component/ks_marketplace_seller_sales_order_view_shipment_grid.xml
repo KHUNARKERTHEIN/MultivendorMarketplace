@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ks_marketplace_seller_sales_order_view_shipment_grid.ks_sales_seller_shipment_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>sales_order_shipment_columns</spinner>
+        <deps>
+            <dep>ks_marketplace_seller_sales_order_view_shipment_grid.ks_sales_seller_shipment_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ks_sales_seller_shipment_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">KsolvesMultivendorMarketplaceShipmentGridDataProvider</argument>
+            <argument name="name" xsi:type="string">ks_sales_seller_shipment_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">entity_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">Ksolves_MultivendorMarketplace/grid/ks-toolbar</item>
+            </item>
+        </argument>
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">ks_marketplace_seller_sales_order_view_shipment_grid.ks_marketplace_seller_sales_order_view_shipment_grid.sales_order_shipment_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+        <bookmark name="bookmarks">
+           <argument name="data" xsi:type="array">
+               <item name="config" xsi:type="array">
+                   <item name="storageConfig" xsi:type="array">
+                       <item name="namespace" xsi:type="string">ks_marketplace_seller_sales_order_view_shipment_grid</item>
+                   </item>
+               </item>
+           </argument>
+        </bookmark>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="sales_order_shipment_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">ks_marketplace_seller_sales_order_view_shipment_grid.ks_marketplace_seller_sales_order_view_shipment_grid.sales_order_shipment_columns.ks_view_action</item>
+                        <item name="target" xsi:type="string">applyAction</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">edit</item>
+                            <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <column name="ks_shipment_increment_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Shipment</label>
+            </settings>
+        </column>
+        <column name="ks_created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Shipment Date</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="ks_order_increment_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Order #</label>
+            </settings>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Order Date</label>
+            </settings>
+        </column>
+        <column name="shipping_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Ship-to Name</label>
+            </settings>
+        </column>
+        <column name="ks_total_qty">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Total Quantity</label>
+            </settings>
+        </column>
+        <column name="ks_approval_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ksolves\MultivendorMarketplace\Model\Source\Seller\KsSellerStatusOptions</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Approval Status</item>
+                    <item name="component" xsi:type="string">Ksolves_MultivendorMarketplace/js/grid/columns/ks-seller-status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ks_rejection_reason">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Last Rejection Reason</label>
+            </settings>
+        </column>
+        <actionsColumn name="ks_view_action" class="Ksolves\MultivendorMarketplace\Ui\Component\Listing\Column\Frontend\Sales\KsViewAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="viewUrlPath" xsi:type="string">multivendor/order_shipment/view</item>
+                    <item name="urlEntityParamName" xsi:type="string">shipment_id</item>
+                    <item name="viewUrlPathDelete" xsi:type="string">multivendor/order_shipment/delete</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>increment_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

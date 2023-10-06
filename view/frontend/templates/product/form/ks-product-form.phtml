@@ -1,0 +1,85 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+$ksProductType = $block->getKsProduct()->getTypeId();
+$ksDisabled = (!in_array($ksProductType, array_keys($block->KsAddProductButtonOptions())) && !$this->getRequest()->getParam('parent_id')) ? "disabled" : "";
+?>
+
+<!-- Main page content start -->
+
+<div class= "ks-product-page">
+    <form action="<?= $block->escapeUrl($block->ksProductFormAction()) ?>" method="post" enctype="multipart/form-data" id="ks_product_form" data-mage-init='{"validation":{ "ignore": ".ignore-validate,:hidden"}}' class="ks-form-reload">
+        <div class="page-actions _fixed">
+            <div class="page-actions-inner">
+                <div class="page-actions-buttons ks-page-action">
+                    <?php if(!$block->getKsProduct()->getId()):?>	
+	                    <div title="Save" class="ks-splits-actions ks-action-btn ks-db-dropdown-actions d-flex">
+	                        <button id="save-button" title="Save" class="ks-action-btn ks-db-save-btn <?= $ksDisabled;?>" data-type="save" type="button">
+	                            <span><?= $block->escapeHtml(__("Save")) ?></span>
+	                        </button>
+	                        <button title="Save" class="action-toggle ks-action-btn ks-db-dropdown <?= $ksDisabled;?>" data-toggle="dropdown">
+	                            <span class="ks-db-dropdown-arrow"></span>
+	                        </button>
+	                        <ul class="dropdown-menu ks-dropdown-menu">
+	                            <li>
+	                                <a id="save_and_new" title="Save &amp; New" class="ks-item" data-type="new">
+	                                    <?= $block->escapeHtml(__("Save &amp; New")) ?>
+	                                </a>
+	                            </li>
+	                            <li>
+	                                <a id="save_and_duplicate" title="Save &amp; Duplicate" class="ks-item" data-type="duplicate">
+	                                    <?= $block->escapeHtml(__("Save &amp; Duplicate")) ?>
+	                                </a>
+	                            </li>
+	                            <li>
+	                                <a id="save_and_close" title="Save &amp; Close" class="ks-item" data-type="close">
+	                                    <?= $block->escapeHtml(__("Save &amp; Close")) ?>
+	                                </a>
+	                            </li>
+	                        </ul>
+	                    </div>
+                    <?php endif;?>
+                    <button id="save_and_submit" title="Save &amp; Submit" type="button" class="ks-action-btn ks-secondry float-right mr-3 <?= $ksDisabled;?>" data-type="submit">
+                        <span><?= $block->escapeHtml(__("Save &amp; Submit")) ?></span>
+                    </button>
+                    <?php if($block->getKsProduct()->getId() && !$this->getRequest()->getParam('parent_id')):?>
+                        <a href="<?= $block->getUrl("multivendor/product/duplicate", array('product_id'=> $block->getKsProduct()->getId(),'back'=>'duplicate')) ?>" class="ks-primary ks-action-btn ks-reload float-right ks-action-btn-padding mr-3 <?= $ksDisabled;?>">
+                            <?= $block->escapeHtml(__("Duplicate")) ?></a>
+                    <?php endif;?>
+                    <button title="Back" type="button" class="action- scalable back ks-back" onclick="location.href='<?= $block->escapeUrl($block->ksProductBackAction()) ?>'">
+                        <span><?= $block->escapeHtml(__("Back")) ?></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="back" name="back" value="">
+        <div class="ks-page-card">
+            <?php if(!in_array($ksProductType, array_keys($block->KsAddProductButtonOptions())) && !$this->getRequest()->getParam('parent_id')):?>
+                <div class="ks-info-message-box">
+                   <?= $block->escapeHtml(__("Access for this Product Type has been removed, please contact admin. ")) ?>
+                </div>
+            <?php endif;?>
+            <?= $block->getBlockHtml('formkey')?>
+            <?= $block->getChildHtml(); ?>
+        </div>
+    </form>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        ".ks-product-page": {
+            "KsProductForm": {}
+        }
+    }
+</script>
+<!-- Main page content end -->
+

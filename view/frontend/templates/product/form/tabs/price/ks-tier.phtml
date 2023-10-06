@@ -1,0 +1,195 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsAdvancePrice */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+<?php $ksShowWebsite = $block->isKsShowWebsiteColumn();
+$ksFormName = "ks_product_form";
+$_readonly = false;
+$ksStoreId = $this->getRequest()->getParam('store');
+?>
+
+    <div class="table-wrapper ks-advance-table">
+        <table class="data table ks-tiers_table" id="ks_tiers_table">
+            <thead>
+                <tr>
+                    <th class="ks-col-websites"><?= $block->escapeHtml(__('Web Site')) ?></th>
+                    <th class="ks-col-customer-group"><?= $block->escapeHtml(__('Customer Group')) ?></th>
+                    <th class="ks-col-qty required"><?= $block->escapeHtml(__('Quantity')) ?></th>
+                    <th class="ks-col-price required" colspan="2">
+                        <?= $block->escapeHtml($block->escapeHtml(__('Price'))) ?>
+                    </th>
+                    <th class="col-delete"></th>
+                </tr>
+                <?php if (!$ksShowWebsite): ?>
+                    <?= /* @noEscape */ $secureRenderer->renderStyleAsTag('display:none', 'th.ks-col-websites'); ?>
+                <?php endif; ?>
+            </thead>
+            <tbody id="ks_tier_container"></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="<?php if (!$ksShowWebsite):?>5<?php else:?>6<?php endif; ?>"
+                        class="ks-col-actions-add">
+                        <button type="button" class="primary" onclick="return ksTierPriceControl.addItem()" <?php if(!$block->isScopeGlobal() && $block->getKsProduct()->getStoreId()){ echo "disabled='disabled'"; }?>>
+                            <span><?= $block->escapeHtml(__('Add')) ?></span>
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+<script>
+require([
+    'mage/template',
+    "prototype",
+    "mage/adminhtml/form"
+], function (mageTemplate) {
+
+//<![CDATA[
+var tierPriceRowTemplate = '<tr>'
+    + '<td class="ks-col-websites"<?php if (!$ksShowWebsite): ?> style="display:none"<?php endif; ?>>'
+    + '<select class="required-entry" name="product[tier_price][<%- data.index %>][website_id]" id="ks_tier_price_row_<%- data.index %>_website" form="<?= $ksFormName;?>">'
+    <?php foreach ($block->getKsWebsites() as $ksWebsiteId => $ksInfo): ?>
+    + '<option value="<?= $ksWebsiteId ?>"><?= $block->escapeJsQuote($block->escapeHtml($ksInfo['name'])) ?><?php if (!empty($ksInfo['currency'])): ?> [<?= $block->escapeHtml($ksInfo['currency']) ?>]<?php endif; ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+    + '<td class="ks-col-customer-group"><select class="custgroup required-entry" name="product[tier_price][<%- data.index %>][cust_group]" id="ks_tier_price_row_<%- data.index %>_cust_group" form="<?= $ksFormName;?>">'
+    <?php foreach ($block->getKsCustomerGroups() as $ksGroupId => $ksGroupName): ?>
+    + '<option value="<?= $ksGroupId ?>"><?= $block->escapeJsQuote($block->escapeHtml($ksGroupName)) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+    + '<td class="ks-col-qty">'
+        + '<input class="qty required-entry validate-greater-than-zero validate-number" type="text" name="product[tier_price][<%- data.index %>][price_qty]" value="<%- data.qty %>" id="ks_tier_price_row_<%- data.index %>_qty" form="<?= $ksFormName;?>"/>'
+    + '</td>'
+    + '<td class="ks-col-price">'
+        + '<select class="required-entry" name="product[tier_price][<%- data.index %>][value_type]" value="" id="ks_tier_price_row_<%- data.index %>_value_type" form="<?= $ksFormName;?>" onchange="return ksTierPriceControl.ksTierPriceType(event, this.value);">'
+    <?php foreach ($block->getKsPriceTypes() as $ksPriceType):
+        $ksEqualsValue = ($ksPriceType['value'] == 'fixed');
+        if($block->getKsProduct()->getTypeId()=="bundle" && $ksEqualsValue){
+            continue;
+        }
+     ?>
+    + '<option value="<?= $block->escapeHtml($ksPriceType['value']) ?>" <?php if ($ksPriceType["value"]=="percent") {  ?><% if (data.percentage_value) { %> selected="selected"<% } %><?php } ?>><?= $block->escapeHtml($ksPriceType['label']) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+    <?php if($block->getKsProduct()->getTypeId()=="bundle"):?>
+        + '<td class="ks-col-price ks-percent-price"><div><span>%</span><input class="required-entry validate-positive-percent-decimal" type="text" name="product[tier_price][<%- data.index %>][percentage_value]" value="<%- data.percentage_value %>" id="ks_tier_price_row_<%- data.index %>_percentage_value" form="<?= $ksFormName;?>"/></div></td>'
+    <?php else:?>
+        + '<td class="ks-col-price ks-price ks-dollor-sign ks-dollor-table" <% if (data.percentage_value) { %> style="display:none"<% } %>><div><span><?= $block->getKsCurrentCurrency() ?></span><input class="required-entry validate-greater-than-zero ks-input-width" type="text" name="product[tier_price][<%- data.index %>][price]" value="<%- data.price %>" id="ks_tier_price_row_<%- data.index %>_price" form="<?= $ksFormName;?>"/></div></td>'
+        + '<td class="ks-col-price ks-percent-price" <% if (!data.percentage_value) { %> style="display:none"<% } %>><div><span>%</span><input class="required-entry validate-positive-percent-decimal" type="text" name="product[tier_price][<%- data.index %>][percentage_value]" value="<%- data.percentage_value %>" id="ks_tier_price_row_<%- data.index %>_percentage_value" form="<?= $ksFormName;?>"/></div></td>'
+    <?php endif;?>
+    + '<td class="ks-col-delete"><input type="hidden" name="product[tier_price][<%- data.index %>][delete]" class="delete" value="" id="ks_tier_price_row_<%- data.index %>_delete" form="<?= $ksFormName;?>"/>'
+    + '<button title="<?= $block->escapeHtml($block->escapeHtml(__('Delete Tier'))); ?>" type="button" class="action- scalable delete icon-btn delete-product-option" id="ks_tier_price_row_<%- data.index %>_delete_button" onclick="return ksTierPriceControl.deleteItem(event);">'
+    + '<span><?= $block->escapeHtml(__("Delete")) ?></span></button></td>'
+    + '</tr>';
+
+var ksTierPriceControl = {
+    template: mageTemplate(tierPriceRowTemplate),
+    ksItemsCount: 0,
+    addItem : function () {
+        <?php if ($_readonly): ?>
+        if (arguments.length < 4) {
+            return;
+        }
+        <?php endif; ?>
+        var data = {
+            website_id: '<?= $block->escapeHtml($block->getKsDefaultWebsite()) ?>',
+            group: '<?= $block->escapeHtml($block->getKsDefaultCustomerGroup()) ?>',
+            qty: '',
+            price: '',
+            percentage_value: '',
+            readOnly: false,
+            index: this.ksItemsCount++
+        };
+
+        if(arguments.length >= 4) {
+            data.website_id = arguments[0];
+            data.group      = arguments[1];
+            data.qty        = arguments[2];
+            data.price      = arguments[3];
+            data.percentage_value = arguments[4];
+        }
+        if (arguments.length == 5) {
+            data.readOnly = arguments[4];
+        }
+
+        Element.insert($('ks_tier_container'), {
+            bottom : this.template({
+                data: data
+            })
+        });
+
+        $('ks_tier_price_row_' + data.index + '_cust_group').value = data.group;
+        $('ks_tier_price_row_' + data.index + '_website').value    = data.website_id;
+
+        <?php if (!$block->isScopeGlobal() && $block->getKsProduct()->getStoreId()):?>
+        var wss = $('ks_tier_price_row_' + data.index + '_website');
+        var txt = wss.options[wss.selectedIndex].text;
+
+        //wss.insert({after:'<span class="website-name">' + txt + '</span>'});
+        //wss.hide();
+        wss.disable();
+        <?php endif;?>
+
+        if (data.readOnly == '1') {
+            ['website', 'cust_group', 'qty', 'price', 'delete'].each(function(idx){
+                $('ks_tier_price_row_'+data.index+'_'+idx).disabled = true;
+            });
+            $('ks_tier_price_row_'+data.index+'_delete_button').hide();
+        }
+
+        <?php if ($_readonly): ?>
+        $('ks_tier_container').select('input', 'select').each(this.disableElement);
+        $('ks_tier_container').up('table').select('button').each(this.disableElement);
+        <?php else: ?>
+        $('ks_tier_container').select('input', 'select').each(function(el){ Event.observe(el, 'change', el.setHasChanges.bind(el)); });
+        <?php endif; ?>
+    },
+    disableElement: function(el) {
+        el.disabled = true;
+        el.addClassName('disabled');
+    },
+    deleteItem: function(event) {
+        var tr = Event.findElement(event, 'tr');
+        if (tr) {
+            Element.select(tr, '.delete').each(function(elem){elem.value='1'});
+            Element.select(tr, ['input', 'select']).each(function(elem){elem.hide()});
+            Element.hide(tr);
+            Element.addClassName(tr, 'no-display template');
+        }
+        return false;
+    },
+    ksTierPriceType: function(event, ksvalue) {
+        var tr = Event.findElement(event, 'tr');
+        if(ksvalue=='percent'){
+            Element.select(tr, '.ks-price').each(function(elem){elem.hide()});
+            Element.select(tr, '.ks-percent-price').each(function(elem){elem.show()});
+        }else{
+            Element.select(tr, '.ks-percent-price').each(function(elem){elem.hide()});
+            Element.select(tr, '.ks-price').each(function(elem){elem.show()});
+        }
+    }
+};
+<?php foreach ($block->getKsTierPriceValues() as $ksItem): ?>
+ksTierPriceControl.addItem('<?= $ksItem['website_id'] ?>', '<?= $ksItem['cust_group'] ?>', '<?= $ksItem['price_qty']*1 ?>', '<?= $ksItem['price'] ?>','<?= $ksItem['percentage_value'] ?>', <?= (int)!empty($ksItem['readonly'])?>);
+<?php endforeach; ?>
+<?php if ($_readonly): ?>
+$('ks_tier_container').up('table').select('button')
+    .each(ksTierPriceControl.disableElement);
+<?php endif; ?>
+
+window.ksTierPriceControl = ksTierPriceControl;
+//]]>
+
+});
+</script>

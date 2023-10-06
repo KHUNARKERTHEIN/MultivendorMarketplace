@@ -1,0 +1,58 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\Multivendor\Block\FavouriteSeller\KsShowData $block  */
+?>
+
+<div id="ks_favourite_seller_mail_popup" style="display:none;">
+    <form data-mage-init='{"validation":{}}' method="post" id="ks-favourite-seller-form" action="<?= $block->escapeUrl($block->getUrl('multivendor/favouriteseller_seller/sendmail', ['_secure' => $this->getRequest()->isSecure()])) ?>"
+        enctype="multipart/form-data">
+        <div class="fieldset">
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Email Addresses')) ?></label>
+                <input id="ks-multiple-email-input" type="hidden" name="ks-fav-email-address" class="ks_fav_email">
+                <div id="ks-multiple-email-div" class="ks-control-feild form-control required-entry ks_div_email" data-validate="{required:true,'validate-emails':true}"></div>
+            </div>
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Subject')) ?></label>
+                <textarea id="ks_subject" class="ks-control-feild required-entry input-text form-control" name="ks-fav-subject"></textarea>
+                <div id="ks_mul_subject_error" class="ks-error-msg" style="display:none"><?= $block->escapeHtml(__('This is a required field.')) ?></div>
+            </div>
+            <div class="field required ks-wysiwyg-msg">    
+                <label class="label"><?= $block->escapeHtml(__('Message')) ?></label>
+                <textarea id="ks_message" name="ks_message" class="ks-control-feild required-entry input-text form-control"></textarea>
+                <div id="ks_mul_msg_error" class="ks-error-msg" style="display:none"><?= $block->escapeHtml(__('This is a required field.')) ?></div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="ks_favourite_seller_single_mail_popup" style="display:none;">
+    <form data-mage-init='{"validation":{}}' method="post" id="ks-favourite-seller-single-mail-form" action="<?= $block->escapeUrl($block->getUrl('multivendor/favouriteseller_seller/sendmail', ['_secure' => $this->getRequest()->isSecure()])) ?>"
+        enctype="multipart/form-data">
+        <div class="fieldset">
+            <div class="field">
+                <label class="label"><?= $block->escapeHtml(__('Email Addresses')) ?></label>
+                <input class="ks-control-feild form-control required-entry ks_fav_single_email" name="ks-fav-email-address" readonly></input>
+            </div>
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Subject')) ?></label>
+                <textarea id="ks_single_subject" class="ks-control-feild required-entry input-text form-control ks_subject" name="ks-fav-subject"></textarea>
+                <div id="ks_single_subject_error" class="ks-error-msg" style="display:none"><?= $block->escapeHtml(__('This is a required field.')) ?></div>
+            </div>
+            <div class="field required ks-wysiwyg-msg">    
+                <label class="label"><?= $block->escapeHtml(__('Message')) ?></label>
+                <textarea id="ks_single_message" name="ks_message" class="ks-control-feild required-entry input-text form-control ks_message"></textarea>
+                <div id="ks_single_msg_error" class="ks-error-msg" style="display:none"><?= $block->escapeHtml(__('This is a required field.')) ?></div>
+            </div>
+        </div>
+    </form>
+</div>

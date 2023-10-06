@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Customer\Block\Account\Delimiter" name="customer-account-navigation-delimiter-3" template="Magento_Customer::account/navigation-delimiter.phtml"/>
+                
+            <block class="Ksolves\MultivendorMarketplace\Block\Account\KsBecomeSellerLink" name="customer-account-navigation-become-seller-link" after="-" ifconfig="ks_marketplace_login_and_registration/ks_marketplace_login_and_registration_settings/ks_allow_seller_registration">
+                 <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Become Seller</argument>
+                    <argument name="path" xsi:type="string">multivendor/account/becomeseller</argument>
+                 </arguments>
+            </block>
+            
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-favourite-seller" after="-" ifconfig="ks_marketplace_favourite_seller/ks_favourite_seller_settings/ks_favourite_seller_enable">
+            <arguments>
+              <argument name="path" xsi:type="string">multivendor/favouriteseller/lists</argument>
+              <argument name="label" xsi:type="string">Favourite Sellers</argument>
+            </arguments>
+          </block>
+        </referenceBlock>
+    </body>
+</page>

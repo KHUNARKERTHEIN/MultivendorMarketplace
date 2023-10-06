@@ -1,0 +1,1076 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ 
+/**
+ * Seller Profile Products template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsProfile
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$ksHelper               = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksStoreId              = $block->getKsStoreId();
+$ksCustomerId           = $block->getKsCustomerId();
+$ksCustomerCollection   = $ksHelper->getCustomerCollection($ksCustomerId);
+$ksSellerName           = $ksCustomerCollection->getName();
+$ksSellerEmail          = $ksCustomerCollection->getEmail();
+$ksSellerPhone          = "";
+$ksSellerAddress        = $ksHelper->getKsSellerPhone($ksCustomerId);
+if ($ksSellerAddress) {
+    $ksSellerPhone      = $ksSellerAddress->getTelephone();
+}
+$ksSellerCollection     = $ksHelper->getKsSellerCollection($ksCustomerId)->getFirstItem();
+$ksStoreName            = $ksSellerCollection->getKsStoreName();
+$ksStoreUrl             = $ksSellerCollection->getKsStoreUrl();
+$ksPostcode             = $ksSellerCollection->getKsCompanyPostcode();
+$ksTaxvatNumber         = $ksSellerCollection->getKsCompanyTaxvatNumber();
+$ksSellerSince          = $ksSellerCollection->getKsCreatedAt();
+$ksStoreStatus          = $ksHelper->getKsStoreStatus($ksCustomerId);
+$ksSellerStatus         = $ksHelper->getKsSellerStatus($ksCustomerId);
+$ksCompanyName          = $ksSellerCollection->getKsCompanyName();
+$ksCompanyAddress       = $ksSellerCollection->getKsCompanyAddress();
+$ksCompanyContactNumber = $ksSellerCollection->getKsCompanyContactNo();
+$ksCompanyEmail         = $ksSellerCollection->getKsCompanyContactEmail();
+$ksSellerGroup          = $ksHelper->getKsSellerGroup($ksCustomerId);
+$ksSellerCountryName    = $ksHelper->getKsCountryName($ksCustomerId);
+$ksCountry              = $ksHelper->getKsCountry($ksCustomerId);
+$ksState                = $ksHelper->getKsState($ksCustomerId);
+$ksAvailableCountryName = $ksHelper->getKsAvailableCountryName($ksCustomerId);
+$ksAvailableCountryCode = $ksSellerCollection->getKsStoreAvailableCountries();
+$ksStoreCollection      = $ksHelper->getKsSellerStoreCollection($ksCustomerId, $ksStoreId)->getFirstItem();
+$ksOverview             = $ksStoreCollection->getKsStoreDescription();
+$ksSupportNumber        = $ksStoreCollection->getKsSupportContact();
+$ksSupportEmail         = $ksStoreCollection->getKsSupportEmail();
+$ksKeyword              = $ksStoreCollection->getKsMetaKeyword();
+$ksDescription          = $ksStoreCollection->getKsMetaDescription();
+$ksRefundPolicy         = $ksStoreCollection->getKsRefundPolicy();
+$ksPrivacyPolicy        = $ksStoreCollection->getKsPrivacyPolicy();
+$ksShippingPolicy       = $ksStoreCollection->getKsShippingPolicy();
+$ksLegalNotice          = $ksStoreCollection->getKsLegalNotice();
+$ksTermsOfService       = $ksStoreCollection->getKsTermsOfService();
+$ksTwitterUrl           = $ksStoreCollection->getKsTwitterId();
+$ksFacebookUrl          = $ksStoreCollection->getKsFacebookId();
+$ksInstagramUrl         = $ksStoreCollection->getKsInstagramId();
+$ksGooglePlusUrl        = $ksStoreCollection->getKsGoogleplusId();
+$ksVimeoUrl             = $ksStoreCollection->getKsVimeoId();
+$ksPinterestUrl         = $ksStoreCollection->getKsPinterestId();
+$ksYoutubeUrl           = $ksStoreCollection->getKsYoutubeId();
+$ksSellerBanner         = $ksStoreCollection->getKsStoreBanner();
+$ksSellerBannerLogo     = $ksStoreCollection->getKsStoreLogo();
+$ksCountryList          = $block->getKsCountries();
+$ksRegionList           = $block->getKsRegion();
+$ksCountryArray         = explode(",", $ksAvailableCountryName);
+$ksFollowersCount       = $block->getKsSellerFollowersSize($ksCustomerId);
+$ksAllStoreCollection   = $ksHelper->getKsSellerStoreCollection($ksCustomerId,0)->getFirstItem();
+$ksCount = 0;
+if(!empty($ksAllStoreCollection->getData()) != 0){
+    $ksCount = 1;
+}
+?>
+<input type="hidden" id="ks-count" name="ks-count" value="<?= $ksCount; ?>">
+<input type="hidden" id="ks-store-id" name="ks-store-id" value="<?= $ksStoreId; ?>">
+<div class="ks-page-content">
+    <div class="ks-banner">    
+        <div class="ks-banner-border ks-profile-header-scope">
+            <div class="ks-content-align">
+                <div class="ks-header-left">
+                </div>
+                <div class="ks-header-right">
+                    <span class="ks-toggle-content"><?= $block->escapeHtml(__('Store Status')) ?></span>
+                    <label class="ks-switch">
+                        <?php if ($ksStoreStatus === "Active"): ?>
+                            <input class="ks-shop-status" type="checkbox" checked>
+                        <?php else: ?>
+                            <input class="ks-shop-status" type="checkbox">
+                        <?php endif; ?>
+                        <span class="ks-slider ks-round"></span>
+                    </label>
+                </div>
+            </div>
+            <input type="hidden" class="ks-seller-id" name="ks-seller-id" value="<?= $ksCustomerId; ?>">
+        </div>
+        <div class="ks-banner-body">
+            <div class="ks-edit-icon ks-edit-seller-banner" title="Edit"></div>
+            <?php if ($ksSellerBanner && $ksStoreCollection->getKsStoreId() == $ksStoreId): ?>
+                <a href="<?php echo $block->getUrl('multivendor/sellerprofile/deleteprofilebanner/',['seller_id' => $ksCustomerId,'store_id' => $ksStoreId,'value' => 'banner']) ?>"><div class="ks-delete-icon ks-delete-seller-banner" title="Delete"></div></a>
+            <?php endif; ?>
+            <div class="ks-edit-banner-content ks-db-popup-modal" style="display: none;">
+                <div class="wrapper">
+                    <div class="modal ks-db-modal">
+                        <div class="modals-overlay"></div>
+                        <div class="modal-wrapper modal-transition ks-db-modal-wrapper">
+                            <form action="<?php echo $block->getBaseUrl().'multivendor/sellerprofile/profilebannersave/' ?>" class="ks-banner-logo-form" 
+                                        enctype="multipart/form-data" 
+                                        name="ks-profile-banner-form" 
+                                        id="ks-profile-banner-form" 
+                                        method="post" 
+                                        accept-charset="utf-8"  
+                                        data-mage-init='{"validation":{}}'>
+                                <div class="modal-header ks-profile-modal-header">
+                                    <h3>Add Banner Image</h3>
+                                    <button class="modal-close modal-toggle ks-edit-banner-close ks-banner-modal-close"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/close-btn.svg') ?>" class="" /></button>
+                                </div>
+                                <input type="hidden" name="ks-seller-id" value="<?= $ksCustomerId; ?>">
+                                <input type="hidden" name="ks-store-id" value="<?= $ksStoreId; ?>">
+                                <div class="modal-body ks-db-modal-body">
+                                    <div class="modal-content ks-db-modal-content">
+                                        <div class="ks-file-upload-parent">
+                                            <div class="floating-label-group ks_form-group pl-3 ks-file-upload-select">
+                                                <div id="ks-banner-upload-file" class="ks-file-upload-select-btn"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/file-upload.png') ?>" alt="ks-upload-icon" class="img-fluid"></div>
+                                                <div class="ks-file-select-name" id="ks-banner-selected-file"><?= $ksSellerBanner ? $block->escapeHtml(__($ksSellerBanner)) : $block->escapeHtml(__('Choose Banner Image')) ?></div> 
+                                                <input type="file" name="ks-profile-banner-upload" id="ks-profile-banner-upload" data-validate='{"required":true, "validate-filesize":true}' 
+                                                class="ks-file-upload-input" accept="image/png, image/jpeg, image/gif">
+                                                <div class="ks-profile-checkbox-container">
+                                                    <input type="checkbox" name="ks-profile-banner-upload-checkbox" class="ks-use-default-control ks-profile-checkbox" data-tab="#ks-profile-banner-upload" <?= ($ksSellerBanner && $ksAllStoreCollection->getKsStoreBanner() && strcmp($ksSellerBanner,$ksAllStoreCollection->getKsStoreBanner()) == 0) ? "checked" : ""?>>
+                                                    <span class="ks-use-default-label">Use as Default Value</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer ks-profile-footer pb-0 pt-4">
+                                    <input type="submit" class="ks-action-save ks-action" value="Apply">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ks-banner-img">
+                <?php if ($ksSellerBanner): ?>
+                        <img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksSellerBanner ?>" />
+                <?php else: ?>
+                    <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-store-banner.jpg') ?>" />
+                <?php endif; ?> 
+            </div>
+        </div>
+        <div class="ks-banner-border">
+            <div class="ks-content-align">
+                <div class="ks-footer-left">
+                    <div class="ks-edit-small-icon ks-edit-seller-logo" title="Edit"></div>
+                    <?php if ($ksSellerBannerLogo && $ksStoreCollection->getKsStoreId() == $ksStoreId): ?>
+                        <a href="<?php echo $block->getUrl('multivendor/sellerprofile/deleteprofilebanner/',['seller_id' => $ksCustomerId,'store_id' => $ksStoreId,'value' => 'logo']) ?>"><div class="ks-delete-icon ks-delete-seller-logo" title="Delete"></div></a>
+                    <?php endif; ?>
+                    <div class="ks-edit-logo-content ks-db-popup-modal" style="display: none;">
+                        <div class="wrapper">
+                            <div class="modal ks-db-modal">
+                                <div class="modals-overlay"></div>
+                                <div class="modal-wrapper modal-transition ks-db-modal-wrapper">
+                                    <form action="<?php echo $block->getBaseUrl().'multivendor/sellerprofile/profilelogosave/' ?>"      class="ks-profile-logo-form" 
+                                        enctype="multipart/form-data" 
+                                        name="ks-profile-logo-form" 
+                                        id="ks-profile-logo-form" 
+                                        method="post" 
+                                        accept-charset="utf-8"  
+                                        data-mage-init='{"validation":{}}'>
+                                        <div class="modal-header ks-profile-modal-header">
+                                            <h3>Add Logo</h3>
+                                            <button class="modal-close modal-toggle ks-edit-logo-close ks-banner-modal-close"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/close-btn.svg') ?>" class="" /></button>
+                                        </div>
+                                        <input type="hidden" name="ks-seller-id" value="<?= $ksCustomerId; ?>">
+                                        <input type="hidden" name="ks-store-id" value="<?= $ksStoreId; ?>">
+                                        <div class="modal-body ks-db-modal-body">
+                                            <div class="modal-content ks-db-modal-content">
+                                                <div class="ks-file-upload-parent">
+                                                    <div class="floating-label-group ks_form-group pl-3 ks-file-upload-select">
+                                                        <div id="ks-upload-file-btn" class="ks-file-upload-select-btn"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/file-upload.png') ?>" alt="ks-upload-icon" class="img-fluid"></div>
+                                                        <div class="ks-file-select-name" id="ks-logo-selected-file"><?= $ksSellerBannerLogo ? $block->escapeHtml(__($ksSellerBannerLogo)) : $block->escapeHtml(__('Choose Logo Image')) ?></div> 
+                                                        <input type="file" name="ks-profile-logo-upload" id="ks-profile-logo-upload" data-validate='{"required":true, "validate-filesize":true}'  class="ks-file-upload-input" accept="image/png, image/jpeg">
+                                                        <div class="ks-profile-checkbox-container">
+                                                            <input type="checkbox" name="ks-profile-logo-upload-checkbox" class="ks-use-default-control ks-profile-checkbox" data-tab="#ks-profile-logo-upload" <?= ($ksSellerBannerLogo && $ksAllStoreCollection->getKsStoreLogo() && strcmp($ksSellerBannerLogo,$ksAllStoreCollection->getKsStoreLogo()) == 0) ? "checked" : ""?>>
+                                                            <span class="ks-use-default-label">Use as Default Value</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer ks-profile-footer pb-0 pt-4">
+                                            <input type="submit" class="ks-action-save ks-action" value="Apply">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ks-profile-logo">
+                        <?php if ($ksSellerBannerLogo): ?>
+                            <img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksSellerBannerLogo ?>" />
+                        <?php else: ?>
+                            <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-store-logo.png') ?>" />
+                        <?php endif; ?> 
+                    </div>   
+                </div>
+                <div class="ks-footer-right">
+                    <div class="ks-social-icon-group">
+                        <?php $count=0; ?>
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_social_media')): ?>
+                            <?php if ($ksTwitterUrl): $count=1; ?>
+                                <span>
+                                    <a href="<?= $ksTwitterUrl ?>" target="_blank" > <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/twiter-icon.svg') ?>" class="ks-profile-social-icon" title="Twitter"/></a>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($ksFacebookUrl): $count=1; ?>
+                                <span>
+                                    <a href="<?= $ksFacebookUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/fb-icon.svg') ?>" class="ks-profile-social-icon" title="Facebook"/></a>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($ksInstagramUrl): $count=1; ?>
+                                <span>
+                                    <a href="<?= $ksInstagramUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/insta-icon.svg') ?>" class="ks-profile-social-icon" title="Instagram"/></a>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($ksGooglePlusUrl): $count=1; ?>
+                                <span>
+                                    <a href="<?= $ksGooglePlusUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/google-plus-icon.svg') ?>" class="ks-profile-social-icon" title="Google Plus"/></a>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($ksVimeoUrl): $count=1; ?>
+                                <span>
+                                    <a href="<?= $ksVimeoUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/vector-icon.svg') ?>" class="ks-profile-social-icon" title="Vimeo"/></a>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($ksYoutubeUrl): $count=1; ?>
+                                <span>
+                                    <a href="<?= $ksYoutubeUrl ?>" target="_blank" ><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/youtube-icon.svg') ?>" class="ks-profile-social-icon" title="Youtube"/></a>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($ksPinterestUrl): $count=1; ?>
+                                <span>
+                                    <a href="<?= $ksPinterestUrl ?>" target="_blank"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/pinterest-icon.svg') ?>" class="ks-profile-social-icon" title="Pinterest"/></a>
+                                </span>
+                            <?php endif; ?>
+                        <?php endif; ?>    
+                        <span>
+                            <?php if($block->isKsFavouriteSellerEnable()): ?>
+                                <a href="<?= $block->getUrl('multivendor/favouriteseller/index'); ?>" class="mr-4">      
+                                    <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/wishlist-icon.svg') ?>" class="ks-profile-social-icon" title="Favourite Seller"/>
+                                    <span>
+                                        <?php if($ksFollowersCount == 0): ?>
+                                            <span class="ks-wishlist-green-count ks-wishlist-count"><?= $ksFollowersCount ?></span>
+                                        <?php else:?>
+                                            <span class="ks-wishlist-red-count ks-wishlist-count"><?= $ksFollowersCount ?></span>
+                                        <?php endif; ?>
+                                    </span>
+                                </a>
+                            <?php endif; ?>
+                        </span>
+                   </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ks-profile-edit-overview-card">
+        <div class="ks-profile-view" id="ks-saved-profile">
+            <div class="ks-profile-img"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/profile/profile-img.svg') ?>" class="ks-profile-social-icon" /></div>
+            <h2><?= $ksStoreName; ?></h2>
+            <?php if($ksCountry != '' || $ksState != ''): ?>
+                <div class="ks-profile-location"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/location-dark.svg') ?>" alt="" class=""><span><?= $block->escapeHtml(__($ksState != "" ? " ".$ksState.", ".$ksCountry : " ".$ksCountry)) ?></span></div>
+            <?php endif; ?>
+        </div>
+        <div class="ks-overview-div ks-edit-icon" id="ks-saved-overview">
+          <div class="ks-edit-icon" onclick="ksEditor('ks-saved-overview','ks-show-overview-edit','block')" title="Edit"></div>
+            <div class="ks-profile-title">
+                <h2><?= $block->escapeHtml(__('Overview')) ?> <span class="ks-profile-store-view">(Store View)</span></h2>
+            </div>
+            <div class="ks-overview-body">
+                <div class="ks-overview-content">
+                    <p><?= $ksOverview ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="ks-profile-overview-card" id="ks-show-overview-edit" style="display: none;">
+            <div class="ks-profile-title">
+                <h2><?= $block->escapeHtml(__('Overview')) ?> <span class="ks-profile-store-view">(Store View)</span></h2>
+            </div>
+            <form id="ks-profile-overview-form" action="<?= $this->getUrl('multivendor/sellerprofile/storedescriptionsave'); ?>" method="post">
+                <fieldset>
+                    <input type="hidden" name="ks-seller-id" value="<?= $ksCustomerId; ?>">
+                    <input type="hidden" name="ks-store-id" value="<?= $ksStoreId; ?>">
+                    <div class="ks-overview-body">
+                        <div class="ks-content-align align-items-start">
+                            <div class="ks-overview-left">
+                                <span class="ks-toggle-content"><?= $block->escapeHtml(__('Text Editor')) ?></span>
+                                <label class="ks-switch">
+                                    <input type="checkbox" onclick="ksEditor('ks-edit-overview','ks-overview-editor','block','ks-overview-textarea')">
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            </div>
+                            <div class="ks-overview-right" id="ks-edit-overview">
+                                <p><?= $ksOverview ?></p>
+                            </div>
+                            <div id="ks-overview-editor" class="ks-editor-section" style="display: none;">
+                                <textarea id="ks-overview-textarea" name="ks-overview-textarea"><?= $ksOverview ?>
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="ks-profile-checkbox-container ks-profile-overview-checkbox">
+                            <input type="checkbox" name="ks-overview-textarea-checkbox" class="ks-use-default-control ks-textarea-checkbox" data-tab="ks-overview-textarea" <?= ($ksOverview && $ksAllStoreCollection->getKsStoreDescription() && strcmp($ksOverview, $ksAllStoreCollection->getKsStoreDescription()) == 0) ? "checked" : ""?>>
+                            <span class="ks-use-default-label">Use as Default Value</span>
+                        </div>
+                    </div>
+                    <div class="ks-profile-footer">
+                        <div class="ks-profile-action">
+                            <button name="submit" type="submit" class="ks-action ks-action-save"><?= $block->escapeHtml(__('Save')) ?></button>
+                            <button name="cancel" type="reset" class="ks-action ks-action-cancel" onclick="ksEditor('ks-saved-overview','ks-show-overview-edit','block')"><?= $block->escapeHtml(__('Cancel')) ?></button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    <!------------------- KS Profile Overview edit end ------------------->
+    </div>   
+    <!------------------- KS Profile Overview end ------------------->
+
+    <!------------------- KS Profile details Section start ------------------->
+    <div class="ks-profile-detail-card ks-profile-saved-detail-card" id="ks-saved-profile-details">
+        <!-- Edit icon -->
+        <div class="ks-edit-icon" onclick="ksEditor('ks-saved-profile-details','ks-show-profile-detail-edit','flex')" title="Edit"></div>
+        <div class="ks-profile-detail-culumn-one columns" id="ks-saved-profile-details-column-one" >
+            <div class="column-content">
+                <h5><?= $block->escapeHtml(__('Owner Details')) ?></h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Name')) ?></label>
+                    <p class="content-bold"><?= $ksSellerName; ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Contact Number')) ?></label>
+                    <p class="content-bold"><?= $ksSellerPhone; ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Email Id')) ?></label>
+                    <p class="content-bold"><?= $ksSellerEmail; ?></p>
+                </div>    
+            </div>
+        </div>
+        <div class="ks-profile-detail-culumn-two columns" id="ks-saved-profile-details-column-two">
+        <div class="column-content">
+                <h5><?= $block->escapeHtml(__('General Information')) ?></h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Store Name')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksStoreName; ?></p>
+                </div>    
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Store Url')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksStoreUrl; ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Store Status')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksStoreStatus; ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Available in Different Country')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><ul class="ks-profile-country-dropdown content-bold"><?php foreach ($ksCountryArray as $ksItem): ?><li><?= $ksItem; ?></li><?php endforeach; ?></ul></p>
+                </div> 
+            </div>
+        </div>
+        <div class="ks-profile-detail-culumn-three columns" id="ks-saved-profile-details-column-three">
+            <div class="column-content">
+                <h5 class="visibility-hidden ks-mobile-visibility">Customer Support</h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Seller Status')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksSellerStatus; ?></p>
+                </div>    
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Seller Group')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksSellerGroup; ?></p>
+                </div>
+                <?php if ($ksHelper->getKsSellerConfigData('ks_seller_since')): ?>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Seller Since')) ?></label>
+                        <p class="content-bold"><?= $ksSellerSince; ?></p>
+                    </div>
+                <?php endif; ?> 
+            </div>
+        </div>
+    </div>
+    <div class="ks-profile-detail-card ks-profile-detail-edit-card" id="ks-show-profile-detail-edit" style="display: none;">
+        <form name="profile-form" id="ks-profile-detail-form" action="<?= $this->getUrl('multivendor/sellerprofile/profilesave'); ?>" method="post">
+        <fieldset>
+            <input type="hidden" name="ks-seller-id" value="<?= $ksCustomerId; ?>">
+            <input type="hidden" name="ks-store-id" value="<?= $ksStoreId; ?>">
+        <div class="ks-profile-detail-edit-column">
+            <div class="ks-profile-detail-culumn-one columns">
+                <div class="column-content">
+                    <h5><?= $block->escapeHtml(__('Owner Details')) ?></h5>  
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Name')) ?></label>
+                        <input type="text" name="ks-seller-name" value="<?= $ksSellerName; ?>" class="ks-input-field content-bold" disabled>
+                    </div>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Contact Number')) ?></label>
+                        <input type="text" name="ks-seller-contact" value="<?= $ksSellerPhone; ?>" class="ks-input-field content-bold" disabled>
+                    </div>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Email Id')) ?></label>
+                        <input type="text" value="<?= $ksSellerEmail; ?>" class="ks-input-field content-bold" disabled>
+                    </div>    
+                </div>
+            </div>
+            <div class="ks-profile-detail-culumn-two columns">
+                <div class="column-content">
+                    <h5><?= $block->escapeHtml(__('General Information')) ?></h5>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Store Name')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="text" name="ks-store-name" value="<?= $ksStoreName; ?>" class="ks-input-field content-bold" disabled>
+                    </div>    
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Store Url')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="text" value="<?= $ksStoreUrl; ?>" class="ks-input-field content-bold" disabled>
+                    </div>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Store Status')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="text" value="<?= $ksStoreStatus; ?>" class="ks-input-field content-bold" disabled>
+                    </div>
+                    <div class="form-feild ks-select-field">
+                        <label><?= $block->escapeHtml(__('Available in Different Country')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <select multiple="multiple" name="ks-available-countries[]" >
+                            <?php foreach ($block->getKsCountry() as $ksItem): if (!empty($ksItem['value'])): ?>
+                            <option <?php echo ($ksAvailableCountryCode && strpos($ksAvailableCountryCode, '' . $ksItem['value'] . '') !== false)?"selected":"" ?> value="<?php echo $ksItem['value']; ?>" ><?php echo $ksItem['label']; ?></option>
+                            <?php endif; endforeach; ?>
+                        </select>
+                    </div> 
+                </div>
+            </div>
+            <div class="ks-profile-detail-culumn-three columns">
+                <div class="column-content">
+                    <h5 class="visibility-hidden ks-mobile-visibility"><?= $block->escapeHtml(__('Customer Support')) ?></h5>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Seller Status')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="text" value="<?= $ksSellerStatus; ?>" class="ks-input-field content-bold" disabled>
+                    </div>    
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Seller Group')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="text" value="<?= $ksSellerGroup; ?>" class="ks-input-field content-bold" disabled>
+                    </div>
+                    <?php if ($ksHelper->getKsSellerConfigData('ks_seller_since')): ?>
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Seller Since')) ?></label>
+                            <input type="text" value="<?= $ksSellerSince; ?>" class="ks-input-field content-bold" disabled>
+                        </div> 
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <div class="ks-profile-footer">
+            <div class="ks-profile-action">
+                <button name="submit" type="submit" class="ks-action ks-action-save"><?= $block->escapeHtml(__('Save')) ?></button>
+                <button name="cancel" type="reset" class="ks-action ks-action-cancel" onclick="ksEditor('ks-saved-profile-details','ks-show-profile-detail-edit','flex')"><?= $block->escapeHtml(__('Cancel')) ?></button>
+            </div>
+        </div>
+    </fieldset>
+    </form>
+    </div>
+    <!------------------- KS Company Information Section start ------------------->
+    <div class="ks-profile-detail-card ks-profile-saved-detail-card" id="ks-saved-company-information">
+        <!-- Edit icon -->
+        <div class="ks-edit-icon" onclick="ksEditor('ks-saved-company-information','ks-show-company-information-edit','flex')" title="Edit"></div>
+        <div class="ks-company-information-column-one columns">
+            <div class="column-content">
+                <h5><?= $block->escapeHtml(__('Company Information')) ?></h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Company Name')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksCompanyName; ?></p>
+                </div> 
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Company Address')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksCompanyAddress; ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Company Contact Number')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksCompanyContactNumber; ?></p>
+                </div> 
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Company Email')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksCompanyEmail; ?></p>
+                </div>       
+            </div>
+        </div>
+        <div class="ks-company-information-column-two columns">
+            <div class="column-content">
+                <h5 class="visibility-hidden ks-mobile-visibility"><?= $block->escapeHtml(__('Customer Support')) ?></h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Postal Code')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksPostcode; ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Country')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksCountry; ?></p>
+                </div> 
+                <?php if(!$ksState && !$ksCountry): ?>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('State')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <p class="content-bold"><?= $ksState; ?></p>
+                    </div>
+                <?php else: ?>
+                    <?php if($ksState && $ksCountry): ?>
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('State')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                            <p class="content-bold"><?= $ksState; ?></p>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Tax/VAT Number')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                    <p class="content-bold"><?= $ksTaxvatNumber; ?></p>
+                </div> 
+            </div>
+        </div>
+        <div class="ks-company-information-column-three columns">
+            <div class="column-content">
+                <h5><?= $block->escapeHtml(__('Customer Support')) ?></h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Support Number')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksSupportNumber ?></p>
+                </div>    
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Support Email')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksSupportEmail ?></p>
+                </div>
+                <h5>SEO Information</h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Meta Keywords')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksKeyword ?></p>
+                </div> 
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Meta Description')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksDescription ?></p>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="ks-profile-detail-card ks-profile-detail-edit-card" id="ks-show-company-information-edit" style="display: none;">
+        <form id="ks-company-information-form" action="<?= $this->getUrl('multivendor/sellerprofile/companyinformationsave'); ?>" method="post" data-mage-init='{"validation":{}}'>
+        <fieldset>
+            <input type="hidden" name="ks-seller-id" value="<?= $ksCustomerId; ?>">
+            <input type="hidden" name="ks-store-id" value="<?= $ksStoreId; ?>">
+        <div class="ks-profile-detail-edit-column">
+            <div class="ks-company-information-column-one columns">
+                <div class="column-content">
+                    <h5><?= $block->escapeHtml(__('Company Information')) ?></h5>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Company Name')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="text" value="<?= $ksCompanyName; ?>" name="ks-company-name" class="ks-input-field content-bold">
+                    </div>     
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Company Address')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="text" value="<?= $ksCompanyAddress; ?>" name="ks-company-address" class="ks-input-field content-bold">
+                    </div>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Company Contact Number')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="number" value="<?= $ksCompanyContactNumber; ?>" name="ks-company-contact" class="ks-input-field content-bold">
+                    </div>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Company Email')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <input type="email" value="<?= $ksCompanyEmail; ?>" name="ks-company-email" class="ks-input-field content-bold">
+                    </div> 
+                </div>
+            </div>
+            <div class="ks-company-information-column-two columns">
+                <div class="column-content">
+                    <h5 class="visibility-hidden ks-mobile-visibility">Customer Support</h5>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Postal Code')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <div class="control">
+                            <input type="number" value="<?= $ksPostcode; ?>" name="ks-company-postcode" class="ks-input-field content-bold" data-validate="{'validate-alphanum':true}">
+                        </div>
+                    </div>
+                    <div class="form-feild field country required">
+                        <label class="label" value="" for="country"><?= $block->escapeHtml(__('Country')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                        <div class="control ks-select-field">
+                            <?php echo $ksCountryList?>
+                       </div>
+                    </div>
+                    <div class="form-feild field region required">
+                       <label class="label" for="state"><?= $block->escapeHtml(__('State')) ?> <span class="ks-profile-small-store">(Global)</span></label>
+                       <div class="control ks-select-field">
+                            <?php echo $ksRegionList?>
+                       </div>
+                    </div>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Tax/VAT Number')) ?>
+                            <span class="ks-profile-small-store">(Global)</span>
+                        </label>
+                        <div class="control">
+                            <input type="number" value="<?= $ksTaxvatNumber; ?>" name="ks-taxvat-number" class="ks-input-field content-bold" data-validate="{ 'validate-alphanum':true}">
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="ks-company-information-column-three columns">
+                <div class="column-content">
+                    <h5><?= $block->escapeHtml(__('Customer Support')) ?></h5>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Support Number')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                        <input id="ks-support-number" type="number" value="<?= $ksSupportNumber ?>" name="ks-support-number" class="ks-input-field content-bold">
+                        <div class="ks-profile-checkbox-container">
+                            <input type="checkbox" class="ks-use-default-control ks-profile-checkbox" name="ks-support-number-checkbox" data-tab="#ks-support-number" <?= ($ksSupportNumber && $ksAllStoreCollection->getKsSupportContact() && strcmp($ksSupportNumber,$ksAllStoreCollection->getKsSupportContact()) == 0) ? "checked" : ""?>>
+                            <span class="ks-use-default-label">Use as Default Value</span>
+                        </div>
+                    </div>    
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Support Email')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                        <input id="ks-support-email" type=email value="<?= $ksSupportEmail ?>" name="ks-support-email" class="ks-input-field content-bold">
+                        <div class="ks-profile-checkbox-container">
+                            <input type="checkbox" class="ks-use-default-control ks-profile-checkbox" name="ks-support-email-checkbox" data-tab="#ks-support-email" <?= ($ksSupportEmail && $ksAllStoreCollection->getKsSupportEmail() && strcmp($ksSupportEmail,$ksAllStoreCollection->getKsSupportEmail()) == 0) ? "checked" : ""?>>
+                            <span class="ks-use-default-label">Use as Default Value</span>
+                        </div>
+                    </div>
+                    <h5>SEO Information</h5>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Meta Keywords')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                        <textarea id="ks-meta-keywords" name="ks-keywords" class="ks-input-field content-bold" form="ks-company-information-form"><?= $ksKeyword ?></textarea>
+                        <div class="ks-profile-checkbox-container">
+                            <input type="checkbox" class="ks-use-default-control ks-profile-checkbox" name="ks-keywords-checkbox" data-tab="#ks-meta-keywords" <?= ($ksKeyword && $ksAllStoreCollection->getKsMetaKeyword() && strcmp($ksKeyword,$ksAllStoreCollection->getKsMetaKeyword()) == 0) ? "checked" : ""?>>
+                            <span class="ks-use-default-label">Use as Default Value</span>
+                        </div>
+                    </div>
+                    <div class="form-feild">
+                        <label><?= $block->escapeHtml(__('Meta Description')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                        <textarea id="ks-meta-description" name="ks-description" class="ks-input-field content-bold" form="ks-company-information-form"><?= $ksDescription ?></textarea>
+                        <div class="ks-profile-checkbox-container">
+                            <input type="checkbox" class="ks-use-default-control ks-profile-checkbox" name="ks-description-checkbox" data-tab="#ks-meta-description" <?= ($ksDescription && $ksAllStoreCollection->getKsMetaDescription() &&strcmp($ksDescription,$ksAllStoreCollection->getKsMetaDescription()) == 0) ? "checked" : ""?>>
+                            <span class="ks-use-default-label">Use as Default Value</span>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div class="ks-profile-footer">
+            <div class="ks-profile-action">
+                <button name="submit" type="submit" class="ks-action ks-action-save"><?= $block->escapeHtml(__('Save')) ?></button>
+                <button name="cancel" type="reset" class="ks-action ks-action-cancel" onclick="ksEditor('ks-saved-company-information','ks-show-company-information-edit','flex')"><?= $block->escapeHtml(__('Cancel')) ?></button>
+            </div>
+        </div>
+    </fieldset>
+    </form>
+    </div>
+    <!------------------- KS Company Information form Section end ------------------->
+    
+    <!------------------- KS Social Media Section start ------------------->
+    <?php if($block->isKsSocialMediaEnabled()){?>
+    <div class="ks-profile-detail-card ks-socialmedia-detail-card" id="ks-saved-socialmedia-details">
+        <!-- Edit icon -->
+        <div class="ks-edit-icon" onclick="ksEditor('ks-saved-socialmedia-details','ks-show-socialmedia-detail-edit','flex')" title="Edit"></div>
+        <div class="ks-socialmedia-detail-culumn-one columns" id="ks-saved-socialmedia-details-column-one" >
+            <div class="column-content">
+                <h5><?= $block->escapeHtml(__('Social Media Details')) ?></h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Twitter Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksTwitterUrl ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Facebook Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksFacebookUrl ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Instagram Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksInstagramUrl ?></p>
+                </div>    
+            </div>
+        </div>
+        <div class="ks-socialmedia-detail-culumn-two columns" id="ks-saved-socialmedia-details-column-two">
+            <div class="column-content">
+                <h5 class="visibility-hidden ks-mobile-visibility">Customer Support</h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Google+ Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksGooglePlusUrl ?></p>
+                </div>    
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Youtube Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksYoutubeUrl ?></p>
+                </div>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Vimeo Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksVimeoUrl ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="ks-socialmedia-detail-culumn-two columns" id="ks-saved-socialmedia-details-column-two">
+            <div class="column-content">
+                <h5 class="visibility-hidden ks-mobile-visibility">Customer Support</h5>
+                <div class="form-feild">
+                    <label><?= $block->escapeHtml(__('Pinterest Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                    <p class="content-bold"><?= $ksPinterestUrl ?></p>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+    <div class="ks-socialmedia-detail-card ks-socialmedia-detail-edit-card ks-profile-detail-card ks-profile-detail-edit-card" id="ks-show-socialmedia-detail-edit" style="display: none;">
+        <form name="socialmedia-form" id="ks-socialmedia-detail-form" action="<?= $this->getUrl('multivendor/sellerprofile/socialmediasave'); ?>" method="post" data-mage-init='{"validation":{}}'>
+            <fieldset>
+                <input type="hidden" name="ks-seller-id" value="<?= $ksCustomerId; ?>">
+                <input type="hidden" name="ks-store-id" value="<?= $ksStoreId; ?>">
+                    <div class="ks-socialmedia-detail-edit-column ks-profile-detail-edit-column">
+                        <div class="ks-socialmedia-detail-culumn-one columns">
+                            <div class="column-content">
+                                <h5><?= $block->escapeHtml(__('Social Media Details')) ?></h5>  
+                                <div class="form-feild">
+                                    <label><?= $block->escapeHtml(__('Twitter Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                                    <input type="text" name="ks-twitter-id" value="<?= $ksTwitterUrl ?>" class="ks-input-field content-bold" id="ks-twitter-id" data-validate="{'validate-url':true}">
+                                    <div class="ks-profile-checkbox-container">
+                                        <input type="checkbox" name="ks-twitter-id-checkbox" class="ks-use-default-control ks-profile-checkbox" data-tab="#ks-twitter-id" <?= ($ksTwitterUrl && $ksAllStoreCollection->getKsTwitterId() && strcmp($ksTwitterUrl,$ksAllStoreCollection->getKsTwitterId()) == 0) ? "checked" : ""?>>
+                                        <span class="ks-use-default-label">Use as Default Value</span>
+                                    </div>
+                                </div>
+                                <div class="form-feild">
+                                    <label><?= $block->escapeHtml(__('Facebook Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                                    <input type="text" name="ks-facebook-id" value="<?= $ksFacebookUrl ?>" class="ks-input-field content-bold" id="ks-facebook-id" data-validate="{'validate-url':true}">
+                                    <div class="ks-profile-checkbox-container">
+                                        <input type="checkbox" name="ks-facebook-id-checkbox" class="ks-use-default-control ks-profile-checkbox" data-tab="#ks-facebook-id" <?= ($ksFacebookUrl && $ksAllStoreCollection->getKsFacebookId() && strcmp($ksFacebookUrl,$ksAllStoreCollection->getKsFacebookId()) == 0) ? "checked" : ""?>>
+                                        <span class="ks-use-default-label">Use as Default Value</span>
+                                    </div>
+                                </div>
+                                <div class="form-feild">
+                                    <label><?= $block->escapeHtml(__('Instagram Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                                    <input type="text" name="ks-instagram-id" value="<?= $ksInstagramUrl ?>" class="ks-input-field content-bold" id="ks-instagram-id" data-validate="{'validate-url':true}">
+                                    <div class="ks-profile-checkbox-container">
+                                        <input type="checkbox" name="ks-instagram-id-checkbox" class="ks-use-default-control ks-profile-checkbox"  data-tab="#ks-instagram-id" <?= ($ksInstagramUrl && $ksAllStoreCollection->getKsInstagramId() && strcmp($ksInstagramUrl,$ksAllStoreCollection->getKsInstagramId()) == 0) ? "checked" : ""?>>
+                                        <span class="ks-use-default-label">Use as Default Value</span>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="ks-socialmedia-detail-culumn-two columns">
+                            <div class="column-content">
+                                <h5 class="visibility-hidden ks-mobile-visibility">Customer Support</h5>
+                                <div class="form-feild">
+                                    <label><?= $block->escapeHtml(__('Google+ Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                                    <input type="text" name="ks-google-id" value="<?= $ksGooglePlusUrl ?>" class="ks-input-field content-bold" id="ks-google-id" data-validate="{'validate-url':true}">
+                                    <div class="ks-profile-checkbox-container">
+                                        <input type="checkbox" name="ks-google-id-checkbox" class="ks-use-default-control ks-profile-checkbox"
+                                        data-tab="#ks-google-id" <?= ($ksGooglePlusUrl && $ksAllStoreCollection->getKsGoogleplusId() && strcmp($ksGooglePlusUrl,$ksAllStoreCollection->getKsGoogleplusId()) == 0) ? "checked" : ""?>>
+                                        <span class="ks-use-default-label">Use as Default Value</span>
+                                    </div>
+                                </div>    
+                                <div class="form-feild">
+                                    <label><?= $block->escapeHtml(__('Youtube Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                                    <input type="text" name="ks-youtube-id" value="<?= $ksYoutubeUrl ?>" class="ks-input-field content-bold" id="ks-youtube-id" data-validate="{'validate-url':true}">
+                                    <div class="ks-profile-checkbox-container">
+                                        <input type="checkbox" name="ks-youtube-id-checkbox" class="ks-use-default-control ks-profile-checkbox"
+                                        data-tab="#ks-youtube-id" <?= ($ksYoutubeUrl && $ksAllStoreCollection->getKsYoutubeId() && strcmp($ksYoutubeUrl,$ksAllStoreCollection->getKsYoutubeId()) == 0) ? "checked" : ""?>>
+                                        <span class="ks-use-default-label">Use as Default Value</span>
+                                    </div>
+                                </div>
+                                <div class="form-feild">
+                                    <label><?= $block->escapeHtml(__('Vimeo Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                                    <input type="text" name="ks-vimeo-id" value="<?= $ksVimeoUrl ?>" class="ks-input-field content-bold" id="ks-vimeo-id" data-validate="{'validate-url':true}">
+                                    <div class="ks-profile-checkbox-container">
+                                        <input type="checkbox" name="ks-vimeo-id-checkbox" class="ks-use-default-control ks-profile-checkbox" data-tab="#ks-vimeo-id" <?= ($ksVimeoUrl && $ksAllStoreCollection->getKsVimeoId() && strcmp($ksVimeoUrl,$ksAllStoreCollection->getKsVimeoId()) == 0) ? "checked" : ""?>>
+                                        <span class="ks-use-default-label">Use as Default Value</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ks-socialmedia-detail-culumn-two columns">
+                            <div class="column-content">
+                                <h5 class="visibility-hidden ks-mobile-visibility">Customer Support</h5>
+                                <div class="form-feild">
+                                    <label><?= $block->escapeHtml(__('Pinterest Id')) ?> <span class="ks-profile-small-store">(Store View)</span></label>
+                                    <input type="text" name="ks-pinterest-id" value="<?= $ksPinterestUrl ?>" class="ks-input-field content-bold" id="ks-pinterest-id" data-validate="{'validate-url':true}">
+                                    <div class="ks-profile-checkbox-container">
+                                        <input type="checkbox" name="ks-pinterest-id-checkbox" class="ks-use-default-control ks-profile-checkbox" data-tab="#ks-pinterest-id" <?= ($ksPinterestUrl && $ksAllStoreCollection->getKsPinterestId() && strcmp($ksPinterestUrl,$ksAllStoreCollection->getKsPinterestId()) == 0) ? "checked" : ""?>>
+                                        <span class="ks-use-default-label">Use as Default Value</span>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ks-profile-footer">
+                        <div class="ks-profile-action">
+                            <button name="submit" type="submit" class="ks-action ks-action-save"><?= $block->escapeHtml(__('Save')) ?></button>
+                            <button name="cancel" type="reset" class="ks-action ks-action-cancel" onclick="ksEditor('ks-saved-socialmedia-details','ks-show-socialmedia-detail-edit','flex')"><?= $block->escapeHtml(__('Cancel')) ?></button>
+                        </div>
+                    </div>
+            </fieldset>
+        </form>
+    </div>
+    <?php if($block->isKsRefundPolicyEnabled() || $block->isKsPrivacyPolicyEnabled() || $block->isKsShippingPolicyEnabled() || $block->isKsLegalNoticeEnabled() || $block->isKsTermsOfServiceEnabled()){ ?>
+    <div class="ks-tabs-section" id="ks-saved-policies">  
+        <div class="ks-edit-icon" onclick="ksEditor('ks-saved-policies','ks-show-policy-edit','block')" title="Edit"></div>   
+        <div class="ks-tabs">
+        <?php if($block->isKsRefundPolicyEnabled()){?>
+            <input type="radio" name="tab-btn" id="ks-tab-btn-1" value="" checked>
+            <label for="ks-tab-btn-1" class="ks-tab-btn-1"><?= $block->escapeHtml(__('Refund Policy')) ?> <span class="ks-profile-small-store">Store View</span></label>
+        <?php } if($block->isKsPrivacyPolicyEnabled()){?>
+            <input type="radio" name="tab-btn" id="ks-tab-btn-2" value="">
+            <label for="ks-tab-btn-2"><?= $block->escapeHtml(__('Privacy Policy')) ?> <span class="ks-profile-small-store">Store View</span></label>          
+        <?php } if($block->isKsShippingPolicyEnabled()){?>
+            <input type="radio" name="tab-btn" id="ks-tab-btn-3" value="">
+            <label for="ks-tab-btn-3"><?= $block->escapeHtml(__('Shipping Policy')) ?> <span class="ks-profile-small-store">Store View</span></label>
+        <?php } if($block->isKsLegalNoticeEnabled()){?>
+            <input type="radio" name="tab-btn" id="ks-tab-btn-4" value="">
+            <label for="ks-tab-btn-4"><?= $block->escapeHtml(__('Legal Policy')) ?> <span class="ks-profile-small-store">Store View</span></label>
+        <?php } if($block->isKsTermsOfServiceEnabled()){?>
+            <input type="radio" name="tab-btn" id="ks-tab-btn-5" value="">
+            <label for="ks-tab-btn-5"><?= $block->escapeHtml(__('Terms of Service')) ?> <span class="ks-profile-small-store">Store View</span></label>
+        <?php } ?>
+            <div id="ks-content-1">
+                <div class="ks-content-1-area ks-content">
+                    <p><?= $ksRefundPolicy ?>
+                    </p>
+                </div>    
+            </div>
+            <div id="ks-content-2">
+                <div class="ks-content-2-area ks-content">
+                    <p><?= $ksPrivacyPolicy ?>
+                    </p>
+                </div>
+            </div>
+            <div id="ks-content-3">
+                <div class="ks-content-3-area ks-content">
+                    <p><?= $ksShippingPolicy ?>
+                    </p>
+                </div>
+            </div>
+            <div id="ks-content-4">
+                <div class="ks-content-4-area ks-content">
+                    <p><?= $ksLegalNotice ?>
+                    </p>
+                </div>
+            </div>
+            <div id="ks-content-5">
+                <div class="ks-content-5-area ks-content">
+                    <p><?= $ksTermsOfService ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>  
+    <?php } ?> 
+    <form id="ks-policy-edt-form" action="<?= $this->getUrl('multivendor/sellerprofile/policysave'); ?>" method="post">
+        <fieldset>
+            <input type="hidden" name="ks-seller-id" value="<?= $ksCustomerId; ?>">
+            <input type="hidden" name="ks-store-id" value="<?= $ksStoreId; ?>">
+            <div class="ks-policy-edt-section" id="ks-show-policy-edit" style="display: none;">
+            <?php if($block->isKsRefundPolicyEnabled()){?>
+                <div class="ks-return-policy-section ks-policies">
+                    <div class="" role="tab" id="ks-return-policy">
+                        <a role="button" class="ks-policy-button collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-return-policy-tab" aria-expanded="false" aria-controls="ks-return-policy-tab"><?= $block->escapeHtml(__('Refund Policy')) ?> <span class="ks-profile-small-store ml-2">(Store View)</span></a>
+                    </div>
+                    <div id="ks-return-policy-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-return-policy">
+                        <div class="ks-policy-content">
+                            <div class="ks-content-align align-items-start">
+                                <div class="ks-overview-left">
+                                    <span class="ks-toggle-content"><?= $block->escapeHtml(__('Text Editor')) ?></span>
+                                    <label class="ks-switch">
+                                        <input type="checkbox" onclick="ksEditor('ks-return-policy-edit','ks-return-policy-editor','block','ks-return-policy-textarea')">
+                                        <span class="ks-slider ks-round"></span>
+                                    </label>
+                                </div>
+                                <div class="ks-overview-right" id="ks-return-policy-edit">
+                                    <p><?= $ksRefundPolicy ?>
+                                    </p>
+                                </div>
+                                <div id="ks-return-policy-editor" class="ks-editor-section" style="display: none;">
+                                    <textarea id="ks-return-policy-textarea" name="ks-return-policy-textarea">
+                                        <?= $ksRefundPolicy ?>
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="ks-profile-checkbox-container ks-policy-overview-checkbox">
+                                <input type="checkbox" name="ks-return-policy-textarea-checkbox" class="ks-use-default-control ks-textarea-checkbox" data-tab="ks-return-policy-textarea" <?= ($ksRefundPolicy && $ksAllStoreCollection->getKsRefundPolicy() && strcmp($ksRefundPolicy,$ksAllStoreCollection->getKsRefundPolicy()) == 0) ? "checked" : ""?>>
+                                <span class="ks-use-default-label">Use as Default Value</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php } if($block->isKsPrivacyPolicyEnabled()){?>
+                <div class="ks-privacy-policy-section ks-policies">
+                    <div class="" role="tab" id="ks-privacy-policy">
+                        <a role="button" class="ks-policy-button collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-privacy-policy-tab" aria-expanded="false" aria-controls="ks-privacy-policy-tab"><?= $block->escapeHtml(__('Privacy Policy')) ?> <span class="ks-profile-small-store ml-2">(Store View)</span></a>
+                    </div>
+                    <div id="ks-privacy-policy-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-privacy-policy">
+                        <div class="ks-policy-content">
+                            <div class="ks-content-align align-items-start">
+                                <div class="ks-overview-left">
+                                    <span class="ks-toggle-content"><?= $block->escapeHtml(__('Text Editor')) ?></span>
+                                    <label class="ks-switch">
+                                        <input type="checkbox" onclick="ksEditor('ks-privacy-policy-edit','ks-privacy-policy-editor','block','ks-privacy-policy-textarea')">
+                                        <span class="ks-slider ks-round"></span>
+                                    </label>
+                                </div>
+                                <div class="ks-overview-right" id="ks-privacy-policy-edit">
+                                    <p><?= $ksPrivacyPolicy ?>
+                                    </p>
+                                </div>
+                                <div id="ks-privacy-policy-editor" class="ks-editor-section" style="display: none;">
+                                    <textarea id="ks-privacy-policy-textarea" name="ks-privacy-policy-textarea">
+                                        <?= $ksPrivacyPolicy ?>
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="ks-profile-checkbox-container ks-policy-overview-checkbox">
+                                <input type="checkbox" name="ks-privacy-policy-textarea-checkbox" class="ks-use-default-control ks-textarea-checkbox" data-tab="ks-privacy-policy-textarea" <?= ($ksPrivacyPolicy && $ksAllStoreCollection->getKsPrivacyPolicy() && strcmp($ksPrivacyPolicy,$ksAllStoreCollection->getKsPrivacyPolicy()) == 0) ? "checked" : ""?>>
+                                <span class="ks-use-default-label">Use as Default Value</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php } if($block->isKsShippingPolicyEnabled()){?>
+                <div class="ks-shipping-policy-section ks-policies">
+                    <div class="" role="tab" id="ks-shipping-policy">
+                        <a role="button" class="ks-policy-button collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-shipping-policy-tab" aria-expanded="false" aria-controls="ks-shipping-policy-tab"><?= $block->escapeHtml(__('Shipping Policy')) ?> <span class="ks-profile-small-store ml-2">(Store View)</span></a>
+                    </div>
+                    <div id="ks-shipping-policy-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-shipping-policy">
+                        <div class="ks-policy-content">
+                            <div class="ks-content-align align-items-start">
+                                <div class="ks-overview-left">
+                                    <span class="ks-toggle-content"><?= $block->escapeHtml(__('Text Editor')) ?></span>
+                                    <label class="ks-switch">
+                                        <input type="checkbox" onclick="ksEditor('ks-shipping-policy-edit','ks-shipping-policy-editor','block','ks-shipping-policy-textarea')">
+                                        <span class="ks-slider ks-round"></span>
+                                    </label>
+                                </div>
+                                <div class="ks-overview-right" id="ks-shipping-policy-edit">
+                                    <p><?= $ksShippingPolicy ?>
+                                    </p>
+                                </div>
+                                <div id="ks-shipping-policy-editor" class="ks-editor-section" style="display: none;">
+                                    <textarea id="ks-shipping-policy-textarea" name="ks-shipping-policy-textarea">
+                                        <?= $ksShippingPolicy ?>
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="ks-profile-checkbox-container ks-policy-overview-checkbox">
+                                <input type="checkbox" name="ks-shipping-policy-textarea-checkbox" class="ks-use-default-control ks-textarea-checkbox" data-tab="ks-shipping-policy-textarea" <?= ($ksShippingPolicy && $ksAllStoreCollection->getKsShippingPolicy() && strcmp($ksShippingPolicy,$ksAllStoreCollection->getKsShippingPolicy()) == 0) ? "checked" : ""?>>
+                                <span class="ks-use-default-label">Use as Default Value</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php } if($block->isKsLegalNoticeEnabled()){?>
+                <div class="ks-leagl-policy-section ks-policies">
+                    <div class="" role="tab" id="ks-leagl-policy">
+                        <a role="button" class="ks-policy-button collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-leagl-policy-tab" aria-expanded="false" aria-controls="ks-leagl-policy-tab"><?= $block->escapeHtml(__('Legal Policy')) ?> <span class="ks-profile-small-store ml-2">(Store View)</span></a>
+                    </div>
+                    <div id="ks-leagl-policy-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-leagl-policy">
+                        <div class="ks-policy-content">
+                            <div class="ks-content-align align-items-start">
+                                <div class="ks-overview-left">
+                                    <span class="ks-toggle-content"><?= $block->escapeHtml(__('Text Editor')) ?></span>
+                                    <label class="ks-switch">
+                                        <input type="checkbox" onclick="ksEditor('ks-legal-policy-edit','ks-legal-policy-editor','block','ks-legal-policy-textarea')">
+                                        <span class="ks-slider ks-round"></span>
+                                    </label>
+                                </div>
+                                <div class="ks-overview-right" id="ks-legal-policy-edit">
+                                    <p><?= $ksLegalNotice ?>
+                                    </p>
+                                </div>
+                                <div id="ks-legal-policy-editor" class="ks-editor-section" style="display: none;">
+                                    <textarea id="ks-legal-policy-textarea" name="ks-legal-policy-textarea">
+                                        <?= $ksLegalNotice ?>
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="ks-profile-checkbox-container ks-policy-overview-checkbox">
+                                <input type="checkbox" name="ks-legal-policy-textarea-checkbox" class="ks-use-default-control ks-textarea-checkbox" data-tab="ks-legal-policy-textarea" <?= ($ksLegalNotice && $ksAllStoreCollection->getKsLegalNotice() && strcmp($ksLegalNotice,$ksAllStoreCollection->getKsLegalNotice()) == 0) ? "checked" : ""?>>
+                                <span class="ks-use-default-label">Use as Default Value</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php } if($block->isKsTermsOfServiceEnabled()){?>
+                <div class="ks-ts-policy-section ks-policies">
+                    <div class="" role="tab" id="ks-ts-policy">
+                        <a role="button" class="ks-policy-button collapsed" data-toggle="collapse" data-parent="#accordionMenu" href="#ks-ts-policy-tab" aria-expanded="false" aria-controls="ks-ts-policy-tab"><?= $block->escapeHtml(__('Terms of Service')) ?> <span class="ks-profile-small-store ml-2">(Store View)</span></a>
+                    </div>
+                    <div id="ks-ts-policy-tab" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="ks-ts-policy">
+                        <div class="ks-policy-content">
+                            <div class="ks-content-align align-items-start">
+                                <div class="ks-overview-left">
+                                    <span class="ks-toggle-content"><?= $block->escapeHtml(__('Text Editor')) ?></span>
+                                    <label class="ks-switch">
+                                        <input type="checkbox" onclick="ksEditor('ks-terms-of-service-edit','ks-terms-of-service-editor','block','ks-terms-of-service-textarea')">
+                                        <span class="ks-slider ks-round"></span>
+                                    </label>
+                                </div>
+                                <div class="ks-overview-right" id="ks-terms-of-service-edit">
+                                    <p><?= $ksTermsOfService ?>
+                                    </p>
+                                </div>
+                                <div id="ks-terms-of-service-editor" class="ks-editor-section" style="display: none;">
+                                    <textarea id="ks-terms-of-service-textarea" name="ks-terms-of-service-textarea">
+                                        <?= $ksTermsOfService ?>
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="ks-profile-checkbox-container ks-policy-overview-checkbox">
+                                <input type="checkbox" name="ks-terms-of-service-textarea-checkbox" class="ks-use-default-control ks-textarea-checkbox" data-tab="ks-terms-of-service-textarea" <?= ($ksTermsOfService && $ksAllStoreCollection->getKsTermsOfService() && strcmp($ksTermsOfService,$ksAllStoreCollection->getKsTermsOfService()) == 0) ? "checked" : ""?>>
+                                <span class="ks-use-default-label">Use as Default Value</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+                <div class="ks-profile-footer">
+                    <div class="ks-profile-action">
+                        <button name="submit" type="submit" class="ks-action ks-action-save"><?= $block->escapeHtml(__('Save')) ?></button>
+                        <button name="cancel" type="reset" class="ks-action ks-action-cancel" onclick="ksEditor('ks-saved-policies','ks-show-policy-edit','block')"><?= $block->escapeHtml(__('Cancel')) ?></button>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script>
+require([
+        "jquery"], function ($) {
+    //ready function        
+    $(document).ready(function(){
+        var param = 'country='+$('#country').val();
+        //ajax call
+        $.ajax({
+            showLoader: true,
+            url: '<?php /* @escapeNotVerified */ echo $block->getKsCountryAction(); ?>',
+            data: param,
+            type: "GET",
+            dataType: 'json'
+        }).done(function (data) {
+            if(data.value=='')
+            {
+                $('.field.region.required').hide();
+                $('#state').val("");
+            } else {
+                $('.field.region.required').show();
+                $('#state').empty().append(data.value);
+                $('#state').val(<?php echo $block->getKsSellerDetails()->getKsCompanyStateId(); ?>);
+            }
+        });
+        $(document).on('change','#country',function() {
+            var param = 'country='+$('#country').val();
+            //ajax call
+            $.ajax({
+                showLoader: true,
+                url: '<?php /* @escapeNotVerified */ echo $block->getKsCountryAction(); ?>',
+                data: param,
+                type: "GET",
+                dataType: 'json'
+            }).done(function (data) {
+                if(data.value=='')
+                {
+                    $('.field.region.required').hide();
+                    $('#state').val("");
+                }
+                else
+                {
+                    $('.field.region.required').show();
+                    $('#state').empty().append(data.value);
+                }
+            });
+        }); 
+    });         
+});
+</script>

@@ -1,0 +1,36 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php $ksFields = $block->getKsFields();
+    
+foreach ($ksFields as $ksField):
+        echo $block->getKsFieldHtml($ksField);
+
+    if ($ksField->getAttributeCode()=="status" && !$this->getRequest()->getParam('parent_id')) {
+            
+        echo $block->getLayout()
+                        ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsAttributeSet')
+                        ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/ks-attribute-set.phtml')
+                        ->toHtml();
+            
+    }
+
+    if ($ksField->getAttributeCode()=="weight" && $this->getRequest()->getParam('parent_id')) {
+            
+        echo $block->getLayout()
+                        ->createBlock('Ksolves\MultivendorMarketplace\Block\PriceComparison\Form\KsProductStage')
+                        ->setTemplate('Ksolves_MultivendorMarketplace::price-comparison/form/ks-product-stage.phtml')
+                        ->toHtml();
+            
+    }
+        
+    endforeach; ?>
+    

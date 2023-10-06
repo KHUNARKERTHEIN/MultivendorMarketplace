@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    /**
+     * Ksolves
+     *
+     * @category  Ksolves
+     * @package   Ksolves_MultivendorMarketplace
+     * @author    Ksolves Team
+     * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+     * @license   https://store.ksolves.com/magento-license
+     */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Initialization\Helper">
+        <plugin name="configurable" type="Magento\ConfigurableProduct\Controller\Adminhtml\Product\Initialization\Helper\Plugin\Configurable" sortOrder="50" />
+        <plugin name="updateConfigurations" type="Magento\ConfigurableProduct\Controller\Adminhtml\Product\Initialization\Helper\Plugin\UpdateConfigurations" sortOrder="60" />
+        <plugin name="cleanConfigurationTmpImages" type="Magento\ConfigurableProduct\Plugin\Product\Initialization\CleanConfigurationTmpImages" sortOrder="999" />
+        <plugin name="Downloadable" type="Magento\Downloadable\Controller\Adminhtml\Product\Initialization\Helper\Plugin\Downloadable" sortOrder="70" />
+        <plugin name="Bundle" type="Magento\Bundle\Controller\Adminhtml\Product\Initialization\Helper\Plugin\Bundle" sortOrder="70" />
+    </type>
+    <type name="Magento\ConfigurableProduct\Ui\Component\Listing\AssociatedProduct\Columns">
+        <arguments>
+            <argument name="attributeRepository" xsi:type="object">Magento\ConfigurableProduct\Ui\Component\Listing\AssociatedProduct\Attribute\Repository</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ConfigurableProduct\Ui\Component\Listing\AssociatedProduct\Filters">
+        <arguments>
+            <argument name="attributeRepository" xsi:type="object">Magento\ConfigurableProduct\Ui\Component\Listing\AssociatedProduct\Attribute\Repository</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\CopyConstructor\Composite">
+        <arguments>
+            <argument name="constructors" xsi:type="array">
+                <item name="crossSell" xsi:type="string">Magento\Catalog\Model\Product\CopyConstructor\CrossSell</item>
+                <item name="upSell" xsi:type="string">Magento\Catalog\Model\Product\CopyConstructor\UpSell</item>
+                <item name="related" xsi:type="string">Magento\Catalog\Model\Product\CopyConstructor\Related</item>
+                <item name="grouped" xsi:type="string">Magento\GroupedProduct\Model\Product\CopyConstructor\Grouped</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Copier">
+        <arguments>
+            <argument name="copyConstructor" xsi:type="object">Magento\Catalog\Model\Product\CopyConstructor\Composite</argument>
+        </arguments>
+        <plugin name="copy_source_items" type="Magento\InventoryCatalogAdminUi\Plugin\Catalog\CopySourceItemsPlugin"/>
+    </type>
+    
+    <!-- Plugin for save disabled product in bundle items collection-->
+    <type name="Magento\Bundle\Model\LinkManagement">
+        <plugin name="BundleSelectionOptionSave" type="Ksolves\MultivendorMarketplace\Plugin\Product\Bundle\KsLinkManagement" />
+    </type>
+    <!-- Plugin for save disabled product in bundle items for duplicate-->
+    <type name="Magento\Bundle\Model\Product\LinksList">
+        <plugin name="BundleSelectionOptionFilter" type="Ksolves\MultivendorMarketplace\Plugin\Product\Bundle\KsLinksList" />
+    </type>
+    <!-- Plugin for Filter Product Links in Frontend-->
+    <type name="Magento\Catalog\Model\Product\Link">
+        <plugin name="isProductApproved" type="Ksolves\MultivendorMarketplace\Plugin\Product\KsProductApprovalLinks" />
+    </type>
+    <!-- Plugin for Filter configurable associate Product in Frontend -->
+    <type name="Magento\ConfigurableProduct\Block\Product\View\Type\Configurable">
+        <plugin name="productVisibilityCheck" type="Ksolves\MultivendorMarketplace\Plugin\Product\View\Type\KsConfigurableVisibilityCheck" />
+    </type>
+    <!-- Plugin for Filter bundle associate Product in Frontend -->
+    <type name="Magento\Bundle\Model\ResourceModel\Option\Collection">
+        <plugin name="bundleSellerProductCheck" type="Ksolves\MultivendorMarketplace\Plugin\Product\KsBundleSellerproductCheck" />
+    </type>
+    <!-- Filter bundle associate Product price in Frontend -->
+    <type name="Magento\Bundle\Model\ResourceModel\Selection\Collection">
+        <plugin name="bundle_product_selection_filter" type="Ksolves\MultivendorMarketplace\Plugin\Product\Bundle\KsBundleSelectionFilter" sortOrder="70"/>
+    </type>
+    <!-- Plugin for Filter salable configurable associate Product in Frontend -->
+    <type name="Magento\ConfigurableProduct\Model\Product\Type\Collection\SalableProcessor">
+        <plugin name="productSalableCheck" type="Ksolves\MultivendorMarketplace\Plugin\Product\KsSellerProductSalableProcessor" />
+    </type>
+    <!-- Filter configurable associate Product price in Frontend -->
+    <type name="Magento\ConfigurableProduct\Model\ResourceModel\Product\LinkedProductSelectBuilder">
+        <arguments>
+            <argument name="baseSelectProcessor" xsi:type="object">Ksolves\MultivendorMarketplace\Model\ResourceModel\KsProduct\KsSellerProductBaseSelectProcessor</argument>
+        </arguments>
+    </type>
+    <!-- Filter not approved seller product from Cart in Frontend -->
+    <preference for="\Magento\Quote\Model\ResourceModel\Quote\Item\Collection" type="\Ksolves\MultivendorMarketplace\Model\ResourceModel\KsQuote\Item\Collection"/>
+    <!-- Filter not approved seller product from Wishlist in Frontend -->
+    <preference for="\Magento\Wishlist\Model\ResourceModel\Item\Collection" type="\Ksolves\MultivendorMarketplace\Model\ResourceModel\KsWishlist\Item\Collection"/>
+    <!--  To change existing full text filter data provider   -->
+    <preference for="\Magento\CatalogSearch\Ui\DataProvider\Product\AddFulltextFilterToCollection" type="\Ksolves\MultivendorMarketplace\Ui\DataProvider\Frontend\Product\KsAddFullTextFilterToCollection"/>
+    <!--  To change existing review data provider   -->
+    <preference for="\Magento\Review\Ui\DataProvider\Product\ReviewDataProvider" type="\Ksolves\MultivendorMarketplace\Ui\DataProvider\Frontend\Product\KsProductReview"/>
+    <type name="Ksolves\MultivendorMarketplace\Controller\ProductAttribute\Save">
+        <plugin name="ks_save_swatches_frontend_input" type="Ksolves\MultivendorMarketplace\Controller\ProductAttribute\Plugin\Save"/>
+    </type>
+    <type name="Magento\Eav\Api\AttributeSetRepositoryInterface">
+        <plugin name="ks_remove_products" type="Magento\Catalog\Plugin\Model\AttributeSetRepository\RemoveProducts"/>
+    </type>
+    <!-- Override Magento Pdf Classes -->
+    <preference for="Magento\Sales\Model\Order\Pdf\Invoice" type="Ksolves\MultivendorMarketplace\Model\Order\Pdf\KsInvoice" />
+    <preference for="Magento\Sales\Model\Order\Pdf\Shipment" type="Ksolves\MultivendorMarketplace\Model\Order\Pdf\KsShipment" />
+    <preference for="Magento\Sales\Model\Order\Pdf\Creditmemo" type="Ksolves\MultivendorMarketplace\Model\Order\Pdf\KsCreditmemo" />
+</config>

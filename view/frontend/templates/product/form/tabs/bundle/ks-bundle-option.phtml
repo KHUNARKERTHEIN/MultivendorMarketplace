@@ -1,0 +1,169 @@
+<?php
+/** * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
+$ksFieldId = $block->getFieldId();
+$ksFieldName = $block->escapeHtmlAttr($block->getFieldName());
+?>
+<script id="bundle-option-template" type="text/x-magento-template">
+    <div id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_<%- data.id %>" class="option-box ks-gridrow">
+        <div class="fieldset-wrapper admin__collapsible-block-wrapper opened" id="<?=$ksFieldId ?>_<%- data.id %>">
+            <div class="fieldset-wrapper-title ks-option-fieldset-title">
+                <div class="ks-tab-collapsible-title" data-toggle="collapse"
+                        data-target="#<?=$ksFieldId ?>_<%- data.id %>-content">
+                    <div id="<?=$ksFieldId?>_<%- data.id %>_move"
+                        data-role="draggable-handle"
+                        class="draggable-handle ks-draggable-handle ml-3 mr-4"
+                        title="<?= $block->escapeHtmlAttr(__('Sort Bundle Options')) ?>"></div>
+                    <span id="<?= /* @noEscape */ $block->getFieldId() ?>_<%- data.id %>_header_title"><?= $block->escapeHtmlAttr(__('New Option')) ?></span>
+                </div>
+                <button type="button"
+                        title="<?= $block->escapeHtmlAttr(__('Delete')) ?>"
+                        class="action-delete ks-option-action-remove"
+                        id="<?=$ksFieldId?>_<%- data.id %>_delete">
+                </button>
+            </div>
+            <div class="fieldset-wrapper-content show" id="<?=$ksFieldId ?>_<%- data.id %>-content">
+                <fieldset class="fieldset ks-option-box">
+                    <fieldset class="fieldset-alt" id="<?=$ksFieldId?>_<%- data.id %>">
+                        <div class="mb-5 ks-choose-option-section">
+                            <div class="field field-option-title required ks-field-box">
+                                <label class="label ks-f-label required" for="<?=$ksFieldId?>_<%- data.id %>_title">
+                                    <?= $block->escapeHtml(__('Option Title')) ?>
+                                </label>
+                                <div class="control ks-use-default">
+                                    <?php if ($block->isDefaultStore()): ?>
+                                        <input class="input-text required-entry ks-option-title"
+                                            type="text"
+                                            name="<?=$ksFieldName?>[<?=$ksFieldName?>][<%- data.id %>][title]"
+                                            id="id_<?= $ksFieldName ?>_<%- data.id %>_title"
+                                            value="<%- data.title %>"
+                                            data-original-value="<%- data.title %>" />
+                                    <?php else: ?>
+                                        <input class="input-text required-entry ks-option-title"
+                                            type="text"
+                                            name="<?=$ksFieldName?>[<?=$ksFieldName?>][<%- data.id %>][default_title]"
+                                            id="id_<?= $ksFieldName ?>_<%- data.id %>_default_title"
+                                            value="<%- data.default_title %>"
+                                            data-original-value="<%- data.default_title %>" />
+                                    <?php endif; ?>
+                                    <input type="hidden"
+                                        id="<?= $ksFieldId ?>_id_<%- data.id %>"
+                                        name="<?=$ksFieldName?>[<?=$ksFieldName?>][<%- data.id %>][option_id]"
+                                        value="<%- data.option_id %>" />
+                                    <input id="<?= /* @noEscape */ $block->getFieldId() ?>_<%- data.id %>_is_delete"
+                                        name="<?=$ksFieldName?>[<?=$ksFieldName?>][<%- data.id %>][delete]"
+                                        type="hidden"
+                                        value=""/>
+                                </div>
+                            </div>
+
+                            <?php if (!$block->isDefaultStore()): ?>
+                                <div class="field field-option-store-view required ks-field-box">
+                                    <label class="label ks-f-label" for="id_<?=$ksFieldName?>[<?=$ksFieldName?>]_<%- data.id %>_title_store">
+                                        <?= $block->escapeHtml(__('Store View Title')) ?>
+                                    </label>
+                                    <div class="control ks-use-default">
+                                        <input class="input-text required-entry ks-option-title"
+                                            type="text"
+                                            name="<?=$ksFieldName?>[<?=$ksFieldName?>][<%- data.id %>][title]"
+                                            id="id_<?= $block->escapeHtmlAttr($ksFieldId)
+                                                ?>_<%- data.id %>_title_store"
+                                            value="<%- data.title %>" />
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="field field-option-input-type required ks-field-box pl-5">
+                                <label class="label ks-f-label" for="<?=$ksFieldId ?>_<%- data.id %>_title">
+                                    <?= $block->escapeHtml(__('Input Type')) ?>
+                                </label>
+                                <div class="control opt-type">
+                                    <?= $block->getTypeSelectHtml() ?>
+                                </div>
+                            </div>
+
+                            <div class="field field-option-req ks-field-box pl-5">
+                                <div class="control">
+                                    <label for="field-option-req" class="ks-f-label">
+                                        <?= $block->escapeHtml(__('Required')) ?>
+                                    </label>
+                                    <input type="hidden" name="<?=$ksFieldName?>[<?=$ksFieldName?>][<%- data.id %>][required]" value="0">
+                                    <div>
+                                        <input id="<?=$ksFieldId?>_<%- data.id %>_required"
+                                        name="<?=$ksFieldName?>[<?=$ksFieldName?>][<%- data.id %>][required]"
+                                        type="checkbox"
+                                        value="<%- data.required %>"
+                                    <% if (data.required == 1) { %> checked="checked" <% } %>
+                                    <%- data.required %> onclick="this.value = this.checked ? 1 : 0"
+                                    />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field field-option-position no-display">
+                                <label class="label" for="field-option-position">
+                                    <?= $block->escapeHtml(__('Position')) ?>
+                                </label>
+                                <div class="control">
+                                    <input class="input-text validate-zero-or-greater"
+                                        type="text"
+                                        name="<?=$ksFieldName?>[<?=$ksFieldName?>][<%- data.id %>][position]"
+                                        value="<%- data.position %>"
+                                        id="field-option-position" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="mb-4">
+                        <a href="#"
+                        id="<?=$ksFieldId?>_<%- data.id %>_add_bundle_product"
+                        class="ks-add-bundle-product ks-action-btn ks-secondry ks-btn-padding">
+                            <span><?= $block->escapeHtml(__("Add Products to Options")) ?></span>
+                        </a>
+                    </div>
+                    <div class="ks-bundle-option-product-grid ks-product-table-parent" data-parent-index="<%- data.id %>"></div>
+                </fieldset>
+            </div>
+        </div>
+
+    </div>
+</script>
+<?= $block->getSelectionHtml() ?>
+
+<input type="hidden" name="affect_bundle_product_selections" value="1" />
+<div id="ks_bundle_options_product_modal"></div>
+
+<?php
+
+$ksBundleProduct = /* @noEscape */ $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode(
+    [
+        'fieldId' => $block->getFieldId(),
+        'formKey' => $block->getFormKey(),
+        'itemCount' => 0,
+        'currentProductId' => (int) $block->getCurrentProductId(),
+    ]
+);
+?>
+<script>
+    require([
+        "jquery",
+        "Ksolves_MultivendorMarketplace/js/product/bundle/ks-bundle-product",
+    ], function($){
+
+        var ksFieldSet = $('#ks_bundle_options_container');
+        ksFieldSet.ksBundleProduct(<?=  /* @noEscape */ $ksBundleProduct; ?>);
+
+        <?php foreach ($block->getOptions() as $_ksValue):?>
+        ksFieldSet.ksBundleProduct('ksAddOption', <?= $_ksValue->toJson();?>);
+        <?php  endforeach;?>
+
+    });
+</script>

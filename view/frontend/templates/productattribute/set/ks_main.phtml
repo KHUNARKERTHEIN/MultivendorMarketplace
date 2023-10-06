@@ -1,0 +1,114 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+
+<div class="ks_attribute_set_form">
+    <div class="ks-messages"></div>
+    <form method="post" id="ks_set_prop_form" action="<?= $block->escapeUrl($block->getUrl('multivendor/productattribute_set/save', ['_secure' => $this->getRequest()->isSecure()])) ?>" data-mage-init='{"validation":{}}'>
+        
+        <div class="page-actions _fixed">
+            <div class="page-actions-inner">
+                <div class="page-actions-buttons ks-page-action">
+                    <button title="Back" type="button" class="action- scalable back ks-back" onclick="location.href='<?= $block->escapeUrl($block->getUrl('multivendor/productattribute_set/index', ['_secure' => $this->getRequest()->isSecure()])) ?>'">
+                        <span><?= $block->escapeHtml(__("Back")) ?></span>
+                    </button>
+                    <button title="Save" type="button" class="ks-action-btn ks-primary scalable save float-right" backend-button-widget-hook-id="ks_save_group_button" data-ui-id="adminhtml-catalog-product-set-edit-save">
+                        <span>Save</span>
+                    </button>
+                    <a class="ks-set-delete" href="<?= $block->escapeUrl($block->getUrl('multivendor/productattribute_set/delete', ['id' => $block->getKsSetId()])) ?>"><button title="Delete" type="button" class="ks-action-btn scalable ks-delete float-right">
+                        <span><?= $block->escapeHtml(__("Delete")) ?></span>
+                    </button></a>
+                    <button title="Reset" type="button" class="ks-action-btn ks-reset float-right" onclick="window.location.reload();">
+                        <span><?= $block->escapeHtml(__("Reset")) ?></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="ks-page-card">
+            <div>
+                <input name="form_key" id="ks-form-key" type="hidden" value="<?= $block->getFormKey();?>">
+            </div>
+            <div class="d-flex-nowrap-between ks-fieldset-wrapper-content">
+                <div class="edit-attribute-set attribute-set-col col-md-4 col-sm-12 ks-form-fieldset p-0">
+                    <div class="ks-tab-title">
+                        <span>Edit Attribute Set Name</span>
+                    </div>
+
+                    <!-- Attribute Property form field start -->
+                    <fieldset class="fieldset admin__fieldset ks-form-field" id="set_name">
+                        <div class="admin__field field-attribute_set_name  required _required with-note ks-control-grouped">
+                            <div class="ks-form-field  required">
+                                <div class="ks-form-field-label ml-0 w-auto">
+                                    <label class="label admin__field-label" for="attribute_set_name">
+                                        <span>Name</span>
+                                    </label>
+                                </div>
+                                <input type="hidden" name="id" value="<?= $block->getKsSetId() ?>">
+                                <div class="admin__field-control control ks-field-control">
+                                    <input id="attribute_set_name" name="attribute_set_name" value="<?=$block->getKsAttributeSet()->getAttributeSetName()?>" class="ks-control-feild required-entry validate-no-html-tags input-text admin__control-text required-entry _required" type="text" aria-required="true">                
+                                    <div class="ks-form-field-note" id="attribute_set_name-note">For internal use
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Attribute Property form field end -->
+
+                </div>
+                 
+                 <!-- Calling Groups of the Form -->           
+                <?= $block->getLayout()
+                            ->createBlock('Ksolves\MultivendorMarketplace\Block\ProductAttribute\KsSet')
+                            ->setTemplate('Ksolves_MultivendorMarketplace::productattribute/set/ks_group.phtml')->toHtml(); ?>
+
+                <script type="text/javascript">            
+                        function ksSaveEventListener() {
+                            editSet.save();
+                        }
+                        var ksSaveButtonLister = document.querySelector("*[backend-button-widget-hook-id='ks_save_group_button']");
+                        if (ksSaveButtonLister) {
+                            ksSaveButtonLister.onclick = function (event) {
+                                var ksTargetElement = ksSaveButtonLister;
+                                if (event && event.target) {
+                                    ksTargetElement = event.target;
+                                }
+                                ksSaveEventListener.apply(ksTargetElement);
+                            }
+                        }
+                </script>
+                <script type="text/javascript">
+                    var FORM_KEY = document.querySelector("#ks-form-key").value;
+                    require([
+                        'jquery',
+                        'Magento_Ui/js/modal/confirm'
+                        ],function($,confirmation) { 
+                        'use strict';
+                        $(".ks-set-delete").on('click', function(e){
+                            e.preventDefault();
+                            var url = e.currentTarget.href;
+                                confirmation({
+                                  // title: $.mage.__('Delete Record'),
+                                  content: $.mage.__('You are about to delete all products in this attribute set. Are you sure you want to do that?'),
+                                  actions: {
+                                      confirm: function(){
+                                        window.location.href = url;
+                                      },
+                                      cancel: function(){
+                                      },
+                                    }
+                                });
+                            }); 
+                        });
+                </script>
+            </div>
+        </div>
+    </form>
+</div>

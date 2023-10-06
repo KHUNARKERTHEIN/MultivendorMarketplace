@@ -1,0 +1,533 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright(c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var $block Ksolves\MultivendorMarketplace\Block\Frontend\SellerLocator\KsSellerLocatorView
+ */
+$ksHelperData = $this->helper(\Ksolves\MultivendorMarketplace\Helper\KsSellerLocatorHelper::class);
+$ksView=$block->getKsView();
+$ksUrlLat = $this->getRequest()->getParam('lat');
+$ksUrlLng = $this->getRequest()->getParam('lng');
+?>
+<!-- Seller Locator Frontend Content -->
+<div id="ks_sellerlocator_main_content">
+
+  <!-- Seller Locator Frontend Header Content -->
+  <div id="ks_sellerlocator_header_container">
+    <div id="ks_sellerlocator_header_content">
+       <!--  Filters -->
+      <form method="get" action="<?= $block->escapeUrl($block->getUrl('multivendor/sellerlocator/view', ['_secure' => $this->getRequest()->isSecure()])) ?>" id="ks_seller_locator_form" enctype="multipart/form-data" data-mage-init='{"validation":{}}' >
+        <ul id="ks_sellerlocator_search_filters" class="list-unstyled flex-with-wrap">
+            <li id="ks_sellerlocator_search_filter_seller">
+                <input type="text" id="ks_store_name" name="store_name" class="form-input" tabindex="1" value="<?=$block->getKsStoreName()?>" placeholder="Store Name">
+            </li>
+            <li id="ks_sellerlocator_search_filter_product">
+                <input type="text" id="ks_product_name" name="product_name" class="form-input"  value="<?=$block->getKsProductName()?>" placeholder="Product Name">
+            </li>
+            <li id="ks_sellerlocator_search_filter_location">
+                    <input type="text" id="ks_address" name="address" class="form-input required" value="<?=$block->getKsAddress()?>" placeholder="Location">
+                    <input type="hidden" id="ks_url_lat" value="<?=$ksUrlLat?>">
+                    <input type="hidden" id="ks_url_lng" value="<?=$ksUrlLng?>">
+                    <input type="hidden" id="ks_lat" name="lat">
+                    <input type="hidden" id="ks_lng" name="lng">
+                    <input type="hidden" id="ks_current_location" name ="current" value="<?=$block->getRequest()->getParam('current')?>">
+                    <input type="hidden" id="ks_default_location" name ="default" value="<?=$block->getRequest()->getParam('default')?>">
+                    <input type="hidden" id="ks_headquarter_location" name ="headquarter" value="<?=$block->getRequest()->getParam('headquarter')?>">
+            </li>
+            <li id="ks_sellerlocator_search_filter_distance">
+                <input type="text" id="ks_distance" name="distance" value="<?=$block->getKsDistance()?>" placeholder="Distance" class="form-input validate-number">
+            </li>
+            <?php if($block->getKsDistanceUnit()):?>
+            <li id="ks_sellerlocator_search_filter_distance_unit">
+                <?php $unit = $block->getKsDistanceUnit();?>
+                <select id="ks_sellerlocator_miles_km" name="unit">
+                  <option <?php if ($unit == 'km') { ?>selected="true" <?php }; ?>value="km">km</option>
+                  <option <?php if ($unit == 'miles') { ?>selected="true" <?php }; ?>value="miles">miles</option>
+                </select>
+            </li>
+            <?php else:?>
+            <li id="ks_sellerlocator_search_filter_distance_unit">
+                <select id="ks_sellerlocator_miles_km" name="unit">
+                  <option value="km" <?=$block->getKsDefaultUnit()=="km"?'selected':'';?>>km</option>
+                  <option value="miles" <?=$block->getKsDefaultUnit()=="miles"?'selected':'';?>>miles</option>
+                </select>
+            </li>
+            <?php endif; ?>
+            <li><input type="hidden" id="ks_view" name="view" value="<?=$block->getKsView() ? 'map' : "" ?>">
+            </li>
+            <li id="ks_sellerlocator_search_filter_search">
+              <button type="submit" class="ks_sellerlocator_search_filters_result">
+                <svg xmlns:v="https://vecta.io/nano" width="20" height="20" fill="none" stroke="#fff" stroke-linejoin="round" style="position: relative; top: 2px;"><path d="M9 17A8 8 0 1 0 9 1a8 8 0 1 0 0 16z"/><path d="M19 19l-4.35-4.35" stroke-linecap="round"/></svg>
+              </button>
+            </li>
+        </ul>
+
+      </form>
+      <!-- Clear form Data -->
+      <div class="mr-auto ks-dropdown-outer" id="ks_sellerlocator_clear_search_filter">
+        <button id="ks_clear_button" class="ks_sellerlocator_search_filters_button bg-primary text-white">Clear All</button>
+      </div>
+   
+     <!-- View Modes -->
+     <ul id="ks_sellerlocator_view_options" class="list-unstyled flex-with-wrap">
+        <li id="ks_grid_view">
+            <button id="ks_grid_view_button"  class="ks_sellerlocator_view_button btn-active" title="Grid View">
+                <svg width="18" height="18" fill="none" stroke="#999797" stroke-linejoin="round"><path d="M7.222 1H1v6.222h6.222V1zM17 1h-6.222v6.222H17V1zm0 9.778h-6.222V17H17v-6.222zm-9.778 0H1V17h6.222v-6.222z"/></svg>
+          </button>
+        </li>
+        <li id="ks_map_view">
+            <button id="ks_map_view_button" class="ks_sellerlocator_view_button" title="Map View">
+              <svg width="18" height="17" fill="none" stroke="#fcfcfc" stroke-linejoin="round"><path d="M1 3.909v11.636l5.091-2.909 5.818 2.909L17 12.636V1l-5.091 2.909L6.091 1 1 3.909z"/><path d="M6.091 1v11.636m5.818-8.727v11.636" stroke-linecap="round"/></svg>
+              </button>
+        </li>
+     </ul>
+    </div>
+  </div>
+  <!-- End of Seller Locator Frontend Header Content -->
+  <hr id="ks_horizontal_line">
+  <!-- Left Column Header -->
+  <div id="ks_sellerlocator_left_column_content_header">
+      <!-- Heading -->
+      <?php $ksTotalSeller = $block->getKsSellerDetails();?>
+      <h1><div id="ks_sellerlocator_content_heading">Seller Stores (<?= count($ksTotalSeller) ?>)</div></h1>
+      <!-- Sort By -->
+      <div id="ks_sellerlocator_content_below_heading">
+          <div id="ks_sellerlocator_content_sort_by" class="d-flex align-items-center">
+              <label class="sorter-label" for="sorter"><?= $block->escapeHtml(__('Sort By')) ?></label>
+              <?php $sortby = $block->getKsSortBy();?>
+              <select id="ks_sorter" name="sortby" data-role="sorter" class="sorter-options">
+                <option value="">---Select---</option>
+                <option <?php if ($sortby == 'Name(AtoZ)') { ?>selected="true" <?php }; ?>value="Name(AtoZ)">Name (A to Z)</option>
+                <option <?php if ($sortby == 'Name(ZtoA)') { ?>selected="true" <?php }; ?>value="Name(ZtoA)">Name (Z to A)</option>
+                <option <?php if ($sortby == 'Distance(NeartoFar)') { ?>selected="true" <?php }; ?>value="Distance(NeartoFar)">Distance (Near to Far)</option>
+                <option <?php if ($sortby == 'Distance(FartoNear)') { ?>selected="true" <?php }; ?>value="Distance(FartoNear)">Distance (Far to Near)</option>
+              </select>
+              <div id="ks_pagination"><?php echo $block->getKsPagerHtml(); ?></div>
+          </div>
+      </div>
+  </div>
+  <!-- End of Left Column Header -->
+
+  <!-- Seller Locator Search Result Content -->
+  <div id="ks_sellerlocator_result_content" class="d-flex">
+
+      <!-- Seller Locator Search Result Left Column Content -->
+      <div id="ks_sellerlocator_result_left_column" class="ks-grid-view-scroll">
+          <div id="ks_sellerlocator_result_left_column_content">
+              <!-- Left Column Content Body(Seller Store Listing) -->
+              <ul id="ks_sellerlocator_left_column_content_store_listing" class="list-unstyled flex-with-wrap">
+                <?php $ksValue = $block->getKsSellerDetails();?>
+                <?php if ($ksValue):?>
+                    <?php foreach ($block->getKsSellerDetails() as $ksSeller => $ksSellerDetails): ?>
+                  <li class="ks_store_listing_card">
+                    <div class="ks-seller-card-outer" >
+                      <img class="ks-seller-card-banner" width="75px" height="75px" src="<?= $ksSellerDetails['banner']?>"/>
+                      <img class="ks-seller-card-img" width="75px" height="75px" src="<?= $ksSellerDetails['logo']?>"/>
+                      <a class="ks-w-100" href="<?php echo $this->getUrl('multivendor/sellerprofile/sellerprofile', ["seller_id"=>$ksSellerDetails['sellerId']]); ?>"><p class="ks-seller-card-name"><?= $ksSellerDetails['name']?></p></a>
+                      <p class="ks-seller-card-location"><?= $ksSellerDetails['sellerlocation']?></p>
+                       <p hidden class="ks-seller-id"><?= $ksSellerDetails['sellerId']?></p>
+                      <div class ="ks-add">
+                      <input type="hidden" class="ks-seller-latitude" value="<?= $ksSellerDetails['latitude']?>"/>
+                       <input type="hidden" class="ks-seller-longitude" value="<?= $ksSellerDetails['longitude']?>"/>
+                      <input type="hidden" class="ks-seller-location" value="<?= $ksSellerDetails['location']?>"/>
+                      </div>
+                      <div class="d-flex justify-content-between ks-seller-card-footer">
+                        <div class="ks-ratings">
+                          <!-- <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.06522 0L7.93937 3.94953L12.1304 4.58675L9.09783 7.65931L9.81352 12L6.06522 9.94953L2.31691 12L3.03261 7.65931L0 4.58675L4.19106 3.94953L6.06522 0Z" fill="#F1A738"/>
+                          </svg>
+                          <span class="rating-text">4.9</span> -->
+                        </div>
+                        <div class="ks-direction">
+                            <svg  width="14" height="15" viewBox="0 0 14 15" fill="none">
+                            <path d="M8.55556 0L7.45578 1.08189L11.0227 4.59075H1.55556C1.143 4.59075 0.747335 4.75197 0.455612 5.03895C0.163889 5.32592 0 5.71515 0 6.12099V14.9803H1.55556V6.12099H11.0227L7.45578 9.62986L8.55556 10.7117L14 5.35587L8.55556 0Z" fill="#999797"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                <?php endforeach; ?>
+                <?php else:?>
+                  <h4>No Store Found</h4>
+                <?php endif ; ?>
+              </ul>
+              <!-- End of Left Column Content Body(Seller Store Listing) -->
+          </div>
+      </div>
+      <!--End of Seller Locator Search Result Left Column Content -->
+
+      <!-- Seller Locator Search Result Right Column Content -->
+      <div id="ks_sellerlocator_result_right_column" style="display: none;">
+        <div id="ks_sellerlocator_result_right_column_content">
+           <div class="ks_google_map">
+                <div class="ks-map-canvas" id="ks-map-canvas" style="height: calc(100vh - 344px);width: 100%;margin-bottom: 15px;border-radius: 10px;">
+                </div>
+           </div>
+        </div>
+      </div>
+      <!-- End of Seller Locator Search Result Right Column Content -->
+
+  </div>
+  <!-- End of Seller Locator Search Result Content -->
+</div>
+<!--End of Seller Locator Frontend Content -->
+
+<script>
+  require(["jquery",
+          "Magento_Ui/js/modal/alert",
+          "mage/url",
+          "https://maps.googleapis.com/maps/api/js?libraries=places&key=<?= $block->getKsGoogleApiKey();?>",
+          "https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"
+          ], 
+            function ($,alert, url) {
+
+                var ksMap,ksMarker,ksMapOptions,ksMarkerCluster,ksAddress,
+                    ksCenterLatitude,ksRadius,ksCenterLongitude,
+                    ksInfowindow = new google.maps.InfoWindow(),
+                    ksGeocoder = new google.maps.Geocoder(),
+                    ksDefaultLocation = '<?= $block->getKsDefaultLocation() ?>',
+                    ksDefaultDistance = '<?= $block->getKsDefaultDistance() ?>',
+                    ksDefaultUnit = '<?= $block->getKsDefaultUnit() ?>',
+                    ksMapStyle = JSON.parse(<?=$block->getKsMapTemplate()?>),
+                    ksCenterIconImage = '<?= $block->getKsCenterMarkerImage() ?>',
+                    ksUrl = window.location.href,
+                    ksInputLocation = document.getElementById( 'ks_address' );//To get input of Address field;
+
+                $(window).load(function(){
+                      navigator.geolocation.getCurrentPosition(function(ksPosition) {
+                      //When User Allow Cureent Location
+                      var ksLatLng = {
+                                        lat: ksPosition.coords.latitude,
+                                        lng: ksPosition.coords.longitude
+                                    };
+                                    ksGeocoder.geocode( { latLng:ksLatLng}, function ( ksResults, ksStatus ) {
+                                        if ( 'OK' === ksStatus ) {  
+                                            for (var i = 0; i < ksResults.length; i++) {
+                                              if (ksResults[i].types[0] === "locality") {
+                                                var ksCity = ksResults[i].address_components[0].short_name;
+                                                var ksCountry = ksResults[i].address_components[2].long_name;
+                                                if(!($("#ks_current_location").val())){
+                                                  $("#ks_current_location").val(1);
+                                                  $("#ks_headquarter_location").val(null);
+                                                  $("#ks_default_location").val(null);
+                                                  $("#ks_address").val(ksCity + ", " + ksCountry);
+                                                  $( ".ks_sellerlocator_search_filters_result" ).trigger( "click" );
+                                                }
+                                              }
+                                            }
+                                        }
+                                        else {
+                                            console.log( 'Geocode was not successful for the following reason: ' + ksStatus);
+                                        }
+                                    });
+                      },function(error){
+                          //When user block current location
+                          if(ksDefaultLocation)
+                          {
+                            if(!($("#ks_default_location").val())){
+                              $("#ks_default_location").val(1);
+                              $("#ks_current_location").val(null);
+                              $("#ks_address").val(ksDefaultLocation);
+                              $( ".ks_sellerlocator_search_filters_result" ).trigger( "click" );
+                            }
+                          }else {
+                            if(!($("#ks_headquarter_location").val())){
+                              $("#ks_headquarter_location").val(1);
+                              $("#ks_default_location").val(null);
+                              $("#ks_current_location").val(null);
+                              $("#ks_address").val("London, UK");
+                              $( ".ks_sellerlocator_search_filters_result" ).trigger( "click" );
+                            }
+                          }
+                      });
+                      //resist map view
+                      if($('#ks_view').val()=='map'){
+                          $('#ks_map_view_button').click();
+                      }
+                });
+
+                //Set get center coordinates from url
+                if(ksUrl.includes('address')){
+                  ksCenterLatitude = parseFloat($("#ks_url_lat").val());
+                  ksCenterLongitude =  parseFloat($("#ks_url_lng").val());
+                }
+                
+                // For giving suggestion and autocomplete in location filter field
+                ksSearchBox = new google.maps.places.SearchBox(ksInputLocation);
+
+                //Set Default Distance in Distance filter field
+                if(ksDefaultDistance && !ksUrl.includes('distance'))
+                {
+                  $("#ks_distance").val(ksDefaultDistance);
+                }
+
+                //On click Grid view
+                $('#ks_grid_view_button').on('click',function(e){
+                  $('#ks_view').val("grid");
+                  $("#ks_sellerlocator_result_right_column").hide();
+                  $("#ks_map_view_button").removeClass('btn-active');
+                  $("#ks_grid_view_button").addClass('btn-active');
+                  $("#ks_sellerlocator_result_left_column").addClass('ks-grid-view-scroll');
+                });
+
+                //when change Sort By
+                $('#ks_sorter').on('change', function() {
+                  var ksSortValue = this.value;
+                  var ksView= $('#ks_view').val()
+
+                  if(ksUrl.includes('sortby')) { 
+                    var ksIndex= ksUrl.indexOf('sortby');
+                    ksUrl = ksUrl.slice(0,ksIndex-1);
+                  }
+                  if (ksUrl.indexOf('?') > -1) {
+                    ksUrl += '&sortby='+ksSortValue+'&view='+ksView;
+                  } else {
+                    ksUrl += '?sortby='+ksSortValue+'&view='+ksView;
+                  }
+                  window.location.href = ksUrl;
+                });
+
+                //Clear all data of search form and refersh page
+                $('#ks_clear_button').on('click',function(){
+                  $("#ks_store_name, #ks_product_name, #ks_address, #ks_distance").each(function(){
+                      $(this).val("");
+                  });
+                  if(ksUrl.includes('?')) { 
+                    var ksIndex= ksUrl.indexOf('?');
+                    ksUrl = ksUrl.slice(0,ksIndex);
+                  }
+                  window.location.href = ksUrl;   
+                });
+
+                //MAP VISIBILITY AND ITS PROPERTIES SETTINGS
+                $('#ks_map_view_button').on('click',function(e){
+                  $("#ks_sellerlocator_result_right_column").show();
+                  $("#ks_map_view_button").addClass('btn-active');
+                  $("#ks_grid_view_button").removeClass('btn-active');
+                  $("#ks_sellerlocator_result_left_column").removeClass('ks-grid-view-scroll');
+                  ksMapView();
+                  $('#ks_view').val("map");
+                });
+             
+                function ksMapView(){
+                  ksElement = document.getElementById( 'ks-map-canvas');
+                    
+                  // Code for making map in the div
+                  ksMapOptions = {
+                    zoom: 1, // How much zoom
+                    disableDefaultUI: false, // Make the UI like maginfer glass
+                    scrollWheel: true, // scrollable
+                    draggable: true,
+                    styles: ksMapStyle //Set Map Style from admin
+                  }; 
+                 
+                  ksMap = new google.maps.Map(ksElement, ksMapOptions);
+
+                  //Set Center Marker
+                  var ksCenterMarker = new google.maps.Marker({
+                        position: { lat: ksCenterLatitude, lng: ksCenterLongitude },
+                        map: ksMap,
+                        draggable: true,
+                        icon: ksCenterIconImage
+                  });
+
+                  ksMap.setCenter(new google.maps.LatLng(ksCenterLatitude,ksCenterLongitude));
+
+                  //Calculate Radius of Map circle if distance filter applied
+                  if($('#ks_distance').val()){
+                    if ($("#ks_sellerlocator_miles_km").val()=="km") {
+                      ksRadius=parseInt($('#ks_distance').val())*1000;
+                    }
+                    else{
+                      ksRadius=parseInt($('#ks_distance').val())*0.621371*1000;
+                    }
+                  }
+
+                  //Set Range circle around Center Marker
+                  const ksCircle = new google.maps.Circle({
+                                 map: ksMap,
+                                 center: { lat: ksCenterLatitude, lng: ksCenterLongitude} ,
+                                 radius: ksRadius,          // IN METERS.
+                                 strokeColor: "#FF0000",
+                                 strokeOpacity: 0.8,
+                                 strokeWeight: 2,
+                                 fillColor: "#FF0000",
+                                 fillOpacity: 0.35,
+                               }); 
+
+                  //Add event listner on drag event of center marker to 
+                  ksCenterMarker.addListener('drag', function(event) {                     
+                      ksCircle.setOptions({center:{lat:event.latLng.lat(),lng:event.latLng.lng()}});        
+                  });
+
+                  ksInfowindowCenter();
+
+                  function ksInfowindowCenter(){
+                       
+                    ksGeocoder.geocode({ latLng: ksCenterMarker.getPosition() }, function (ksResult, ksStatus) {
+                        if ( 'OK' === ksStatus ) {
+                          ksAddress = ksResult[0].formatted_address;
+                        }
+                    });
+
+                    google.maps.event.addListener(ksCenterMarker, 'mouseover',function(ksCenterMarker) {
+                        this.setAnimation(google.maps.Animation.BOUNCE);
+                        ksInfowindow.setContent(ksAddress);
+                        ksInfowindow.open(ksMap,this);
+                    });
+
+                    google.maps.event.addListener(ksCenterMarker, 'mouseout',function(ksCenterMarker) {
+                        this.setAnimation(null);
+                        ksInfowindow.setContent(null);
+                        ksInfowindow.close(ksMap,this);
+                    });
+                  }
+
+                  // Event Listener to change center, when center maker change place
+                  google.maps.event.addListener( ksCenterMarker, "dragend", function ( event ) {
+                            ksCenterLatitude = ksCenterMarker.getPosition().lat();
+                            ksCenterLongitude = ksCenterMarker.getPosition().lng();
+                            ksGeocoder.geocode( { latLng: ksCenterMarker.getPosition() }, function ( ksResult, ksStatus ) {
+                                if ( 'OK' === ksStatus ) {  
+                                    ksAddress = ksResult[0].formatted_address;
+                                    ksInputLocation.value = ksAddress;
+                                    ksMap.setCenter(new google.maps.LatLng(ksCenterLatitude,ksCenterLongitude));
+                                } else {
+                                    console.log( 'Geocode was not successful for the following reason: ' + ksStatus);
+                                }
+                                ksInfowindowCenter();
+                            });
+                  });
+
+                  // Code to show ksMarker on that particular lat and long
+                  ksMarker = new google.maps.Marker({
+                             map: ksMap, 
+                             draggable: false,
+                            });
+
+                  var ksLocation=[],ksLat=[],ksLng=[],ksSellerName=[],ksSellerLogo=[],ksSellerBanner=[],i,ksSellerId=[],ksMarkers=[];
+             
+                  $('.ks-add').each(function(){
+                      ksSellerId.push($(this).closest('.ks-seller-card-outer').find('.ks-seller-id').text());
+                      ksLocation.push($(this).closest('.ks-seller-card-outer').find('.ks-seller-card-location').text());
+                      ksLat.push($(this).find('.ks-seller-latitude').val());
+                      ksLng.push($(this).find('.ks-seller-longitude').val());
+                      ksSellerName.push($(this).closest('.ks-seller-card-outer').find('.ks-seller-card-name').text());
+                      ksSellerLogo.push($(this).closest('.ks-seller-card-outer').find('.ks-seller-card-img').attr('src'));
+                      ksSellerBanner.push($(this).closest('.ks-seller-card-outer').find('.ks-seller-card-banner').attr('src')) ;
+                      });  
+                      for (i = 0; i <ksLocation.length; i++) {  
+                           
+                        ksMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(ksLat[i], ksLng[i]),
+                        map: this.ksMap
+                      });
+
+                        ksMarkers.push(ksMarker);
+                        google.maps.event.addListener(ksMarker, 'mouseover', (function(ksMarker,i) {
+                          return function() {
+                          $(".ks-seller-id:contains('"+ksSellerId[i]+"')").closest('.ks_store_listing_card').addClass("ks-seller-card-outer-highlight");
+                          this.setAnimation(google.maps.Animation.BOUNCE);
+                          ksInfowindow.setContent( 
+                              `<div style="position-relative;text-align:center;width: 200px;buttons:{close: { visible: false }};" > 
+                                  <img src=${ksSellerBanner[i]} style="width: 200px; height: 70px;border-radius: 5px;object-fit: cover;border: 1px solid #ccc">
+                                  <div style="width: 100%;" >
+                                    <img src=${ksSellerLogo[i]} style="width: 50px;height: 50px;border-radius: 50%;margin-top: -25px;object-fit: cover;">
+                                    <div style="font-weight: bold;font-size: 16px;margin-bottom: 8px;" >${ksSellerName[i]}</div>
+                                    <p style="font-size: 12px;" >${ksLocation[i]}</p>
+                                  </div>
+                                </div>
+                                `
+                                  );
+                          ksInfowindow.open(ksMap,this);
+                                     }
+                        })
+                          (ksMarker,i));
+                        google.maps.event.addListener(ksMarker, 'mouseout',function (){
+                            $('.ks_store_listing_card').removeClass("ks-seller-card-outer-highlight");
+                            this.setAnimation(null);
+                            ksInfowindow.close();
+                        });
+                   }
+                   // adding marker clustering to Map
+                   ksMarkerCluster = new MarkerClusterer(ksMap, ksMarkers, {
+                      imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+                    });
+            }
+
+            // on mouse over show seller location on map
+            $('.ks_store_listing_card').on("mouseenter", function(e) {
+              ksInfowindow.close();
+              ksMarkerCluster.setMap(null);
+              var ksLat = $(this).find('.ks-seller-latitude').val(),
+                  ksLng = $(this).find('.ks-seller-longitude').val();
+              var ksSellerName = $(this).find('.ks-seller-card-name' ).text(),
+                  ksSellerLogo = $(this).find('.ks-seller-card-img').attr('src'),
+                  ksSellerBanner = $(this).find('.ks-seller-card-banner').attr('src'),
+                  ksLocation =$(this).find('.ks-seller-card-location').text();
+              ksMap.setCenter(new google.maps.LatLng(ksLat,ksLng));
+              ksMarker.setPosition(new google.maps.LatLng(ksLat,ksLng));
+              ksInfowindow.setContent(
+                  `<div style="position-relative;text-align:center;width: 200px;" > 
+                    <img src=${ksSellerBanner} style="width: 200px; height: 70px;border-radius: 5px;object-fit: cover;border: 1px solid #ccc">
+                    <div style="width: 100%;" >
+                      <img src=${ksSellerLogo} style="width: 50px;height: 50px;border-radius: 50%;margin-top: -25px;object-fit: cover;">
+                      <div style="font-weight: bold;font-size: 16px;margin-bottom: 8px;" >${ksSellerName}</div>
+                      <p style="font-size: 12px;" >${ksLocation}</p>
+                    </div>
+                   </div>
+                  `
+                );
+              ksInfowindow.open(ksMap,ksMarker);
+              ksMap.setZoom(10); 
+            });
+
+            $('.ks_store_listing_card').on("mouseleave", function() {
+              ksInfowindow.close();
+              $(this).removeClass("ks-seller-card-outer-highlight");
+              ksMarker.setAnimation(null);
+              ksMap.setZoom(1);
+              ksMarkerCluster.setMap(ksMap);
+            });
+        
+            //on click direction icon pin seller location
+            $('.ks-direction').on("click", function() {
+                var ksLatitude = $(this).closest('.ks-seller-card-outer').find('.ks-seller-latitude').val(),
+                    ksLongitude = $(this).closest('.ks-seller-card-outer').find('.ks-seller-longitude').val();
+                ksUrl = "https://www.google.com/maps/dir/?api=1";
+                var ksOrigin = "&origin=" + ksCenterLatitude + "," + ksCenterLongitude;
+                var ksDestination = "&destination=" + ksLatitude + "," + ksLongitude;
+                var ksNewUrl = new URL(ksUrl + ksOrigin + ksDestination);
+                var ksWindow = window.open(ksNewUrl, '_blank');   
+                    ksWindow.focus();          
+            });
+
+            //When search button click to filter data
+            $(".ks_sellerlocator_search_filters_result").on("click", function(e) {
+                  e.preventDefault();
+                  ksAddress = $('#ks_address').val();
+                  if(($('#ks_address').val()))
+                  {
+                    ksGeocoder.geocode( { 'address': ksAddress}, function(results, status){
+                      if (status == google.maps.GeocoderStatus.OK) {
+                            var ksLatitudeAddress = results[0].geometry.location.lat();
+                            var ksLongitudeAddress = results[0].geometry.location.lng();
+                            $("#ks_lat").val(ksLatitudeAddress);
+                            $("#ks_lng").val(ksLongitudeAddress);
+                            $("#ks_seller_locator_form").submit();
+                      }
+                    });
+                  } else {
+                         $("#ks_seller_locator_form").submit();
+               }
+            });
+          });
+</script>

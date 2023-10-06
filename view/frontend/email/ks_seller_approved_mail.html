@@ -1,0 +1,53 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject {{trans "Welcome To %ks_website_name. Congratulations Your Seller Account is approved" ks_website_name=$store.frontend_name}}  @-->
+<!--@vars {
+"var store.frontend_name":"Store Name",
+"var ksSellerName":"Seller Name",
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL",
+"var this.getUrl($store,'customer/account/createPassword/',[_query:[id:$customer.id,token:$customer.rp_token],_nosid:1])":"Password Reset URL",
+"var ks_seller_email":"Seller Email"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+	<tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_seller_name," ks_seller_name=$ksSellerName}}</p>
+            <p>{{trans "Welcome to %ks_website_name." ks_website_name=$store.frontend_name}}</p>
+        </td>
+    </tr>
+
+    <tr class="email-summary">
+        <td>
+            <p>{{trans "Congratulations, your seller account is approved, you will be able to login into seller dashboard where you can manage products, orders, shipment, credit memo, use price comparision etc."}}</p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <p>{{trans "To sign in to our site, use these credentials on the <a href="%customer_url">My Account</a> page to login into seller dashboard." customer_url=$this.getUrl($store,'customer/account/',[_nosid:1])
+            |raw}}</p>
+            <ul>
+                <li><strong>{{trans "Email:"}}</strong> {{var ks_seller_email}}</li>
+                <li><strong>{{trans "Password:"}}</strong> <em>{{trans "Password you set when creating account"}}</em></li>
+            </ul>
+        </td>
+    </tr>
+    <p>
+        {{trans
+            'Forgot your account password? Click <a href="%reset_url">here</a> to reset it.' reset_url="$this.getUrl($store,'customer/account/forgotpassword/',[_query:[id:$customer.id,token:$customer.rp_token],_nosid:1])"
+        |raw}}
+    </p>
+    <p>{{trans "Thank You"}}</p>
+</table>
+
+{{template config_path="design/email/footer_template"}}

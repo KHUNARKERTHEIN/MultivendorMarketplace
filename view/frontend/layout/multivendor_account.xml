@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Multivendor Dashboard" design_abstraction="custom">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Theme\Block\Html\Header\Logo" name="ks_seller_account_header" template="Ksolves_MultivendorMarketplace::dashboard/ks_header.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="sidebar.main" >
+            <block class="Magento\Framework\View\Element\Html\Links" name="ks_seller_account_navigation">
+                  <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_homepage_link" ifconfig="ks_marketplace_seller_portal_profile/ks_seller_profile_page/ks_homepage">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Homepage</argument>
+                        <argument name="path" xsi:type="string">multivendor/sellerprofile/homepage</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Home.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                    </arguments>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_products_type_link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Product Types</argument>
+                        <argument name="path" xsi:type="string">multivendor/producttype/index</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Product_Type.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                    </arguments>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_categories_link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Product Categories</argument>
+                        <argument name="path" xsi:type="string">multivendor/categorytype/index</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Category.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                    </arguments>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_products_attributes_link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Product Attributes</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Product_Attributes.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                        <argument name="submenu" xsi:type="array">
+                            <item name="default-attribute-listing" xsi:type="array">
+                                <item name="label" xsi:type="string">Default</item>
+                                <item name="path" xsi:type="string">multivendor/productattribute/index</item>
+                                <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Default.svg</item>
+                            </item>
+                            <item name="custom-attribute-listing" xsi:type="array">
+                                <item name="label" xsi:type="string">Custom</item>
+                                <item name="path" xsi:type="string">multivendor/productattribute/custom</item>
+                                <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Custom.svg</item>
+                            </item>
+                            <item name="product-attribute-set" xsi:type="array">
+                                <item name="label" xsi:type="string">Attribute Set</item>
+                                <item name="path" xsi:type="string">multivendor/productattribute_set/index</item>
+                                <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Attribute_Set.svg</item>
+                            </item>
+                        </argument>
+                    </arguments>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_products_link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Products</argument>
+                        <argument name="path" xsi:type="string">multivendor/product/index</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Products.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                    </arguments>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_orders_link">
+                   <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Sales</argument>
+                        <argument name="path" xsi:type="string">multivendor/account/sidebar</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Sales.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                            <argument name="submenu" xsi:type="array">
+                                <item name="orders-listing" xsi:type="array">
+                                    <item name="label" xsi:type="string">Orders</item>
+                                    <item name="path" xsi:type="string">multivendor/order/listing</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Order.svg</item>
+                                </item>
+                                <item name="invoice-listing" xsi:type="array">
+                                    <item name="label" xsi:type="string">Invoices</item>
+                                    <item name="path" xsi:type="string">multivendor/order_invoice/index</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Invoices.svg</item>
+                                </item>
+                                <item name="shipment-listing" xsi:type="array">
+                                    <item name="label" xsi:type="string">Shipments</item>
+                                    <item name="path" xsi:type="string">multivendor/order_shipment/index</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Shipment.svg</item>
+                                </item>
+                                <item name="creditmemo-listing" xsi:type="array">
+                                    <item name="label" xsi:type="string">Credit Memos</item>
+                                    <item name="path" xsi:type="string">multivendor/order_creditmemo/index</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Creditmemos.svg</item>
+                                </item>
+                            </argument>
+                    </arguments>
+                </block>
+                <!-- <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_price_comparsion_product_link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Price Comparison</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Price_Comparison.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                        <argument name="submenu" xsi:type="array">
+                                <item name="ks_price_comparsion_add_product" xsi:type="array">
+                                    <item name="label" xsi:type="string">Add Product</item>
+                                    <item name="path" xsi:type="string">multivendor/pricecomparison/viewproduct</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Add_Products.svg</item>
+                                </item>
+                                <item name="ks_price_comparsion_list" xsi:type="array">
+                                    <item name="label" xsi:type="string">Product List</item>
+                                    <item name="path" xsi:type="string">multivendor/pricecomparison/productlist</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Products_List.svg</item>
+                                </item>
+                            </argument>
+                    </arguments>
+                </block> -->
+                <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_customers_link">
+                   <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Customers</argument>
+                        <argument name="path" xsi:type="string">multivendor/account/sidebar</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Customers.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                            <argument name="submenu" xsi:type="array">
+                                <item name="customers-listing" xsi:type="array">
+                                    <item name="label" xsi:type="string">All Customers</item>
+                                    <item name="path" xsi:type="string">multivendor/customer/listing</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/All_Customers.svg</item>
+                                </item>
+                                <item name="customers-online" xsi:type="array">
+                                    <item name="label" xsi:type="string">Now Online</item>
+                                    <item name="path" xsi:type="string">multivendor/customer/online</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Customer_Online.svg</item>
+                                </item>
+                                <item name="ks_followers" xsi:type="array">
+                                    <item name="label" xsi:type="string">Followers</item>
+                                    <item name="visible" xsi:type="helper" helper="Ksolves\MultivendorMarketplace\Helper\KsFavouriteSellerHelper::isKsEnabled"></item>
+                                    <item name="path" xsi:type="string">multivendor/favouriteseller/index</item>
+                                    <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Followers.svg</item>
+                                </item>
+                            </argument>
+                    </arguments>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_homepage_link" ifconfig="ks_marketplace_seller_portal_profile/ks_seller_profile_page/ks_homepage" cacheable="false">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Homepage</argument>
+                        <argument name="path" xsi:type="string">multivendor/sellerprofile/homepage</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Home.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                    </arguments>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\Account\KsNavigationList" name="ks_multivendor_store_setting_link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Store Settings</argument>
+                        <argument name="path" xsi:type="string">multivendor/account/sidebar</argument>
+                        <argument name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Store_Setting.svg</argument>
+                        <argument name="icon_class" xsi:type="string">icon-monitor</argument>
+                        <argument name="submenu" xsi:type="array">
+                            <item name="Payment-Details" xsi:type="array">
+                                <item name="label" xsi:type="string">Payment Methods</item>
+                                <item name="path" xsi:type="string">multivendor/paymentdetails/index</item>
+                                <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Payment_Settings.svg</item>
+                            </item>
+                            <item name="minimum-order-amount" xsi:type="array">
+                                <item name="label" xsi:type="string">Minimum Order Amount</item>
+                                <item name="visible" xsi:type="helper" helper="Ksolves\MultivendorMarketplace\Helper\KsCheckoutHelper::getKsIsMinimumAmtEnabled"></item>
+                                <item name="path" xsi:type="string">multivendor/minorderamount/index</item>
+                                <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Minimum_Order_Icon.svg</item>
+                            </item>
+                            <!--  Link provide for seller location profile settings(SellerLocator) -->
+                            <item name="seller-locator" xsi:type="array">
+                                <item name="label" xsi:type="string">Location Details</item>
+                                <item name="visible" xsi:type="helper" helper="Ksolves\MultivendorMarketplace\Helper\KsSellerLocatorHelper::isKsSLEnabled"></item>
+                                <item name="path" xsi:type="string">multivendor/sellerlocator/index</item>
+                                <item name="icon" xsi:type="string">Ksolves_MultivendorMarketplace::images/sidebar/Location_Details.svg</item>
+                            </item>
+                        </argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+        <move element="messages" destination="content" before="-"/>
+        <referenceContainer name="copyright" remove="true"/>
+    </body>
+</page>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-frontend-style.css"/>
+        <css src="Ksolves_MultivendorMarketplace::css/fonts/stylesheet.css" />
+        <script src="Ksolves_MultivendorMarketplace::js/favouriteseller/ks-add-to-favourite.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsTopSellers" name="ks_top_sellers" template="Ksolves_MultivendorMarketplace::sell/ks-top-sellers.phtml">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,29 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<?php $ksProductData = $block->getKsCurrentPagePriceComparisonProduct(); ?>
+<div class="ks_price_range">
+    <?php if (count($ksProductData)): ?> 
+        <p>
+            <?php if ($block->getKsPriceRangeAllowed()): ?>
+                <span><?= "From ".$block->getKsCurrentCurrency().$block->getKsLowestPriceComparison($ksProductData); ?></span>
+            <?php endif; ?>
+            <a href="#ks_price_comparsion_list">Sold by <span><?= $ksProductData->getSize(); ?></span> more seller</a>
+        </p>
+    <?php endif; ?>
+</div>
+<script type="text/x-magento-init">
+    {
+        ".ks_price_range": {
+            "ksPriceComparisonProductList": {}
+        }
+    }
+</script>

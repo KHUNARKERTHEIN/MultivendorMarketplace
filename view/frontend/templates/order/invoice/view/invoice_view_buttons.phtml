@@ -1,0 +1,23 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ ?>
+<!-- Invoice View Action header -->
+<?php $ks_invoice = $block->getKsInvoice();?>
+<div class="ks-page-action">
+	<a href="<?= $block->getKsBackUrl(); ?>" class="ks-back ks-header-row-action"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
+	<?php if ($ks_invoice->getId()&& $ks_invoice->getKsApprovalStatus()==1):?>
+        <?php if($block->ksCanSendEmail()):?>
+            <a href="<?= $block->getKsSendEmailUrl(); ?>" class="ks-action-btn float-right ks-header-row-action ks-send-email"><span><?= $block->escapeHtml(__('Send Email')) ?></span></a>
+		<?php endif;?>
+        <a href="<?= $block->getKsPrintUrl(); ?>" class="ks-action-btn float-right ks-header-row-action"><span><?= $block->escapeHtml(__('Print')) ?></span></a>
+	<?php endif; ?>
+</div>
+<!-- Invoice View Action header -->

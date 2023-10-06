@@ -1,0 +1,122 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<form class="entry-edit form-inline" id="order_history_section" action="<?= $block->escapeUrl($block->getSaveUrl()) ?>">
+    
+    <!-- Order tab div title start -->
+    <div class="ks-div-title">
+        <span>Notes for this Order</span>
+    </div>
+
+    <!-- Hidden div -->
+    <div class="hidden">
+        <input type="hidden" name="order_id" value="<?= $block->getKsOrder()->getId();?>" >
+    </div>
+    <!-- Order tab div title end -->
+
+    <div id="order_history_block" class="edit-order-comments w-100">
+        <?php if ($block->canAddComment()): ?>
+        <div class="order-history-block mb-5" id="history_form">
+            <div class="field mt-3 mb-3 ks-field-full-width">
+                <label for="history_status" class="field-label"><?= $block->escapeHtml(__('Status')) ?></label>
+                <div class="field-control ks-form-field">
+                    <select name="history[status]" id="history_status" class="control-select ks-select-box w-auto">
+                        <?php foreach ($block->getStatuses() as $_code => $_label): ?>
+                        <option value="<?= $block->escapeHtmlAttr($_code) ?>"
+                            <?php if ($_code == $block->getKsOrder()->getStatus()): ?> selected="selected"
+                            <?php endif; ?>>
+                            <?= $block->escapeHtml($_label) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field mt-3 mb-3 ks-field-full-width">
+                <label for="history_comment" class="field-label">
+                    <?= $block->escapeHtml(__('Comment')) ?>
+                </label>
+                <div class="field-control">
+                    <textarea name="history[comment]"
+                    rows="3"
+                    cols="5"
+                    id="history_comment"
+                    class="control-textarea ks-control-feild "></textarea>
+                </div>
+            </div>
+
+            <div class="field">
+                <?php if($block->checkNotesAndNotify()): ?>
+                <div class="order-history-comments-options">
+                    <div class="field">
+                        <?php if ($block->canSendCommentEmail()): ?>
+                            <input name="history[is_customer_notified]"
+                            type="checkbox"
+                            id="history_notify"
+                            class="control-checkbox"
+                            value="1" />
+                            <span class="field-label" for="history_notify">
+                                <?= $block->escapeHtml(__('Notify Customer by Email')) ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="field field-option">
+                        <input name="history[is_visible_on_front]"
+                        type="checkbox"
+                        id="history_visible"
+                        class="control-checkbox"
+                        value="1" />
+                        <span class="field-label" for="history_visible">
+                            <?= $block->escapeHtml(__('Visible on Storefront')) ?>
+                        </span>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+                <div class="mt-4">
+                    <button class="ks-action-btn ks-secondry" id="comment-button"><?= $block->escapeHtml(__('Submit Comment')) ?></button>
+                </div>
+            </div>
+        </div>
+        <?php endif;?>
+        <ul class="ks-order-status-list">
+            <?php foreach ($block->getKsOrder()->getStatusHistoryCollection(true) as $_item): ?>
+            <li class="note-list-item">
+                <span class="note-list-date pr-3">
+                    <?= /* @noEscape */ $block->formatDate($_item->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                </span>
+                <span class="note-list-time pr-3">
+                    <?= /* @noEscape */ $block->formatTime($_item->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                </span>
+                <span class="note-list-status border-left border-dark pl-3 border-right border-dark pr-3"><?= $block->escapeHtml($_item->getStatusLabel()) ?></span>
+                <span class="note-list-customer pl-3">
+                    <?= $block->escapeHtml(__('Customer')) ?>
+                    <?php if ($block->isCustomerNotificationNotApplicable($_item)): ?>
+                    <span class="note-list-customer-notapplicable font-weight-bold">
+                        <?= $block->escapeHtml(__('Notification Not Applicable')) ?>
+                    </span>
+                    <?php elseif ($_item->getIsCustomerNotified()): ?>
+                    <span class="note-list-customer-notified font-weight-bold"><?= $block->escapeHtml(__('Notified')) ?></span>
+                    <?php else: ?>
+                    <span class="note-list-customer-not-notified font-weight-bold"><?= $block->escapeHtml(__('Not Notified')) ?></span>
+                    <?php endif; ?>
+                </span>
+                <?php if ($_item->getComment()): ?>
+                <div class="note-list-comment font-12">
+                    <?= $block->escapeHtml($_item->getComment(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+                </div>
+                <?php endif; ?>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</form>

@@ -1,0 +1,205 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * Seller Profile template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+
+?>
+<?php
+$ksHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksCustomerId = $block->getKsSellerId();
+$ksStoreId = $block->getKsStoreId();
+$ksCustomerCollection   = $ksHelper->getCustomerCollection($ksCustomerId);
+$ksSellerName           = $ksCustomerCollection->getName();
+$ksSellerEmail          = $ksCustomerCollection->getEmail();
+$ksSellerPhone          = "";
+$ksSellerAddress        = $ksHelper->getKsSellerPhone($ksCustomerId);
+if ($ksSellerAddress) {
+    $ksSellerPhone      = $ksSellerAddress->getTelephone();
+}
+$ksSellerCollection     = $ksHelper->getKsSellerCollection($ksCustomerId)->getFirstItem();
+$ksStoreName            = $ksSellerCollection->getKsStoreName();
+$ksPostcode             = $ksSellerCollection->getKsCompanyPostcode();
+$ksTaxvatNumber         = $ksSellerCollection->getKsCompanyTaxvatNumber();
+$ksCompanyName          = $ksSellerCollection->getKsCompanyName();
+$ksCompanyAddress       = $ksSellerCollection->getKsCompanyAddress();
+$ksCompanyContactNumber = $ksSellerCollection->getKsCompanyContactNo();
+$ksCompanyEmail         = $ksSellerCollection->getKsCompanyContactEmail();
+$ksSellerSince          = $ksSellerCollection->getKsCreatedAt();
+$ksSellerGroup          = $ksHelper->getKsSellerGroup($ksCustomerId);
+$ksSellerCountryName    = $ksHelper->getKsCountryName($ksCustomerId);
+$ksCountry              = $ksHelper->getKsCountry($ksCustomerId);
+$ksState                = $ksHelper->getKsState($ksCustomerId);
+$ksAvailableCountryName = $ksHelper->getKsAvailableCountryName($ksCustomerId);
+$ksAvailableCountryCode = $ksSellerCollection->getKsStoreAvailableCountries();
+$ksStoreCollection      = $ksHelper->getKsSellerStoreCollection($ksCustomerId, $ksStoreId)->getFirstItem();
+$ksOverview             = $ksStoreCollection->getKsStoreDescription();
+$ksSupportNumber        = $ksStoreCollection->getKsSupportContact();
+$ksSupportEmail         = $ksStoreCollection->getKsSupportEmail();
+$ksRefundPolicy         = $ksStoreCollection->getKsRefundPolicy();
+$ksPrivacyPolicy        = $ksStoreCollection->getKsPrivacyPolicy();
+$ksShippingPolicy       = $ksStoreCollection->getKsShippingPolicy();
+$ksLegalNotice          = $ksStoreCollection->getKsLegalNotice();
+$ksTermsOfService       = $ksStoreCollection->getKsTermsOfService();
+?>
+<div id="tab-3" class="tab-content">
+    <div class="ks_ratings_overview">
+        <div class="ks_overview">
+            <div class="ks_container">
+                <div class="ks_row">
+                    <div class="ks_col-md-4">
+                        <div class="ks_proimg">
+                            <div class="ks_proimg-img">
+                                <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/profile/profile-img.svg') ?>" alt="" class="ks_img-fluid">
+                            </div>
+                            <h3><?= $block->escapeHtml(__($ksStoreName)) ?></h3>
+                            <?php if($ksCountry != '' || $ksState != ''): ?>
+                                <div class="ks-profile-location"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/location-dark.svg') ?>" alt="" class=""><span><?= $block->escapeHtml(__($ksState != "" ? $ksState.", ".$ksCountry : $ksCountry)) ?></span></div>
+                            <?php endif; ?>
+                            <?php if ($ksHelper->getKsSellerConfigData('ks_seller_since')): ?>
+                                <span><?= $block->escapeHtml(__("Since: ".date('Y',strtotime($ksSellerSince)))) ?></span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="ks_col-md-8">
+                        <div class="ks_content_overview">
+                            <h3><?= $block->escapeHtml(__("Overview")) ?></h3>
+                            <p><?= $ksOverview ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ks-bg-white">
+            <div class="ks-profile-detail-card ks_container" id="ks-saved-company-information">
+                <div class="ks-company-information-column-one columns">
+                    <div class="column-content">
+                        <h5><?= $block->escapeHtml(__('Company Information')) ?></h5>
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Company Name')) ?></label>
+                            <p class="content-bold"><?= $ksCompanyName; ?></p>
+                        </div> 
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Company Address')) ?></label>
+                            <p class="content-bold"><?= $ksCompanyAddress; ?></p>
+                        </div>
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Company Contact Number')) ?></label>
+                            <p class="content-bold"><?= $ksCompanyContactNumber; ?></p>
+                        </div>   
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Company Email')) ?></label>
+                            <p class="content-bold"><?= $ksCompanyEmail; ?></p>
+                        </div>  
+                    </div>
+                </div>
+                <div class="ks-company-information-column-two columns">
+                    <div class="column-content">  
+                        <h5 class="visibility-hidden ks-mobile-visibility"><?= $block->escapeHtml(__('Company Information')) ?></h5> 
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Post Code')) ?></label>
+                            <p class="content-bold"><?= $ksPostcode; ?></p>
+                        </div>
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Country')) ?></label>
+                            <p class="content-bold"><?= $ksCountry; ?></p>
+                        </div> 
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('State')) ?></label>
+                            <p class="content-bold"><?= $ksState; ?></p>
+                        </div>
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Tax/VAT Number')) ?></label>
+                            <p class="content-bold"><?= $ksTaxvatNumber; ?></p>
+                        </div> 
+                    </div>
+                </div>
+                <div class="ks-company-information-column-three columns">
+                    <div class="column-content">
+                        <h5><?= $block->escapeHtml(__('Customer Support')) ?></h5>
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Support Number')) ?></label>
+                            <p class="content-bold"><?= $ksSupportNumber ?></p>
+                        </div>    
+                        <div class="form-feild">
+                            <label><?= $block->escapeHtml(__('Support Email')) ?></label>
+                            <p class="content-bold"><?= $ksSupportEmail ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ks_policy">
+            <div class="ks_border-bottom">
+                <div class="ks_container ks-policy-overflow">
+                    <ul class="ks_policy_tabs">
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_refund_policy')): ?>
+                            <li class="tab-link" data-tab="tab-5"><?= $block->escapeHtml(__('Refund Policy')) ?></li>
+                        <?php endif; ?>
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_privacy_policy')): ?>
+                            <li class="tab-link" data-tab="tab-6"><?= $block->escapeHtml(__('Privacy Policy')) ?></li>
+                        <?php endif; ?>
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_shipping_policy')): ?>
+                            <li class="tab-link" data-tab="tab-7"><?= $block->escapeHtml(__('Shipping Policy')) ?></li>
+                        <?php endif; ?>
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_legal_notice')): ?>
+                            <li class="tab-link" data-tab="tab-8"><?= $block->escapeHtml(__('Legal Policy')) ?></li>
+                        <?php endif; ?>
+                        <?php if ($ksHelper->getKsSellerConfigData('ks_terms_of_service')): ?>
+                            <li class="tab-link" data-tab="tab-9"><?= $block->escapeHtml(__('Terms of Service')) ?></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="ks_container">
+                <div class="ks_tabs_content">
+                    <?php if ($ksHelper->getKsSellerConfigData('ks_refund_policy')): ?>
+                        <div id="tab-5" class="tab-content_policy">
+                            <p><?= $ksRefundPolicy ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($ksHelper->getKsSellerConfigData('ks_privacy_policy')): ?>
+                        <div id="tab-6" class="tab-content_policy">
+                            <p><?= $ksPrivacyPolicy ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($ksHelper->getKsSellerConfigData('ks_shipping_policy')): ?>
+                        <div id="tab-7" class="tab-content_policy">
+                            <p><?= $ksShippingPolicy ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($ksHelper->getKsSellerConfigData('ks_legal_notice')): ?>
+                        <div id="tab-8" class="tab-content_policy">
+                            <p><?= $ksLegalNotice ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($ksHelper->getKsSellerConfigData('ks_terms_of_service')): ?>
+                        <div id="tab-9" class="tab-content_policy">
+                            <p><?= $ksTermsOfService ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+       

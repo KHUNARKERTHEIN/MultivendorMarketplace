@@ -1,0 +1,54 @@
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+.ks-field-div {
+	display: flex;
+}
+.ks-label-field-div {
+	margin-left: 30px;
+}
+.ks-label-span {
+	display: block !important;
+}
+.ks-label {
+	margin-top: -20px;
+}
+.ks-category {
+	width: 500px;
+    margin-left: 27px;
+}
+.ks-category.disabled {
+	width: 500px;
+    margin-left: 27px;
+    cursor: not-allowed;
+	opacity: 0.5;
+	pointer-events: none;
+}
+.ks-category-label {
+	margin-top: 2px;
+}
+.modal-slide._inner-scroll .modal-inner-wrap {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.modal-slide .modal-inner-wrap {
+    height: 100%;
+    overflow-y: inherit;
+    position: static;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+    width: auto;
+}

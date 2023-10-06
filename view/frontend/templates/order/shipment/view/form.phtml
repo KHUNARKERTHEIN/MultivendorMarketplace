@@ -1,0 +1,156 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+/**
+ * @var \Ksolves\MultivendorMarketplace\Block\Order\Shipment\View\KsForm $block
+ */
+
+/** @var \Magento\Shipping\Helper\Data $shippingHelper */
+$shippingHelper = $block->getData('shippingHelper');
+/** @var \Magento\Tax\Helper\Data $taxHelper */
+$taxHelper = $block->getData('taxHelper');
+/** @var \Magento\Sales\Model\Order $order */
+$order = $block->getKsOrder();
+$shipment = $block->getKsShipment();
+?>
+
+<!-- Shipping view page start -->
+<div class="ks-ship-create-page">
+    
+    <div class="ks-page-card">
+        <?= $block->getChildHtml('multivendor_order_account_address_info'); ?>
+
+        <!-- Payment $ Shipping method start -->
+        <section class="ks-order-shipment-billing-shipping mb-5">
+
+            <!-- Order tab section title start -->
+            <div class="ks-tab-content-title">
+                <span><?= $block->escapeHtml(__('Payment &amp; Shipping Method')); ?></span>
+            </div>
+            <!-- Order tab section title end -->
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6 pl-0">
+                        <div class="ks-order-payment-method">
+
+                            <!-- Order tab div title start -->
+                            <div class="ks-div-title mb-3">
+                                <span><?= $block->escapeHtml(__('Payment Information')); ?></span>
+                            </div>
+                            <!-- Order tab div title end -->
+
+                            <div>
+                                <div class="ks-pay-info"><?= $block->getChildHtml('order_payment') ?></div>
+                                <div class="order-payment-currency">
+                                    <?= $block->escapeHtml(__('The order was placed using %1.', $order->getOrderCurrencyCode())); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 pr-0">
+                        <div class="order-shipping-address">
+
+
+                            <!-- Order tab div title start -->
+                            <div class="ks-div-title mb-3">
+                                <span><?= $block->escapeHtml(__('Shipping and Tracking Information')); ?></span>
+                            </div>
+                            <!-- Order tab div title end -->
+
+                            <div>
+                                <?= $block->getChildHtml('shipment_tracking'); ?>
+
+                                <?php $scriptString = <<<script
+
+                                    require([
+                                        'jquery',
+                                        'prototype'
+                                    ], function (jQuery) {
+                                        var setCallbacks = function () {
+                                            window.packaging.setConfirmPackagingCallback(function () {
+                                                window.packaging.sendCreateLabelRequest();
+                                            });
+                                            window.packaging.setLabelCreatedCallback(function () {
+                                                setLocation("{$block->escapeJs($block->getUrl(
+                                                        'adminhtml/order_shipment/view',
+                                                        ['shipment_id' => $block->getKsShipment()->getId()]
+                                                    ))}");
+                                            });
+                                        };
+
+                                        if (jQuery(document).data('packagingInited')) {
+                                            setCallbacks();
+                                        } else {
+                                            jQuery(document).on('packaging:inited', setCallbacks);
+                                        }
+                                    });
+
+                                    script;
+                                ?>
+                                <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Payment $ Shipping method end -->
+
+        <div><?= $block->getChildHtml('extra_shipment_info') ?></div>
+
+        <!-- Item shipped table start -->
+        <section class="mb-5">
+
+            <!-- Order tab section title start -->
+            <div class="ks-tab-content-title">
+                <span><?= $block->escapeHtml(__('Items Shipped')); ?></span>
+            </div>
+            <!-- Order tab section title end -->
+
+            <?= $block->getChildHtml('shipment_items'); ?>
+        </section>
+        <!-- Item shipped table end -->
+
+        <!-- Order total section start -->
+        <section>
+            <?php if($shipment->getKsApprovalStatus()==2):?>
+                <form name="ks-shipment-re-submit" method="post" action="<?=$block->getKsReSubmitUrl();?>">
+            <?php endif;?>
+            <!-- Order tab section title start -->
+            <div class="ks-tab-content-title">
+                <span><?= $block->escapeHtml(__('Order Total')); ?></span>
+            </div>
+            <!-- Order tab section title end -->
+
+            <div>
+                <?= $block->getChildHtml('shipment_packed'); ?>
+
+                <div class="ks-order-comments-history">
+
+                    <!-- Order tab div title start -->
+                    <div class="ks-div-title mb-3">
+                        <span><?= $block->escapeHtml(__('Shipment History')); ?></span>
+                    </div>
+                    <!-- Order tab div title end -->
+
+                    <div class="col-md-6 pl-0"><?= $block->getChildHtml('shipment_comments'); ?></div>
+                </div>
+            </div>
+            <?php if($shipment->getKsApprovalStatus()==2):?>
+                </form>
+            <?php endif;?>
+        </section>
+        <!-- Order total section end -->
+
+    </div>
+</div>
+<!-- Shipping view page end -->

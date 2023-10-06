@@ -1,0 +1,120 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+ /** @var \Ksolves\MultivendorMarketplace\Block\Order\Invoice\Create\KsItems $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+$ksBaseWeeeTax = 0;
+$ksWeeeTax = 0;
+$ksInvoiceItems = $block->getInvoiceItems();
+
+foreach($ksInvoiceItems as $ksItem){
+    $ksOrderItem = $block->getKsOrderItem($ksItem->getKsOrderItemId());
+    $ksBaseWeeeTax += $ksOrderItem->getBaseWeeeTaxAppliedAmount() * $ksItem->getKsQty();
+    $ksWeeeTax += $ksOrderItem->getWeeeTaxAppliedAmount() * $ksItem->getKsQty();
+}
+
+$invoice = $block->getInvoice(); 
+$ksShowStoreCurrency = $block->canKsShowOrderCurrencyValue();
+?>
+  <table class="data-table admin__table-secondary order-subtotal-table">
+    <tfoot>        
+        <tr class="col-0">
+            <td class="label">
+                <strong><?= $block->escapeHtml(__("Grand Total")) ?></strong>
+            </td>
+            <td>
+                <strong><span class="price"><?= $block->formatValue($invoice->getKsBaseGrandTotal()) ?></span></strong>
+                <?php if($ksShowStoreCurrency):?>
+                    <br>
+                    <strong><span><?= $block->formatToOrderCurrency($invoice->getKsGrandTotal())?></span></strong>
+                <?php endif;?>
+            </td>
+        </tr>
+        <tr class="col-1">
+           <td class="label">
+                <strong><?= $block->escapeHtml(__("Total Admin's Commission")) ?></strong>
+            </td>
+            <td>
+                <strong><span class="price"><?= $block->formatValue($invoice->getKsBaseTotalCommission()) ?></span></strong>
+                <?php if($ksShowStoreCurrency):?>
+                    <br>
+                    <strong><span><?= $block->formatToOrderCurrency($invoice->getKsTotalCommission())?></span></strong>
+                <?php endif;?>                        
+            </td>        
+        </tr>
+        <tr class="col-2">
+            <td class="label"><strong><?= $block->escapeHtml(__("Total Earning")) ?></strong></td>
+                <td>
+                    <strong><span class="price"><?= $block->formatValue($invoice->getKsBaseTotalEarning()) ?></span></strong>
+                    <?php if($ksShowStoreCurrency):?>
+                    <br>
+                    <strong><span><?= $block->formatToOrderCurrency($invoice->getKsTotalEarning())?></span></strong>
+                <?php endif;?>  
+                </td>
+        </tr>
+    </tfoot>
+    
+    <tbody>
+        <tr class="col-0">
+            <td class="label">Subtotal</td>
+            <td>
+                <span><span class="price"><?= $block->formatValue($invoice->getKsBaseSubtotal()) ?></span></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <br>
+                    <strong><span><?= $block->formatToOrderCurrency($invoice->getKsSubtotal())?></span></strong>
+                <?php endif;?>
+            </td>
+        </tr>
+        <?php if($ksBaseWeeeTax>0):?>
+            <tr class="tax">
+                <th ><?= $block->escapeHtml(__('FPT')) ?></th>
+                <td>
+                    <span class="price"><?= $block->formatValue($ksBaseWeeeTax) ?></span>
+                    <?php if($ksShowStoreCurrency):?>
+                        <br>
+                        <span class="ks-sales-currency-rate"><?= $block->formatToOrderCurrency($ksWeeeTax)?></span>
+                    <?php endif;?>
+                </td>
+            </tr>
+        <?php endif;?>
+        <tr class="col-0">
+            <td class="label">Tax Amount</td>
+            <td>
+                <span><span class="price"><?= $block->formatValue($invoice->getKsBaseTaxAmount()) ?></span></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <br>
+                    <strong><span><?= $block->formatToOrderCurrency($invoice->getKsTaxAmount())?></span></strong>
+                <?php endif;?>
+            </td>
+        </tr>
+
+        <tr class="col-1">
+            <td class="label">Discount</td>
+            <td>
+                <span><span class="price"><?= $invoice->getKsBaseDiscountAmount()>0?'-':'' ?><?= $block->formatValue($invoice->getKsBaseDiscountAmount()) ?></span></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <br>
+                    <strong><span><?= $invoice->getKsBaseDiscountAmount()>0?'-':'' ?><?= $block->formatToOrderCurrency($invoice->getKsDiscountAmount())?></span></strong>
+                <?php endif;?>
+            </td>
+        </tr>
+        <tr class="col-1">
+            <td class="label">Shipping &amp; Handling</td>
+            <td>
+                <span><span class="price"><?= $block->formatValue($invoice->getKsBaseShippingAmount()) ?></span></span>
+                <?php if($ksShowStoreCurrency):?>
+                    <br>
+                    <strong><span><?= $block->formatToOrderCurrency($invoice->getKsShippingAmount())?></span></strong>
+                <?php endif;?>
+            </td>
+        </tr>
+    </tbody>
+</table>

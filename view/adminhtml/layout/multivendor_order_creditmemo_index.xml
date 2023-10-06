@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles"/>
+    <head>
+        <script src="Ksolves_MultivendorMarketplace::js/sales/ks-reject-memo.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="ks_marketplace_order_creditmemo_grid"/>
+            <block class="Magento\Framework\View\Element\Template" template="Ksolves_MultivendorMarketplace::sales/ks-reject.phtml" name="ks_rejection"/>
+        </referenceContainer>
+    </body>
+</page>

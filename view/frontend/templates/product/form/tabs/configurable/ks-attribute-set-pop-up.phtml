@@ -1,0 +1,83 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsAttributeSet */
+?>
+
+<div class="ks_configurable_product_attribute_set_pop_up" style="display:none">
+    <form method="post" enctype="multipart/form-data" id="ks_attribute_handler" data-mage-init='{"validation":{ "ignore": ".ignore-validate,:hidden"}}'>
+        <div class="admin__field admin__field-option ks_current_attribute_set">
+            <input type="radio"
+            id="affectedAttributeSetCurrent"          
+            name="configurableAffectedAttributeSet"
+            checked>
+            <label for="affectedAttributeSetCurrent" class="admin__field-label">
+                <span><?= $block->escapeHtml(__("Add configurable attributes to the current Attribute Set")) ?></span>
+            </label>
+        </div>
+
+        <div class="admin__field admin__field-option">
+            <input type="radio"
+            id="affectedAttributeSetNew"
+            name="configurableAffectedAttributeSet"
+            value="new">
+            <label for="affectedAttributeSetNew" class="admin__field-label">
+                <span><?= $block->escapeHtml(__("Add configurable attributes to the new Attribute Set based on current")) ?></span>
+            </label>
+        </div>
+        <fieldset class="ks-form-field ks-new-attribute-set" style="display:none">
+            <div class="ks-control-grouped ">
+                <div class="ks-form-field  required">
+                    <div class="ks-form-field-label">
+                        <label>
+                            <span><?= $block->escapeHtml(__('New Attribute Set Name')) ?></span>
+                        </label>
+                    </div>
+                    <div class="ks-field-control">
+                        <div class="ks-field-custom">
+                            <input type="text" class="ks-control-feild required-entry valid" id="ks-new-attribute-set-name"title="New Attribute Set Name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="admin__field admin__field-option">
+            <input type="radio"
+            id="configurableExistingAttributeSetId"
+            name="configurableAffectedAttributeSet"
+            value="existing"
+            >
+            <label for="configurableExistingAttributeSetId" class="admin__field-label">
+                <span><?= $block->escapeHtml(__("Add configurable attributes to the existing Attribute Set")) ?></span>
+            </label>
+        </div>
+        <fieldset class="ks-form-field ks-existing-attribute-set" style="display:none">
+            <div class="ks-control-grouped ">
+                <div class="ks-form-field ">
+                    <div class="ks-form-field-label">
+                        <label>
+                            <span><?= $block->escapeHtml(__('Choose existing Attribute Set')) ?></span>
+                        </label>
+                    </div>
+                    <div class="ks-field-control">
+                        <div class="ks-field-custom ks-field-control-select">
+                            <select name="product[attribute_set_id]" class="select ks-existing-attribute-set-select" title="Choose existing Attribute Set">
+                                <?php foreach($block->ksSellerAttributeSets() as $ksAttributeSet) : ?>
+                                    <option value = <?= $ksAttributeSet['value']?> > <?= $block->escapeHtml(__($ksAttributeSet['label'])) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset> 
+    </form>
+</div>

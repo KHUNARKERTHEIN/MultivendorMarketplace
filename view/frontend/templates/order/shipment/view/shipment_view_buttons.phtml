@@ -1,0 +1,23 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+?>
+<!-- Shipment View Action header -->
+<?php $ks_shipment = $block->getKsShipment();?>
+<div class="ks-page-action">
+	<a href="<?= $block->getShipmentUrl(); ?>" class="ks-back ks-header-row-action"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
+	<?php if ($block->checkShipmenttrackinformation()&& $ks_shipment->getKsApprovalStatus()==1):?>
+	<a href="<?= $block->getSendShipmentinformation($ks_shipment); ?>" class="ks-action-btn float-right ks-header-row-action ks_tracking_info"><span><?= $block->escapeHtml(__('Send tracking information')) ?></span></a>
+<?php endif; ?>
+<?php if ($ks_shipment->getId()&& $ks_shipment->getKsApprovalStatus()==1):?>
+<a href="<?= $block->getKsPrintUrl(); ?>" class="ks-action-btn float-right ks-header-row-action"><span><?= $block->escapeHtml(__('Print')) ?></span></a>
+<?php endif; ?>
+</div>
+<!-- Shipment View Action header --> 

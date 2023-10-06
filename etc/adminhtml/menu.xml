@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Ksolves_MultivendorMarketplace::multivendor" title="Marketplace" module="Ksolves_MultivendorMarketplace" sortOrder="20" resource="Ksolves_MultivendorMarketplace::multivendor"/>
+        <add id="Ksolves_MultivendorMarketplace::manage_sellers" title="Manage Sellers" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::multivendor" dependsOnModule="Ksolves_MultivendorMarketplace" resource="Ksolves_MultivendorMarketplace::manage_sellers"/>
+        <add id="Ksolves_MultivendorMarketplace::all_sellers" title="All Sellers" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_sellers" action="multivendor/seller/index" resource="Ksolves_MultivendorMarketplace::all_sellers"/>
+        <add id="Ksolves_MultivendorMarketplace::seller_pending" title="Pending Approval" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_sellers" action="multivendor/seller/sellerpendinglist" resource="Ksolves_MultivendorMarketplace::seller_pending"/>
+        <add id="Ksolves_MultivendorMarketplace::seller_group" title="Seller Groups" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_sellers" action="multivendor/sellergroup/index" resource="Ksolves_MultivendorMarketplace::seller_group"/>
+        <add id="Ksolves_MultivendorMarketplace::manage_commission" title="Manage Commission" module="Ksolves_MultivendorMarketplace" parent="Ksolves_MultivendorMarketplace::multivendor" sortOrder="20" resource="Ksolves_MultivendorMarketplace::manage_commission"/>
+        <add id="Ksolves_MultivendorMarketplace::commission_rule" title="Commission Rules" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_commission" action="multivendor/commissionrule/index" resource="Ksolves_MultivendorMarketplace::commission_rule"/>
+        <add id="Ksolves_MultivendorMarketplace::manage_report_reason" title="Manage Report Reasons" module="Ksolves_MultivendorMarketplace" parent="Ksolves_MultivendorMarketplace::multivendor" sortOrder="30" resource="Ksolves_MultivendorMarketplace::manage_report_reason"/>
+        <add id="Ksolves_MultivendorMarketplace::product_report_reasons" title="Report Product Reasons" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_report_reason" action="multivendor/reportproduct/index" resource="Ksolves_MultivendorMarketplace::product_report_reasons"/>
+        <add id="Ksolves_MultivendorMarketplace::seller_report_reasons" title="Report Seller Reasons" module="Ksolves_MultivendorMarketplace" sortOrder="55" parent="Ksolves_MultivendorMarketplace::manage_report_reason" action="multivendor/reportseller/index" resource="Ksolves_MultivendorMarketplace::seller_report_reasons"/>
+        <add id="Ksolves_MultivendorMarketplace::settings" title="Settings" module="Ksolves_MultivendorMarketplace" parent="Ksolves_MultivendorMarketplace::multivendor" sortOrder="100" resource="Ksolves_MultivendorMarketplace::settings"/>
+        <add id="Ksolves_MultivendorMarketplace::configurations" title="Configuration" module="Ksolves_MultivendorMarketplace" sortOrder="100" parent="Ksolves_MultivendorMarketplace::settings" action="adminhtml/system_config/edit/section/multivendor" resource="Ksolves_MultivendorMarketplace::configurations"/>
+        <add id="Ksolves_MultivendorMarketplace::manage_products" title="Manage Seller Products" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::multivendor" dependsOnModule="Ksolves_MultivendorMarketplace" resource="Ksolves_MultivendorMarketplace::manage_products"/>
+        <add id="Ksolves_MultivendorMarketplace::all_products" title="All Seller Products" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_products" action="multivendor/product/index" resource="Ksolves_MultivendorMarketplace::all_products"/>
+        <add id="Ksolves_MultivendorMarketplace::product_pending" title="Pending Approval" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_products" action="multivendor/product/productpendinglist" resource="Ksolves_MultivendorMarketplace::product_pending"/>
+        <add id="Ksolves_MultivendorMarketplace::categoryrequests" title="Category Requests" module="Ksolves_MultivendorMarketplace" sortOrder="30" parent="Ksolves_MultivendorMarketplace::manage_products" action="multivendor/categoryrequests/index" resource="Ksolves_MultivendorMarketplace::categoryrequests"/>
+        <!-- <add id="Ksolves_MultivendorMarketplace::manage_price_comparison_products" title="Manage Price Comparison Products" module="Ksolves_MultivendorMarketplace" sortOrder="50" parent="Ksolves_MultivendorMarketplace::multivendor" dependsOnModule="Ksolves_MultivendorMarketplace" resource="Ksolves_MultivendorMarketplace::manage_price_comparison_products"/>
+        <add id="Ksolves_MultivendorMarketplace::all_price_comparison_products" title="All Products" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_price_comparison_products" action="multivendor/pricecomparison/index" resource="Ksolves_MultivendorMarketplace::all_price_comparison_products"/>
+        <add id="Ksolves_MultivendorMarketplace::price_comparison_product_pending" title="Pending Products" module="Ksolves_MultivendorMarketplace" sortOrder="20" parent="Ksolves_MultivendorMarketplace::manage_price_comparison_products" action="multivendor/pricecomparison/productpendinglist" resource="Ksolves_MultivendorMarketplace::price_comparison_product_pending"/> -->
+        <add id="Ksolves_MultivendorMarketplace::manage_sales" title="Manage Marketplace Sales " module="Ksolves_MultivendorMarketplace" sortOrder="20" parent="Ksolves_MultivendorMarketplace::multivendor" dependsOnModule="Ksolves_MultivendorMarketplace" resource="Ksolves_MultivendorMarketplace::manage_sales"/>
+        <add id="Ksolves_MultivendorMarketplace::all_orders" title="Orders" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_sales" action="multivendor/order/index" resource="Ksolves_MultivendorMarketplace::all_orders"/>
+        <add id="Ksolves_MultivendorMarketplace::all_invoices" title="Invoices" module="Ksolves_MultivendorMarketplace" sortOrder="20" parent="Ksolves_MultivendorMarketplace::manage_sales" action="multivendor/order_invoice/index" resource="Ksolves_MultivendorMarketplace::all_invoices"/>
+        <add id="Ksolves_MultivendorMarketplace::all_shipment" title="Shipments" translate="title" module="Ksolves_MultivendorMarketplace" sortOrder="30" parent="Ksolves_MultivendorMarketplace::manage_sales" action="multivendor/order_shipment/index" resource="Ksolves_MultivendorMarketplace::all_shipment"/>
+        <add id="Ksolves_MultivendorMarketplace::all_creditmemos" title="Credit Memos" module="Ksolves_MultivendorMarketplace" sortOrder="40" parent="Ksolves_MultivendorMarketplace::manage_sales" action="multivendor/order_creditmemo/index" resource="Ksolves_MultivendorMarketplace::all_creditmemos"/>
+        <add id="Ksolves_MultivendorMarketplace::manage_product_attribute" title="Manage Seller Product Attributes" module="Ksolves_MultivendorMarketplace" parent="Ksolves_MultivendorMarketplace::multivendor" sortOrder="50" resource="Ksolves_MultivendorMarketplace::manage_product_attribute"/>
+        <add id="Ksolves_MultivendorMarketplace::default_attribute" title="Default" module="Ksolves_MultivendorMarketplace" sortOrder="10" parent="Ksolves_MultivendorMarketplace::manage_product_attribute" action="multivendor/productattribute/index" resource="Ksolves_MultivendorMarketplace::default_attribute"/>
+        <add id="Ksolves_MultivendorMarketplace::custom_attribute" title="Custom" module="Ksolves_MultivendorMarketplace" sortOrder="20" parent="Ksolves_MultivendorMarketplace::manage_product_attribute" action="multivendor/productattribute/custom" resource="Ksolves_MultivendorMarketplace::custom_attribute"/>
+    </menu>
+</config>

@@ -1,0 +1,31 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+?>
+
+<fieldset class="ks-form-field ks-product-stage">
+     <div class="ks-control-grouped">
+         <div class="ks-form-field">
+             <div class="ks-form-field-label">
+                 <label>
+                    <span><?= $block->escapeHtml(__("Condition"));?></span>
+                 </label>
+             </div>
+            <div class="ks-field-control ks-control-grouped">
+                <select name="ks_product_stage">
+                    <option value="1" <?php if ($block->getKsProductStage() == 1) { echo "selected";}?> >New</option>
+                    <option value="0" <?php if ($block->getKsProductStage() == 0) { echo "selected";}?> >Used</option>
+                </select>
+            </div>
+         </div>
+     </div>
+</fieldset>
+    

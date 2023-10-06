@@ -1,0 +1,20 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/* @var Ksolves\MultivendorMarketplace\Block\Order\CreditMemo\View\KsForm */
+$ksCreditMemo = $block->getKsCreditmemo();
+?>
+
+<!-- Credit Memo increment id start --> 
+<div class="ks-main-page-title">
+    <span> <?= "#".$block->escapeHtml(__($ksCreditMemo->getKsCreditmemoIncrementId())) ?></span>
+</div>
+<!-- Credit Memo increment id end -->

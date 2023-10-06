@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="msrp_popup"/>
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-frontend-style.css"/>
+        <css src="Ksolves_MultivendorMarketplace::css/fonts/stylesheet.css" />
+        <css src="Ksolves_MultivendorMarketplace::css/owl-carousel-slider/owl.carousel.css"/>
+        <script src="Ksolves_MultivendorMarketplace::js/profile/main.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/favouriteseller/ks-add-to-favourite.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile" name="ks_multivendor_sellerprofile" template="Ksolves_MultivendorMarketplace::profile/ks-seller-profile.phtml" cacheable="false">
+                <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile" name="seller.products.list" as="seller_product_list" template ="Ksolves_MultivendorMarketplace::profile/ks-seller-category-products.phtml">
+                        <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile" name="ks.category.products.list" as="ks_product_list" template="Ksolves_MultivendorMarketplace::product/list.phtml">
+                            <container name="category.product.list.additional" as="additional" />
+                            <block class="Magento\Framework\View\Element\RendererList" name="category.product.type.details.renderers" as="details.renderers">
+                                <block class="Magento\Framework\View\Element\Template" name="category.product.type.details.renderers.default" as="default"/>
+                            </block>
+                            <block class="Magento\Catalog\Block\Product\ProductList\Item\Container" name="category.product.addto" as="addto">
+                                <block class="Magento\Catalog\Block\Product\ProductList\Item\AddTo\Compare"
+                                       name="category.product.addto.compare" as="compare"
+                                       template="Magento_Catalog::product/list/addto/compare.phtml"/>     
+                                <block class="Magento\Wishlist\Block\Catalog\Product\ProductList\Item\AddTo\Wishlist"
+                                name="category.product.addto.wishlist" as="wishlist" before="compare"
+                                template="Magento_Wishlist::catalog/product/list/addto/wishlist.phtml"/>  
+                            </block>
+                        </block>
+                </block>
+                <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsRecentlyProducts" name="seller.recently.products" template ="Ksolves_MultivendorMarketplace::profile/ks-seller-recently-products.phtml" cacheable="false"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsBestProducts" name="seller.best.products" template ="Ksolves_MultivendorMarketplace::profile/ks-seller-best-products.phtml" cacheable="false"/>
+                <block class="Ksolves\MultivendorMarketplace\Block\SellerProfile\KsDiscountProducts" name="seller.discount.products" template ="Ksolves_MultivendorMarketplace::profile/ks-seller-discount-products.phtml" cacheable="false"/>
+            </block>   
+        </referenceContainer>
+        <referenceBlock name="category.product.type.details.renderers">
+            <block class="Magento\Swatches\Block\Product\Renderer\Listing\Configurable"
+                   name="category.product.type.details.renderers.configurable" as="configurable"
+                   template="Magento_Swatches::product/listing/renderer.phtml"
+                   ifconfig="catalog/frontend/show_swatches_in_product_list">
+                <arguments>
+                    <argument name="configurable_view_model"
+                              xsi:type="object">Magento\Swatches\ViewModel\Product\Renderer\Configurable</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="copyright" remove="true"/>
+    </body>
+</page>

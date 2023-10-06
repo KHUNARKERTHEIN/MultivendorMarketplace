@@ -1,0 +1,266 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * Seller Profile template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSellerProfile
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$ksSellHelper           = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellDataHelper');
+$ksSellerProfileHelper  = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksBannerCollection     = $ksSellerProfileHelper->getKsSellerBannerCollection($block->getKsSellerId());
+$ksSellerConfigData     = $block->getKsSellerConfigData();
+$ksIsPageEnabled = 1;
+if(!$ksSellerConfigData->getKsShowBanner() && !$ksSellerConfigData->getKsShowRecentlyProducts() && !$ksSellerConfigData->getKsShowBestProducts() && !$ksSellerConfigData->getKsShowDiscountProducts()){
+    $ksIsPageEnabled = 0;
+}
+?>
+<input type="hidden" name="ks-banner-collection-size" id="ks-banner-collection-size" value="<?= $ksBannerCollection->getSize() ?>" />
+<div class="ks-page-content">
+    <div class="ks-home-page">
+        <div class="ks-home-page-column">
+            <div class="ks-home-column-one">
+                <?php if ($ksSellerConfigData->getKsShowBanner()): ?>
+                    <div class="ks-banner-slider ks-home-banner-slider">
+                        <?php if ($ksBannerCollection->getSize() != 0): ?> 
+                            <?php foreach ($ksBannerCollection as $ksItem):?> 
+                                <div class="ks-banner-div contanier">
+                                    <div class="ks-home-banner-img"><img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksItem->getKsPicture() ?>" alt="" class="img-fluid"></div>
+                                    <div class="ks-home-banner-text">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="">
+                                                    <h5><?= $block->escapeHtml(__($ksItem->getKsTitle())) ?></h5>
+                                                    <h3><?= $block->escapeHtml(__($ksItem->getKsText())) ?></h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?> 
+                            <div class="ks-home-banner-img">
+                                <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-banner.jpg') ?>" alt="" class="img-fluid">
+                            </div>   
+                        <?php endif; ?>
+                    </div> 
+                <?php endif; ?>
+                <?php if($ksIsPageEnabled) : ?>
+                    <div class="ks-home-page-slider">
+                        <?php if ($ksSellerConfigData->getKsShowRecentlyProducts()): ?>
+                            <div class="ks_related_product container page-products">
+                                <h3><?= $block->escapeHtml(__($ksSellerConfigData->getKsRecentlyProductsText())) ?></h3>
+                                <?php echo $block->getChildHtml('seller.recently.products'); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($ksSellerConfigData->getKsShowBestProducts()): ?>
+                            <div class="ks_related_product container page-products">
+                                <h3><?= $block->escapeHtml(__($ksSellerConfigData->getKsBestProductsText())) ?></h3>
+                                <?php echo $block->getChildHtml('seller.best.products'); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($ksSellerConfigData->getKsShowDiscountProducts()): ?> 
+                            <div class="ks_related_product container page-products">
+                                <h3><?= $block->escapeHtml(__($ksSellerConfigData->getKsDiscountProductsText())) ?></h3>
+                                <?php echo $block->getChildHtml('seller.discount.products'); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="ks-seller-config-data ks-home-column-two">
+                <form action="<?= $block->escapeUrl($block->getUrl('multivendor/sellerprofile/saveconfigdata')) ?>" method="post" class="ks-seller-config-data-form" accept-charset="utf-8" data-mage-init='{"validation":{}}'>
+                    <input type="hidden" name="ks_seller_id" value="<?= $block->getKsSellerId() ?>" class="ks-para-card" />
+                    <div class="ks-home-edit-section border-top-mobile">
+                        <div class="ks-home-edit-header">
+                            <div class="col-md-6 col-lg-8">
+                                <h5><?= $block->escapeHtml(__('Banner')) ?></h5>
+                            </div>
+                            <div class="col-md-6 col-lg-4 text-right">
+                                <label class="ks-switch">
+                                    <?php if ($ksSellerConfigData->getKsShowBanner()): ?>
+                                        <input class="ks-banner-checkbox ks-homepage-disabled" name="ks_show_banner" type="checkbox" checked>
+                                    <?php else: ?>
+                                        <input class="ks-banner-checkbox ks-homepage-disabled" name="ks_show_banner" type="checkbox">
+                                    <?php endif; ?>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="ks-banner-content col-md-12">
+                            <p><?= $block->escapeHtml(__('Banner Image')) ?></p>
+                            <div class="d-flex flex-wrap">
+                                <?php if ($ksBannerCollection->getSize() != 0): ?> 
+                                    <?php foreach ($ksBannerCollection as $ksItem):?>
+                                        <div class="mr-4 mb-4">
+                                            <a href="#"><span class="ks-banner-action ks-banner-edit" data-tab="<?= $ksItem->getId() ?>"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/edit-white-icon.svg') ?>" alt="" class="img-fluid"></span></a>
+                                            <img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksItem->getKsPicture() ?>" alt="" class="img-fluid ks-edit-banner-img"> 
+                                            <a href="<?php echo $block->getUrl('multivendor/sellerprofile/deletebanner', ["id" => $ksItem->getId()]) ?>"><span class="ks-banner-action ks-banner-close"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/close-white-btn.svg') ?>" alt="" class="img-fluid"></span></a>    
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <div class="mr-4 mb-4">
+                                        <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-banner.jpg') ?>" alt="" class="img-fluid ks-edit-banner-img">
+                                    </div>
+                                <?php endif; ?>
+                                <div>
+                                    <button type="button" class="modal-toggle ks-add-banner-btn">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ks-home-edit-section">
+                        <div class="ks-home-edit-header">
+                            <div class="col-md-6 col-lg-8">
+                                <h5><?= $block->escapeHtml(__('Recently Added Products')) ?></h5>
+                            </div>
+                            <div class="col-md-6 col-lg-4 text-right">
+                                <label class="ks-switch">
+                                    <?php if ($ksSellerConfigData->getKsShowRecentlyProducts()): ?>
+                                        <input class="ks-recently-checkbox ks-homepage-disabled" name="ks_show_recently_products" type="checkbox" checked>
+                                    <?php else: ?>
+                                        <input class="ks-recently-checkbox ks-homepage-disabled" name="ks_show_recently_products" type="checkbox">
+                                    <?php endif; ?>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="ks-recently-content col-md-12">
+                            <p class="ks-required">
+                                <?= $block->escapeHtml(__('Recently Added Products Text')) ?></p>
+                            <input type="text" name="ks_recently_products_text" value="<?= $ksSellerConfigData->getKsRecentlyProductsText() ?>" class="ks-para-card ks-homepage-disabled" data-validate='{"required":true}' />
+                            <p class="ks-required">
+                                <?= $block->escapeHtml(__('Recently Added Products Count')) ?></p>
+                            <input type="number" name="ks_recently_products_count" min="1" max="20" value="<?= $ksSellerConfigData->getKsRecentlyProductsCount() ?>" class="ks-para-card ks-homepage-disabled" data-validate='{"required":true}' />
+                        </div>
+                    </div>
+                    <div class="ks-home-edit-section">
+                        <div class="ks-home-edit-header">
+                            <div class="col-md-6 col-lg-8">
+                                <h5><?= $block->escapeHtml(__('Best Selling Products')) ?></h5>
+                            </div>
+                            <div class="col-md-6 col-lg-4 text-right">
+                                <label class="ks-switch">
+                                    <?php if ($ksSellerConfigData->getKsShowBestProducts()): ?>
+                                        <input class="ks-best-checkbox ks-homepage-disabled" name="ks_show_best_products" type="checkbox" checked>
+                                    <?php else: ?>
+                                        <input class="ks-best-checkbox ks-homepage-disabled" name="ks_show_best_products" type="checkbox">
+                                    <?php endif; ?>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="ks-best-content col-md-12">
+                            <p class="ks-required"><?= $block->escapeHtml(__('Best Selling Products Text')) ?></p>
+                            <input type="text" name="ks_best_products_text" value="<?= $ksSellerConfigData->getKsBestProductsText() ?>" class="ks-para-card ks-homepage-disabled" data-validate='{"required":true}' />
+                            <p class="ks-required"><?= $block->escapeHtml(__('Best Selling Products Count')) ?></p>
+                            <input type="number" min="1" max="20" name="ks_best_products_count" value="<?= $ksSellerConfigData->getKsBestProductsCount() ?>" class="ks-para-card ks-homepage-disabled" data-validate='{"required":true}' />
+                        </div>
+                    </div>
+                    <div class="ks-home-edit-section border-0">
+                        <div class="ks-home-edit-header">
+                            <div class="col-md-6 col-lg-8">
+                                <h5><?= $block->escapeHtml(__('Most Discounted Products')) ?></h5>
+                            </div>
+                            <div class="col-md-6 col-lg-4 text-right">
+                                <label class="ks-switch">
+                                    <?php if ($ksSellerConfigData->getKsShowDiscountProducts()): ?>
+                                        <input class="ks-discount-checkbox ks-homepage-disabled" name="ks_show_discount_products"  type="checkbox" checked>
+                                    <?php else: ?>
+                                        <input class="ks-discount-checkbox ks-homepage-disabled" name="ks_show_discount_products" type="checkbox">
+                                    <?php endif;?>
+                                    <span class="ks-slider ks-round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="ks-discount-content col-md-12">
+                            <p class="ks-required">
+                                <?= $block->escapeHtml(__('Most Discounted Products Text')) ?></p>
+                            <input type="text" name="ks_discount_products_text" value="<?= $ksSellerConfigData->getKsDiscountProductsText() ?>" class="ks-para-card ks-homepage-disabled" data-validate='{"required":true}' />
+                            <p class="ks-required">
+                                <?= $block->escapeHtml(__('Most Discounted Products Count')) ?></p>
+                            <input type="number" min="1" max="20" name="ks_discount_products_count" value="<?= $ksSellerConfigData->getKsDiscountProductsCount() ?>" class="ks-para-card ks-homepage-disabled" data-validate='{"required":true}' />
+                        </div>
+                    </div>
+                    <div class="border-0">
+                        <div class="ks-home-footer-action ks-profile-footer">
+                            <div class="ks-profile-action" style="display: none;">
+                                <button name="submit" type="submit" class="ks-action ks-action-save">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>    
+            </div>
+            <div class="ks-upload-banner-popup ks-db-popup-modal" style="display: none;">
+                <div class="wrapper">
+                    <div class="modal ks-db-modal">
+                        <div class="modal-overlay modal-toggle ks-db-modal-overlay"></div>
+                        <div class="modal-wrapper modal-transition ks-db-modal-wrapper">
+                            <div class="modal-header ks-db-modal-header">
+                                <button class="modal-close modal-toggle ks-banner-modal-close"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/close-btn.svg') ?>" class="" /></button>
+                            </div>
+                            <div class="modal-body ks-db-modal-body">
+                                <div class="modal-content ks-db-modal-content">
+                                    <form action="<?php echo $block->getBaseUrl().'multivendor/sellerprofile/bannersave/' ?>" class="ks-add-banner-form" 
+                                        enctype="multipart/form-data" 
+                                        name="ks-add-banner-form" 
+                                        id="ks-add-banner-form" 
+                                        method="post" 
+                                        data-mage-init='{"validation":{}}'
+                                        accept-charset="utf-8">
+                                        <div class="">
+                                            <input type="hidden" name="ks-seller-id" value="<?= $block->getKsSellerId() ?>" >
+                                            <input type="hidden" name="id" value="" class="ks-para-card ks-banner-id" />
+                                            <div class="ks-file-upload-parent">
+                                                <label class="ks-popup-label pl-3 ks-required"><?= $block->escapeHtml(__('Upload Image')) ?></label>
+                                                <div class="floating-label-group ks_form-group pl-3 ks-file-upload-select">
+                                                    <div id="ks-upload-file-btn-homepage" class="ks-file-upload-select-btn"><img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/upload-icon.svg') ?>" alt="ks-upload-icon" class="img-fluid"></div>
+                                                    <div class="ks-file-select-name" id="ks-selected-file">No file chosen...</div> 
+                                                    <input type="file" name="ks-banner-upload" id="ks-banner-upload" data-validate='{"validate-filesize":true}' class="ks-file-upload-input" accept="image/png, image/jpeg">
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="floating-label-group ks_form-group">
+                                                    <label class="floating-label">Title</label>
+                                                    <input type="text" name="ks-title" maxlength="20" class="ks_form-control ks-title" />
+                                                    <div class="ks-form-field-note">
+                                                        <span><?= $block->escapeHtml(__('Allowed characters: Maximum-20')) ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="floating-label-group ks_form-group">
+                                                    <label class="floating-label">Text</label>
+                                                    <input type="text" name="ks-description" maxlength="25" class="ks_form-control ks-text" form="ks-add-banner-form" />
+                                                    <div class="ks-form-field-note">
+                                                        <span><?= $block->escapeHtml(__('Allowed characters: Maximum-25')) ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 ks-profile-footer p-0 ml-auto width-fit-content">
+                                                <input type="submit" class="ks-action-save ks-action mr-0" value="Apply">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+ 

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-frontend-style.css"/>
+        <css src="Ksolves_MultivendorMarketplace::css/ks-frontend-calculate-style.css" />
+        <css src="Ksolves_MultivendorMarketplace::css/owl-carousel-slider/owl.carousel.css"/>
+        <script src="Ksolves_MultivendorMarketplace::js/favouriteseller/ks-add-to-favourite.js"/>
+        <script src="Ksolves_MultivendorMarketplace::js/price-comparison/ks-add-to-cart.js"/>
+    </head>
+    <body>
+        <referenceContainer name="product.info.main">
+            <block class="Ksolves\MultivendorMarketplace\Block\FavouriteSeller\KsShowData" name="ks_add_to_favourite" template="Ksolves_MultivendorMarketplace::favouriteseller/seller/ks_add_to_favourite.phtml" after="product.info.description" />
+        </referenceContainer>
+        <referenceContainer name="product.info.extrahint">
+            <block class="Ksolves\MultivendorMarketplace\Block\Report\KsReportProduct" cacheable="false" name="ks_report_products_form" template="Ksolves_MultivendorMarketplace::report/report_product_form.phtml" after="product.info.description" ifconfig="ks_marketplace_report/ks_report_product/ks_report_product_enable"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Ksolves\MultivendorMarketplace\Block\Report\KsReportSeller" cacheable="false" name="ks_report_seller_form" template="Ksolves_MultivendorMarketplace::report/report_seller_form.phtml" after="-" ifconfig="ks_marketplace_report/ks_report_seller/ks_report_seller_enable"/>
+        </referenceContainer>
+
+        <!-- <referenceContainer name="product.info.price">
+            <block class="Ksolves\MultivendorMarketplace\Block\PriceComparison\KsPriceComparison" name="ks_multivendormarketplace_price_range" template="Ksolves_MultivendorMarketplace::price-comparison/ks_price_range.phtml">
+            </block>
+        </referenceContainer> -->
+
+        <!-- <referenceContainer name="content">
+            <block class="Ksolves\MultivendorMarketplace\Block\PriceComparison\KsPriceComparison" name="ks_multivendormarketplace_price_comparsion_grid" template="Ksolves_MultivendorMarketplace::price-comparison/ks_price_comparison_list.phtml" after="product.info.media">
+                <block class="Ksolves\MultivendorMarketplace\Block\PriceComparison\KsPriceComparisonReportSeller" name="ks_price_comparsion_report_seller" template="Ksolves_MultivendorMarketplace::price-comparison/ks_price_comparison_report_seller.phtml"/>
+            </block>
+        </referenceContainer> -->
+         <!--  Link provide in Product Page to Locate Seller(SellerLocator) -->
+        <referenceContainer name="product.info.main">
+            <block class="Ksolves\MultivendorMarketplace\Block\Frontend\SellerLocator\KsSellerLocatorProductPageView" name="custom.text" template="Ksolves_MultivendorMarketplace::seller-locator/ks_sellerlocator_productpage_view.phtml" after="-" ifconfig="ks_marketplace_seller_locator/ks_seller_locator/ks_seller_locator_enable"/>
+        </referenceContainer>
+        <referenceBlock name="catalog.product.related">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ksolves_MultivendorMarketplace::product/list/ks-items.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="product.info.upsell">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ksolves_MultivendorMarketplace::product/list/ks-items.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

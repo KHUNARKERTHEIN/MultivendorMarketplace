@@ -1,0 +1,121 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var \Ksolves\MultivendorMarketplace\Block\Order\Invoice\View\CommentsHistory */
+$invoice = $block->getKsInvoice();
+$ksComments = $block->getKsComments();
+?>
+
+<!-- order total section start -->
+<form class="entry-edit form-inline" id="invoice_history_section">
+    <div class="invoice_history_block w-100" id="invoice_history_block">
+        <div><input type="hidden" name="id" value="<?= $invoice->getId()?>"></div>
+        <div id="comments_block" class="edit-order-comments">
+            <div class="ks-field-full-width">
+                <label for="history_comment"><?= $block->escapeHtml(__('Comment Text')) ?></label>
+                <div>
+                    <textarea name="comment[comment]"
+                    class="ks-control-feild"
+                    rows="3"
+                    cols="5"
+                    id="history_comment"></textarea>    
+                </div>
+            </div>
+        </div>
+        <?php if($block->ksCheckNotesAndNotifyInvoice() && $invoice->getKsApprovalStatus()!=2): ?>
+        <div class="order-history-comments-options mt-4">
+            <?php if ($block->canKsSendCommentEmail()): ?>
+                <div>
+                    <input name="comment[is_customer_notified]"
+                    type="checkbox"
+                    id="history_notify"
+                    value="1" />
+                    <span for="history_notify"><?= $block->escapeHtml(__('Notify Customer by Email')) ?></span>
+                </div>
+            <?php endif; ?>
+            <div>
+                <input name="comment[is_visible_on_front]"
+                type="checkbox"
+                id="history_visible"
+                value="1" />
+                <span for="history_visible"> <?= $block->escapeHtml(__('Visible on Storefront')) ?></span>
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="order-history-comments-actions mt-4">
+           <button class="ks-action-btn ks-secondry" id="comment-invoice"><?= $block->escapeHtml(__('Submit Comment')) ?></button>
+        </div>
+        <?php  if($invoice->getKsApprovalStatus()): ?>
+        <ul class="ks-order-status-list mt-5">
+            <?php foreach ($ksComments as  $ksComment): ?>
+                <li>
+                    <span class="note-list-date pr-3">
+                        <?= /* @noEscape */ $block->formatDate($ksComment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                    </span>
+                    <span class="note-list-time pr-3">
+                        <?= /* @noEscape */ $block->formatTime($ksComment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                    </span>
+                    <span class="note-list-customer pl-3">
+                    <?= $block->escapeHtml(__('Customer')) ?>
+                    <?php if ($ksComment->getIsCustomerNotified()): ?>
+                        <span class="font-weight-bold note-list-customer-notified"><?= $block->escapeHtml(__('Notified')) ?></span>
+                        <?php else: ?>
+                            <span class="note-list-customer-not-notified font-weight-bold">
+                                <?= $block->escapeHtml(__('Not Notified')) ?>
+                            </span>
+                        <?php endif; ?>
+                    </span>
+                    <div class="note-list-comment font-12">
+                        <?= $block->escapeHtml($ksComment->getComment(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php else:?>
+            <ul class="ks-order-status-list mt-5">  
+                <?php if($ksComments->getKsCustomerNote()):?>                                 
+                <li>
+                    <span class="note-list-date pr-3">
+                        <?= /* @noEscape */ $block->formatDate($ksComments->getKsCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                    </span>
+                    <span class="note-list-time pr-3">
+                        <?= /* @noEscape */ $block->formatTime($ksComments->getKsCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+                    </span>
+                    <span class="note-list-customer pl-3">
+                        <?= $block->escapeHtml(__('Customer')) ?>
+                        <?php if ($ksComments->getKsCustomerNoteNotify()): ?>
+                        <span class="font-weight-bold note-list-customer-notified"><?= $block->escapeHtml(__('Notified')) ?></span>
+                        <?php else: ?>
+                            <span class="note-list-customer-not-notified font-weight-bold">
+                                <?= $block->escapeHtml(__('Not Notified')) ?>
+                            </span>
+                        <?php endif; ?>
+                    </span>
+                    <div class="note-list-comment font-12">
+                        <?= $block->escapeHtml($ksComments->getKsCustomerNote(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+                    </div>
+                </li>
+                <?php endif; ?>                           
+            </ul>                    
+        <?php endif; ?>
+    </div>
+</form>
+<!-- order total section end -->
+
+<script type="text/x-magento-init">
+        {
+            "*": {
+            "Ksolves_MultivendorMarketplace/js/sales/invoice/invoiceComment": {
+            "invoice_id": "<?php echo $invoice->getId(); ?>"
+        }
+    }
+}
+</script>

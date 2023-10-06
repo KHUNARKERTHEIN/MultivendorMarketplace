@@ -1,0 +1,78 @@
+<!--
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+-->
+<!--@subject A Product Attribute Has Been Assigned @-->
+<!--@vars {
+"var ks-seller-name":"Seller name",
+"var ks-product-attribute-name":"Attribute name",
+"var ks-attribute-code":"Attribute Code",
+"var ks-required" : "Required",
+"var ks-system" :"System",
+"var ks-visible" : "Visible",
+"var ks-scope" : "Scope",
+"var ks-searchable" : "Searchable",
+"var ks-use-layer-navigation" : "Use in Layered Navigation",
+"var ks-comparable" : "Comparable",
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL",
+"var this.getUrl($store,'customer/account/createPassword/',[_query:[id:$customer.id,token:$customer.rp_token],_nosid:1])":"Password Reset URL",
+"var ks_seller_email":"Seller Email"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+	<tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %ks_seller_name," ks_seller_name=$ks-seller-name}}</p>
+        </td>
+    </tr>
+
+    <tr class="email-summary">
+        <td>
+            {{trans "I would like to inform you that, a product attribute has been assigned to you."}}
+        </td>   	
+    </tr>
+
+	<tr class="email-information">
+        <td>
+            <br>
+            <p>{{trans "Here is the summary of the same:"}}</p>
+            <ul>
+                <li><strong>{{trans "Attribute Code:"}}</strong> {{var ks-attribute-code}}</li>
+                <li><strong>{{trans "Default label:"}}</strong> {{var ks-product-attribute-name}}</em></li>
+                <li><strong>{{trans "Required:"}}</strong> {{var ks-required}}</em></li>
+                <li><strong>{{trans "System:"}}</strong> {{var ks-system}}</em></li>
+                <li><strong>{{trans "Visible:"}}</strong> {{var ks-visible}}</em></li>
+                <li><strong>{{trans "Scope:"}}</strong> {{var ks-scope}}</em></li>
+                <li><strong>{{trans "Searchable:"}}</strong> {{var ks-searchable}}</em></li>
+                <li><strong>{{trans "Use in Layered Navigation:"}}</strong> {{var ks-use-layer-navigation}}</em></li>
+                <li><strong>{{trans "Comparable:"}}</strong> {{var ks-comparable}}</em></li>
+            </ul>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <p>{{trans "To sign in to our site, use these credentials on the <a href="%ks_customer_url">My Account</a> page to login into seller dashboard." ks_customer_url=$this.getUrl($store,'customer/account/',[_nosid:1])
+        |raw}}</p>
+            <ul>
+                <li><strong>{{trans "Email:"}}</strong> {{var ks_seller_email}}</li>
+                <li><strong>{{trans "Password:"}}</strong> <em>{{trans "Password you set when creating account"}}</em></li>
+            </ul>
+        </td>
+    </tr>
+    <p>
+        {{trans
+            'Forgot your account password? Click <a href="%ks_reset_url">here</a> to reset it.' ks_reset_url="$this.getUrl($store,'customer/account/forgotpassword/',[_query:[id:$customer.id,token:$customer.rp_token],_nosid:1])"
+        |raw}}
+    </p>
+    <p>{{trans "Thank You"}}</p>
+</table>
+{{template config_path="design/email/footer_template"}}

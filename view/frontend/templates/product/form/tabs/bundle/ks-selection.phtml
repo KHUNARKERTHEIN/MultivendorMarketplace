@@ -1,0 +1,142 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\Bundle\KsSelection */
+?>
+<script id="bundle-option-selection-box-template" type="text/x-magento-template">
+    <table class="admin__control-table ks-selected-option-table control-table table ks-product-table" data-role="bundle-product-grid">
+        <thead>
+            <tr class="headings">
+                <th class="col-draggable"></th>
+                <th class="col-default"><?= $block->escapeHtml(__('Default')) ?></th>
+                <th class="col-name"><?= $block->escapeHtml(__('Name')) ?></th>
+                <th class="col-sku"><?= $block->escapeHtml(__('SKU')) ?></th>
+                <?php if ($block->getCanReadPrice() !== false): ?>
+                    <th class="col-price price-type-box"><?= $block->escapeHtml(__('Price')) ?></th>
+                    <th class="col-price price-type-box"><?= $block->escapeHtml(__('Price Type')) ?></th>
+                <?php endif; ?>
+                <th class="col-qty"><?= $block->escapeHtml(__('Default Quantity')) ?></th>
+                <th class="col-uqty qty-box"><?= $block->escapeHtml(__('User Defined')) ?></th>
+                <th class="col-actions"></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</script>
+
+<script id="bundle-option-selection-row-template" type="text/x-magento-template">
+    <tr class="bundle-option-selection-table" data-role="row">
+        <td class="col-draggable">
+            <span data-role="draggable-selection-handle" class="draggable-handle ks-draggable-handle"></span>
+            <input type="hidden"
+                   id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_id<%- data.index %>"
+                   name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][selection_id]"
+                   value="<%- data.selection_id %>"/>
+            <input type="hidden"
+                   name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][option_id]"
+                   value="<%- data.option_id %>"/>
+            <input type="hidden"
+                   class="product"
+                   name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][product_id]"
+                   value="<%- data.product_id %>" data-role="id"/>
+            <input type="hidden"
+                   id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_<%- data.index %>_is_delete"
+                   name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][delete]"
+                   value=""
+                   class="delete"/>
+            <input class="input-text required-entry validate-zero-or-greater"
+               type="hidden"
+               data-role="position"
+               name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][position]"
+               value="<%- data.position %>"/>
+        </td>
+        <td class="col-default">
+            <input
+                type="<%- data.option_type %>"
+                class="default"
+                id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_<%- data.index %>_is_default"
+                name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][is_default]"
+                value="<%- data.is_default %>"
+            <% if (data.is_default == 1) { %> checked="checked" <% } %>
+            <%- data.is_default %> onclick="this.value = this.checked ? 1 : 0"
+            />
+        </td>
+        <td class="col-name"><%- data.name %></td>
+        <td class="col-sku"><%- data.sku %></td>
+        <?php if ($block->getCanReadPrice() !== false): ?>
+            <td class="col-price price-type-box">
+                <input id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_<%- data.index %>_price_value"
+                       class="input-text required-entry validate-zero-or-greater"
+                       type="text"
+                       name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][selection_price_value]"
+                       value="<%- data.selection_price_value %>"
+                    <?php if ($block->getCanEditPrice() === false): ?>
+                        disabled="disabled"
+                    <?php endif; ?>/>
+            </td>
+            <td class="col-price price-type-box">
+                <select
+                    name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][selection_price_type]"
+                    id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_<%- data.index %>_price_type"
+                    class="select select-product-option-type required-option-select"
+                    title="">
+                    <% if (data.selection_price_type == 0) { %>
+                    <option selected value="0">Fixed</option>
+                    <option value="1">Percent</option>
+                    <% } else if (data.selection_price_type == 1) { %>
+                    <option value="0">Fixed</option>
+                    <option selected value="1">Percent</option>
+                    <% } else {%>
+                    { %>
+                    <option selected value="0">Fixed</option>
+                    <option value="1">Percent</option>
+                    <% } %>
+                </select>
+                <div><?= $block->getCheckboxScopeHtml() ?></div>
+            </td>
+        <?php else: ?>
+            <input type="hidden"
+                   id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_<%- data.index %>_price_value"
+                   name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][selection_price_value]" value="0" />
+            <input type="hidden"
+                   id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_<%- data.index %>_price_type"
+                   name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][selection_price_type]" value="0" />
+            <?php if ($block->isUsedWebsitePrice()): ?>
+                <input type="hidden"
+                       id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_<%- data.index %>_price_scope"
+                       name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][default_price_scope]" value="1" />
+            <?php endif; ?>
+        <?php endif; ?>
+        <td class="col-qty">
+            <input class="input-text required-entry validate-greater-zero-based-on-option validate-zero-or-greater"
+                   type="text"
+                   name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][selection_qty]"
+                   value="<%- data.selection_qty %>" />
+        </td>
+        <td class="col-uqty qty-box">
+            <input type="checkbox"
+                   class="is-user-defined-qty"
+                   name="bundle_options[bundle_options][<%- data.parentIndex %>][bundle_selections][<%- data.index %>][selection_can_change_qty]"
+                   value="<%- data.selection_can_change_qty %>"
+            <% if (data.selection_can_change_qty == 1) { %> checked="checked" <% } %>
+            <%- data.selection_can_change_qty %> onclick="this.value = this.checked ? 1 : 0"
+            />
+        </td>
+        <td data-column="actions" class="col-actions ks-col-delete">
+            <button
+                type="button"
+                class="action-delete"
+                id="<?= $block->escapeHtmlAttr($block->getFieldId()) ?>_id_<%- data.index %>_delete"
+                data-role="delete"></button>
+        </td>
+    </tr>
+</script>
+

@@ -1,0 +1,36 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsEarningCalculator */
+?>
+<div class="ks-commission-field-section">
+    <?php if ($block->getKsProduct()->getTypeId() != 'bundle' && $block->getKsProduct()->getTypeId() != 'grouped'): ?>
+    <div id="ks_commission_fields">
+        <div class="ks-commission-control">
+            <label><?= $block->escapeHtml(__('Marketplace Commission'))?>:</label>
+            <span><?= $block->escapeHtml(__($block->getKsCurrentCurrency()))?></span>
+            <input type="text" name="ks_cost" class="ks_cost" disabled="true" />
+        </div>
+        <div class="ks-commission-control">
+            <label><?= $block->escapeHtml(__('Your Earning'))?>:</label>
+            <span><?= $block->escapeHtml(__($block->getKsCurrentCurrency()))?></span>
+            <input type="text" name="ks_earning" class="ks_your_earning" disabled="true" />
+        </div>
+    </div>
+    <div id="ks_earning_calculator_modal" data-mage-init='{"ksEarningCalculatorDialog":{}}' style="display: none;">
+        <?= $block->getLayout()
+            ->createBlock('Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsEarningCalculator')
+            ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/ks-earning-calculator.phtml')->toHtml();?>
+        </div>
+        <a href="#" id="ks_earning_calculator_link">
+            <?= $block->escapeHtml(__('Earnings Calculator')) ?>
+        </a>
+    <?php endif ?>
+</div>

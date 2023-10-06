@@ -1,0 +1,196 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+/** @var $block \Ksolves\MultivendorMarketplace\Block\Product\Form\Tabs\KsEarningCalculator */
+?>
+<?php $ksRule = $block->ksGetRule(); ?>
+
+<div class="ks-earning-calc-modal-div" data-mage-init='{"ksEarningCalculator":{}}'>
+<div class="ks-calculator-model-field">
+
+    <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span><?= $block->escapeHtml(__("Product Price")) ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control" form='ks_product_form'>
+                <input type="text"
+                   name="ksPrice"
+                   id="ksPrice"
+                   value=""
+                   class="ksPrice ks-control-feild"
+                   title="Product Price" />
+            </div>
+    </div>
+    <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span><?= $block->escapeHtml(__("Tax")) ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control ks-sign-div" form='ks_product_form'>
+                <input type="text"
+                   name="ksTax"
+                   value=""
+                   class="ksTax ks-tax-input ks-control-feild"
+                   title="Tax" />
+                <div id="ks-doller-button" class="ks-tax">
+                    <input type="radio" name="ks-tax" id="ks-tax-fixed" class="ks_tax" value="fixed"  checked="checked">
+                    <label class="ks-label-calculate" for="ks-tax-fixed">Fixed</label>
+                </div> 
+                <div id="ks-percent-button"  class="ks-tax ks-price-type-button">
+                    <input type="radio" name="ks-tax" class="ks_tax percentage" id="ks-tax-percent"  value="percent">
+                    <label class="ks-label-calculate" for="ks-tax-percent">Percent</label>
+                </div>
+            </div>
+    </div>
+    <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span><?= $block->escapeHtml(__("Grand Total")) ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control" form='ks_product_form'>
+                <input type="text"
+                   name="ks_grand_total"
+                   disabled=true 
+                   value=""
+                   class="ksGrandTotal ks-control-feild ks-label-fields"
+                   title="Grand Total" />
+            </div>
+    </div>
+    <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span><?= $block->escapeHtml(__("Calculation Based On")) ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control" form='ks_product_form'>
+                <select
+                   name="ks_calculation_baseon"
+                   value="<?= $ksRule['ks_calculation_baseon']; ?>"
+                   class=" ks_calculation_base_on admin__control-select w-100" 
+                   title="Calculation Based On"
+                   disabled=true >
+                  <?php foreach ($block->ksGetCalculationBaseSource() as $key => $value): ?>
+                      <option value="<?php echo $value['value']; ?>" <?php if ($ksRule['ks_calculation_baseon'] == $value['value']) {
+                            echo "selected='selected'";
+                                     } ?>><?= $value['label'] ?></option>
+                  <?php endforeach; ?>
+                  
+                </select>
+
+            </div>
+    </div>
+    <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span><?= $block->escapeHtml(__("Applied Price")) ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control" form='ks_product_form'>
+                 <input type="text"
+                   name="ks_applied_price"
+                   value=""
+                   disabled=true 
+                   class="ksAppliedPrice ks-control-feild ks-label-fields"
+                   title="Applied Price" />
+            </div>
+    </div>
+    <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span><?= $block->escapeHtml(__("Commission Value")) ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control ks-sign-div" form='ks_product_form'>
+                <input type="text"
+                   name="ks_commission_value"
+                   value="<?php echo $ksRule['ks_commission_value']; ?>"
+                   class="ks_commission_value ks-control-feild ks-tax-input"
+                   title="Commission Value"
+                   disabled=true />
+                <div id="ks-doller-button" class="ksCommissionValue">
+                    <input id="ks-commission-fixed" disabled=true type="radio" name="ks-commission-value" class="fixed" value="fixed"  <?php if ($ksRule['ks_commission_type'] == 'to_fixed') { 
+                      echo "checked='checked'"; }?>>
+                    <label class="ks-label-calculate" for="ks-commission-fixed">Fixed</label>
+                </div> 
+                <div id="ks-percent-button"  class="ksCommissionValue ks-price-type-button">
+                    <input disabled=true id="ks-commission-percent" type="radio" name="ks-commission-value" class="percentage"  value="percent" <?php if ($ksRule['ks_commission_type'] == 'to_percent') {
+                      echo "checked='checked'";}?>>
+                    <label class="ks-label-calculate" for="ks-commission-percent">Percent</label>
+                </div>
+            </div>
+    </div>
+    <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span><?= $block->escapeHtml(__("Commission Cost")) ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control" form='ks_product_form'>
+                 <input type="text"
+                   name="ks_commission_cost"
+                   value=""
+                   disabled=true 
+                   class="ks_commission_cost ks-control-feild ks-label-fields"
+                   title="Commission Cost" />
+            </div>
+    </div>
+    <div class="ks-form-field">
+            <div class="ks-form-field-label">
+                <label>
+                    <span><?= $block->escapeHtml(__("Your Earning")) ?></span>
+                </label>
+            </div>
+            <div class="ks-field-control" form='ks_product_form'>
+                <input type="text"
+                   name="ks_your_earning"
+                   disabled=true 
+                   value=""
+                   class=" ks_earning ks-control-feild ks-label-fields"
+                   title="Your Earning" />
+            </div>
+    </div>
+</div>
+<div id="canvas-holder" class="ks-calculator-chart">
+        <canvas id="chart-area" class="ks-calc-canvas"></canvas>
+    </div>
+</div>
+<script>
+    require([
+    'jquery',
+    'chartJs',],
+    function ($, Chart) {
+    window.config = {
+        type: 'pie',
+        data: {
+            datasets: [{
+                backgroundColor: [
+                    '#377AC2',
+                    '#e67432',
+                ],
+                label: 'Dataset 1'
+            }],
+            labels: [
+                'Seller\'s Earning',
+                'Commission',
+            ]
+        },
+        options: {
+            responsive: true
+        }
+    };
+    var ksCtx = document.getElementById('chart-area').getContext('2d');
+    window.myPie = new Chart(ksCtx, window.config);
+    window.currency = '<?php echo $block->getKsCurrentCurrency(); ?>';
+ });
+</script>

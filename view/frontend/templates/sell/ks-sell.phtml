@@ -1,0 +1,409 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * Seller Marketplace template
+ *
+ * @var $block \Ksolves\MultivendorMarketplace\Block\SellerProfile\KsSubmitQuery
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$ksHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellDataHelper');
+$ksSellerHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerDashboardMyProfileHelper');
+$ksFavouriteSellerHelper = $this->helper(\Ksolves\MultivendorMarketplace\Helper\KsFavouriteSellerHelper::class);
+$ksSellHelper = $this->helper('Ksolves\MultivendorMarketplace\Helper\KsSellerHelper');
+$ksStoreId = $block->getKsStoreId();
+$ksSubmitQuery = $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_submit_query');
+$ksBannerUrl = $ksHelper->getKsBannerUrl();
+$ksBenefitsPictureUrl = $ksHelper->getKsBenefits();
+$ksHowItWorksPictureUrl = $ksHelper->getKsBenefits();
+$ksBaseUrl = $ksHelper->getBaseUrl();
+//Check favourite seller module enabled
+$ksEnable = $ksFavouriteSellerHelper->isKsEnabled();
+$ksCustomerId = $ksFavouriteSellerHelper->getKsCustomerId();
+
+$ksFaq = $ksHelper->getKsFaq();
+$ksWhyToSell = $ksHelper->getKsWhyToSell();
+$ksArray = [];
+if (!empty($ksWhyToSell)) {
+    foreach ($ksWhyToSell as $key => $ks_row) {
+        $ksArray[] = array_merge($ks_row);
+    }
+} else {
+    $ksArray = [];
+}
+$ksBenefitsCollection = $block->getKsBenefitsCollection();
+$ksHowItWorksCollection = $block->getKsHowItWorksCollection();
+?>
+
+<main class="ks-page-content">
+    <div class="ks-banner-section" id="ks-home">
+        <div class="ks-sell-banner-img">
+            <?php if ($ksBannerUrl): ?>
+                <img src="<?= $ksBannerUrl ?>" alt="Ks-Banner-Img">
+            <?php else: ?>
+                <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/sell/sell-banner.jpg') ?>" alt="Ks-Banner-Img"> 
+            <?php endif; ?>
+        </div>
+        <div class="ks-banner-item ks-d-flex ks-align-items-center ks_container">
+            <div class="ks_container">
+                <div class="ks_row ks-align-items-center">
+                    <div class="ks_col-xl-6 ks_col-lg-5 ks_col-md-6 ks_col-sm-5">
+                        <div class="ks-banner-content-box mb-sm-2">
+                            <div class="ks-banner-content">
+                                <h1><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_open_marketplace_shop_text'); ?></h1>
+                                <?php if ($ksHelper->getConfig('ks_marketplace_login_and_registration/ks_marketplace_login_and_registration_settings/ks_allow_seller_registration')) : ?>
+                                    <?php if ($ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_start_selling_button_text')): ?>
+                                        <?php if($ksSellHelper->ksIsSeller() == 1): ?>
+                                            <a href="<?= $ksBaseUrl.'multivendor/sellerprofile/homepage/' ?>" class="ks-layput-3-btn"><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_start_selling_button_text'); ?></a>
+                                        <?php else: ?>
+                                            <a href="<?= $ksBaseUrl.'customer/account/create/' ?>" class="ks-layput-3-btn"><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_start_selling_button_text'); ?></a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ks-why-to-sell-section ks-section-container">                        
+        <div class="ks-why-to-sell-area">
+            <div class="ks_container">
+                <div class="ks_row">
+                    <div class="ks_col-lg-12 ks-my-auto"> 
+                        <div class="ks-why-sell-features"> 
+                        <?php if (count($ksArray) == 1) { ?>
+                            <div class="ks-why-sell-1-features">
+                                <div class="ks-circles-wrapper">
+                                    <div class="ks-why-sell-dot ks-circle-xs-best">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-best"><?= $ksArray[0]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-circle ks-circle-lg">
+                                        <div class="ks-circle ks-circle-md">
+                                            <div class="ks-circle ks-circle-sm">
+                                                <span class="ks-why-to-sell-circle"><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_why_to_sell_text'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } elseif (count($ksArray) == 2) {
+                            ?> 
+                            <div class="ks-why-sell-2-features"> 
+                                <div class="ks-circles-wrapper">
+                                    <div class="ks-why-sell-dot ks-circle-xs-best">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-best"><?= $ksArray[0]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-why-sell-dot ks-circle-xs-customize-profile">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-prof"><?= $ksArray[1]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-circle ks-circle-lg">
+                                        <div class="ks-circle ks-circle-md">
+                                            <div class="ks-circle ks-circle-sm">
+                                                <span class="ks-why-to-sell-circle"><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_why_to_sell_text'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } elseif (count($ksArray) == 3) {
+                            ?> 
+                            <div class="ks-why-sell-3-features">
+                                <div class="ks-circles-wrapper">
+                                    <div class="ks-why-sell-dot ks-circle-xs-best">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-best"><?= $ksArray[0]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-why-sell-dot ks-circle-xs-ask-ques">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-ques"><?= $ksArray[1]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-why-sell-dot ks-circle-xs-customize-profile">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-prof"><?= $ksArray[2]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-circle ks-circle-lg">
+                                        <div class="ks-circle ks-circle-md">
+                                            <div class="ks-circle ks-circle-sm">
+                                                <span class="ks-why-to-sell-circle"><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_why_to_sell_text'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } elseif (count($ksArray) == 4) {
+                            ?>
+                            <div class="ks-why-sell-4-features">
+                                <div class="ks-circles-wrapper">
+                                    <div class="ks-why-sell-dot ks-circle-xs-best">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-best"><?= $ksArray[0]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-why-sell-dot ks-circle-xs-connect-social-profile">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-conn"><?= $ksArray[1]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-why-sell-dot ks-circle-xs-ask-ques">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-ques"><?= $ksArray[2]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-why-sell-dot ks-circle-xs-customize-profile">
+                                        <div class="ks-circle-xs"></div>
+                                        <div class="ks-why-sell-dot-content ks-why-sell-dot-content-prof"><?= $ksArray[3]['whysell']; ?></div>
+                                    </div>
+                                    <div class="ks-circle ks-circle-lg">
+                                        <div class="ks-circle ks-circle-md">
+                                            <div class="ks-circle ks-circle-sm">
+                                                <span class="ks-why-to-sell-circle"><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_why_to_sell_text'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        <?php } elseif (count($ksArray) == 5) { ?>
+                            <div class="ks-circles-wrapper">
+                                <div class="ks-why-sell-dot ks-circle-xs-best">
+                                    <div class="ks-circle-xs"></div>
+                                    <div class="ks-why-sell-dot-content ks-why-sell-dot-content-best"><?= $ksArray[0]['whysell']; ?></div>
+                                </div>
+                                <div class="ks-why-sell-dot ks-circle-xs-add-products">
+                                    <div class="ks-circle-xs"></div>
+                                    <div class="ks-why-sell-dot-content ks-why-sell-dot-content-add"><?= $ksArray[1]['whysell']; ?></div>
+                                </div>
+                                <div class="ks-why-sell-dot ks-circle-xs-connect-social-profile">
+                                    <div class="ks-circle-xs"></div>
+                                    <div class="ks-why-sell-dot-content ks-why-sell-dot-content-conn"><?= $ksArray[2]['whysell']; ?></div>
+                                </div>
+                                <div class="ks-why-sell-dot ks-circle-xs-ask-ques">
+                                    <div class="ks-circle-xs"></div>
+                                    <div class="ks-why-sell-dot-content ks-why-sell-dot-content-ques"><?= $ksArray[3]['whysell']; ?></div>
+                                </div>
+                                <div class="ks-why-sell-dot ks-circle-xs-customize-profile">
+                                    <div class="ks-circle-xs"></div>
+                                    <div class="ks-why-sell-dot-content ks-why-sell-dot-content-prof"><?= $ksArray[4]['whysell']; ?></div>
+                                </div>
+                                <div class="ks-circle ks-circle-lg">
+                                    <div class="ks-circle ks-circle-md">
+                                        <div class="ks-circle ks-circle-sm">
+                                            <span class="ks-why-to-sell-circle"><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_why_to_sell_text'); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>      
+    <?php if(count($block->getKsSellerCollection()) != 0): ?>
+    <div class="ks-top-selling-section">
+        <div class="ks-top-seller-area ks-section-container">  
+            <div class="ks-top-selling-div">
+                <div class="ks-selling-product-main-heading">
+                    <div class="ks-selling-product-heading">
+                        <h2><?= $block->escapeHtml(__('Top Sellers')) ?></h2>
+                        <a href="<?php echo $block->getUrl('multivendor/sellerprofile/topsellers'); ?>" class="ks-view-all-btn" target="_blank"><?= $block->escapeHtml(__('View All')) ?></a>
+                    </div>
+                    <div class="ks-selling-card-div">
+                        <?php foreach ($block->getKsSellerCollection() as $ksItem): ?>
+                            <div class="ks_col-xs-6 ks_col-sm-6 ks_col-md-4 ks_col-lg-3 ks_col-xl-2">
+                                <div class="ks-selling-prod-card">
+                                    <!-- get seller profile redirect url -->
+                                    <?php $ksSellerId = $ksItem->getKsSellerId();
+                                        $ksStoreUrl = $block->getKsSellerProfileUrl($ksItem->getKsSellerId());
+                                        if ($ksStoreUrl) {
+                                            $ksActionUrl= $block->getUrl($ksStoreUrl);
+                                        } else {
+                                            $ksActionUrl = $block->getUrl('multivendor/sellerprofile/sellerprofile', ['seller_id' => $ksItem->getKsSellerId()]);
+                                        } 
+                                    ?>
+                                    <div class="ks-top-seller-heart">
+                                    <?php $ksSellerId = $ksItem->getKsSellerId(); ?>
+                                    <?php if ($ksEnable && $ksCustomerId && $ksCustomerId != $ksSellerId): ?>
+                                        <?php if ($ksFavouriteSellerHelper->isKsSellerAdded($ksCustomerId, $ksSellerId)): ?>
+                                            <a href="<?= $block->getUrl("multivendor/favouriteseller/save", ['sellerid' => $ksSellerId, 'customerid' => $ksCustomerId, '_secure' => $this->getRequest()->isSecure()])?>" class="ks-favourite action">
+                                                <span class="ks-favourite-blank-heart"></span>
+                                            </a>
+                                        <?php else: ?>
+                                            <?php $ksFavouriteSellerCollection = $ksFavouriteSellerHelper->getKsFavouriteSellerRemove($ksCustomerId, $ksSellerId); ?>
+                                            <?php foreach ($ksFavouriteSellerCollection as $ksId): ?>
+                                                <a href="<?= $block->getKsDeleteAction().'id/'.$ksId->getId();?>" class="ks-favourite action">
+                                                    <span class="ks-favourite-fill-heart"></span>
+                                                </a>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>   
+                                    <?php endif; ?>
+                                    </div>
+                                    <div class="ks-card-thum">
+                                        <a href="<?= $ksActionUrl; ?>" target="_blank">
+                                            <?php $ksStoreCollection = $ksSellerHelper->getKsSellerStoreCollection($ksItem->getKsSellerId(), $ksStoreId)->getFirstItem(); ?>
+                                            <?php if ($ksSellerBannerLogo = $ksStoreCollection->getKsStoreLogo()): ?>
+                                                <img src="<?= $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() ?>/ksolves/multivendor/<?= $ksSellerBannerLogo ?>" class="max-width-100" alt="ks-Top-Seller-Img"/>
+                                            <?php else: ?>
+                                                <img src="<?= $this->getViewFileUrl('Ksolves_MultivendorMarketplace::images/seller-profile/seller-store-logo.png') ?>" class="max-width-100" alt="ks-Top-Seller-Img">
+                                            <?php endif; ?> 
+                                        </a>
+                                    </div>
+                                    <div class="ks-card-body">
+                                        <?php $ksSellerCollection = $ksSellerHelper->getKsSellerCollection($ksItem->getKsSellerId())->getFirstItem() ?>
+                                        <a href="<?= $ksActionUrl; ?>" target="_blank" class="ks-card-title"><?= strlen($ksSellerCollection->getKsStoreName()) > 50 ? substr_replace($ksSellerCollection->getKsStoreName(), "...", 50) : $ksSellerCollection->getKsStoreName() ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </div>
+    <?php endif; ?>
+    <div class="ks-tabs-section">                            
+        <div class="ks-tabs ks-sell-tabs">
+            <?php if ($ksBenefitsCollection->getSize() != 0): ?>
+                <input type="radio" name="tab-btn" id="ks-tab-btn-1" data-tab="btn-1" value="">                
+            <?php endif; ?> 
+            <?php if ($ksHowItWorksCollection->getSize() != 0): ?>   
+                <input type="radio" name="tab-btn" id="ks-tab-btn-2" data-tab="btn-2" value="">            
+            <?php endif; ?>
+            <?php if (!empty($ksFaq)): ?>
+                <input type="radio" name="tab-btn" id="ks-tab-btn-3" data-tab="btn-3" value="">  
+            <?php endif; ?>
+            <div class="ks-sell-tab-link ks-section-container">
+                <?php if ($ksBenefitsCollection->getSize() != 0): ?>   
+                    <label for="ks-tab-btn-1" id="ks-tab-label-1"><?= $block->escapeHtml(__('Benefits')) ?></label>
+                <?php endif; ?> 
+                <?php if ($ksHowItWorksCollection->getSize() != 0): ?>   
+                
+                    <label for="ks-tab-btn-2" id="ks-tab-label-2"><?= $block->escapeHtml(__('How it works')) ?></label>
+                <?php endif; ?>
+                <?php if (!empty($ksFaq)): ?>
+                
+                    <label for="ks-tab-btn-3" id="ks-tab-label-3"><?= $block->escapeHtml(__('FAQs')) ?></label>
+                <?php endif; ?>
+            </div>
+            <div id="ks-content-1" class="ks-sell-tab-content ks-section-container">
+                <div class="ks-content-1-area">
+                    <?php
+                    foreach ($ksBenefitsCollection as $ksData) {
+                        ?>
+                    <div class="ks-content-1-card ks_col-xl-4 ks_col-md-4 ks_col-sm-12">   
+                        <div class="ks-card-thum">
+                        <?php if ($ksData->getKsPicture()): ?>
+                                <a href="#"><img src="<?= $ksBenefitsPictureUrl.$ksData->getKsPicture();  ?>" alt="Ks-Banner-Img"></a>
+                            <?php endif; ?>
+                        </div>
+                        <div class="ks-card-body">
+                            <a href="#" class="ks-card-title"><?= $ksData->getKsTitle(); ?></a>
+                            <p class="ks-card-info"><?= $ksData->getKsText(); ?></p>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>    
+            </div>
+            <div id="ks-content-2" class="ks-sell-tab-content">
+                <?php
+                    $ksCount = 0;
+                foreach ($ksHowItWorksCollection as $ksData) {
+                    $ksCount++;
+                    if ($ksCount%2 == 1) {
+                        ?>
+                    <div class="ks-content-2-area">
+                        <div class="ks-content-2-card">              
+                            <div class="ks-mr-3 ks-card-thum">
+                                <?php if ($ksData->getKsPicture()): ?>
+                                    <a href="#"><img src="<?= $ksHowItWorksPictureUrl.$ksData->getKsPicture();  ?>" alt="Ks-Banner-Img"></a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="ks-card-body">
+                                <a href="#" class="ks-card-title"><?= $ksData->getKsTitle(); ?></a>
+                                <p class="ks-card-info"><?= $ksData->getKsText(); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php } else {
+                        ?>
+                    <div class="ks-content-2-area ks-content-2-white-bg">
+                        <div class="ks-content-2-card">  
+                            <div class="ks-card-body ks-order-2">
+                                <a href="#" class="ks-card-title"><?= $ksData->getKsTitle(); ?></a>
+                                <p class="ks-card-info"><?= $ksData->getKsText(); ?></p>
+                            </div>            
+                            <div class="ks-order-1 ks-card-thum">
+                                <?php if ($ksData->getKsPicture()): ?>
+                                    <a href="#"><img src="<?= $ksHowItWorksPictureUrl.$ksData->getKsPicture();  ?>" alt="Ks-Banner-Img"></a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div> 
+                <?php } } ?>
+            </div>
+            <div id="ks-content-3" class="ks-sell-tab-content ks-section-container">
+                <div class="ks-content-3-area">
+                    <div id="ks-faq" class="ks-faq-body">
+                        <div class="ks-faq-header">
+                            <div class="ks-faq-list">
+                                <?php if (!empty($ksFaq)): ?>
+                                    <?php foreach ($ksFaq as $key => $ks_row) {
+                                        ?>
+                                    <div>
+                                        <details >
+                                            <summary ><?= $ks_row['question']; ?></summary>
+                                            <p class="ks-faq-content"><?= $ks_row['answer']; ?></p>
+                                        </details>
+                                    </div>
+                                    <?php } ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>                    
+        <?php if ($ksSubmitQuery): ?> 
+            <div class="ks-submit-form-section">                            
+                <div class="ks-submit-form-area ks_container">
+                    <div class="ks_row">
+                        <div class="ks_col-lg-12 ks-my-auto">
+                            <form id="ks-marketplace-contact-form" action="<?= $block->escapeUrl($block->getKsFormAction()) ?>" method="post" class="ks-marketplace-contact-form">
+                                <h1><?= $ksHelper->getConfig('ks_marketplace_promotion/ks_marketplace_promotion_page/ks_submit_query_text'); ?></h1>
+                                <fieldset class="ks-form-fieldset">
+                                    <field class="ks-marketplace-field">
+                                        <label class="ks-required-star"><?= $block->escapeHtml(__('Full Name')) ?></label><br>
+                                        <input name="ks-name" id="name" type="text" tabindex="1" required><br>
+                                    </field>
+                                    <field class="ks-marketplace-field">
+                                        <label class="ks-required-star"><?= $block->escapeHtml(__('Email')) ?></label><br>
+                                        <input name="ks-email" id="email" type="email" tabindex="2" required><br>
+                                    </field>
+                                    <field class="ks-marketplace-field">
+                                        <label class="ks-required-star"><?= $block->escapeHtml(__('Message')) ?></label><br>
+                                        <textarea name="ks-message" form="ks-marketplace-contact-form" id="message" tabindex="6" required maxlength="500"></textarea><br>
+                                    </field>
+                                    <button name="submit" type="submit" id="ks-marketplace-contact-submit"><?= $block->escapeHtml(__('Submit')) ?></button>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <?php endif; ?>  
+</main>

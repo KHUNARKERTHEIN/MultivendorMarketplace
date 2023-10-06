@@ -1,0 +1,45 @@
+<?php 
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+$ksFavHelper = $this->helper(\Ksolves\MultivendorMarketplace\Helper\ksFavouriteSellerHelper::class);
+$ksProductIds = $this->getKsProIds();
+$ksStoreId = $this->getKsStoreId();
+?>
+
+<table>
+  <tr style="background-color: #e0e0e0;">
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);"><p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px; font-weight: 600;">Product Name</p></td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);"><p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px; font-weight: 600;">Category</p></td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 2);"><p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px; font-weight: 600;">Product Description</p></td>
+    <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: middle;width: calc(100% / 4);"><p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px 20px;font-weight: 600;">Price</p></td>
+  </tr>
+
+  <?php foreach($ksProductIds as $ksProductId): ?>
+    <?php 
+    $ksProductDetails = $ksFavHelper->getKsProductDetails($ksProductId, $ksStoreId);
+    $ksPrice = $ksFavHelper->getKsCurrencySymbol($ksStoreId).number_format((float)($ksProductDetails['special_price']), 2);
+    $ksCatName = $ksFavHelper->getKsProductAllCatNames($ksProductId, $ksStoreId);
+    ?>
+    <tr style="background: #fff;">
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px 10px 5px 20px;"><?= $ksProductDetails['name'] ?></p>
+      </td>
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 2);">
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0; padding:5px;"><?= $ksCatName ?></p>
+      </td>
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px;"><?= $ksProductDetails['description'] ?></p>
+      </td>
+      <td style="text-align: center;font-size: 40px;line-height: 1.4;letter-spacing: 0.6px;vertical-align: top;width: calc(100% / 4);">
+        <p style="font-size: 15px;text-align: left;margin:0px 0 0;padding: 5px; margin-bottom: 10px;"><?= $ksPrice ?></p>
+      </td>
+    </tr>
+  <?php endforeach; ?>
+</table>

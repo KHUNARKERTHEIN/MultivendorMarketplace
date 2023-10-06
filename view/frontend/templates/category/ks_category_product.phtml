@@ -1,0 +1,271 @@
+<?php
+/**
+ * Ksolves
+ *
+ * @category  Ksolves
+ * @package   Ksolves_MultivendorMarketplace
+ * @author    Ksolves Team
+ * @copyright Copyright (c) Ksolves India Limited (https://www.ksolves.com/)
+ * @license   https://store.ksolves.com/magento-license
+ */
+
+/**
+ * @var $block \Ksolves\MultivendorMarketplace\Block\CategoryType\KsCategoryProductDetails
+ */
+$ksCollection = $block->getCategoryProductCollection();
+$ksProductVisibility = $block->getKsProductVisibility(); 
+?>
+
+<div class="content-area py-3 ks-category-product-grid ks-prod-category-tab">
+    <?= $block->getLayout()
+        ->createBlock('Magento\Framework\View\Element\Template')
+        ->setTemplate('Ksolves_MultivendorMarketplace::product/form/tabs/link-item/ks-custom-paging.phtml')
+        ->toHtml();?>
+
+    <div class="ks-record-found"><?= $ksCollection->getSize()." records found" ?></div>
+    <input type="hidden" class="ks-collection-size" value="<?= $ksCollection->getSize();?>" />
+    <div class="my-3 overflow-scroll ks-product-table-parent"> 
+        <div class="actions-toolbar">
+            <div class="primary">
+                <a href="#" class="action submit primary ks-search" title="<?php  echo __('Search') ?>"><?php echo __('Search') ?></a>
+                <a href="#" class="action submit primary ks-form-reset" title="<?php  echo __('Reset Filter') ?>"><?php echo __('Reset Filter') ?></a>
+            </div>
+        </div>
+        <table id="ks-product-table" class="ks-product-table ks-prod-category-table">
+            <thead>
+                <tr>
+                    <th><?= $block->escapeHtml(__("ID")) ?></th>
+                    <th><?= $block->escapeHtml(__("Name")) ?></th>
+                    <th><?= $block->escapeHtml(__("SKU")) ?></th>
+                    <th><?= $block->escapeHtml(__("Visibility")) ?></th>
+                    <th><?= $block->escapeHtml(__("Status")) ?></th>
+                    <th><?= $block->escapeHtml(__("Price")) ?></th>
+                    <th><?= $block->escapeHtml(__("Position")) ?></th>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <input type="text" name="ks_product_id" id="ks_product_id" class="w-auto-mob ks_product_id" value="<?= $block->getRequest()->getParam('ks_product_id') ?>">
+                    </td>
+                    <td>
+                        <input type="text" name="ks_name" id="ks_name" class="w-auto-mob ks_name" value="<?= $block->getRequest()->getParam('ks_name') ?>">
+                    </td>
+                    <td>
+                        <input type="text" name="ks_sku" id="ks_sku" class="w-auto-mob ks_sku" value="<?= $block->getRequest()->getParam('ks_sku') ?>">
+                    </td>
+                    <td>
+                        <select name="ks_visibility" id="ks_visibility" class="w-auto ks_visibility">
+                            <option value></option>
+                            <?php foreach($ksProductVisibility as $ksArray): ?>
+                                <option value="<?= $ksArray['value'] ?>"
+                                    <?php if ($block->getRequest()->getParam('ks_visibility') == $ksArray['value']) { ?> selected="selected" <?php } ?>>
+                                    <?= $ksArray['label']->getText() ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td>
+                        <select  name="ks_status" id="ks_status" class="w-auto ks_status">
+                            <option value></option>
+                            <option value="1" <?php if ($block->getRequest()->getParam('ks_status') == 1) { ?> selected="selected" <?php } ?> >
+                                    Enabled
+                            </option>
+                            <option value="2" <?php if ($block->getRequest()->getParam('ks_status') == 2) { ?> selected="selected" <?php } ?> >
+                                    Disabled
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" name="ks_price_from" id="ks_price_from" class="w-auto-mob ks_price_from" placeholder="From" value="<?= $block->getRequest()->getParam('ks_price_from') ?>">
+                        <input type="text" name="ks_price_to" form="ks-product-cat-form" id="ks_price_to" class="w-auto-mob ks_price_to" placeholder="To" value="<?= $block->getRequest()->getParam('ks_price_to') ?>">
+                    </td>
+                    <td>
+                        <input type="text" name="ks_position_from" id="ks_position_from" class="w-auto-mob ks_position_from" placeholder="From" value="<?= $block->getRequest()->getParam('ks_position_from') ?>">
+                        <input type="text" name="ks_position_to" id="ks_position_to" class="w-auto-mob ks_position_to" placeholder="To" value="<?= $block->getRequest()->getParam('ks_position_to') ?>">
+                    </td>  
+                </tr>
+            </thead>
+            <tbody id="ks-product-tbody" class="ks-product-tbody">
+                <?php if($ksCollection->getSize() > 0): ?>
+                    <?php foreach($ksCollection->getData() as $ksCol): ?>
+                        <?php $ksItem = $block->getProductCollectionByProductId($ksCol['entity_id']); ?>
+                        <tr class="ks-gridrow">
+                            <td>
+                                <p><?= $block->escapeHtml(__($ksItem->getId())) ?></p>
+                            </td>
+                            <td>
+                                <p><?= $block->escapeHtml(__($ksItem->getName())) ?></p>
+                            </td>
+                            <td>
+                                <p><?= $block->escapeHtml(__($ksCol['sku'])) ?></p>
+                            </td>
+                            <td>
+                                <p><?php foreach($ksProductVisibility as $ksArray): ?> 
+                                        <?= $ksItem->getVisibility() ==  $ksArray['value'] ? $block->escapeHtml(__($ksArray['label']->getText())) : "" ?>
+                                    <?php endforeach; ?></p>
+                            </td>
+                            <td>
+                                <p><?= $ksItem->getStatus() == 2 ? $block->escapeHtml(__("Disabled")) : $block->escapeHtml(__("Enabled")) ?></p>
+                            </td>
+                            <td>
+                                <p><?= $ksItem->getPrice() != null ? $block->getKsCurrentBaseCurrency().number_format($ksItem->getPrice(), 2) : "" ?></p>
+                            </td>
+                            <td>
+                                <input type="text" value="<?= $ksCol['position'] ?>" data-validate="{required:true}" autocomplete="off" readonly="readonly">
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr class="ks-gridrow">
+                        <td colspan="7" class="ks-product-category-message">
+                            <?= $block->escapeHtml(__("We couldn't find any records.")) ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            </tbody> 
+        </table>
+    </div>    
+</div>
+<script type="text/javascript">
+    require([
+    "jquery",
+    "mage/url"
+    ], 
+    function ($,url) {
+           
+        var ksContent = $('.ks-product-category-content');
+        if (ksContent.length > 0) {
+            ksPagingNumerUpdate(ksContent);
+        }
+
+        ksContent.find('.ks-action-next').click(function(){ 
+            ksCallingAjax("next");
+        });
+
+        ksContent.find('.ks-action-previous').click(function(){ 
+            ksCallingAjax("previous");
+        });
+
+        ksContent.find('.ks-pager-select').change(function(){ 
+            ksCallingAjax("showPerPage");
+        });
+
+        ksContent.find('.ks-current-page').keypress(function(e){ 
+            if (e.keyCode == 13) {
+                ksCallingAjax("changePage");
+            }
+        });
+       
+        ksContent.find('.ks-form-reset').click(function(e){ 
+            e.preventDefault();
+            $(".ks-prod-category-table input").val("");
+            $(".ks-prod-category-table select").val("");
+            ksCallingAjax("reset");
+        });
+        
+        ksContent.find('.ks-search').click(function(e){ 
+            e.preventDefault();
+            ksCallingAjax("search");
+        });
+
+        ksContent.find('.ks-prod-category-table input,.ks-prod-category-table select').keypress(function(e){ 
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                ksCallingAjax("search");
+            }
+        });
+        
+        /**
+         * call product in category list by ajax
+         * @private
+         */
+        function ksCallingAjax(ksAction=null){ 
+            
+            var ksCurrentPage = ksContent.find('.ks-current-page').val();
+            var ksShowPerPage = ksContent.find('.ks-pager-select').val();
+
+            var ksTotalSize = ksContent.find('.ks-collection-size ').val();   
+            var ksTotalCountPage = Math.ceil(ksTotalSize / ksShowPerPage);
+            if(ksTotalCountPage<=0){
+                ksTotalCountPage = 1;
+            }
+           
+            if(ksCurrentPage > ksTotalCountPage){
+                ksCurrentPage = ksTotalCountPage;
+            }
+
+            if(ksAction=="next"){
+                ksCurrentPage = parseInt(ksCurrentPage) + 1;
+            }
+            if(ksAction=="previous"){
+               ksCurrentPage = parseInt(ksCurrentPage) - 1;
+            }
+
+            var ksData =
+                {
+                    ks_store_id: $('.ks_store_id').val(),
+                    ks_seller_id:  $('.ks_seller_id').val(),
+                    ks_category_id: $('.ks_category_id').val(),
+                    ks_product_id: ksContent.find('.ks_product_id').val(),
+                    ks_name: ksContent.find('.ks_name').val(),
+                    ks_sku: ksContent.find('.ks_sku').val(),
+                    ks_visibility: ksContent.find('.ks_visibility').val(),
+                    ks_status: ksContent.find('.ks_status').val(),
+                    ks_price_from: ksContent.find('.ks_price_from').val(),
+                    ks_price_to: ksContent.find('.ks_price_to').val(),
+                    ksPositionFrom: ksContent.find('.ks_position_from').val(),
+                    ksPositionTo: ksContent.find('.ks_position_to').val(),
+                    ksCurrentPage: ksCurrentPage,
+                    ksShowPerPage: ksShowPerPage
+                };
+
+
+            $.ajax({
+                url: url.build("multivendor/categorytype/categoryproductdetails"),
+                type: 'POST',
+                data: ksData,
+                showLoader:true,
+                success: function(response){ 
+                    ksContent.empty();
+                    ksContent.append(response);
+
+                    if(ksAction!="search" && ksAction!="reset"){
+                        ksContent.find('.ks-current-page').val(ksCurrentPage);
+                        ksContent.find('.ks-pager-select').val(ksShowPerPage);
+                    }
+
+                    ksPagingNumerUpdate(ksContent);
+                    
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                  console.log("fail");
+                }
+            });
+        }
+
+        /**
+         * call product in category list by ajax
+         * @private
+         */
+        function ksPagingNumerUpdate(ksContent){ 
+            var ksNum = ksContent.find('.ks-current-page').val();
+            var ksTotalSize = ksContent.find('.ks-collection-size ').val();   
+            var ksShowPerPage = ksContent.find('.ks-pager-select').val();
+            var ksTotalCountPage = Math.ceil(ksTotalSize / ksShowPerPage);
+            if(ksTotalCountPage<=0){
+                ksTotalCountPage = 1;
+            }
+
+            if(ksNum <=1){
+                ksContent.find('.ks-action-previous').prop("disabled", true);
+            }
+
+            if(ksTotalCountPage == ksNum){
+                ksContent.find('.ks-action-next').prop("disabled", true);
+            }
+
+            ksContent.find('.ks-pager-text').text("of "+ksTotalCountPage);
+        }
+    });
+</script>
+
